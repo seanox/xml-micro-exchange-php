@@ -29,23 +29,23 @@ class Service {
     /** Maximum number of files in data storage */
     const QUANTITY = 256;
 
-    /** Maximum number of files in the data storage area */
+    /** Maximum data size of files in data storage in bytes */
     const SPACE = 256 *1024;
 
-    /** Maximum idle time of the files in milliseconds */
-    const TIMEOUT = 15 *60 *1000;
+    /** Maximum idle time of the files in seconds */
+    const TIMEOUT = 15 *60;
     
     /** Cleans up all files that have exceeded the maximum idle time. */
     static function cleanUp() {
 
         if ($handle = opendir(Service::DIRECTORY)) {
-            $timeout = (time() *1000) -Service::TIMEOUT; 
+            $timeout = time() -Service::TIMEOUT; 
             while (($entry = readdir($handle)) !== false) {
                 if ($entry == "."
                         || $entry == "..")
                     continue;
                 $entry = Service::DIRECTORY . "/" . $entry;
-                if (filemtime($entry) *1000 > $timeout)
+                if (filemtime($entry) > $timeout)
                     continue;
                 if (file_exists($entry))
                     unlink($entry);
@@ -55,14 +55,70 @@ class Service {
     }
 
     static function doConnect() {
+        
+        // Request:
+        //     CONNECT / HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+
+        // Response:
+        //     HTTP/1.0 201 Created
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
+        //     Server-Time: YYYY-MM-DD hh:mm:ss
+        //     Storage-Length: 0 Bytes
+
+        // Response:
+        //     HTTP/1.0 202 Accepted
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
+        //     Server-Time: YYYY-MM-DD hh:mm:ss
+        //     Storage-Length: 0 Bytes
+        
+        // Only path / ist allowed, otherwise status 400 Bad Request
+        // If the storage is full, the response is status 507 Insufficient Storage
+        // An exact 35 characters long storage must be specified (pattern: [0-9A-Z]{35})
+        // The response can be status 201 if the storage was newly created.
+        // The answer can be status 202 if the storage already exists.
+    
         exit();
     }
 
     static function doOptions() {
+    
+        // Request:
+        //     OPTIONS / HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        
+        // Response:
+        //     HTTP/1.0 204 No Content
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
+        //     Server-Time: YYYY-MM-DD hh:mm:ss
+        //     Storage-Length: 0 Bytes        
+        
+        // Only path / ist allowed, otherwise status 400 Bad Request
+        // If the storage does not existl, the response is status 404 Not Found
+            
         exit();
     }
     
     static function doGet() {
+    
+        // Request:
+        //     GET /<xpath> HTTP/1.0   
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        
+        // Response:
+        //     HTTP/1.0 200 No Content
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
+        //     Server-Time: YYYY-MM-DD hh:mm:ss
+        //     Storage-Length: 0 Bytes    
+        //     Content-Length: 0 Bytes
+        //     Content-Type: application/xslt+xml
+        //
+        //     Response-Body (XML)
+        
         exit();
     }
 
@@ -90,8 +146,6 @@ class Service {
         exit();
     }
 }
-
-
 
 set_error_handler("Service::onError");
 set_exception_handler("Service::onException");
