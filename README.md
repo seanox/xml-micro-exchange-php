@@ -15,16 +15,16 @@
 TODO:
 
 ## Milestone 1
-- data storage as XML + query language XPath
+- Data storage as XML + query language XPath
 - REST-API: properties based data structure
 
 ## Milestone 2
-- data storage as XML + query language XPath
+- Data storage as XML + query language XPath
 - REST-API: properties based data structure
 - REST-API: XML based data structure
 
 ## Milestone 3
-- data storage as XML + query language XPath
+- Data storage as XML + query language XPath
 - REST-API: properties based data structure
 - REST-API: XML based data structure
 - REST-API: JSON based data structure
