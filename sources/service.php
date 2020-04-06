@@ -109,28 +109,99 @@ class Service {
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         
         // Response:
-        //     HTTP/1.0 200 No Content
+        //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Expiration-Time: YYYY-MM-DD hh:mm:ss
         //     Server-Time: YYYY-MM-DD hh:mm:ss
         //     Storage-Length: 0 Bytes    
         //     Content-Length: 0 Bytes
-        //     Content-Type: application/xslt+xml
+        //     Content-Type: text/plain
         //
-        //     Response-Body (XML)
+        //     Response-Body
+        //     - key / value pairs per line
+        //     - support of escape-Sequences \r\n\t...\u0000
+        //     - support attributes and entities (also nested)
+        // 
+        //     $attribute: value
+        //     entity: value
+        //     entity.entity: value
+        //     entity.entity.entity: value
+        //     entity$attribute: value
         
         exit();
     }
 
     static function doPut() {
-        exit();
+    
+        // Request:
+        //     PUT /<xpath> HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Content-Length: 0 Bytes
+        //     Content-Type: application/xml
+        //
+        //     Request-Body
+        //     - key / value pairs per line
+        //     - support of escape-Sequences \r\n\t...\u0000
+        //     - support attributes and entities (also nested)
+        // 
+        //     $attribute: value
+        //     entity: value
+        //     entity.entity: value
+        //     entity.entity.entity: value
+        //     entity$attribute: value
+        
+        // Response:
+        //     HTTP/1.0 200 Successful
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
+        //     Server-Time: YYYY-MM-DD hh:mm:ss
+        //     Storage-Length: 0 Bytes 
+            
+        exit();    
     }
 
     static function doPatch() {
+    
+        // Request:
+        //     PATCH /<xpath> HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Content-Length: 0 Bytes
+        //     Content-Type: application/xml
+        //
+        //     Request-Body
+        //     - key / value pairs per line
+        //     - support of escape-Sequences \r\n\t...\u0000
+        //     - support attributes and entities (also nested)
+        // 
+        //     $attribute: value
+        //     entity: value
+        //     entity.entity: value
+        //     entity.entity.entity: value
+        //     entity$attribute: value
+        
+        // Response:
+        //     HTTP/1.0 200 Successful
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
+        //     Server-Time: YYYY-MM-DD hh:mm:ss
+        //     Storage-Length: 0 Bytes 
+            
         exit();
     }
 
     static function doDelete() {
+    
+        // Request:
+        //     DELETE /<xpath> HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ 
+        
+        // Response:
+        //     HTTP/1.0 200 Successful
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
+        //     Server-Time: YYYY-MM-DD hh:mm:ss
+        //     Storage-Length: 0 Bytes    
+    
         exit();
     }
     
