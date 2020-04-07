@@ -21,7 +21,7 @@
  *
  * TODO: 
  */
-class Service {
+class Storage {
 
     /** Directory of the data storage */
     const DIRECTORY = "./data";
@@ -35,27 +35,102 @@ class Service {
     /** Maximum idle time of the files in seconds */
     const TIMEOUT = 15 *60;
     
-    /** Cleans up all files that have exceeded the maximum idle time. */
-    static function cleanUp() {
+    private $storage;
+    
+    private $store;
+    
+    private $share;
 
-        if ($handle = opendir(Service::DIRECTORY)) {
-            $timeout = time() -Service::TIMEOUT; 
+    private $xml;
+
+    private $xpath;
+    
+    private function __construct($storage, $xpath) {
+        $this->storage = $storage;
+        $this->store = Storage::DIRECTORY . "/" . $this->storage; 
+        $this->xpath = $xpath;
+    }
+    
+    /** Cleans up all files that have exceeded the maximum idle time. */
+    private static function cleanUp() {
+
+        if ($handle = opendir(Storage::DIRECTORY)) {
+            $timeout = time() -Storage::TIMEOUT; 
             while (($entry = readdir($handle)) !== false) {
                 if ($entry == "."
                         || $entry == "..")
                     continue;
-                $entry = Service::DIRECTORY . "/" . $entry;
+                $entry = Storage::DIRECTORY . "/$entry";
                 if (filemtime($entry) > $timeout)
                     continue;
                 if (file_exists($entry))
-                    unlink($entry);
+                    @unlink($entry);
             }        
             closedir($handle);
         }
     }
+    
+    public static function share($storage, $xpath) {
 
-    static function doConnect() {
+        if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
+            header("HTTP/1.0 400 Bad Request");
+            exit();
+        }        
+        Storage::cleanUp();
+        return new Storage($storage, $xpath);
+    }
+    
+    private function open() {
         
+        if ($this->share !== null)
+            return;
+            
+        $this->share = fopen($this->store, "x+");
+        flock($this->share, LOCK_EX);
+
+        if (filesize($this->store) <= 0) {
+            fwrite($this->share,
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" .
+                "<data rev=\"0\"/>");
+            rewind($this->share);
+        }
+
+        $this->xml = fread($this->share, filesize($this->store));
+        $this->xml = new SimpleXMLElement($this->xml);
+    } 
+    
+    public function close() {
+
+        if ($this->share == null)
+            return;
+            
+        ftruncate($this->share, 0);
+        fwrite($this->share, $this->xml->asXML());    
+
+        flock($this->share, LOCK_UN);
+        fclose($this->share);
+
+        $this->share = null;
+        $this->xml = null;
+    }
+    
+    private function getRevision() {
+    
+        $this->open();
+        return $this->xml->xpath("/data@rev");
+    }
+
+    private function getSize() {
+    
+        if ($this->xml !== null)
+            return strlen($this->xml->asXML());
+        if ($this->share !== null)
+            return filesize($this->share);
+        return filesize($this->store);
+    }
+    
+    public function doConnect() {
+
         // Request:
         //     CONNECT / HTTP/1.0
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
@@ -63,46 +138,47 @@ class Service {
         // Response:
         //     HTTP/1.0 201 Created
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
-        //     Server-Time: YYYY-MM-DD hh:mm:ss
-        //     Storage-Length: 0 Bytes
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes
 
         // Response:
         //     HTTP/1.0 202 Accepted
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
-        //     Server-Time: YYYY-MM-DD hh:mm:ss
-        //     Storage-Length: 0 Bytes
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes
         
         // Only path / ist allowed, otherwise status 400 Bad Request
         // If the storage is full, the response is status 507 Insufficient Storage
         // An exact 35 characters long storage must be specified (pattern: [0-9A-Z]{35})
         // The response can be status 201 if the storage was newly created.
         // The answer can be status 202 if the storage already exists.
-    
+
+        //TODO: if ($this->xpath !== "/") {
+        //    header("HTTP/1.0 400 Bad Request");
+        //    exit();
+        //}
+        
+        $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
+        if (iterator_count($iterator) >= Storage::QUANTITY) {
+            header("HTTP/1.0 507 Insufficient Storage");
+            exit();
+        }
+        
+        if (file_exists($this->store)) {
+            touch($this->store); 
+            header("HTTP/1.0 202 Accepted");
+        } else {
+            $this->open();
+            header("HTTP/1.0 201 Created");
+        }
+
+        header("Storage: " . $this->storage);
+        header("Storage-Revision: " . $this->getRevision());
+        header("Storage-Size: " . $this->getSize());
         exit();
     }
 
-    static function doOptions() {
-    
-        // Request:
-        //     OPTIONS / HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        
-        // Response:
-        //     HTTP/1.0 204 No Content
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
-        //     Server-Time: YYYY-MM-DD hh:mm:ss
-        //     Storage-Length: 0 Bytes        
-        
-        // Only path / ist allowed, otherwise status 400 Bad Request
-        // If the storage does not existl, the response is status 404 Not Found
-            
-        exit();
-    }
-    
-    static function doGet() {
+    public function doGet() {
     
         // Request:
         //     GET /<xpath> HTTP/1.0   
@@ -111,10 +187,9 @@ class Service {
         // Response:
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
-        //     Server-Time: YYYY-MM-DD hh:mm:ss
-        //     Storage-Length: 0 Bytes    
-        //     Content-Length: 0 Bytes
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes   
+        //     Content-Length: Bytes
         //     Content-Type: text/plain
         //
         //     Response-Body
@@ -131,12 +206,12 @@ class Service {
         exit();
     }
 
-    static function doPut() {
+    public function doPut() {
     
         // Request:
         //     PUT /<xpath> HTTP/1.0
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Content-Length: 0 Bytes
+        //     Content-Length: Bytes
         //     Content-Type: application/xml
         //
         //     Request-Body
@@ -153,14 +228,13 @@ class Service {
         // Response:
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
-        //     Server-Time: YYYY-MM-DD hh:mm:ss
-        //     Storage-Length: 0 Bytes 
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes
             
         exit();    
     }
 
-    static function doPatch() {
+    public function doPatch() {
     
         // Request:
         //     PATCH /<xpath> HTTP/1.0
@@ -182,14 +256,13 @@ class Service {
         // Response:
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
-        //     Server-Time: YYYY-MM-DD hh:mm:ss
-        //     Storage-Length: 0 Bytes 
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes
             
         exit();
     }
 
-    static function doDelete() {
+    public function doDelete() {
     
         // Request:
         //     DELETE /<xpath> HTTP/1.0
@@ -198,9 +271,8 @@ class Service {
         // Response:
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Expiration-Time: YYYY-MM-DD hh:mm:ss
-        //     Server-Time: YYYY-MM-DD hh:mm:ss
-        //     Storage-Length: 0 Bytes    
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes   
     
         exit();
     }
@@ -218,34 +290,42 @@ class Service {
     }
 }
 
-set_error_handler("Service::onError");
-set_exception_handler("Service::onException");
-register_shutdown_function("Service::onShutdown");
- 
-Service::cleanUp();
+set_error_handler("Storage::onError");
+set_exception_handler("Storage::onException");
+register_shutdown_function("Storage::onShutdown");
 
-switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
-    case "CONNECT":
-        Service::doConnect();
-        break;
-    case "OPTIONS":
-        Service::doOptions();
-        break;
-    case "GET":
-        Service::doGet();
-        break;
-    case "PUT":
-        Service::doPut();
-        break;
-    case "PATCH":
-        Service::doPatch();
-        break;
-    case "DELETE":
-        Service::doDelete();
-        break;
-    default:
-        header("HTTP/1.0 405 Method Not Allowed");
-        header("Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE");
-        exit();
+$storage = $_SERVER["HTTP_STORAGE"];
+if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
+    header("HTTP/1.0 400 Bad Request");
+    exit();
 }
+
+$storage = Storage::share($storage, $_SERVER["REQUEST_URI"]);
+
+try {
+    switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
+        case "CONNECT":
+            $storage->doConnect();
+            break;
+        case "GET":
+            $storage->doGet();
+            break;
+        case "PUT":
+            $storage->doPut();
+            break;
+        case "PATCH":
+            $storage->doPatch();
+            break;
+        case "DELETE":
+            $storage->doDelete();
+            break;
+        default:
+            header("HTTP/1.0 405 Method Not Allowed");
+            header("Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE");
+            exit();
+    }
+} finally {
+    $storage->close();
+}
+
 ?>
