@@ -1,6 +1,6 @@
 <p>
   <a href="https://github.com/seanox/xml-online-storage/pulls">
-    <img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge">
+    <img src="https://img.shields.io/badge/development-active-green?style=for-the-badge">
   </a>
   <a href="https://github.com/seanox/xml-online-storage/issues">
     <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
