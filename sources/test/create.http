@@ -1,0 +1,31 @@
+@service = http://127.0.0.1/projects/xml-online-storage/sources/service.php
+
+# @name invalid_1
+CREATE {{service}} HTTP/1.0
+
+###
+# @name invalid_2
+CREATE {{service}} HTTP/1.0
+Storage:
+
+###
+# @name invalid_3
+CREATE {{service}} HTTP/1.0
+Storage: 1234567890123456789012345678901234
+
+###
+# @name invalid_4
+CREATE {{service}} HTTP/1.0
+Storage: 123456789012345678901234567890123456
+
+###
+# @name valid_new
+CREATE {{service}} HTTP/1.0
+Storage: 12345678901234567890123456789012345
+
+###
+# @name valid_exists
+CREATE {{service}} HTTP/1.0
+Storage: 12345678901234567890123456789012345
+
+###

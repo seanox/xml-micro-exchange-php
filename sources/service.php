@@ -44,11 +44,13 @@ class Storage {
     private $xml;
 
     private $xpath;
-    
+
     private function __construct($storage, $xpath) {
+
         $this->storage = $storage;
-        $this->store = Storage::DIRECTORY . "/" . $this->storage; 
-        $this->xpath = $xpath;
+        $this->store   = Storage::DIRECTORY . "/" . $this->storage; 
+        $this->xpath   = $xpath;
+        $this->change  = false;
     }
     
     /** Cleans up all files that have exceeded the maximum idle time. */
@@ -74,6 +76,8 @@ class Storage {
 
         if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
             header("HTTP/1.0 400 Bad Request");
+            header('Content-Type: none');
+            header_remove("Content-Type"); 
             exit();
         }        
         Storage::cleanUp();
@@ -85,17 +89,21 @@ class Storage {
         if ($this->share !== null)
             return;
             
-        $this->share = fopen($this->store, "x+");
+        touch($this->store);    
+        $this->share = fopen($this->store, "c+");
         flock($this->share, LOCK_EX);
 
         if (filesize($this->store) <= 0) {
             fwrite($this->share,
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" .
-                "<data rev=\"0\"/>");
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" .
+            "<data rev=\"0\"/>");
             rewind($this->share);
         }
 
-        $this->xml = fread($this->share, filesize($this->store));
+        fseek($this->share, 0, SEEK_END); 
+        $size = ftell($this->share);
+        rewind($this->share);
+        $this->xml = fread($this->share, $size);
         $this->xml = new SimpleXMLElement($this->xml);
     } 
     
@@ -103,7 +111,7 @@ class Storage {
 
         if ($this->share == null)
             return;
-            
+
         ftruncate($this->share, 0);
         fwrite($this->share, $this->xml->asXML());    
 
@@ -117,7 +125,7 @@ class Storage {
     private function getRevision() {
     
         $this->open();
-        return $this->xml->xpath("/data@rev");
+        return $this->xml->xpath('/data[1]/@rev')[0];
     }
 
     private function getSize() {
@@ -153,28 +161,34 @@ class Storage {
         // The response can be status 201 if the storage was newly created.
         // The answer can be status 202 if the storage already exists.
 
-        //TODO: if ($this->xpath !== "/") {
-        //    header("HTTP/1.0 400 Bad Request");
-        //    exit();
-        //}
+        if ($this->xpath !== "/") {
+            header("HTTP/1.0 400 Bad Request");
+            header('Content-Type: none');
+            header_remove("Content-Type"); 
+            exit();
+        }
         
         $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
         if (iterator_count($iterator) >= Storage::QUANTITY) {
             header("HTTP/1.0 507 Insufficient Storage");
+            header('Content-Type: none');
+            header_remove("Content-Type"); 
             exit();
         }
         
         if (file_exists($this->store)) {
-            touch($this->store); 
             header("HTTP/1.0 202 Accepted");
         } else {
-            $this->open();
             header("HTTP/1.0 201 Created");
         }
+
+        $this->open();
 
         header("Storage: " . $this->storage);
         header("Storage-Revision: " . $this->getRevision());
         header("Storage-Size: " . $this->getSize());
+        header('Content-Type: none');
+        header_remove("Content-Type"); 
         exit();
     }
 
@@ -290,20 +304,28 @@ class Storage {
     }
 }
 
-set_error_handler("Storage::onError");
-set_exception_handler("Storage::onException");
-register_shutdown_function("Storage::onShutdown");
+//set_error_handler("Storage::onError");
+//set_exception_handler("Storage::onException");
+//register_shutdown_function("Storage::onShutdown");
 
-$storage = $_SERVER["HTTP_STORAGE"];
+$storage = null;
+if (isset($_SERVER["HTTP_STORAGE"]))
+    $storage = $_SERVER["HTTP_STORAGE"];
 if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
     header("HTTP/1.0 400 Bad Request");
+    header('Content-Type: none');
+    header_remove("Content-Type"); 
     exit();
 }
 
-$storage = Storage::share($storage, $_SERVER["REQUEST_URI"]);
+$xpath = "/";
+if (isset($_SERVER["PATH_INFO"]))
+    $xpath = $_SERVER["PATH_INFO"];
+$storage = Storage::share($storage, $xpath);
 
 try {
     switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
+        case "CREATE":
         case "CONNECT":
             $storage->doConnect();
             break;
@@ -321,11 +343,12 @@ try {
             break;
         default:
             header("HTTP/1.0 405 Method Not Allowed");
-            header("Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE");
+            header("Allow: CONNECT, CREATE, GET, PUT, PATCH, DELETE");
+            header('Content-Type: none');
+            header_remove("Content-Type"); 
             exit();
     }
 } finally {
     $storage->close();
 }
-
 ?>
