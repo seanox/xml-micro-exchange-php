@@ -20,6 +20,14 @@
  * the License.
  *
  * TODO: 
+ * - Each node has an internal revision attribute ___rev.
+ * - Hopefully it is unlikely that someone wants to use this name. 
+ * - The field can be accessed read but not write.   
+ *   Writing will cause status 405.
+ * - If a node or attribute is changed, the revision of the current node and all its parents is increased.
+ *   The revision of the root account +1 is used as value.
+ *   The assumption that the root node always contains the current revision.
+ *   So it is also traceable if a branch or node has changed during the last transaction.
  */
 class Storage {
 
@@ -197,50 +205,78 @@ class Storage {
         // Request:
         //     GET /<xpath> HTTP/1.0   
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        
-        // Response:
+        //     Accept: text/plain
+        // Response (If value of attribute or result of a function):
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
         //     Storage-Size: Bytes   
         //     Content-Length: Bytes
-        //     Content-Type: text/plain
-        //
-        //     Response-Body
-        //     - key / value pairs per line
-        //     - support of escape-Sequences \r\n\t...\u0000
-        //     - support attributes and entities (also nested)
-        // 
-        //     $attribute: value
-        //     entity: value
-        //     entity.entity: value
-        //     entity.entity.entity: value
-        //     entity$attribute: value
-        
+        //     Content-Type: text/plain        
+
+        // Request:
+        //     GET /<xpath> HTTP/1.0   
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Accept: application/xslt+xml
+        // Response (If response is a partial XML structure):
+        //     HTTP/1.0 200 Successful
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes   
+        //     Content-Length: Bytes
+        //     Content-Type: application/xslt+xml
+
         exit();
     }
 
+    /**
+     * Adds to the specified path, a node or an attribute.
+     * If the destination already exists, the method behaves like doPatch.
+     * TODO: Parents do not exist. What then? Create? What if the path contains list/index syntax?
+     * 
+     * The Content-Type of the request defines the data type.
+     *
+     * Nodes supports text/plain and application/xslt+xml.
+     *     text/plain
+     * Inserts a text as content for the node (inner node).
+     * If necessary, CDATA is used.
+     *     application/xslt+xml
+     * Replaces the node with an XML fragment (outer node).
+     * Other content types are answered with status 415 (Unsupported Media Type).
+     *       
+     * Attributes supports only text/plain and replaces the value of the
+     * attribute. If necessary, the value is escaped.
+     * Other content types are answered with status 415 (Unsupported Media Type).
+     *
+     * The ___rev attribute is used internally and cannot be changed.
+     * Write accesses cause the status 405. 
+     */
     public function doPut() {
     
         // Request:
         //     PUT /<xpath> HTTP/1.0
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Content-Length: Bytes
-        //     Content-Type: application/xml
-        //
-        //     Request-Body
-        //     - key / value pairs per line
-        //     - support of escape-Sequences \r\n\t...\u0000
-        //     - support attributes and entities (also nested)
-        // 
-        //     $attribute: value
-        //     entity: value
-        //     entity.entity: value
-        //     entity.entity.entity: value
-        //     entity$attribute: value
+        //     Content-Type: application/xslt+xml
+        // Request-Body:
+        //     XML fragment for the node to be added
+
+        // Request:
+        //     PUT /<xpath> HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Content-Length: Bytes
+        //     Content-Type: text/plain
+        // Request-Body:
+        //     Value as plain text
         
         // Response:
-        //     HTTP/1.0 200 Successful
+        //     HTTP/1.0 201 Created
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage-Revision: Revision   
+        //     Storage-Size: Bytes
+
+        // Response (if the path is not unique):
+        //     HTTP/1.0 300 Multiple Choices
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
         //     Storage-Size: Bytes
@@ -248,31 +284,57 @@ class Storage {
         exit();    
     }
 
+    /**
+     * Replaces to the specified path, a node or an attribute.
+     * The destination must exist, otherwise the request is answered with status
+     * 404 (Not Found).
+     * 
+     * The Content-Type of the request defines the data type.
+     *
+     * Nodes supports text/plain and application/xslt+xml.
+     *     text/plain
+     * Inserts a text as content for the node (inner node).
+     * If necessary, CDATA is used.
+     *     application/xslt+xml
+     * Replaces the node with an XML fragment (outer node).
+     * Other content types are answered with status 415 (Unsupported Media Type).
+     *       
+     * Attributes supports only text/plain and replaces the value of the
+     * attribute. If necessary, the value is escaped.
+     * Other content types are answered with status 415 (Unsupported Media Type).
+     *
+     * The ___rev attribute is used internally and cannot be changed.
+     * Write accesses cause the status 405. 
+     */
     public function doPatch() {
     
         // Request:
         //     PATCH /<xpath> HTTP/1.0
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Content-Length: 0 Bytes
-        //     Content-Type: application/xml
-        //
-        //     Request-Body
-        //     - key / value pairs per line
-        //     - support of escape-Sequences \r\n\t...\u0000
-        //     - support attributes and entities (also nested)
-        // 
-        //     $attribute: value
-        //     entity: value
-        //     entity.entity: value
-        //     entity.entity.entity: value
-        //     entity$attribute: value
+        //     Content-Type: application/xslt+xml
+        // Request-Body:
+        //     XML fragment for the node to be added
+        
+        // Request:
+        //     PATCH /<xpath> HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Content-Length: 0 Bytes
+        //     Content-Type: text/plain
+        // Request-Body:
+        //     Value as plain text     
         
         // Response:
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
         //     Storage-Size: Bytes
-            
+        
+        // Error Status:
+        //    404 Destination does not exist
+        //    405 Write access to attribute ___rev
+        //    415 Content-Type is not supported
+
         exit();
     }
 
