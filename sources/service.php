@@ -200,6 +200,10 @@ class Storage {
         exit();
     }
 
+    public function doOptions() {
+        exit();
+    }  
+
     public function doGet() {
     
         // Request:
@@ -229,10 +233,20 @@ class Storage {
         exit();
     }
 
+    public function doCreate() {
+        exit();
+    }  
+
     /**
      * Adds to the specified path, a node or an attribute.
-     * If the destination already exists, the method behaves like doPatch.
-     * TODO: Parents do not exist. What then? Create? What if the path contains list/index syntax?
+     * If the destination already exists, the method behaves like PATCH.
+     * PUT expects an existing parent node (destination) to create a new node
+     * or attribute. As parent (destination) the path until the last occurrence
+     * of the slash or @ is interpreted. Only the last fragment after the last
+     * occurrence of slash or @ is used as the node or attribute to be created.
+     * Creating new complex branches seems tedious, but here PUT can insert
+     * complex XML fragments and CREATE works like PUT, but can handle complex
+     * paths. 
      * 
      * The Content-Type of the request defines the data type.
      *
@@ -387,12 +401,17 @@ $storage = Storage::share($storage, $xpath);
 
 try {
     switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
-        case "CREATE":
         case "CONNECT":
             $storage->doConnect();
             break;
+        case "OPTIONS":
+            $storage->doOptions();
+            break;
         case "GET":
             $storage->doGet();
+            break;
+        case "CREATE":
+            $storage->doCreate();
             break;
         case "PUT":
             $storage->doPut();
@@ -405,7 +424,7 @@ try {
             break;
         default:
             header("HTTP/1.0 405 Method Not Allowed");
-            header("Allow: CONNECT, CREATE, GET, PUT, PATCH, DELETE");
+            header("Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE");
             header('Content-Type: none');
             header_remove("Content-Type"); 
             exit();
