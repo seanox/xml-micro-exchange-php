@@ -14,21 +14,6 @@
 # Description
 TODO:
 
-## Milestone 1
-- Data storage as XML + query language XPath
-- REST-API: properties based data structure
-
-## Milestone 2
-- Data storage as XML + query language XPath
-- REST-API: properties based data structure
-- REST-API: XML based data structure
-
-## Milestone 3
-- Data storage as XML + query language XPath
-- REST-API: properties based data structure
-- REST-API: XML based data structure
-- REST-API: JSON based data structure
-
 
 # Features
 TODO:
@@ -64,6 +49,7 @@ TODO:
 
 # Installation
 TODO:
+
 
 # Configuration
 TODO:
