@@ -20,14 +20,28 @@
  * the License.
  *
  * TODO: 
- * - Each node has an internal revision attribute ___rev.
- * - Hopefully it is unlikely that someone wants to use this name. 
+ * - Each node has an internal revision attribute ___rev
+ *   Milliseconds since 01/01/2020 alphanumerical radix 36, therefore also lastmodified
+ * - Each node has an internal object identify attribute ___oid 
+ *   Long counter and reflects the order of creation
+ * - Hopefully it is unlikely that someone wants to use this names. 
  * - The field can be accessed read but not write.   
  *   Writing will cause status 405.
  * - If a node or attribute is changed, the revision of the current node and all its parents is increased.
  *   The revision of the root account +1 is used as value.
  *   The assumption that the root node always contains the current revision.
  *   So it is also traceable if a branch or node has changed during the last transaction.
+ * - Access parallel / concurrent
+ *   Read accesses are executed in parallel.
+ *   Write accesses are executed exclusively and block simultaneous read and write accesses.
+ * - Transaction
+ *   The write access is exclusive and uses flock + LOCK_EX / LOCK_UN
+ * - Multi-functional effect
+ *   In the first idea OPTIONS/PUT/PATCH/DELETE could only use unique entities.
+ *   But there are advantages (also disadvantages) if a multiple scope is supported. 
+ *   For example, change or delete the attributes of all matching entries.
+ *   Therefore, the status 300 is also omitted.
+ *   TODO: It is still open how OPTIONS should work.
  */
 class Storage {
 
@@ -35,7 +49,7 @@ class Storage {
     const DIRECTORY = "./data";
 
     /** Maximum number of files in data storage */
-    const QUANTITY = 256;
+    const QUANTITY = 65535;
 
     /** Maximum data size of files in data storage in bytes */
     const SPACE = 256 *1024;
@@ -233,6 +247,12 @@ class Storage {
         exit();
     }
 
+    /**
+     * TODO:
+     *
+     * The (x)path must be valid and can be created in the XML structure,
+     * otherwise the request is answered with status 422 (Unprocessable Entity).
+     */
     public function doCreate() {
         exit();
     }  
@@ -262,7 +282,7 @@ class Storage {
      * attribute. If necessary, the value is escaped.
      * Other content types are answered with status 415 (Unsupported Media Type).
      *
-     * The ___rev attribute is used internally and cannot be changed.
+     * The attributes ___rev / ___oid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
      */
     public function doPut() {
@@ -289,12 +309,6 @@ class Storage {
         //     Storage-Revision: Revision   
         //     Storage-Size: Bytes
 
-        // Response (if the path is not unique):
-        //     HTTP/1.0 300 Multiple Choices
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes
-            
         exit();    
     }
 
@@ -317,7 +331,7 @@ class Storage {
      * attribute. If necessary, the value is escaped.
      * Other content types are answered with status 415 (Unsupported Media Type).
      *
-     * The ___rev attribute is used internally and cannot be changed.
+     * The attributes ___rev / ___oid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
      */
     public function doPatch() {
@@ -346,7 +360,7 @@ class Storage {
         
         // Error Status:
         //    404 Destination does not exist
-        //    405 Write access to attribute ___rev
+        //    405 Write access to attribute ___rev / __oid
         //    415 Content-Type is not supported
 
         exit();
