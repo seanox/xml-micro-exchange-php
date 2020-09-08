@@ -21,7 +21,7 @@
  *
  * TODO: 
  * - Each node has an internal revision attribute ___rev
- *   Milliseconds since 01/01/2020 alphanumerical radix 36, therefore also lastmodified
+ *   Milliseconds since 01/01/2000 alphanumerical radix 36, therefore also lastmodified
  * - Each node has an internal object identify attribute ___oid 
  *   Long counter and reflects the order of creation
  * - Hopefully it is unlikely that someone wants to use this names. 
@@ -42,6 +42,30 @@
  *   For example, change or delete the attributes of all matching entries.
  *   Therefore, the status 300 is also omitted.
  *   TODO: It is still open how OPTIONS should work.
+ * - OPTIONS: Should return information about the storage and an entity but in the context of the storage,
+ *   so no details about the entity, only the indirect statement about Allow, whether the entity exists or not.
+ *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+ *   Storage-Revision: Revision
+ *   Storage-Size: Bytes
+ *   Storage-Expired: Timestamp
+ *   Storage-Expiration: Seconds
+ *   Last-Modified: Timestamp
+ *   Allow: CONNECT, OPTIONS, GET, HEAD, CREATE, PUT, PATCH, DELETE
+ *   If the entity does not exist:
+ *   Allow: CONNECT, OPTIONS, CREATE, PUT, PATCH
+ *   So only those methods are returned, which can be applied to the storage and the entity.
+ * - HEAD: Works like OPTIONS, but the focus is the entity
+ *   Same storage informations as with OPTIONS.
+ *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+ *   Storage-Revision: Revision
+ *   Storage-Size: Bytes
+ *   Storage-Expired: Timestamp
+ *   Storage-Expiration: Seconds
+ *   Last-Modified: Timestamp
+ *   If the (X)Path is not unique, the response is status 300.
+ *   If the (X)Path is unique, the response is 200 and there is meta information about the entity.
+ *   Last-Modified: Then refers to the entity and not to the storage.
+ *   If the entity is not available the request is answered with 404.
  */
 class Storage {
 
