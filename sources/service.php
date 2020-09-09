@@ -19,6 +19,37 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  *
+ *     CONNECT
+ * This method is used to initiate access to a storage.
+ * A storage is a temporary XML construct.
+ * It is based on a cryptic ID (storage name), which must be transmitted with
+ * every request. This is similar to the header host for virtual servers.  
+ * The storage is only a temporary meeting place. Any client who knows the path
+ * can access, use and design it.
+ * There are no rules, only the clients know the rules.
+ * A storage expires with all information if it is not used.
+ *
+ *     OPTIONS
+ * Determines meta-information about the storage and an (x)path destination.
+ * A storage is based on an XML construct.
+ * It manages data as entities and/or attributes of entities.
+ * TODO:
+ *  
+ *     FETCH
+ * TODO:
+ *
+ *     CREATE
+ * TODO:
+ *
+ *     PUT
+ * TODO:
+ *
+ *     PATCH
+ * TODO:
+ *
+ *     DELETE 
+ * TODO:
+ *
  * TODO: 
  * - Each node has an internal revision attribute ___rev
  *   Milliseconds since 01/01/2000 alphanumerical radix 36, therefore also lastmodified
@@ -41,7 +72,6 @@
  *   But there are advantages (also disadvantages) if a multiple scope is supported. 
  *   For example, change or delete the attributes of all matching entries.
  *   Therefore, the status 300 is also omitted.
- *   TODO: It is still open how OPTIONS should work.
  * - OPTIONS: Should return information about the storage and an entity but in the context of the storage,
  *   so no details about the entity, only the indirect statement about Allow, whether the entity exists or not.
  *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
@@ -49,23 +79,25 @@
  *   Storage-Size: Bytes
  *   Storage-Expired: Timestamp
  *   Storage-Expiration: Seconds
- *   Last-Modified: Timestamp
- *   Allow: CONNECT, OPTIONS, GET, HEAD, CREATE, PUT, PATCH, DELETE
+ *   Storage-Last-Modified: Timestamp
+ *   Allow: CONNECT, OPTIONS, META, FETCH, CREATE, PUT, PATCH, DELETE
  *   If the entity does not exist:
  *   Allow: CONNECT, OPTIONS, CREATE, PUT, PATCH
  *   So only those methods are returned, which can be applied to the storage and the entity.
- * - HEAD: Works like OPTIONS, but the focus is the entity
+ * - META: Works like OPTIONS, but the focus is the entity
  *   Same storage informations as with OPTIONS.
  *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
  *   Storage-Revision: Revision
  *   Storage-Size: Bytes
  *   Storage-Expired: Timestamp
  *   Storage-Expiration: Seconds
- *   Last-Modified: Timestamp
- *   If the (X)Path is not unique, the response is status 300.
+ *   Storage-Last-Modified:
+ *   Entity-Identifier: Number
+ *   Entity-Revision: Revision  
+ *   Entity-Last-Modified: Timestamp 
+ *   If the (X)Path is not unique, the response is status 300 and without headers for the entity. 
  *   If the (X)Path is unique, the response is 200 and there is meta information about the entity.
- *   Last-Modified: Then refers to the entity and not to the storage.
- *   If the entity is not available the request is answered with 404.
+ *   If the entity is not available the request is answered with 404 and without headers for the entity.
  */
 class Storage {
 
@@ -242,10 +274,10 @@ class Storage {
         exit();
     }  
 
-    public function doGet() {
+    public function doFetch() {
     
         // Request:
-        //     GET /<xpath> HTTP/1.0   
+        //     FETCH /<xpath> HTTP/1.0   
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Accept: text/plain
         // Response (If value of attribute or result of a function):
@@ -257,7 +289,7 @@ class Storage {
         //     Content-Type: text/plain        
 
         // Request:
-        //     GET /<xpath> HTTP/1.0   
+        //     FETCH /<xpath> HTTP/1.0   
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Accept: application/xslt+xml
         // Response (If response is a partial XML structure):
@@ -445,8 +477,8 @@ try {
         case "OPTIONS":
             $storage->doOptions();
             break;
-        case "GET":
-            $storage->doGet();
+        case "FETCH":
+            $storage->doFetch();
             break;
         case "CREATE":
             $storage->doCreate();
@@ -462,7 +494,7 @@ try {
             break;
         default:
             header("HTTP/1.0 405 Method Not Allowed");
-            header("Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE");
+            header("Allow: CONNECT, OPTIONS, FETCH, CREATE, PUT, PATCH, DELETE");
             header('Content-Type: none');
             header_remove("Content-Type"); 
             exit();
