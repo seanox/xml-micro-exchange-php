@@ -35,7 +35,7 @@
  * It manages data as entities and/or attributes of entities.
  * TODO:
  *  
- *     FETCH
+ *     GET
  * TODO:
  *
  *     CREATE
@@ -80,7 +80,7 @@
  *   Storage-Expired: Timestamp
  *   Storage-Expiration: Seconds
  *   Storage-Last-Modified: Timestamp
- *   Allow: CONNECT, OPTIONS, META, FETCH, CREATE, PUT, PATCH, DELETE
+ *   Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE
  *   If the entity does not exist:
  *   Allow: CONNECT, OPTIONS, CREATE, PUT, PATCH
  *   So only those methods are returned, which can be applied to the storage and the entity.
@@ -274,10 +274,10 @@ class Storage {
         exit();
     }  
 
-    public function doFetch() {
+    public function doGet() {
     
         // Request:
-        //     FETCH /<xpath> HTTP/1.0   
+        //     GET /<xpath> HTTP/1.0   
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Accept: text/plain
         // Response (If value of attribute or result of a function):
@@ -289,7 +289,7 @@ class Storage {
         //     Content-Type: text/plain        
 
         // Request:
-        //     FETCH /<xpath> HTTP/1.0   
+        //     GET /<xpath> HTTP/1.0   
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Accept: application/xslt+xml
         // Response (If response is a partial XML structure):
@@ -477,8 +477,8 @@ try {
         case "OPTIONS":
             $storage->doOptions();
             break;
-        case "FETCH":
-            $storage->doFetch();
+        case "GET":
+            $storage->doGet();
             break;
         case "CREATE":
             $storage->doCreate();
@@ -494,7 +494,7 @@ try {
             break;
         default:
             header("HTTP/1.0 405 Method Not Allowed");
-            header("Allow: CONNECT, OPTIONS, FETCH, CREATE, PUT, PATCH, DELETE");
+            header("Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE");
             header('Content-Type: none');
             header_remove("Content-Type"); 
             exit();
