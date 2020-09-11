@@ -30,10 +30,14 @@
  * A storage expires with all information if it is not used.
  *
  *     OPTIONS
- * Determines meta-information about the storage and an (x)path destination.
+ * Determines informations about the storage and an (x)path destination.
  * A storage is based on an XML construct.
  * It manages data as entities and/or attributes of entities.
- * TODO:
+ * The OPTIONS method only determines information about the storage and
+ * entities, so what is the status and what can be done. Attributes are not
+ * supported. Storage and entity information is transmitted as response headers.
+ * The response therefore has no response body. If the requested entity is not
+ * unique, only storage information is determined.
  *  
  *     GET
  * TODO:
@@ -42,7 +46,14 @@
  * TODO:
  *
  *     PUT
- * TODO:
+ * Adds to the specified (x)path, a node or an attribute.
+ * If the destination already exists, the method behaves like PATCH.
+ * PUT expects an existing parent node (destination) to create a new node or
+ * attribute. As parent (destination) the path until the last occurrence of the
+ * slash or @ is interpreted. Only the last fragment after the last occurrence
+ * of slash or @ is used as the node or attribute to be created. Creating new
+ * complex branches seems tedious, but here PUT can insert complex XML fragments
+ * and CREATE works like PUT, but can handle complex (x)paths. 
  *
  *     PATCH
  * TODO:
