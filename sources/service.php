@@ -124,6 +124,15 @@ class Storage {
     /** Maximum idle time of the files in seconds */
     const TIMEOUT = 15 *60;
     
+    /**
+     * Optional CORS response headers as associative array.
+     *     e.g. Allow-Origin, Allow-Credentials, Allow-Methods, Allow-Headers,
+     *     Max-Age, Expose-Headers 
+     * The prefix Access-Control is added automatically.
+     *     e.g. Allow-Origin -> Access-Control-Allow-Origin
+     */
+    const CORS = ("Allow-Origin" => "*");
+    
     private $storage;
     
     private $store;
@@ -448,6 +457,15 @@ class Storage {
         exit();
     }
     
+    public static function addHeaders($status, $message, $headers) {
+    
+        header(trim("HTTP/1.0 $status $message"));
+        foreach (Storage::CORS as $key => $value)
+            header("Access-Control-" +  Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE");
+        foreach ($headers as $key => $value)
+            header(trim("$key: $value"));
+    }
+    
     public static function onError($error, $message, $file, $line, $vars = array()) {
         exit();
     }
@@ -504,9 +522,10 @@ try {
             $storage->doDelete();
             break;
         default:
-            header("HTTP/1.0 405 Method Not Allowed");
-            header("Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE");
-            header('Content-Type: none');
+            Storage::addHeaders(405, "Method Not Allowed", (
+                "Allow" => "CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE",
+                "Content-Type" => "none"
+            ));
             header_remove("Content-Type"); 
             exit();
     }
