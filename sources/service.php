@@ -131,7 +131,7 @@ class Storage {
      * The prefix Access-Control is added automatically.
      *     e.g. Allow-Origin -> Access-Control-Allow-Origin
      */
-    const CORS = ("Allow-Origin" => "*");
+    const CORS = ["Allow-Origin" => "*"];
     
     private $storage;
     
@@ -461,7 +461,7 @@ class Storage {
     
         header(trim("HTTP/1.0 $status $message"));
         foreach (Storage::CORS as $key => $value)
-            header("Access-Control-" +  Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE");
+            header("Access-Control-$key: $value");
         foreach ($headers as $key => $value)
             header(trim("$key: $value"));
     }
@@ -522,10 +522,10 @@ try {
             $storage->doDelete();
             break;
         default:
-            Storage::addHeaders(405, "Method Not Allowed", (
+            Storage::addHeaders(405, "Method Not Allowed", [
                 "Allow" => "CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE",
                 "Content-Type" => "none"
-            ));
+            ]);
             header_remove("Content-Type"); 
             exit();
     }
