@@ -324,16 +324,6 @@ class Storage {
     }
 
     /**
-     * TODO:
-     *
-     * The (x)path must be valid and can be created in the XML structure,
-     * otherwise the request is answered with status 422 (Unprocessable Entity).
-     */
-    public function doCreate() {
-        exit();
-    }  
-
-    /**
      * Adds to the specified path, a node or an attribute.
      * If the destination already exists, the method behaves like PATCH.
      * PUT expects an existing parent node (destination) to create a new node
@@ -509,9 +499,6 @@ try {
         case "GET":
             $storage->doGet();
             break;
-        case "CREATE":
-            $storage->doCreate();
-            break;
         case "PUT":
             $storage->doPut();
             break;
@@ -523,7 +510,7 @@ try {
             break;
         default:
             Storage::addHeaders(405, "Method Not Allowed", [
-                "Allow" => "CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE",
+                "Allow" => "CONNECT, OPTIONS, GET, PUT, PATCH, DELETE",
                 "Content-Type" => "none"
             ]);
             header_remove("Content-Type"); 
