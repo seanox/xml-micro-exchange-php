@@ -1,29 +1,37 @@
 @service = http://127.0.0.1/xmds
 
+# Header Storage is missing
 # @name invalid_1
 CONNECT {{service}} HTTP/1.0
 
 ###
+# Header Storage is empty
 # @name invalid_2
 CONNECT {{service}} HTTP/1.0
 Storage:
 
 ###
+# Header Storage is to short/invalid
 # @name invalid_3
 CONNECT {{service}} HTTP/1.0
 Storage: 1234567890123456789012345678901234
 
 ###
+# Header Storage is to long/invalid
 # @name invalid_4
 CONNECT {{service}} HTTP/1.0
 Storage: 123456789012345678901234567890123456
 
 ###
+# A new storage must be created
+# Expects an response: 201 Created
 # @name valid_new
 CONNECT {{service}} HTTP/1.0
 Storage: 12345678901234567890123456789012345
 
 ###
+# An existing storage must be used.
+# Expects an response: 202 Accepted
 # @name valid_exists
 CONNECT {{service}} HTTP/1.0
 Storage: 12345678901234567890123456789012345
