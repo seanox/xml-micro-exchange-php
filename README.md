@@ -40,7 +40,7 @@ specific language governing permissions and limitations under the License.
 
 
 # System Requirement
-TODO:
+- PHP 7.x or higher
 
 
 # Downloads
@@ -52,7 +52,39 @@ TODO:
 
 
 # Configuration
-TODO:
+The REST API is configured as an absolute (hungry) virtual path. So all requests
+starting with the virtual path are redirected to the PHP script `./service.php`.  
+Means that the script itself cannot be called.  
+The paths of all requests are passed as path-info and thus as virtual paths.
+
+The following HTTP methods must be allowed:  
+`CONNECT`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `DELETE`  
+The `CONNECT` method is not an HTTP standard, alternative OPTIONS can be used.
+
+When using PHP as CGI, the HTTP methods may also need to be allowed. 
+
+
+## Apache HTTPD
+```
+#.htaccess
+
+RewriteEngine on
+RewriteRule (.*) service.php
+```
+
+## Seanox Devwex
+```
+[SERVER:HTTP:CGI]
+  ...
+  PHP = ALL > ...
+  
+[SERVER:HTTP:REF]
+  ...
+  XMDS = /xmds/ > /xml-micro-datasource/service.php [A]
+```
+
+## Other HTTP servers
+Something like Apache HTTPD or Seanox Devwex.
 
 
 # Changes (Change Log)
