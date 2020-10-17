@@ -42,9 +42,6 @@
  *     GET
  * TODO:
  *
- *     CREATE
- * TODO:
- *
  *     PUT
  * Adds to the specified (x)path, a node or an attribute.
  * If the destination already exists, the method behaves like PATCH.
@@ -52,8 +49,7 @@
  * attribute. As parent (destination) the path until the last occurrence of the
  * slash or @ is interpreted. Only the last fragment after the last occurrence
  * of slash or @ is used as the node or attribute to be created. Creating new
- * complex branches seems tedious, but here PUT can insert complex XML fragments
- * and CREATE works like PUT, but can handle complex (x)paths. 
+ * complex branches seems tedious, but here PUT can insert complex XML fragments. 
  *
  *     PATCH
  * TODO:
@@ -91,9 +87,9 @@
  *   Storage-Expired: Timestamp
  *   Storage-Expiration: Seconds
  *   Storage-Last-Modified: Timestamp
- *   Allow: CONNECT, OPTIONS, GET, CREATE, PUT, PATCH, DELETE
+ *   Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE
  *   If the entity does not exist:
- *   Allow: CONNECT, OPTIONS, CREATE, PUT, PATCH
+ *   Allow: CONNECT, OPTIONS, PUT, PATCH
  *   So only those methods are returned, which can be applied to the storage and the entity.
  * - META: Works like OPTIONS, but the focus is the entity
  *   Same storage informations as with OPTIONS.
@@ -154,6 +150,8 @@ class Storage {
     /** Cleans up all files that have exceeded the maximum idle time. */
     private static function cleanUp() {
 
+        if (!is_dir(Storage::DIRECTORY))
+            return;
         if ($handle = opendir(Storage::DIRECTORY)) {
             $timeout = time() -Storage::TIMEOUT; 
             while (($entry = readdir($handle)) !== false) {
@@ -173,12 +171,12 @@ class Storage {
     public static function share($storage, $xpath) {
 
         if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
-            header("HTTP/1.0 400 Bad Request");
-            header('Content-Type: none');
-            header_remove("Content-Type"); 
+            Storage::addHeaders(400, "Bad Request");
             exit();
         }        
         Storage::cleanUp();
+        if (!file_exists(Storage::DIRECTORY))
+            mkdir(Storage::DIRECTORY, true);
         return new Storage($storage, $xpath);
     }
     
@@ -260,37 +258,39 @@ class Storage {
         // The answer can be status 202 if the storage already exists.
 
         if ($this->xpath !== "/") {
-            header("HTTP/1.0 400 Bad Request");
-            header('Content-Type: none');
-            header_remove("Content-Type"); 
+            Storage::addHeaders(400, "Bad Request");
             exit();
         }
         
         $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
         if (iterator_count($iterator) >= Storage::QUANTITY) {
-            header("HTTP/1.0 507 Insufficient Storage");
-            header('Content-Type: none');
-            header_remove("Content-Type"); 
+            Storage::addHeaders(507, "Insufficient Storage");
             exit();
         }
-        
-        if (file_exists($this->store)) {
-            header("HTTP/1.0 202 Accepted");
-        } else {
-            header("HTTP/1.0 201 Created");
-        }
+
+        $response = [201, "Created"];        
+        if (file_exists($this->store))
+            $response = [202, "Accepted"];
 
         $this->open();
 
-        header("Storage: " . $this->storage);
-        header("Storage-Revision: " . $this->getRevision());
-        header("Storage-Size: " . $this->getSize());
-        header('Content-Type: none');
-        header_remove("Content-Type"); 
+        Storage::addHeaders($response[0], $response[1], [
+            "Storage" => $this->storage,
+            "Storage-Revision" => $this->getRevision(),
+            "Storage-Size" => $this->getSize(),
+        ]);
         exit();
     }
 
     public function doOptions() {
+
+        // Without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
+        if (empty($this->xpath)
+              || strcmp($this->xpath, "/") === 0) {
+            $this->doConnect();      
+            exit();
+        }
+              
         exit();
     }  
 
@@ -331,8 +331,7 @@ class Storage {
      * of the slash or @ is interpreted. Only the last fragment after the last
      * occurrence of slash or @ is used as the node or attribute to be created.
      * Creating new complex branches seems tedious, but here PUT can insert
-     * complex XML fragments and CREATE works like PUT, but can handle complex
-     * paths. 
+     * complex XML fragments. 
      * 
      * The Content-Type of the request defines the data type.
      *
@@ -447,13 +446,32 @@ class Storage {
         exit();
     }
     
-    public static function addHeaders($status, $message, $headers) {
+    public static function addHeaders($status, $message, $headers = null) {
     
         header(trim("HTTP/1.0 $status $message"));
-        foreach (Storage::CORS as $key => $value)
-            header("Access-Control-$key: $value");
-        foreach ($headers as $key => $value)
-            header(trim("$key: $value"));
+        
+        if (!empty(Storage::CORS))
+            foreach (Storage::CORS as $key => $value)
+                header("Access-Control-$key: $value");
+        
+        if (!empty($headers))
+            foreach ($headers as $key => $value)
+                header(trim("$key: $value"));
+        
+        $headers = array_change_key_case(empty($headers) ? [] : $headers, CASE_LOWER);
+        // Header Content-Type is not sent by default.
+        // PHP has a habit of adding the header automatically, but this is not wanted here.
+        // It is removed somewhat unconventionally.
+        if (!array_keys($headers, "context-type")) {
+            header("Content-Type: none");
+            header_remove("Content-Type"); 
+        }
+        // When responding to an error, the default Allow header is added.
+        // But only if no Allow header was passed.
+        // So the header does not always have to be added manually.
+        if ($status >= 400
+                && !array_keys($headers, "allow"))
+            header("Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE");        
     }
     
     public static function onError($error, $message, $file, $line, $vars = array()) {
@@ -477,15 +495,15 @@ $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
     $storage = $_SERVER["HTTP_STORAGE"];
 if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
-    header("HTTP/1.0 400 Bad Request");
-    header('Content-Type: none');
-    header_remove("Content-Type"); 
+    Storage::addHeaders(400, "Bad Request");
     exit();
 }
 
 $xpath = "/";
 if (isset($_SERVER["PATH_INFO"]))
     $xpath = $_SERVER["PATH_INFO"];
+if (empty($xpath))
+    $xpath = "/";        
 $storage = Storage::share($storage, $xpath);
 
 try {
@@ -509,11 +527,7 @@ try {
             $storage->doDelete();
             break;
         default:
-            Storage::addHeaders(405, "Method Not Allowed", [
-                "Allow" => "CONNECT, OPTIONS, GET, PUT, PATCH, DELETE",
-                "Content-Type" => "none"
-            ]);
-            header_remove("Content-Type"); 
+            Storage::addHeaders(405, "Method Not Allowed");
             exit();
     }
 } finally {
