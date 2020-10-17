@@ -1,43 +1,49 @@
 @service = http://127.0.0.1/xmds
 
+# OPTIONS without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
 # Header Storage is missing
 # Expects an response: 400 Bad Request
 # @name invalid_1
-CONNECT {{service}} HTTP/1.0
+OPTIONS {{service}} HTTP/1.0
 
 ###
+# OPTIONS without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
 # Header Storage is empty
 # Expects an response: 400 Bad Request
 # @name invalid_2
-CONNECT {{service}} HTTP/1.0
+OPTIONS {{service}} HTTP/1.0
 Storage:
 
 ###
+# OPTIONS without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
 # Header Storage is to short/invalid
 # Expects an response: 400 Bad Request
 # @name invalid_3
-CONNECT {{service}} HTTP/1.0
+OPTIONS {{service}} HTTP/1.0
 Storage: 1234567890123456789012345678901234
 
 ###
+# OPTIONS without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
 # Header Storage is to long/invalid
 # Expects an response: 400 Bad Request
 # @name invalid_4
-CONNECT {{service}} HTTP/1.0
+OPTIONS {{service}} HTTP/1.0
 Storage: 123456789012345678901234567890123456
 
 ###
+# OPTIONS without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
 # A new storage must be created
 # Expects an response: 201 Created
 # @name valid_new
-CONNECT {{service}} HTTP/1.0
+OPTIONS {{service}} HTTP/1.0
 Storage: 12345678901234567890123456789012345
 
 ###
+# OPTIONS without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
 # An existing storage must be used.
 # Expects an response: 202 Accepted
 # @name valid_exists
-CONNECT {{service}} HTTP/1.0
+OPTIONS {{service}} HTTP/1.0
 Storage: 12345678901234567890123456789012345
 
 ###
