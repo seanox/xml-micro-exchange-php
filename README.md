@@ -70,6 +70,8 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
 RewriteEngine on
 RewriteRule ^/xmds(/.*)*$ service.php
 ```
+Root can also be used.
+A path context is not required.
 
 ## Seanox Devwex
 ```
@@ -81,6 +83,8 @@ RewriteRule ^/xmds(/.*)*$ service.php
   ...
   XMDS = /xmds/ > /xml-micro-datasource/service.php [A]
 ```
+Root can also be used.
+A path context is not required.
 
 ## Other HTTP servers
 Something like Apache HTTPD or Seanox Devwex.
