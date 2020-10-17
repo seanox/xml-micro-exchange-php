@@ -59,7 +59,7 @@ The paths of all requests are passed as path-info and thus as virtual paths.
 
 The following HTTP methods must be allowed:  
 `CONNECT`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `DELETE`  
-The `CONNECT` method is not an HTTP standard, alternative OPTIONS can be used.
+The `CONNECT` method is not an HTTP standard, alternative `OPTIONS` can be used.
 
 When using PHP as CGI, the HTTP methods may also need to be allowed. 
 
@@ -67,9 +67,8 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
 ## Apache HTTPD
 ```
 #.htaccess
-
 RewriteEngine on
-RewriteRule (.*) service.php
+RewriteRule ^/xmds(/.*)*$ service.php
 ```
 
 ## Seanox Devwex
