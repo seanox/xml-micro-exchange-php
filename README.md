@@ -18,6 +18,14 @@ TODO:
 # Features
 TODO:
 
+## Security
+This aspect was deliberately considered and implemented here only in a very
+rudimentary form. Only the storage(-key) with a length of 36 characters can be
+regarded as secret.  
+For further security the approach of Basic Authentication, Digest Access
+Authentication and/or Server/Client certificates is followed, which is
+configured outside of the XMDS (XML-Micro-Datasource) at the web server.
+
 
 # Licence Agreement
 LIZENZBEDINGUNGEN - Seanox Software Solutions ist ein Open-Source-Projekt, im
