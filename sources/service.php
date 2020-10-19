@@ -4,7 +4,7 @@
  * Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der Apache License.
  *
- * XML Online Storage
+ * XMDS XML-Micro-Datasource
  * Copyright (C) 2020 Seanox Software Solutions
  *  
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -18,6 +18,16 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
+ * 
+ * TODO:    
+ * 
+ *     Security
+ * This aspect was deliberately considered and implemented here only in a very
+ * rudimentary form. Only the storage(-key) with a length of 36 characters can
+ * be regarded as secret.  
+ * For further security the approach of Basic Authentication, Digest Access
+ * Authentication and/or Server/Client certificates is followed, which is
+ * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
  *     CONNECT
  * This method is used to initiate access to a storage.
@@ -27,7 +37,11 @@
  * The storage is only a temporary meeting place. Any client who knows the path
  * can access, use and design it.
  * There are no rules, only the clients know the rules.
- * A storage expires with all information if it is not used.
+ * A storage expires with all information if it is not used (read/write).
+ *     IMPORTANT
+ * CONNECT is no HTTP standard.
+ * As an alternative, OPTIONS can be used without or with root path.
+ * In this case OPTIONS will hand over the work to CONNECT.
  *
  *     OPTIONS
  * Determines informations about the storage and an (x)path destination.
@@ -38,6 +52,9 @@
  * supported. Storage and entity information is transmitted as response headers.
  * The response therefore has no response body. If the requested entity is not
  * unique, only storage information is determined.
+ *     IMPORTANT
+ * Without path or a root path behaves like CONNECT, because CONNECT is no HTTP
+ * standard. In this case OPTIONS will hand over the work to CONNECT.
  *  
  *     GET
  * TODO:
@@ -146,6 +163,27 @@ class Storage {
         $this->xpath   = $xpath;
         $this->change  = false;
     }
+
+    /**
+     * Return a unique ID related to the request.
+     * @return string unique ID related to the request
+     */
+    protected static function uniqueId() {
+        
+        // The method is based on time, network port and the assumption that a
+        // port is not used more than once at the same time. On fast platforms,
+        // however, the time factor is uncertain because the time from calling
+        // the method is less than one millisecond. This is ignored here,
+        // assuming that the port reassignment is greater than one millisecond.
+
+        // Structure of the Unique-Id [? MICROSECONNECTORS][8 HOST-HASH][4 PORT]
+        $unique = hash("crc32b", Service::getArrayValue($_SERVER, "REMOTE_ADDR"));
+        $unique = $unique . base_convert(Service::getArrayValue($_SERVER, "REMOTE_PORT", 0), 10, 36);
+        $unique = str_pad($unique, 4, 0, STR_PAD_LEFT);
+        $unique = base_convert(microtime(true) *10000, 10, 36) . $unique;
+
+        return strtoupper($unique);
+    }
     
     /** Cleans up all files that have exceeded the maximum idle time. */
     private static function cleanUp() {
@@ -192,7 +230,7 @@ class Storage {
         if (filesize($this->store) <= 0) {
             fwrite($this->share,
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" .
-            "<data rev=\"0\"/>");
+            "<data ___rev=\"0\"/>");
             rewind($this->share);
         }
 
@@ -221,7 +259,7 @@ class Storage {
     private function getRevision() {
     
         $this->open();
-        return $this->xml->xpath('/data[1]/@rev')[0];
+        return $this->xml->xpath('/data[1]/@___rev')[0];
     }
 
     private function getSize() {
@@ -284,12 +322,15 @@ class Storage {
 
     public function doOptions() {
 
-        // Without path or root behaves like CONNECT, because CONNECT is no HTTP standard.
+        // Without path or a root path behaves like CONNECT,
+        // because CONNECT is no HTTP standard.
         if (empty($this->xpath)
               || strcmp($this->xpath, "/") === 0) {
             $this->doConnect();      
             exit();
         }
+
+        // TODO:
               
         exit();
     }  
@@ -473,23 +514,32 @@ class Storage {
                 && !array_keys($headers, "allow"))
             header("Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE");        
     }
-    
+
     public static function onError($error, $message, $file, $line, $vars = array()) {
-        exit();
+
+        $unique = "#" . Service::uniqueId();
+        $message = "TODO";
+        $time = time();
+        file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message", FILE_APPEND | LOCK_EX);
+        if (!headers_sent())
+            Storage::addHeaders(500, "Internal Server Error", ["Error" => $unique]);
+        exit;
     }
     
     public static function onException($exception) {
-        exit();
-    }
-    
-    public static function onShutdown() {
-        exit();
+        
+        $unique = "#" . Service::uniqueId();
+        $message = $exception->getMessage();
+        $time = time();
+        file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message", FILE_APPEND | LOCK_EX);
+        if (!headers_sent())
+            Storage::addHeaders(500, "Internal Server Error", ["Error" => $unique]);
+        exit;
     }
 }
 
-//set_error_handler("Storage::onError");
-//set_exception_handler("Storage::onException");
-//register_shutdown_function("Storage::onShutdown");
+set_error_handler("Storage::onError");
+set_exception_handler("Storage::onException");
 
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
