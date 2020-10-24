@@ -176,12 +176,10 @@ class Storage {
         // the method is less than one millisecond. This is ignored here,
         // assuming that the port reassignment is greater than one millisecond.
 
-        // Structure of the Unique-Id [? MICROSECONNECTORS][8 HOST-HASH][4 PORT]
-        $unique = hash("crc32b", Service::getArrayValue($_SERVER, "REMOTE_ADDR"));
-        $unique = $unique . base_convert(Service::getArrayValue($_SERVER, "REMOTE_PORT", 0), 10, 36);
+        // Structure of the Unique-Id [? MICROSECONNECTORS][4 PORT]
+        $unique = base_convert($_SERVER["REMOTE_PORT"], 10, 36);
         $unique = str_pad($unique, 4, 0, STR_PAD_LEFT);
         $unique = base_convert(microtime(true) *10000, 10, 36) . $unique;
-
         return strtoupper($unique);
     }
     
@@ -517,7 +515,7 @@ class Storage {
 
     public static function onError($error, $message, $file, $line, $vars = array()) {
 
-        $unique = "#" . Service::uniqueId();
+        $unique = "#" . Storage::uniqueId();
         $message = "TODO";
         $time = time();
         file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message", FILE_APPEND | LOCK_EX);
@@ -528,7 +526,7 @@ class Storage {
     
     public static function onException($exception) {
         
-        $unique = "#" . Service::uniqueId();
+        $unique = "#" . Storage::uniqueId();
         $message = $exception->getMessage();
         $time = time();
         file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message", FILE_APPEND | LOCK_EX);
@@ -540,6 +538,8 @@ class Storage {
 
 set_error_handler("Storage::onError");
 set_exception_handler("Storage::onException");
+
+throw new Exception('Division by zero.');
 
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
