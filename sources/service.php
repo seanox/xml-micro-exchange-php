@@ -21,6 +21,12 @@
  * 
  * TODO:    
  * 
+ *     Error Handling
+ * Errors are communicated via the server status and the header 'Error'.
+ * The header 'Error' contains only an error number, for security reasons no
+ * details. The error number with details can be found in the log file of the
+ * service.
+ * 
  *     Security
  * This aspect was deliberately considered and implemented here only in a very
  * rudimentary form. Only the storage(-key) with a length of 36 characters can
@@ -516,23 +522,16 @@ class Storage {
     public static function onError($error, $message, $file, $line, $vars = array()) {
 
         $unique = "#" . Storage::uniqueId();
-        $message = "TODO";
+        $message = "$error: $message" . PHP_EOL . "\tat $file $line";
         $time = time();
-        file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message", FILE_APPEND | LOCK_EX);
+        file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message" . PHP_EOL, FILE_APPEND | LOCK_EX);
         if (!headers_sent())
             Storage::addHeaders(500, "Internal Server Error", ["Error" => $unique]);
         exit;
     }
     
     public static function onException($exception) {
-        
-        $unique = "#" . Storage::uniqueId();
-        $message = $exception->getMessage();
-        $time = time();
-        file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message", FILE_APPEND | LOCK_EX);
-        if (!headers_sent())
-            Storage::addHeaders(500, "Internal Server Error", ["Error" => $unique]);
-        exit;
+        Storage::onError(get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
     }
 }
 
