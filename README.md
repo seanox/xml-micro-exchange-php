@@ -79,7 +79,7 @@ RewriteEngine on
 RewriteRule ^/xmds(/.*)*$ service.php
 ```
 Root can also be used.  
-A path context is not required.
+A context path is not required.
 
 ## Seanox Devwex
 ```
@@ -92,7 +92,7 @@ A path context is not required.
   XMDS = /xmds/ > /xml-micro-datasource/service.php [A]
 ```
 Root can also be used.  
-A path context is not required.
+A context path is not required.
 
 ## Other HTTP servers
 Something like Apache HTTPD or Seanox Devwex.
