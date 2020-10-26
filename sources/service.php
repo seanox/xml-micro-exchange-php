@@ -162,19 +162,27 @@ class Storage {
 
     private $xpath;
 
+    private $revision;
+    
+    private $serial;
+
+    private $unique;
+
     private function __construct($storage, $xpath) {
 
         $this->storage = $storage;
         $this->store   = Storage::DIRECTORY . "/" . $this->storage; 
         $this->xpath   = $xpath;
         $this->change  = false;
+        $this->unique  = Storage::uniqueId();  
+        $this->serial  = 0;
     }
 
     /**
      * Return a unique ID related to the request.
      * @return string unique ID related to the request
      */
-    protected static function uniqueId() {
+    private static function uniqueId() {
         
         // The method is based on time, network port and the assumption that a
         // port is not used more than once at the same time. On fast platforms,
@@ -263,7 +271,17 @@ class Storage {
     private function getRevision() {
     
         $this->open();
-        return $this->xml->xpath('/data[1]/@___rev')[0];
+        if (!$this->revision)
+            $this->revision = $this->xml->xpath('/data[1]/@___rev')[0];    
+        return $this->revision;
+    }
+
+    /**
+     * Creates a unique incremental ID.
+     * @return string unique incremental ID
+     */
+    private function getSerial() {
+        return $this->unique . ":" . $this->serial++;
     }
 
     private function getSize() {
@@ -537,8 +555,6 @@ class Storage {
 
 set_error_handler("Storage::onError");
 set_exception_handler("Storage::onException");
-
-throw new Exception('Division by zero.');
 
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
