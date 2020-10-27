@@ -162,10 +162,13 @@ class Storage {
 
     private $xpath;
 
+    /** Revision of the storage at the start of the request */
     private $revision;
     
+    /** Serial related to the request */
     private $serial;
 
+    /** Unique ID related to the request */
     private $unique;
 
     private function __construct($storage, $xpath) {
@@ -196,7 +199,7 @@ class Storage {
         $unique = base_convert(microtime(true) *10000, 10, 36) . $unique;
         return strtoupper($unique);
     }
-    
+
     /** Cleans up all files that have exceeded the maximum idle time. */
     private static function cleanUp() {
 
@@ -268,6 +271,12 @@ class Storage {
         $this->xml = null;
     }
     
+    /**
+     * Determines the current revision of the storage.
+     * The revision is related to the current request and is used for all data
+     * changes in this context.
+     * @return integer current revision of the storage
+     */
     private function getRevision() {
     
         $this->open();
@@ -284,6 +293,11 @@ class Storage {
         return $this->unique . ":" . $this->serial++;
     }
 
+    /**
+     * Determines the current size of the storage with the current data and can
+     * therefore differ from the size in the file system.
+     * @return integer current size of the storage
+     */
     private function getSize() {
     
         if ($this->xml !== null)
