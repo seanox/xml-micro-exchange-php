@@ -196,7 +196,7 @@ class Storage {
         // Structure of the Unique-Id [? MICROSECONNECTORS][4 PORT]
         $unique = base_convert($_SERVER["REMOTE_PORT"], 10, 36);
         $unique = str_pad($unique, 4, 0, STR_PAD_LEFT);
-        $unique = base_convert(microtime(true) *10000, 10, 36) . $unique;
+        $unique = base_convert(round(microtime(true) *1000), 10, 36) . $unique;
         return strtoupper($unique);
     }
 
@@ -534,6 +534,8 @@ class Storage {
         if (!empty($headers))
             foreach ($headers as $key => $value)
                 header(trim("$key: $value"));
+
+        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000)); 
         
         $headers = array_change_key_case(empty($headers) ? [] : $headers, CASE_LOWER);
         // Header Content-Type is not sent by default.
