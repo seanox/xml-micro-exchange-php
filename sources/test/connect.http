@@ -1,5 +1,8 @@
 @service = http://127.0.0.1/xmds
 
+# CONNECT is not an HTTP standard, alternative OPTIONS without path can be used.
+# The behavior is the same.
+
 # Header Storage is missing
 # Expects an response: 400 Bad Request
 # @name invalid_1
@@ -17,27 +20,68 @@ Storage:
 # Expects an response: 400 Bad Request
 # @name invalid_3
 CONNECT {{service}} HTTP/1.0
-Storage: 1234567890123456789012345678901234
+Storage: 0000000000000000000000000000000000
 
 ###
 # Header Storage is to long/invalid
 # Expects an response: 400 Bad Request
 # @name invalid_4
 CONNECT {{service}} HTTP/1.0
-Storage: 123456789012345678901234567890123456
+Storage: 000000000000000000000000000000000010
 
 ###
 # A new storage must be created
 # Expects an response: 201 Created
-# @name valid_new
+# @name valid_new_1
 CONNECT {{service}} HTTP/1.0
-Storage: 12345678901234567890123456789012345
+Storage: 00000000000000000000000000000000001 
 
 ###
 # An existing storage must be used.
 # Expects an response: 202 Accepted
-# @name valid_exists
+# @name valid_exists_1
 CONNECT {{service}} HTTP/1.0
-Storage: 12345678901234567890123456789012345
+Storage: 00000000000000000000000000000000001
+
+# Optionally, the Storage header can be used to pass the name of the root entity separated by a space.
+# Without a root value, 'data' is used as default.
+# Any other space separated values in the Storage Header are ignored.
+
+###
+# The roots and/or the stroage are case sensitive.
+# An existing storage with a different root must fail.
+# Expects an response: 404 Accepted
+# @name invalid_5
+CONNECT {{service}} HTTP/1.0
+Storage: 00000000000000000000000000000000001 datA
+
+###
+# An existing storage with a different root must fail.
+# Expects an response: 404 Accepted
+# @name invalid_5
+CONNECT {{service}} HTTP/1.0
+Storage: 00000000000000000000000000000000001 xxxx
+
+###
+# A new storage must be created
+# Expects an response: 201 Created
+# @name valid_new_2
+CONNECT {{service}} HTTP/1.0
+Storage: 00000000000000000000000000000000002 books
+
+###
+# An existing storage must be used.
+# Expects an response: 202 Accepted
+# @name valid_exists_2
+CONNECT {{service}} HTTP/1.0
+Storage: 00000000000000000000000000000000002 books
+
+###
+# The roots and/or the stroage are case sensitive.
+# An existing storage with a different root must fail.
+# Expects an response: 404 Accepted
+# @name invalid_6
+CONNECT {{service}} HTTP/1.0
+Storage: 00000000000000000000000000000000002 bookS
 
 ###
