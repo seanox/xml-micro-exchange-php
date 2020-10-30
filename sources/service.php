@@ -36,31 +36,33 @@
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
  *     CONNECT
- * This method is used to initiate access to a storage.
- * A storage is a temporary XML construct.
- * It is based on a cryptic ID (storage name), which must be transmitted with
- * every request. This is similar to the header host for virtual servers.  
- * The storage is only a temporary meeting place. Any client who knows the path
- * can access, use and design it.
+ * Initiates the use of a datasource.
+ * A datasource (storage) is a temporary XML construct. It is based on a
+ * cryptic ID (storage name) and optionally the name of the root element, which
+ * must be transmitted with  every request.
+ * This is similar to the header host for virtual servers.
+ * The storage is only a temporary place for data exchange. Any client who
+ * knows the path can access, use and design it.
  * There are no rules, only the clients know the rules.
  * A storage expires with all information if it is not used (read/write).
- *     IMPORTANT
- * CONNECT is no HTTP standard.
- * As an alternative, OPTIONS can be used without or with root path.
- * In this case OPTIONS will hand over the work to CONNECT.
+ * 
+ * In addition, OPTIONS can also be used as an alternative to CONNECT, because
+ * CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
+ * with context path if necessary, is used. In this case OPTIONS will hand over
+ * the work to CONNECT.
  *
  *     OPTIONS
- * Determines informations about the storage and an (x)path destination.
- * A storage is based on an XML construct.
- * It manages data as entities and/or attributes of entities.
- * The OPTIONS method only determines information about the storage and
- * entities, so what is the status and what can be done. Attributes are not
- * supported. Storage and entity information is transmitted as response headers.
- * The response therefore has no response body. If the requested entity is not
- * unique, only storage information is determined.
- *     IMPORTANT
- * Without path or a root path behaves like CONNECT, because CONNECT is no HTTP
- * standard. In this case OPTIONS will hand over the work to CONNECT.
+ * Selects one or more elements and also attributes to an XPath and returns
+ * meta information about them and the datasource in general.
+ * The meta information is returned as response headers that differ in scope
+ * and range from XPath as selector for elements and attributes.
+ * Primarily the method is used to check what scope an XPath has as selector
+ * and is comparable to EXISTS and FILE_INFO in the filesystem. 
+ * 
+ * In addition, OPTIONS can also be used as an alternative to CONNECT, because
+ * CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
+ * with context path if necessary, is used. In this case OPTIONS will hand over
+ * the work to CONNECT.
  *  
  *     GET
  * TODO:
@@ -73,6 +75,8 @@
  * slash or @ is interpreted. Only the last fragment after the last occurrence
  * of slash or @ is used as the node or attribute to be created. Creating new
  * complex branches seems tedious, but here PUT can insert complex XML fragments. 
+ * 
+ * pseudo-elements
  *
  *     PATCH
  * TODO:
@@ -153,6 +157,8 @@ class Storage {
     const CORS = ["Allow-Origin" => "*"];
     
     private $storage;
+
+    private $root;
     
     private $store;
     
@@ -171,9 +177,16 @@ class Storage {
     /** Unique ID related to the request */
     private $unique;
 
-    private function __construct($storage, $xpath) {
+    const PATTERN_HEADER_STORAGE = "/^([0-9A-Z]{35})(?:\s+(\w+)){0,1}$/";
+
+    const PATTERN_XPATH_ATTRIBUTE = "/^\s*(.*?)\s*(?:\/+\s*(?:(?:(?:attribute\s*::)|@))\s*(\w+))\s*$/i";
+
+    const PATTERN_XPATH_PSEUDO = "^\s*(.*?)\s*(?:::\s*(before|after|first|las))\s*$/i";
+
+    private function __construct($storage, $root, $xpath) {
 
         $this->storage = $storage;
+        $this->root    = $root ? $root : "data";
         $this->store   = Storage::DIRECTORY . "/" . $this->storage; 
         $this->xpath   = $xpath;
         $this->change  = false;
@@ -221,16 +234,20 @@ class Storage {
         }
     }
     
-    public static function share($storage, $xpath) {
+    static function share($storage, $xpath) {
 
-        if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
+        if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
             Storage::addHeaders(400, "Bad Request");
             exit();
         }        
+
+        $root = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$2", $storage);
+        $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);    
+
         Storage::cleanUp();
         if (!file_exists(Storage::DIRECTORY))
             mkdir(Storage::DIRECTORY, true);
-        return new Storage($storage, $xpath);
+        return new Storage($storage, $root, $xpath);
     }
     
     private function open() {
@@ -245,7 +262,7 @@ class Storage {
         if (filesize($this->store) <= 0) {
             fwrite($this->share,
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" .
-            "<data ___rev=\"0\"/>");
+            "<" . $this->root . " ___rev=\"0\"/>");
             rewind($this->share);
         }
 
@@ -256,7 +273,7 @@ class Storage {
         $this->xml = new SimpleXMLElement($this->xml);
     } 
     
-    public function close() {
+    function close() {
 
         if ($this->share == null)
             return;
@@ -307,11 +324,15 @@ class Storage {
         return filesize($this->store);
     }
     
-    public function doConnect() {
+    function doConnect() {
 
         // Request:
         //     CONNECT / HTTP/1.0
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+
+        // Request:
+        //     CONNECT / HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ root
 
         // Response:
         //     HTTP/1.0 201 Created
@@ -356,7 +377,7 @@ class Storage {
         exit();
     }
 
-    public function doOptions() {
+    function doOptions() {
 
         // Without path or a root path behaves like CONNECT,
         // because CONNECT is no HTTP standard.
@@ -371,7 +392,7 @@ class Storage {
         exit();
     }  
 
-    public function doGet() {
+    function doGet() {
     
         // Request:
         //     GET /<xpath> HTTP/1.0   
@@ -427,7 +448,7 @@ class Storage {
      * The attributes ___rev / ___oid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
      */
-    public function doPut() {
+    function doPut() {
     
         // Request:
         //     PUT /<xpath> HTTP/1.0
@@ -450,6 +471,16 @@ class Storage {
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
         //     Storage-Size: Bytes
+
+        // XPath can address nodes and attributes.
+        // If the XPath ends with /attribute::<attribute> or /@<attribute> an
+        // attribute is expected, in all other cases a node.
+
+        if (!preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath)) {
+        }        
+
+        if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath)) {
+        } 
 
         exit();    
     }
@@ -476,7 +507,7 @@ class Storage {
      * The attributes ___rev / ___oid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
      */
-    public function doPatch() {
+    function doPatch() {
     
         // Request:
         //     PATCH /<xpath> HTTP/1.0
@@ -508,7 +539,7 @@ class Storage {
         exit();
     }
 
-    public function doDelete() {
+    function doDelete() {
     
         // Request:
         //     DELETE /<xpath> HTTP/1.0
@@ -523,7 +554,7 @@ class Storage {
         exit();
     }
     
-    public static function addHeaders($status, $message, $headers = null) {
+    static function addHeaders($status, $message, $headers = null) {
     
         header(trim("HTTP/1.0 $status $message"));
         
@@ -553,7 +584,7 @@ class Storage {
             header("Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE");        
     }
 
-    public static function onError($error, $message, $file, $line, $vars = array()) {
+    static function onError($error, $message, $file, $line, $vars = array()) {
 
         $unique = "#" . Storage::uniqueId();
         $message = "$error: $message" . PHP_EOL . "\tat $file $line";
@@ -564,7 +595,7 @@ class Storage {
         exit;
     }
     
-    public static function onException($exception) {
+    static function onException($exception) {
         Storage::onError(get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
     }
 }
@@ -575,7 +606,7 @@ set_exception_handler("Storage::onException");
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
     $storage = $_SERVER["HTTP_STORAGE"];
-if (!preg_match("/^[0-9A-Z]{35}$/", $storage)) {
+if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
     Storage::addHeaders(400, "Bad Request");
     exit();
 }
