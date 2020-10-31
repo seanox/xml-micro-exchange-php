@@ -179,9 +179,19 @@ class Storage {
 
     const PATTERN_HEADER_STORAGE = "/^([0-9A-Z]{35})(?:\s+(\w+)){0,1}$/";
 
-    const PATTERN_XPATH_ATTRIBUTE = "/^\s*(.*?)\s*(?:\/+\s*(?:(?:(?:attribute\s*::)|@))\s*(\w+))\s*$/i";
+    const PATTERN_XPATH_ATTRIBUTE = "(\/+\s*(?:(?:(?:attribute\s*::)|@))\s*(\w+))";
 
-    const PATTERN_XPATH_PSEUDO = "^\s*(.*?)\s*(?:::\s*(before|after|first|las))\s*$/i";
+    const PATTERN_XPATH_PSEUDO = "(::\s*(before|after|first|last))";
+
+    /**
+     * Pattern to determine the structure of XPath expressions
+     *     Group 1. XPath
+     *     Group 2. Attribute
+     *     Group 3.	Attribute Name
+     *     Group 4.	Pseudo Element
+     *     Group 5.	Pseudo Element Name
+     */
+    const PATTERN_XPATH_STRUCTURE = "/^(?:\s*(.*)\s*)" . Storage::PATTERN_XPATH_ATTRIBUTE . "{0,1}\s*" . Storage::PATTERN_XPATH_PSEUDO . "{0,1}\s*$/i";
 
     private function __construct($storage, $root, $xpath) {
 
@@ -298,7 +308,7 @@ class Storage {
     
         $this->open();
         if (!$this->revision)
-            $this->revision = $this->xml->xpath('/data[1]/@___rev')[0];    
+            $this->revision = $this->xml->xpath("/" . $this->root . "[1]/@___rev")[0];    
         return $this->revision;
     }
 
@@ -476,11 +486,19 @@ class Storage {
         // If the XPath ends with /attribute::<attribute> or /@<attribute> an
         // attribute is expected, in all other cases a node.
 
+        preg_match(Storage::PATTERN_XPATH_STRUCTURE, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL);
+        print_r($matches);
+
+
+        /*
+        $xapth = PATTERN_XPATH_STRUCTURE
         if (!preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath)) {
         }        
 
         if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath)) {
         } 
+        */
+
 
         exit();    
     }
