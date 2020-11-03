@@ -1,0 +1,45 @@
+@service = http://127.0.0.1/xmex
+@storage = 000000000000000000000000000000000O3
+
+# OPTIONS without path behaves like CONNECT, because CONNECT is no HTTP standard
+
+# The following sequence is to test that requests to a storage with a custom
+# root element, the storage and the name of the root element must be correctly
+# specified in the request header.
+
+###
+# Expected is the status code 201
+# Everything is correct, storage and name of the root element are transmitted
+# correctly, the storage can be created.
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}} books
+
+###
+# Expected is the status code 202
+# Everything is correct, storage and name of the root element are transmitted
+# correctly, the storage can be shared.
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}} books
+
+###
+# Expected is the status code 404
+# Because the name of the root element is not correct.
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}} bookS
+
+###
+# Expected is the status code 400
+# Because the Storage header is not correct.
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}} books x
+
+###
+# Expected is the status code 404
+# Because the name of the root element is not correct.
+# Without specification the default 'data' is used.
+#   Storage header corresponds to: 
+# Storage: 00000000000000000000000000000000003 data 
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###

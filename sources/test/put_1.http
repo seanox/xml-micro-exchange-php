@@ -1,0 +1,98 @@
+@service = http://127.0.0.1/xmex
+@storage = 000000000000000000000000000000000P1 books
+
+# The following sequence tests the setting of attributes.
+# Attributes can be set using /@<name> or /attributes::<name>.
+# The processing is case-sensitive and more consequent in handling spaces in
+# XPath - no spaces supported.
+
+# Initial request to establish the storage
+# Expected is the status code 201
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Expectations:
+# - status code 204
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage space is used more
+# - Storage-Expiration is extended
+PUT {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 13
+
+test_value<1>
+
+###
+# Expectations:
+# - status code 415, because the Content-Type is not text/plain.
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+# - Content-Length is ignored
+PUT {{service}}/books/@attrG HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain-x
+Content-Length: 20
+
+123456789ABCDEF
+
+###
+# Expectations:
+# - status code 204
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage space is used more
+# - Storage-Expiration is extended
+# - Content-Length is mssing but without effect
+PUT {{service}}/books/@attrB HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+
+test_value<2>
+
+###
+# Expectations:
+# - status code 204
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage space is used more
+# - Storage-Expiration is extended
+# - Content-Length is wring but ignored
+PUT {{service}}/books/@attrC HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 5
+
+123456789ABCDEF
+
+###
+# Expectations:
+# - status code 204
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage space is used more
+# - Storage-Expiration is extended
+# - Content-Length is wring but ignored
+PUT {{service}}/books/@attrD HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 20
+
+123456789ABCDEF
+
+###
+# Expectations:
+# - status code 415, because the Content-Type is not text/plain.
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+# - Content-Length is ignored
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain-x
+Content-Length: 20
+
+123456789ABCDEF
+
+###
