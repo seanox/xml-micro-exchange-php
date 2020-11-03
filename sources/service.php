@@ -193,7 +193,7 @@ class Storage {
      *     Group 1. XPath
      *     Group 2.	Attribute
      */    
-    const PATTERN_XPATH_PSEUDO = "/^(\/.*)::(before|after|first|last)$/i";
+    const PATTERN_XPATH_PSEUDO = "/^(\/.*?)(?:::(before|after|first|last)){0,1}$/i";
 
     private function __construct($storage, $root, $xpath) {
 
@@ -259,11 +259,23 @@ class Storage {
         Storage::cleanUp();
         if (!file_exists(Storage::DIRECTORY))
             mkdir(Storage::DIRECTORY, true);
-        return new Storage($storage, $root, $xpath);
+        $storage = new Storage($storage, $root, $xpath);
+        if ($storage->exists()) {
+            $storage->open();
+            // Safe is safe, if not the default 'data'' is used,
+            // the name of the root element must be known.
+            // Otherwise the request is quit with status 404 and terminated.
+            if (($root ? $root : "data") != $storage->xml->getName()) {
+                Storage::addHeaders(404, "Resource Not Found");
+                exit();
+            }
+        }
+        return $storage; 
     }
 
     private function exists() {
-        return file_exists($this->store);
+        return file_exists($this->store)
+                && filesize($this->store) > 0;
     }
 
     private function open() {
@@ -340,7 +352,14 @@ class Storage {
             return filesize($this->share);
         return filesize($this->store);
     }
-    
+
+    private function getExpiration($format = null) {
+
+        $date = new DateTime();
+        $date->add(new DateInterval("PT" . Storage::TIMEOUT . "S"));
+        return $format ? $date->format($format) : $date->getTimestamp();
+    }
+
     function doConnect() {
 
         // Request:
@@ -354,22 +373,24 @@ class Storage {
         // Response:
         //     HTTP/1.0 201 Created
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes  
-        //     Storage-Space: Bytes
+        //     Storage-Revision: Revision (number)   
+        //     Storage-Space: Total/Used (bytes)
+        //     Storage-Last-Modified: Timestamp (RFC822)
+        //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 
         // Response:
         //     HTTP/1.0 202 Accepted
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes  
-        //     Storage-Space: Bytes
+        //     Storage-Revision: Revision (number)   
+        //     Storage-Space: Total/Used (bytes)
+        //     Storage-Last-Modified: Timestamp (RFC822)
+        //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 
-        // Response:
+        // Response codes/ behavior:
         //     HTTP/1.0 400 Bad Request
-
-        // Response:
-        //     HTTP/1.0 507 Insufficient Storage     
+        // - TODO:
+        //     HTTP/1.0 507 Insufficient Storage   
+        // - TODO:  
         
         // Only requests without XPath are allowed, otherwise status 400 Bad Request
         // PATH_INFO is used as XPath, not the request URI.
@@ -390,26 +411,31 @@ class Storage {
         }
 
         $response = [201, "Created"];    
-        if ($this->exists())
-            $response = [202, "Accepted"];
-
-        $this->open();
+        if (!$this->exists())
+            $this->open();    
+        else $response = [202, "Accepted"];
+        
         Storage::addHeaders($response[0], $response[1], [
             "Storage" => $this->storage,
             "Storage-Revision" => $this->getRevision(),
-            "Storage-Size" => $this->getSize(),
-            "Storage-Space" => Storage::SPACE
+            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+            "Storage-Last-Modified" => date(DateTime::RFC822),
+            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)
         ]);
+
+        // The function and the reponse are complete.
+        // The storage can be closed and the requests can be terminated.
+        $this->close();
+        exit;
     }
 
     function doOptions() {
 
         // Without XPath (PATH_INFO) behaves like CONNECT,
         // because CONNECT is no HTTP standard.
-        if (empty($this->xpath)) {
+        // The function call is executed and the request is terminated.
+        if (empty($this->xpath))
             $this->doConnect();      
-            return;
-        }
 
         // TODO:
     }  
@@ -424,7 +450,7 @@ class Storage {
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes   
+        //     Storage-Space: Total/Used (in bytes)
         //     Content-Length: Bytes
         //     Content-Type: text/plain        
 
@@ -436,8 +462,7 @@ class Storage {
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes     
-        //     Storage-Space: Bytes
+        //     Storage-Space: Total/Used (in bytes)
         //     Content-Length: Bytes
         //     Content-Type: application/xslt+xml
     }
@@ -488,13 +513,15 @@ class Storage {
         //     Value as plain text
         
         // Response:
-        //     HTTP/1.0 201 Created
+        //     HTTP/1.0 204 No Content
+        //     Elements-Affected: ... (list of OIDs)
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
-        //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes  
-        //     Storage-Space: Bytes
+        //     Storage-Revision: Revision (number)   
+        //     Storage-Space: Total/Used (bytes)
+        //     Storage-Last-Modified: Timestamp (RFC822)
+        //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 
-        // Response Codes:
+        // Response codes/ behavior:
         //     204 No Content
         // - Attributes successfully created or set   
         //     400 Bad Request
@@ -520,7 +547,7 @@ class Storage {
         // If the XPath ends with /attribute::<attribute> or /@<attribute> an
         // attribute is expected, in all other cases a node.
 
-        if (preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath)) {
+        if (preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
 
             // For attributes only the content-type text/plain is supported and
             // required, for other content-types no conversion exists.
@@ -530,45 +557,78 @@ class Storage {
                 exit();                
             }
 
-            $this->open();
-            preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL);
-            $nodes = $this->xml->xpath($matches[1]);
+            $xpath = $matches[1];
+            $attribute = $matches[2];
+
+            $nodes = $this->xml->xpath($xpath);
             if (!empty($nodes)) {
                 $this->revision = $this->getRevision() +1;
                 $value = file_get_contents('php://input');
                 $identities = []; 
                 foreach ($nodes as $node) {
-                    $node[$matches[2]] = $value;
-                    $node["___rev"] = $this->getRevision();
                     $identities[] = $node["___oid"]; 
+                    $node[attribute] = $value;
+                    $node["___rev"] = $this->getRevision();
                 }
-                Storage::addHeaders(204, "No Content", [
-                    "Storage" => $this->storage,
-                    "Storage-Revision" => $this->getRevision(),
-                    "Storage-Size" => $this->getSize(),
-                    "Storage-Space" => Storage::SPACE,
-                    "Elements" => join(" ", $identities)
-                ]);
-            } else {
-                Storage::addHeaders(204, "No Content", [
-                    "Storage" => $this->storage,
-                    "Storage-Revision" => $this->getRevision(),
-                    "Storage-Size" => $this->getSize(),
-                    "Storage-Space" => Storage::SPACE
-                ]);
+                header("Elements-Affected: " . join(" ", $identities));
             }
+            
+            Storage::addHeaders(204, "No Content", [
+                "Storage" => $this->storage,
+                "Storage-Revision" => $this->getRevision(),
+                "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+                "Storage-Last-Modified" => date(DateTime::RFC822),
+                "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
+            ]);
              
             return;
+        }
 
-        } else {
-            if (preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath)) {
+        if (preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
+
+            $xpath = $matches[1];
+            $pseudo = $matches[2];
+
+            if (!empty($pseudo)) {
+
+                // Pseudo elements can be used to insert an XML substructure
+                // relative to the selected element. Therefore the content type
+                // application/xslt+xml is required. Other Content-Type headers
+                // are not supported.   
+                if (!isset($_SERVER["CONTENT_TYPE"])
+                        || strcasecmp($_SERVER["CONTENT_TYPE"], "application/xslt+xml") !== 0) {
+                    Storage::addHeaders(415, "Unsupported Media Type");
+                    exit();                
+                }
+                
+                // The request body must also be a valid XML structure,
+                // otherwise the request will be acknowledged with an error.
+                $xml = file_get_contents('php://input');
+
+            } else {
+
+                if (isset($_SERVER["CONTENT_TYPE"])) {
+                    if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/plain") === 0) {
+
+                        // TODO:
+
+                    } else if (strcasecmp($_SERVER["CONTENT_TYPE"], "application/xslt+xml") === 0) {
+
+                        // The request body must also be a valid XML structure,
+                        // otherwise the request will be acknowledged with an error.
+                        $input = file_get_contents('php://input');
+                        $input = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data>$input</data>";
+                        $xml = new DOMDocument();
+                        $xml->loadXML($input);
+
+                        exit;
+                    }
+                }
             }
-        }        
 
-        if (preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath)) {
-            preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $xpath, PREG_UNMATCHED_AS_NULL);
-            print_r($xpath);
-        }        
+            // Whatever happens, this place should never be reached.
+            throw new Exception("Unexpected exception during runtime");
+        }
     }
 
     /**
@@ -615,7 +675,7 @@ class Storage {
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes
+        //     Storage-Space: Total/Used (in bytes)
         
         // Error Status:
         //    404 Destination does not exist
@@ -633,7 +693,7 @@ class Storage {
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
         //     Storage-Revision: Revision   
-        //     Storage-Size: Bytes   
+        //     Storage-Space: Total/Used (in bytes)
     }
     
     static function addHeaders($status, $message, $headers = null) {
