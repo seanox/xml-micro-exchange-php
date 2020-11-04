@@ -30,11 +30,10 @@ test_value<1>
 # - status code 415, because the Content-Type is not text/plain.
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
-# - Content-Length is ignored
 PUT {{service}}/books/@attrG HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain-x
-Content-Length: 20
+Content-Length: 15
 
 123456789ABCDEF
 
@@ -45,7 +44,7 @@ Content-Length: 20
 # - Storage-Revision is increased
 # - Storage space is used more
 # - Storage-Expiration is extended
-# - Content-Length is mssing but without effect
+# - Content-Length is mssing but without effect (by the REST Client)
 PUT {{service}}/books/@attrB HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
@@ -59,7 +58,7 @@ test_value<2>
 # - Storage-Revision is increased
 # - Storage space is used more
 # - Storage-Expiration is extended
-# - Content-Length is wring but ignored
+# - Content-Length is wring but ignored (by the REST Client)
 PUT {{service}}/books/@attrC HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
@@ -74,11 +73,22 @@ Content-Length: 5
 # - Storage-Revision is increased
 # - Storage space is used more
 # - Storage-Expiration is extended
-# - Content-Length is wring but ignored
 PUT {{service}}/books/@attrD HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
-Content-Length: 20
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# Expectations:
+# - status code 415, because the Content-Type is not text/plain.
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain-x
+Content-Length: 15
 
 123456789ABCDEF
 
@@ -88,10 +98,23 @@ Content-Length: 20
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 # - Content-Length is ignored
-PUT {{service}}/books/@attrE HTTP/1.0
+PUT {{service}}/books/@___rev HTTP/1.0
 Storage: {{storage}}
-Content-Type: text/plain-x
-Content-Length: 20
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# Expectations:
+# - status code 415, because the Content-Type is not text/plain.
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+# - Content-Length is ignored
+PUT {{service}}/books/@___oid HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
 
 123456789ABCDEF
 
