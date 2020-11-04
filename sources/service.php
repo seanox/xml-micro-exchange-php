@@ -265,7 +265,7 @@ class Storage {
             // Safe is safe, if not the default 'data'' is used,
             // the name of the root element must be known.
             // Otherwise the request is quit with status 404 and terminated.
-            if (($root ? $root : "data") != $storage->xml->getName()) {
+            if (($root ? $root : "data") != $storage->xml->firstChild->nodeName) {
                 Storage::addHeaders(404, "Resource Not Found");
                 exit();
             }
@@ -297,8 +297,8 @@ class Storage {
         fseek($this->share, 0, SEEK_END); 
         $size = ftell($this->share);
         rewind($this->share);
-        $this->xml = fread($this->share, $size);
-        $this->xml = new SimpleXMLElement($this->xml);
+        $this->xml = new DOMDocument();
+        $this->xml-> loadXML(fread($this->share, $size));
     } 
     
     function close() {
@@ -308,7 +308,7 @@ class Storage {
 
         ftruncate($this->share, 0);
         rewind($this->share);
-        fwrite($this->share, $this->xml->asXML());    
+        fwrite($this->share, $this->xml->saveXML());    
 
         flock($this->share, LOCK_UN);
         fclose($this->share);
@@ -327,7 +327,7 @@ class Storage {
     
         $this->open();
         if (!$this->revision)
-            $this->revision = $this->xml->xpath("/" . $this->root . "[1]/@___rev")[0];    
+            $this->revision = $this->xml->firstChild->getAttribute("___rev");
         return $this->revision;
     }
 
@@ -347,7 +347,7 @@ class Storage {
     private function getSize() {
     
         if ($this->xml !== null)
-            return strlen($this->xml->asXML());
+            return strlen($this->xml->saveXML());
         if ($this->share !== null)
             return filesize($this->share);
         return filesize($this->store);
@@ -467,6 +467,14 @@ class Storage {
         //     Content-Type: application/xslt+xml
     }
 
+    private static function updateNodeRevision($node, $revision) {
+
+        while ($node->nodeType == XML_ELEMENT_NODE) {
+            $node->setAttribute("___rev", $revision);
+            $node = $node->parentNode;
+        }
+    }
+
     /**
      * Adds to the specified path, a node or an attribute.
      * If the destination already exists, the method behaves like PATCH.
@@ -559,20 +567,32 @@ class Storage {
 
             $xpath = $matches[1];
             $attribute = $matches[2];
-
-            $nodes = $this->xml->xpath($xpath);
-            if (!empty($nodes)) {
-                $this->revision = $this->getRevision() +1;
-                $value = file_get_contents('php://input');
-                $identities = []; 
-                foreach ($nodes as $node) {
-                    $identities[] = $node["___oid"]; 
-                    $node[attribute] = $value;
-                    $node["___rev"] = $this->getRevision();
-                }
-                header("Elements-Affected: " . join(" ", $identities));
-            }
             
+            // The attributes ___rev and ___oid are essential for the internal
+            // organization and management of the data and cannot be changed.
+            // PUT requests for these attributes are ignored and behave as if
+            // no matching node was found. It should say request understood and
+            // executed but without effect.
+            if (!in_array($attribute, ["___rev", "___oid"])) {
+                $nodes = (new DOMXpath($this->xml))->query($xpath);
+                if (!empty($nodes)) {
+                    $this->revision = $this->getRevision() +1;
+                    $value = file_get_contents('php://input');
+                    $identities = []; 
+                    foreach ($nodes as $node) {
+                        $identities[] = $node->getAttribute("___oid");
+                        $node->setAttribute($attribute, $value); 
+                        // The revision is updated at the parent nodes, so you
+                        // can later determine which nodes have changed and
+                        // with which revision. Partial access allows the
+                        // client to check if the data or a tree is still up to
+                        // date, because he can compare the revision.
+                        Storage::updateNodeRevision($node, $this->getRevision());
+                    }
+                    header("Elements-Affected: " . join(" ", $identities));
+                }
+            }
+
             Storage::addHeaders(204, "No Content", [
                 "Storage" => $this->storage,
                 "Storage-Revision" => $this->getRevision(),
@@ -580,8 +600,11 @@ class Storage {
                 "Storage-Last-Modified" => date(DateTime::RFC822),
                 "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
             ]);
-             
-            return;
+
+            // The function and the reponse are complete.
+            // The storage can be closed and the requests can be terminated.
+            $this->close();
+            exit;
         }
 
         if (preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
@@ -621,6 +644,68 @@ class Storage {
                         $xml = new DOMDocument();
                         $xml->loadXML($input);
 
+                        // The attributes ___rev and ___oid are essential for
+                        // the internal organization and management of the data
+                        // and cannot be changed.
+                        // When inserting, the attributes ___rev and ___oid are
+                        // set automatically. These attributes must not be
+                        // contained in the XML structure to be inserted,
+                        // because all XML elements without ___oid attributes
+                        // are determined after insertion and it is assumed that
+                        // they have been newly inserted.
+                        // This approach was chosen to avoid a recursive
+                        // search/iteration in the XML structure to be inserted.
+                        $nodes = (new DOMXpath($xml))->query("//*[@___rev|@___oid]");
+                        foreach ($nodes as $node) {
+                            $node->removeAttribute("___rev");
+                            $node->removeAttribute("___oid");
+                        }
+
+                        if ($xml->firstChild->hasChildNodes()) {
+                            $targets = (new DOMXpath($this->xml))->query($xpath);
+                            if (!empty($targets)) {
+                                $this->revision = $this->getRevision() +1;
+                                foreach ($targets as $target) {
+                                    $replace = $target->cloneNode(false);
+                                    foreach ($xml->firstChild->childNodes as $insert)
+                                        $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
+                                    $target->parentNode->replaceChild($replace, $this->xml->importNode($target));
+                                }                                
+                            }
+                        }
+
+                        // The attribute ___oid of all newly inserted elements
+                        // is set. It is assumed that all elements without the
+                        // ___oid attribute are new.
+                        // The revision of all affected nodes are updated, so you
+                        // can later determine which nodes have changed and
+                        // with which revision. Partial access allows the
+                        // client to check if the data or a tree is still up to
+                        // date, because he can compare the revision.
+
+                        $identities = []; 
+                        $nodes = (new DOMXpath($this->xml))->query("//*[not(@___oid)]");
+                        foreach ($nodes as $node) {
+                            $serial = $this->getSerial();
+                            $identities[] = $serial;
+                            $node->setAttribute("___oid", $serial); 
+                            Storage::updateNodeRevision($node, $this->getRevision());
+                        }
+                        
+                        if (!empty($identities))
+                            header("Elements-Affected: " . join(" ", $identities));
+
+                        Storage::addHeaders(204, "No Content", [
+                            "Storage" => $this->storage,
+                            "Storage-Revision" => $this->getRevision(),
+                            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+                            "Storage-Last-Modified" => date(DateTime::RFC822),
+                            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
+                        ]);                            
+
+                        // The function and the reponse are complete.
+                        // The storage can be closed and the requests can be terminated.
+                        $this->close();
                         exit;
                     }
                 }
