@@ -66,7 +66,7 @@ Means that the script itself cannot be called.
 The paths of all requests are passed as path-info and thus as virtual paths.
 
 The following HTTP methods must be allowed:  
-`CONNECT`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `DELETE`  
+`CONNECT`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`  
 The `CONNECT` method is not an HTTP standard, alternative `OPTIONS` can be used.
 
 When using PHP as CGI, the HTTP methods may also need to be allowed. 
@@ -76,7 +76,7 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
 ```
 #.htaccess
 RewriteEngine on
-RewriteRule ^/xmds(/.*)*$ service.php
+RewriteRule ^/xmex(/.*)*$ service.php
 ```
 Root can also be used.  
 A context path is not required.
@@ -89,7 +89,7 @@ A context path is not required.
   
 [SERVER:HTTP:REF]
   ...
-  XMDS = /xmds/ > /xml-micro-datasource/service.php [A]
+  XMEX = /xmex/ > /xml-micro-exchange/service.php [A]
 ```
 Root can also be used.  
 A context path is not required.
