@@ -1,0 +1,57 @@
+@service = http://127.0.0.1/xmex
+@storage = 000000000000000000000000000000000R1 books
+
+# The following sequence checks the request processing.
+# There are three approaches to send the XPath:
+# - Standard: Combination of PATH_INFO + QUERY_STRING
+# - Alternative 1st: QUERY_STRING
+# - Alternative 1st: CGI Environment Variable REQUEST
+
+# Initial request to establish the storage
+# Expected is the status code 201
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Preparation of the test
+# Expectations:
+# - Status code 204
+# - Storage-Effects: with 5 OIDs 
+# - 4 books are created
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 80
+
+<book title="a+"/>
+<book title="b-"/>
+<book title="c?"/>
+<book title="d!"/>
+
+###
+# Expectations:
+# - Status code 204
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Title of all books change (Test_1)
+PUT {{service}}//*/@title HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 6
+
+Test_1
+
+###
+# Expectations:
+# - Status code 204
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Title of all books change (Test_2)
+PUT {{service}}?//*/@title HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 6
+
+Test_2
+
+###
