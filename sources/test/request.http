@@ -1,5 +1,5 @@
 @service = http://127.0.0.1/xmex
-@storage = 000000000000000000000000000000000R1 books
+@storage = 000000000000000000000000000000000R0 books
 
 # The following sequence checks the request processing.
 # There are three approaches to send the XPath:
@@ -8,7 +8,8 @@
 # - Alternative 1st: CGI Environment Variable REQUEST
 
 # Initial request to establish the storage
-# Expected is the status code 201
+# Expectations:
+# - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}}
 

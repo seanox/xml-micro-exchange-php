@@ -8,37 +8,69 @@
 # specified in the request header.
 
 ###
-# Expected is the status code 201
+# Header Storage is missing
+# Expectations:
+# - Status code 400 Bad Request
+OPTIONS {{service}} HTTP/1.0
+
+###
+# Header Storage is empty
+# Expectations:
+# - Status code 400 Bad Request
+OPTIONS {{service}} HTTP/1.0
+Storage:
+
+###
+# Header Storage is to short/invalid
+# Expectations:
+# - Status code 400 Bad Request
+OPTIONS {{service}} HTTP/1.0
+Storage: 0000000000000000000000000000000000
+
+###
+# Header Storage is to long/invalid
+# Expectations:
+# - Status code 400 Bad Request
+OPTIONS {{service}} HTTP/1.0
+Storage: 000000000000000000000000000000000010
+
+###
 # Everything is correct, storage and name of the root element are transmitted
 # correctly, the storage can be created.
+# Expectations:
+# - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}} books
 
 ###
-# Expected is the status code 202
 # Everything is correct, storage and name of the root element are transmitted
 # correctly, the storage can be shared.
+# Expectations:
+# - Status code 202 Accepted
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}} books
 
 ###
-# Expected is the status code 404
-# Because the name of the root element is not correct.
+# Name of the root element is not correct.
+# Expectations:
+# - Status code 404 Resource Not Found
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}} bookS
 
 ###
-# Expected is the status code 400
-# Because the Storage header is not correct.
+# Storage header is not correct.
+# Expectations:
+# - Status code 400 Bad Request
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}} books x
 
 ###
-# Expected is the status code 404
-# Because the name of the root element is not correct.
+# Name of the root element is not correct.
 # Without specification the default 'data' is used.
 #   Storage header corresponds to: 
 # Storage: 00000000000000000000000000000000003 data 
+# Expectations:
+# - Status code 404 Resource Not Found
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}}
 

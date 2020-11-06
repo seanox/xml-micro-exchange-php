@@ -3,11 +3,12 @@
 
 # The following sequence tests the setting of attributes.
 # Attributes can be set using /@<name> or /attributes::<name>.
-# The processing is case-sensitive and more consequent in handling spaces in
-# XPath - no spaces supported.
+# The processing is case-sensitive and more consistent in handling spaces in
+# the XPath - no spaces are supported.
 
 # Initial request to establish the storage
-# Expected is the status code 201
+# Expectations:
+# - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}}
 
@@ -28,8 +29,6 @@ test_value<1>
 ###
 # Expectations:
 # - Status code 415, because the Content-Type is not text/plain.
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
 PUT {{service}}/books/@attrG HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain-x
@@ -83,8 +82,6 @@ Content-Length: 15
 ###
 # Expectations:
 # - Status code 415, because the Content-Type is not text/plain.
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
 PUT {{service}}/books/@attrE HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain-x
@@ -121,7 +118,7 @@ Content-Length: 15
 ###
 # Expectations:
 # - Status code 204, the addressing of the XML document is detected
-# - Response without Storage-Effects header, requests in this form have no effect
+# - Response without Storage-Effects header, such a request has no effect
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 PUT {{service}}/@attrF HTTP/1.0
