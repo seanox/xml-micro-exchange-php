@@ -89,13 +89,15 @@ A context path is not required.
   
 [SERVER:HTTP:REF]
   ...
-  XMEX = /xmex/ > /xml-micro-exchange/service.php [A]
+  XMEX = /xmex > /xml-micro-exchange/service.php [A]
 ```
 Root can also be used.  
 A context path is not required.
 
 ## Other HTTP servers
-Something like Apache HTTPD or Seanox Devwex.
+Something like Apache HTTPD or Seanox Devwex.  
+Alternatively, the script can be called directly and passed to XPath as a query
+string.
 
 
 # Changes (Change Log)
