@@ -44,7 +44,7 @@ functions that allow dynamic values.
 
 ## Data Transformation
 The POST method supports data transformation via XSLT.  
-Similar to GET, data can be retrieved and then transformed with an XSLT template
+Similar to GET, data can be queried and then transformed with an XSLT template
 transmitted via POST.
 
 ## Security
