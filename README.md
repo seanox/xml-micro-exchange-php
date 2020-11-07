@@ -18,7 +18,7 @@ applications and for IoT.
 The XML based datasource is volatile and lives through continuous use and
 expires through inactivity. They are designed for active and near real-time data
 exchange but not as a real-time capable long-term storage.  
-Compared to a JSON storage, this data source supports dynamic and partial access
+Compared to a JSON storage, this datasource supports dynamic and partial access
 and data transformation.  
 
 
@@ -27,7 +27,8 @@ TODO:
 
 ## RESTful
 The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT, PATCH,
-DELETE. The CONNECT method is not a standard and the function can be used
+DELETE.  
+The CONNECT method is not a standard and the function can be used
 alternatively via OPTIONS.  
 
 ## XPath
@@ -52,7 +53,7 @@ rudimentary form. Only the storage(-key) with a length of 36 characters can be
 regarded as secret.  
 For further security the approach of Basic Authentication, Digest Access
 Authentication and/or Server/Client certificates is followed, which is
-configured outside of the XMDS (XML-Micro-Datasource) at the web server.
+configured outside of the XMEX (XML-Micro-Exchange) at the web server.
 
 
 # Licence Agreement
