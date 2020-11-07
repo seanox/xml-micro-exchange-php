@@ -12,11 +12,39 @@
 
 
 # Description
-TODO:
+XML-Micro-Exchange is a volatile RESTful micro datasource.  
+It is designed for easy communication and data exchange of web-based
+applications and for IoT.  
+The XML based datasource is volatile and lives through continuous use and
+expires through inactivity. They are designed for active and near real-time data
+exchange but not as a real-time capable long-term storage.  
+Compared to a JSON storage, this data source supports dynamic and partial access
+and data transformation.  
 
 
 # Features
 TODO:
+
+## RESTful
+The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT, PATCH,
+DELETE. The CONNECT method is not a standard and the function can be used
+alternatively via OPTIONS.  
+
+## XPath
+TODO:
+
+## Multible axes and targets
+XPath can address multiple elements and attributes simultaneously via multiple
+axes, which can be changed with one call.
+
+## XPath Functions
+PUT and PATCH support XML structures and static values (text), as well as XPath
+functions that allow dynamic values. 
+
+## Data Transformation
+The POST method supports data transformation via XSLT.  
+Similar to GET, data can be retrieved and then transformed with an XSLT template
+transmitted via POST.
 
 ## Security
 This aspect was deliberately considered and implemented here only in a very
