@@ -108,7 +108,7 @@
  *   Therefore, the status 300 is also omitted.
  * - OPTIONS: Should return information about the storage and an entity but in the context of the storage,
  *   so no details about the entity, only the indirect statement about Allow, whether the entity exists or not.
- *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+ *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
  *   Storage-Revision: Revision
  *   Storage-Size: Bytes
  *   Storage-Expired: Timestamp
@@ -120,7 +120,7 @@
  *   So only those methods are returned, which can be applied to the storage and the entity.
  * - META: Works like OPTIONS, but the focus is the entity
  *   Same storage informations as with OPTIONS.
- *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+ *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
  *   Storage-Revision: Revision
  *   Storage-Size: Bytes
  *   Storage-Expired: Timestamp
@@ -186,7 +186,13 @@ class Storage {
      */    
     const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
 
-    const PATTERN_HEADER_STORAGE = "/^([0-9A-Z]{35})(?:\s+(\w+)){0,1}$/";
+    /**
+     * Pattern for the Storage header
+     *     Group 0. Full match	
+     *     Group 1. Storage
+     *     Group 2.	Name of the root element (optional)
+     */    
+    const PATTERN_HEADER_STORAGE = "/^([0-9A-Z]{36})(?:\s+(\w+)){0,1}$/";
 
     /**
      * Pattern to determine the structure of XPath expressions for attributes
@@ -369,19 +375,27 @@ class Storage {
         return $format ? $date->format($format) : $date->getTimestamp();
     }
 
+    private static function updateNodeRevision($node, $revision) {
+
+        while ($node->nodeType == XML_ELEMENT_NODE) {
+            $node->setAttribute("___rev", $revision);
+            $node = $node->parentNode;
+        }
+    }
+
     function doConnect() {
 
         // Request:
         //     CONNECT / HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
         // Request:
         //     CONNECT / HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ root
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root
 
         // Response:
         //     HTTP/1.0 201 Created
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision (number)   
         //     Storage-Space: Total/Used (bytes)
         //     Storage-Last-Modified: Timestamp (RFC822)
@@ -389,24 +403,29 @@ class Storage {
 
         // Response:
         //     HTTP/1.0 202 Accepted
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision (number)   
         //     Storage-Space: Total/Used (bytes)
         //     Storage-Last-Modified: Timestamp (RFC822)
         //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 
         // Response codes/ behavior:
+        //     HTTP/1.0 201 Resource Created
+        // - Response can be status 201 if the storage was newly created
+        //     HTTP/1.0 202 Accepted
+        // - Response can be status 202 if the storage already exists
         //     HTTP/1.0 400 Bad Request
-        // - TODO:
+        // - Requests without XPath are responded with status 400 Bad Request
+        // - Requests with a invalid Storage header are responded with status
+        //   400 Bad Request, exactly 36 characters are expected
+        //   Pattern: [0-9A-Z]{36}
+        // - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
+        //     HTTP/1.0 404 Resource Not Found   
+        // - Only mentioned here for completeness.
+        //   Occurs when the storage exists but the name of the root element
+        //   does not match.  
         //     HTTP/1.0 507 Insufficient Storage   
-        // - TODO:  
-        
-        // Only requests without XPath are allowed, otherwise status 400 Bad Request
-        // PATH_INFO is used as XPath, not the request URI.
-        // If the storage is full, the response is status 507 Insufficient Storage
-        // An exact 35 characters long storage must be specified (pattern: [0-9A-Z]{35})
-        // The response can be status 201 if the storage was newly created.
-        // The answer can be status 202 if the storage already exists.
+        // - Response can be status 507 if the storage is full
 
         if (!empty($this->xpath)) {
             Storage::addHeaders(400, "Bad Request");
@@ -453,11 +472,11 @@ class Storage {
     
         // Request:
         //     GET /<xpath> HTTP/1.0   
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Accept: text/plain
         // Response (If value of attribute or result of a function):
         //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
         //     Content-Length: Bytes
@@ -465,23 +484,18 @@ class Storage {
 
         // Request:
         //     GET /<xpath> HTTP/1.0   
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Accept: application/xslt+xml
         // Response (If response is a partial XML structure):
         //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
         //     Content-Length: Bytes
         //     Content-Type: application/xslt+xml
     }
 
-    private static function updateNodeRevision($node, $revision) {
-
-        while ($node->nodeType == XML_ELEMENT_NODE) {
-            $node->setAttribute("___rev", $revision);
-            $node = $node->parentNode;
-        }
+    function doPost() {
     }
 
     /**
@@ -502,11 +516,11 @@ class Storage {
      * If necessary, CDATA is used.
      *     application/xslt+xml
      * Replaces the node with an XML fragment (outer node).
-     * Other content types are answered with status 415 (Unsupported Media Type).
+     * Another Content-Type are responsed with status 415 (Unsupported Media Type).
      *       
      * Attributes supports only text/plain and replaces the value of the
      * attribute. If necessary, the value is escaped.
-     * Other content types are answered with status 415 (Unsupported Media Type).
+     * Another Content-Type are responsed with status 415 (Unsupported Media Type).
      *
      * The attributes ___rev / ___oid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
@@ -515,7 +529,7 @@ class Storage {
     
         // Request:
         //     PUT /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Content-Length: Bytes
         //     Content-Type: application/xslt+xml
         // Request-Body:
@@ -523,29 +537,38 @@ class Storage {
 
         // Request:
         //     PUT /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Content-Length: Bytes
         //     Content-Type: text/plain
         // Request-Body:
         //     Value as plain text
+
+        // Request:
+        //     PUT /<xpath> HTTP/1.0
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        //     Content-Length: Bytes
+        //     Content-Type: text/xpath
+        // Request-Body:
+        //     name(/*)   
         
         // Response:
         //     HTTP/1.0 204 No Content
         //     Storage-Effects: ... (list of OIDs)
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision (number)   
         //     Storage-Space: Total/Used (bytes)
         //     Storage-Last-Modified: Timestamp (RFC822)
         //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 
         // Response codes/ behavior:
-        //     204 No Content
+        //     HTTP/1.0 204 No Content
         // - Attributes successfully created or set   
-        //     400 Bad Request
-        // - XPath is missing 
-        //     404 Resource Not Found
+        //     HTTP/1.0 400 Bad Request
+        // - XPath is missing or malformed
+        // - XPath without addressing a target is responded with status 204
+        //     HTTP/1.0 404 Resource Not Found
         // - Storage is invalid 
-        //     415 Unsupported Media Type
+        //     HTTP/1.0 415 Unsupported Media Type
         // - Attribute request without Content-Type text/plain
         
         // In any case an XPath is required for a valid request.
@@ -567,22 +590,57 @@ class Storage {
             exit();                
         }             
 
-        // XPath can address nodes and attributes.
+        // PUT requests can address attributes and elements via XPath.
+        // Multi-axis XPaths allow multiple targets.
+        // The method only supports these two possibilities, other requests are
+        // responsed with an error, because this situation cannot occur because
+        // the XPath is recognized as XPath for an attribute and otherwise an
+        // element is assumed.
+        // In this case it can only happen that the XPath does not address a
+        // target, which is not an error in the true sense. It only affects the
+        // Storage-Effects header.
+        // Therefore there is only one decision here.
+
+        // XPath can address elements and attributes.
         // If the XPath ends with /attribute::<attribute> or /@<attribute> an
-        // attribute is expected, in all other cases a node.
+        // attribute is expected, in all other cases a element.
 
         if (preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
 
-            // For attributes only the content-type text/plain is supported and
-            // required, for other content-types no conversion exists.
-            if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/plain") !== 0) {
+            // The following Conten-Type is supported for attributes:
+            // - text/plain for static values (text)
+            // - text/xpath for dynamic values, based on XPath functions            
+
+            // For attributes only the Content-Type text/plain and text/xpath
+            // are supported, for other Content-Types no conversion exists.
+            if (!in_array(strtolower($_SERVER["CONTENT_TYPE"]), ["text/plain", "text/xpath"])) {
                 Storage::addHeaders(415, "Unsupported Media Type");
                 exit();                
             }
 
+            $input = file_get_contents('php://input');
+            
+            // The Content-Type text/xpath is a special of the XMXE Storage.
+            // It expects a plain text which is an XPath function.
+            // The XPath function is first once applied to the current XML
+            // document from the storage and the result is put like the
+            // Content-Type text/plain. Even if the target is mutable, the
+            // XPath function is executed only once and the result is put on
+            // all targets.
+            if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
+                libxml_use_internal_errors(true);
+                $input = (new DOMXpath($this->xml))->evaluate($input);
+                if ($input === false) {
+                    Storage::addHeaders(400, "Bad Request");
+                    exit();
+                }
+            }
+
+            // From here on it continues with a static value for the attribute.
+
             $xpath = $matches[1];
             $attribute = $matches[2];
-            
+
             // The attributes ___rev and ___oid are essential for the internal
             // organization and management of the data and cannot be changed.
             // PUT requests for these attributes are ignored and behave as if
@@ -592,7 +650,6 @@ class Storage {
                 $targets = (new DOMXpath($this->xml))->query($xpath);
                 if (!empty($targets)) {
                     $this->revision = $this->getRevision() +1;
-                    $value = file_get_contents('php://input');
                     $serials = []; 
                     foreach ($targets as $target) {
                         // Only elements are supported, this prevents the
@@ -600,7 +657,7 @@ class Storage {
                         if ($target->nodeType != XML_ELEMENT_NODE)
                             continue;
                         $serials[] = $target->getAttribute("___oid");
-                        $target->setAttribute($attribute, $value); 
+                        $target->setAttribute($attribute, $input); 
                         // The revision is updated at the parent nodes, so you
                         // can later determine which nodes have changed and
                         // with which revision. Partial access allows the
@@ -632,199 +689,208 @@ class Storage {
             $this->close();
             exit;
         }
+        
+        // An XPath for element(s) is then expected here.
+        // If this is not the case, the request is responded with status 400.
 
-        if (preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
+        if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
+            Storage::addHeaders(400, "Bad Request");
+            exit();              
+        }
 
-            $xpath = $matches[1];
-            $pseudo = $matches[2];
+        $xpath = $matches[1];
+        $pseudo = $matches[2];
 
+        // The following Conten-Type is supported for elements:
+        // - application/xslt+xml for XML structures
+        // - text/plain for static values (text)
+        // - text/xpath for dynamic values, based on XPath functions
+
+        if (in_array(strtolower($_SERVER["CONTENT_TYPE"]), ["text/plain", "text/xpath"])) {
+
+            // The combination with a pseudo element is not possible for a text
+            // value. Response with status 415 (Unsupported Media Type).
             if (!empty($pseudo)) {
-
-                // Pseudo elements can be used to insert an XML substructure
-                // relative to the selected element. Therefore the content type
-                // application/xslt+xml is required. Other Content-Type headers
-                // are not supported.   
-                if (strcasecmp($_SERVER["CONTENT_TYPE"], "application/xslt+xml") !== 0) {
-                    Storage::addHeaders(415, "Unsupported Media Type");
-                    exit();                
-                }
-                
-                // The request body must also be a valid XML structure,
-                // otherwise the request will be acknowledged with an error.
-                $xml = file_get_contents('php://input');
-            } 
-
-            if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/plain") === 0) {
-
-                // The request body  gets the text
-                $input = file_get_contents('php://input');
-                $input = htmlentities($input);
-                
-                //$input = preg_replace("/&(?!amp;)/i", "&amp;", $input);
-
-                $serials = []; 
-                $targets = (new DOMXpath($this->xml))->query($xpath);
-                if (!empty($targets)) {
-                    $this->revision = $this->getRevision() +1;
-                    foreach ($targets as $target) {
-                        // Overwriting of the root element is not possible,
-                        // as it is an essential part of the storage, and
-                        // is ignored. It does not cause to an error, so
-                        // the behaviour is analogous to putting
-                        // attributes.
-                        if ($target->nodeType != XML_ELEMENT_NODE)
-                            continue;
-                        $serials[] = $target->getAttribute("___oid");
-                        $replace = $this->xml->createElement($target->nodeName, $input);
-                        foreach ($target->attributes as $attribute)
-                        $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
-                        $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
-                        // The revision is updated at the parent nodes, so you
-                        // can later determine which nodes have changed and
-                        // with which revision. Partial access allows the
-                        // client to check if the data or a tree is still up to
-                        // date, because he can compare the revision.
-                        Storage::updateNodeRevision($replace, $this->getRevision());                        
-                    }                                
-                }    
-                
-                // Only the list of serials is an indicator that data has
-                // changed and whether the revision changes with it.
-                // If necessary the revision must be corrected if there are no
-                // data changes.
-                if (!empty($serials))
-                    header("Storage-Effects: " . join(" ", $serials));
-                else $this->revision--;                    
-
-                Storage::addHeaders(204, "No Content", [
-                    "Storage" => $this->storage,
-                    "Storage-Revision" => $this->getRevision(),
-                    "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-                    "Storage-Last-Modified" => date(DateTime::RFC822),
-                    "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
-                ]);  
-
-                // The function and the reponse are complete.
-                // The storage can be closed and the requests can be terminated.
-                $this->close();
-                exit;
-
-            } else if (strcasecmp($_SERVER["CONTENT_TYPE"], "application/xslt+xml") === 0) {
-
-                // The request body must also be a valid XML structure,
-                // otherwise the request is quit with an error.
-                $input = file_get_contents('php://input');
-                $input = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data>$input</data>";
-
-                // The XML is loaded, but what happens if an error occurs
-                // during parsing? Status 400 or 422 - The decision for 400,
-                // because 422 means semantic errors, but the parser only finds
-                // structural or syntactic errors
+                SStorage::addHeaders(415, "Unsupported Media Type");
+                exit();
+            }   
+            
+            // The Content-Type text/xpath is a special of the XMXE Storage.
+            // It expects a plain text which is an XPath function.
+            // The XPath function is first once applied to the current XML
+            // document from the storage and the result is put like the
+            // Content-Type text/plain. Even if the target is mutable, the
+            // XPath function is executed only once and the result is put on
+            // all targets.
+            if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
                 libxml_use_internal_errors(true);
-                $xml = new DOMDocument();
-                if (!$xml->loadXML($input)) {
+                $input = (new DOMXpath($this->xml))->evaluate($input);
+                if ($input === false) {
                     Storage::addHeaders(400, "Bad Request");
                     exit();
                 }
+            }
 
-                // The attributes ___rev and ___oid are essential for the
-                // internal organization and management of the data and cannot
-                // be changed.
-                // When inserting, the attributes ___rev and ___oid are set
-                // automatically. These attributes must not be  contained in
-                // the XML structure to be inserted, because all XML elements
-                // without ___oid attributes are determined after insertion and
-                // it is assumed that they have been newly inserted.
-                // This approach was chosen to avoid a recursive
-                // search/iteration in the XML structure to be inserted.
-                $nodes = (new DOMXpath($xml))->query("//*[@___rev|@___oid]");
-                foreach ($nodes as $node) {
-                    $node->removeAttribute("___rev");
-                    $node->removeAttribute("___oid");
-                }
-
-                if ($xml->firstChild->hasChildNodes()) {
-                    $targets = (new DOMXpath($this->xml))->query($xpath);
-                    if (!empty($targets)) {
-                        $this->revision = $this->getRevision() +1;
-                        foreach ($targets as $target) {
-                            // Overwriting of the root element is not possible,
-                            // as it is an essential part of the storage, and
-                            // is ignored. It does not cause to an error, so
-                            // the behaviour is analogous to putting
-                            // attributes.
-                            if ($target->nodeType != XML_ELEMENT_NODE)
-                                continue;
-                            $replace = $target->cloneNode(false);
-                            foreach ($xml->firstChild->childNodes as $insert)
-                                $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
-                            $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
-                        }
-                    }
-                }
-
-                // The attribute ___oid of all newly inserted elements is set.
-                // It is assumed that all elements without the  ___oid
-                // attribute are new.
-                // The revision of all affected nodes are updated, so you can
-                // later determine which nodes have changed and with which
-                // revision. Partial access allows the client to check if the
-                // data or a tree is still up to date, because he can compare
-                // the revision.
-
-                $serials = []; 
-                $nodes = (new DOMXpath($this->xml))->query("//*[not(@___oid)]");
-                foreach ($nodes as $node) {
-                    $serial = $this->getSerial();
-                    $serials[] = $serial;
-                    $node->setAttribute("___oid", $serial); 
-                    Storage::updateNodeRevision($node, $this->getRevision());
-                    
-                    // Also the OID of the directly addressed element is
-                    // transmitted to the client in the response, because the
-                    // element itself has not changed, but its content has.
-                    // Other parent elements are not listed because they are
-                    // only indirectly affected. So the behaviour is analogous
-                    // to putting attributes. 
-                    if ($node->parentNode->nodeType != XML_ELEMENT_NODE)
+            $serials = []; 
+            $targets = (new DOMXpath($this->xml))->query($xpath);
+            if (!empty($targets)) {
+                $this->revision = $this->getRevision() +1;
+                foreach ($targets as $target) {
+                    // Overwriting of the root element is not possible, as it
+                    // is an essential part of the storage, and is ignored. It
+                    // does not cause to an error, so the behaviour is
+                    // analogous to putting attributes.
+                    if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
-                    $serial = $node->parentNode->getAttribute("___oid");
-                    if (!empty($serial)
-                            && !in_array($serial, $serials))
-                        $serials[] = $serial;
+                    $serials[] = $target->getAttribute("___oid");
+                    $replace = $this->xml->createElement($target->nodeName, $input);
+                    foreach ($target->attributes as $attribute)
+                    $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
+                    $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
+                    // The revision is updated at the parent nodes, so you can
+                    // later determine which nodes have changed and with which
+                    // revision. Partial access allows the client to check if
+                    // the data or a tree is still up to date, because he can
+                    // compare the revision.
+                    Storage::updateNodeRevision($replace, $this->getRevision());                        
                 }
-                
-                // Only the list of serials is an indicator that data has
-                // changed and whether the revision changes with it.
-                // If necessary the revision must be corrected if there are no
-                // data changes.
-                if (!empty($serials))
-                    header("Storage-Effects: " . join(" ", $serials));
-                else $this->revision--;     
+            }    
+            
+            // Only the list of serials is an indicator that data has changed
+            // and whether the revision changes with it. If necessary the
+            // revision must be corrected if there are no data changes.
+            if (!empty($serials))
+                header("Storage-Effects: " . join(" ", $serials));
+            else $this->revision--;
 
-                Storage::addHeaders(204, "No Content", [
-                    "Storage" => $this->storage,
-                    "Storage-Revision" => $this->getRevision(),
-                    "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-                    "Storage-Last-Modified" => date(DateTime::RFC822),
-                    "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
-                ]);                            
+            Storage::addHeaders(204, "No Content", [
+                "Storage" => $this->storage,
+                "Storage-Revision" => $this->getRevision(),
+                "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+                "Storage-Last-Modified" => date(DateTime::RFC822),
+                "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
+            ]);  
 
-                // The function and the reponse are complete.
-                // The storage can be closed and the requests can be terminated.
-                $this->close();
-                exit;
+            // The function and the reponse are complete.
+            // The storage can be closed and the requests can be terminated.
+            $this->close();
+            exit;
+        }
 
-            } else {
-                
-                // In all other cases an unsupported content type was used.
-                Storage::addHeaders(415, "Unsupported Media Type");
-                exit();                
+        // Only an XML structure can be inserted, nothing else is supported.
+        // So only the Content-Type application/xslt+xml can be used.
+
+        if (strcasecmp($_SERVER["CONTENT_TYPE"], "application/xslt+xml") !== 0) {
+            Storage::addHeaders(415, "Unsupported Media Type");
+            exit();
+        }
+
+        // The request body must also be a valid XML structure, otherwise the
+        // request will be acknowledged with an error.
+        $xml = file_get_contents('php://input');
+
+        // Pseudo elements can be used to put in an XML substructure relative
+        // to the selected element.
+        if (!empty($pseudo)) {
+            // TODO:
+        }
+
+        // The request body must also be a valid XML structure, otherwise the
+        // request is quit with an error.
+        $input = file_get_contents('php://input');
+        $input = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data>$input</data>";
+
+        // The XML is loaded, but what happens if an error occurs during
+        // parsing? Status 400 or 422 - The decision for 400, because 422 means
+        // semantic errors, but the parser only finds structural or syntactic
+        // errors
+        libxml_use_internal_errors(true);
+        $xml = new DOMDocument();
+        if (!$xml->loadXML($input)) {
+            Storage::addHeaders(400, "Bad Request");
+            exit();
+        }
+
+        // The attributes ___rev and ___oid are essential for the internal
+        // organization and management of the data and cannot be changed.
+        // When inserting, the attributes ___rev and ___oid are set
+        // automatically. These attributes must not be  contained in the XML
+        // structure to be inserted, because all XML elements without ___oid
+        // attributes are determined after insertion and it is assumed that
+        // they have been newly inserted. This approach was chosen to avoid a
+        // recursive search/iteration in the XML structure to be inserted.
+        $nodes = (new DOMXpath($xml))->query("//*[@___rev|@___oid]");
+        foreach ($nodes as $node) {
+            $node->removeAttribute("___rev");
+            $node->removeAttribute("___oid");
+        }
+
+        if ($xml->firstChild->hasChildNodes()) {
+            $targets = (new DOMXpath($this->xml))->query($xpath);
+            if (!empty($targets)) {
+                $this->revision = $this->getRevision() +1;
+                foreach ($targets as $target) {
+                    // Overwriting of the root element is not possible, as it
+                    // is an essential part of the storage, and is ignored. It
+                    // does not cause to an error, so the behaviour is
+                    // analogous to putting attributes.
+                    if ($target->nodeType != XML_ELEMENT_NODE)
+                        continue;
+                    $replace = $target->cloneNode(false);
+                    foreach ($xml->firstChild->childNodes as $insert)
+                        $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
+                    $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
+                }
             }
         }
 
-        // Whatever happens, this place should never be reached.
-        throw new Exception("Unexpected exception during runtime");
+        // The attribute ___oid of all newly inserted elements is set.
+        // It is assumed that all elements without the  ___oid attribute are
+        // new. The revision of all affected nodes are updated, so you can
+        // later determine which nodes have changed and with which revision.
+        // Partial access allows the client to check if the data or a tree is
+        // still up to date, because he can compare the revision.
+
+        $serials = []; 
+        $nodes = (new DOMXpath($this->xml))->query("//*[not(@___oid)]");
+        foreach ($nodes as $node) {
+            $serial = $this->getSerial();
+            $serials[] = $serial;
+            $node->setAttribute("___oid", $serial); 
+            Storage::updateNodeRevision($node, $this->getRevision());
+            
+            // Also the OID of the directly addressed element is transmitted to
+            // the client in the response, because the element itself has not
+            // changed, but its content has. Other parent elements are not
+            // listed because they are only indirectly affected. So the
+            // behaviour is analogous to putting attributes. 
+            if ($node->parentNode->nodeType != XML_ELEMENT_NODE)
+                continue;
+            $serial = $node->parentNode->getAttribute("___oid");
+            if (!empty($serial)
+                    && !in_array($serial, $serials))
+                $serials[] = $serial;
+        }
+
+        // Only the list of serials is an indicator that data has changed and
+        // whether the revision changes with it. If necessary the revision must
+        // be corrected if there are no data changes.
+        if (!empty($serials))
+            header("Storage-Effects: " . join(" ", $serials));
+        else $this->revision--;
+
+        Storage::addHeaders(204, "No Content", [
+            "Storage" => $this->storage,
+            "Storage-Revision" => $this->getRevision(),
+            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+            "Storage-Last-Modified" => date(DateTime::RFC822),
+            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
+        ]);
+
+        // The function and the reponse are complete.
+        // The storage can be closed and the requests can be terminated.
+        $this->close();
+        exit;
     }
 
     /**
@@ -840,11 +906,11 @@ class Storage {
      * If necessary, CDATA is used.
      *     application/xslt+xml
      * Replaces the node with an XML fragment (outer node).
-     * Other content types are answered with status 415 (Unsupported Media Type).
+     * Another Content-Type are responsed with status 415 Unsupported Media Type.
      *       
      * Attributes supports only text/plain and replaces the value of the
      * attribute. If necessary, the value is escaped.
-     * Other content types are answered with status 415 (Unsupported Media Type).
+     * Another Content-Type are responsed with status 415 (Unsupported Media Type).
      *
      * The attributes ___rev / ___oid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
@@ -853,7 +919,7 @@ class Storage {
     
         // Request:
         //     PATCH /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Content-Length: 0 Bytes
         //     Content-Type: application/xslt+xml
         // Request-Body:
@@ -861,7 +927,7 @@ class Storage {
         
         // Request:
         //     PATCH /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Content-Length: 0 Bytes
         //     Content-Type: text/plain
         // Request-Body:
@@ -869,7 +935,7 @@ class Storage {
         
         // Response:
         //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
         
@@ -883,11 +949,11 @@ class Storage {
     
         // Request:
         //     DELETE /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ 
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ 
         
         // Response:
         //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
     }
@@ -919,7 +985,7 @@ class Storage {
         // So the header does not always have to be added manually.
         if ($status >= 400
                 && !array_keys($headers, "allow"))
-            header("Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE");        
+            header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");        
     }
 
     static function onError($error, $message, $file, $line, $vars = array()) {
@@ -1014,9 +1080,9 @@ if ((!isset($_SERVER["PATH_INFO"])
         // e.g. http://127.0.0.1/xmex/books/book[contains(@title,'?')]
 
         if (isset($_SERVER["PATH_INFO"]))
-        $xpath = $_SERVER["PATH_INFO"];
+            $xpath = $_SERVER["PATH_INFO"];
         if (isset($_SERVER["QUERY_STRING"]))
-        $xpath .= "?" . $_SERVER["QUERY_STRING"];
+            $xpath .= "?" . $_SERVER["QUERY_STRING"];
     }
 }
 
@@ -1038,6 +1104,9 @@ try {
             break;
         case "GET":
             $storage->doGet();
+            break;
+        case "POST":
+            $storage->doPost();
             break;
         case "PUT":
             $storage->doPut();
