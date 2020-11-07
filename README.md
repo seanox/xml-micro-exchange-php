@@ -18,8 +18,8 @@ applications and for IoT.
 The XML based datasource is volatile and lives through continuous use and
 expires through inactivity. They are designed for active and near real-time data
 exchange but not as a real-time capable long-term storage.  
-Compared to a JSON storage, this datasource supports dynamic and partial access
-and data transformation.  
+Compared to a JSON storage, this datasource supports dynamic and partial access,
+data transformation and a volatile short-term storage.  
 
 
 # Features
@@ -102,10 +102,21 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
 
 
 ## Apache HTTPD
+
+Direct to a physical or virtual host:
+
+```
+#httpd-ssl.conf
+RewriteEngine on
+RewriteRule ^/xmex(/.*)*$ service.php
+```
+
+Or in the .htaccess file:
+
 ```
 #.htaccess
 RewriteEngine on
-RewriteRule ^/xmex(/.*)*$ service.php
+RewriteRule (.*) service.php
 ```
 Root can also be used.  
 A context path is not required.
@@ -114,7 +125,7 @@ A context path is not required.
 ```
 [SERVER:HTTP:CGI]
   ...
-  PHP = ALL > ...
+  PHP = CONNECT OPTIONS GET PUT PATCH POST DELETE > ...
   
 [SERVER:HTTP:REF]
   ...
