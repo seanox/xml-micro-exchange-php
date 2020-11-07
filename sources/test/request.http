@@ -1,5 +1,5 @@
 @service = http://127.0.0.1/xmex
-@storage = 000000000000000000000000000000000R0 books
+@storage = 0000000000000000000000000000000000R0 books
 
 # The following sequence checks the request processing.
 # There are three approaches to send the XPath:
@@ -16,7 +16,7 @@ Storage: {{storage}}
 ###
 # Preparation of the test
 # Expectations:
-# - Status code 204
+# - Status code 204 No Content
 # - Storage-Effects: with 5 OIDs 
 # - 4 books are created
 PUT {{service}}/books HTTP/1.0
@@ -31,7 +31,7 @@ Content-Length: 80
 
 ###
 # Expectations:
-# - Status code 204
+# - Status code 204 No Content
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Title of all books change (Test_1)
@@ -44,7 +44,7 @@ Test_1
 
 ###
 # Expectations:
-# - Status code 204
+# - Status code 204 No Content
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Title of all books change (Test_2)
