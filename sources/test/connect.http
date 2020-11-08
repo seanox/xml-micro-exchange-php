@@ -26,14 +26,21 @@ Storage:
 # Expectations:
 # - Status code 400 Bad Request
 CONNECT {{service}} HTTP/1.0
-Storage: 00000000000000000000000000000000000
+Storage: 0000000000000000000000000000000000C
 
 ###
 # Header Storage is to long/invalid
 # Expectations:
 # - Status code 400 Bad Request
 CONNECT {{service}} HTTP/1.0
-Storage: 0000000000000000000000000000000000010
+Storage: 0000000000000000000000000000000000C0X
+
+###
+# Header Storage is to long/invalid
+# Expectations:
+# - Status code 400 Bad Request
+CONNECT {{service}} HTTP/1.0
+Storage: 000000000000000000000000000000000-C0
 
 ###
 # Everything is correct, storage and name of the root element are transmitted
@@ -69,7 +76,7 @@ Storage: {{storage}} books x
 # Name of the root element is not correct.
 # Without specification the default 'data' is used.
 #   Storage header corresponds to: 
-# Storage: 0000000000000000000000000000000000C3 data 
+# Storage: 0000000000000000000000000000000000C0 data 
 # Expectations:
 # - Status code 404 Resource Not Found
 CONNECT {{service}} HTTP/1.0

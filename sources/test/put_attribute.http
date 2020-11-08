@@ -1,7 +1,7 @@
 @service = http://127.0.0.1/xmex
-@storage = 000000000000000000000000000000000P1 books
+@storage = 0000000000000000000000000000000000PA books
 
-# The following sequence tests the setting of attributes.
+# Test sequence for putting of attributes to memory elements.
 # Attributes can be set using /@<name> or /attributes::<name>.
 # The processing is case-sensitive and more consistent in handling spaces in
 # the XPath - no spaces are supported.
@@ -14,7 +14,69 @@ Storage: {{storage}}
 
 ###
 # Expectations:
-# - Status code 204
+# - Status code 204 No Content
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+PUT {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 13
+
+test_value<1>
+
+###
+# Using unicode should not cause problems.
+# Expectations:
+# - Status code 204 No Content
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - Double quotation marks and the & are encoded correctly
+# - Unicode characters are inserted as UTF-8
+PUT {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 37
+
+№ <123> äüö &&amp; "§-ß" '€'
+
+###
+# Using XPath function should work.
+# Expectations:
+# - Status code 204 No Content
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - Double quotation marks and the & are encoded correctly
+# - As value books is used
+PUT {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+name(/*)
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 400 Bad Request
+PUT {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+name(/+)
+
+###
+# Using Unicode should not cause problems.
+# Here the XML file of the storage is parsed again, which must also work with
+# the previously inserted unicode.
+# Expectations:
+# - Status code 204 No Content
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Storage-Space is used more
@@ -28,7 +90,8 @@ test_value<1>
 
 ###
 # Expectations:
-# - Status code 415, because the Content-Type is not text/plain.
+# - Status code 415 Unsupported Media Type
+#   because the Content-Type is not text/plain.
 PUT {{service}}/books/@attrG HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain-x
@@ -38,7 +101,7 @@ Content-Length: 15
 
 ###
 # Expectations:
-# - Status code 204
+# - Status code 204 No Content
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Storage-Space is used more
@@ -52,7 +115,7 @@ test_value<2>
 
 ###
 # Expectations:
-# - Status code 204
+# - Status code 204 No Content
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Storage-Space is used more
@@ -67,7 +130,7 @@ Content-Length: 5
 
 ###
 # Expectations:
-# - Status code 204
+# - Status code 204 No Content
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Storage-Space is used more
@@ -81,7 +144,8 @@ Content-Length: 15
 
 ###
 # Expectations:
-# - Status code 415, because the Content-Type is not text/plain.
+# - Status code 415 Unsupported Media Type
+#   because the Content-Type is not text/plain.
 PUT {{service}}/books/@attrE HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain-x
@@ -91,7 +155,8 @@ Content-Length: 15
 
 ###
 # Expectations:
-# - Status code 204, attribute ___rev is ignored, but does not cause errors
+# - Status code 204 No Content
+#   attribute ___rev is ignored, but does not cause errors
 # - Response without Storage-Effects header
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
@@ -104,11 +169,12 @@ Content-Length: 15
 
 ###
 # Expectations:
-# - Status code 204, attribute ___oid is ignored, but does not cause errors
+# - Status code 204 No Content
+#   attribute ___uid is ignored, but does not cause errors
 # - Response without Storage-Effects header
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
-PUT {{service}}/books/@___oid HTTP/1.0
+PUT {{service}}/books/@___uid HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15
@@ -117,7 +183,8 @@ Content-Length: 15
 
 ###
 # Expectations:
-# - Status code 204, the addressing of the XML document is detected
+# - Status code 204 No Content
+#   the addressing of the XML document is detected
 # - Response without Storage-Effects header, such a request has no effect
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended

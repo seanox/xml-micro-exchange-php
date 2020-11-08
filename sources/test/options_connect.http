@@ -1,5 +1,5 @@
 @service = http://127.0.0.1/xmex
-@storage = 0000000000000000000000000000000000O3
+@storage = 0000000000000000000000000000000000OC
 
 # OPTIONS without path behaves like CONNECT, because CONNECT is no HTTP standard
 
@@ -25,14 +25,21 @@ Storage:
 # Expectations:
 # - Status code 400 Bad Request
 OPTIONS {{service}} HTTP/1.0
-Storage: 00000000000000000000000000000000000
+Storage: 0000000000000000000000000000000000O
 
 ###
 # Header Storage is to long/invalid
 # Expectations:
 # - Status code 400 Bad Request
 OPTIONS {{service}} HTTP/1.0
-Storage: 0000000000000000000000000000000000010
+Storage: 0000000000000000000000000000000000OCX
+
+###
+# Header Storage is to long/invalid
+# Expectations:
+# - Status code 400 Bad Request
+OPTIONS {{service}} HTTP/1.0
+Storage: 000000000000000000000000000000000-OC
 
 ###
 # Everything is correct, storage and name of the root element are transmitted
@@ -68,7 +75,7 @@ Storage: {{storage}} books x
 # Name of the root element is not correct.
 # Without specification the default 'data' is used.
 #   Storage header corresponds to: 
-# Storage: 0000000000000000000000000000000000O3 data 
+# Storage: 0000000000000000000000000000000000OC data 
 # Expectations:
 # - Status code 404 Resource Not Found
 OPTIONS {{service}} HTTP/1.0
