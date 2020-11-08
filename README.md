@@ -42,6 +42,12 @@ axes, which can be changed with one call.
 PUT and PATCH support XML structures and static values (text), as well as XPath
 functions that allow dynamic values. 
 
+## Data Query
+Data can be queried in the form of XML structure or substructure if the XPath
+notation represents an axis.  
+If the notation of the query is not an XPath axis, it is interpreted as an XPath
+function and the request is responded with the result as text. 
+
 ## Data Transformation
 The POST method supports data transformation via XSLT.  
 Similar to GET, data can be queried and then transformed with an XSLT template
