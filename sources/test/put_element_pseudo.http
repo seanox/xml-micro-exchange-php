@@ -19,7 +19,7 @@ Storage: {{storage}}
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
-Content-Length: 76
+Content-Length: 78
 
 <book title="A2"/>
 <book title="B2"/>
@@ -33,7 +33,7 @@ Content-Length: 76
 PUT {{service}}/books/book[1]::before HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
-Content-Length: 76
+Content-Length: 70
 
 <before id="beforeA"/>
 <before id="beforeB"/>
@@ -46,7 +46,7 @@ Content-Length: 76
 PUT {{service}}/books/book[last()]::after HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
-Content-Length: 76
+Content-Length: 64
 
 <after id="afterA"/>
 <after id="afterB"/>
@@ -59,7 +59,7 @@ Content-Length: 76
 PUT {{service}}/books::first HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
-Content-Length: 76
+Content-Length: 64
 
 <first id="firstA"/>
 <first id="firstB"/>
@@ -72,7 +72,7 @@ Content-Length: 76
 PUT {{service}}/books::last HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
-Content-Length: 76
+Content-Length: 58
 
 <last id="lastA"/>
 <last id="lastB"/>

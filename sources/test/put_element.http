@@ -18,7 +18,7 @@ Storage: {{storage}}
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
-Content-Length: 76
+Content-Length: 78
 
 <book title="A2"/>
 <book title="B2"/>
