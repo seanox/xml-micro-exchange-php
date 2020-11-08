@@ -17,7 +17,7 @@ Storage: {{storage}}
 # Preparation of the test
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 5 OIDs 
+# - Storage-Effects: with 5 UIDs 
 # - 4 books are created
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage}}
