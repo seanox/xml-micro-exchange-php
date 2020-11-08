@@ -87,7 +87,7 @@
  * TODO: 
  * - Each node has an internal revision attribute ___rev
  *   Milliseconds since 01/01/2000 alphanumerical radix 36, therefore also lastmodified
- * - Each node has an internal object identify attribute ___oid 
+ * - Each node has an internal object identify attribute ___uid 
  *   Long counter and reflects the order of creation
  * - Hopefully it is unlikely that someone wants to use this names. 
  * - The field can be accessed read but not write.   
@@ -179,34 +179,34 @@ class Storage {
 
     /**
      * Pattern to determine a HTTP request
-     *     Group 0. Full match	
+     *     Group 0. Full match
      *     Group 1. Method
-     *     Group 2.	URI
-     *     Group 3.	Protocoll
+     *     Group 2. URI
+     *     Group 3. Protocoll
      */    
     const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
 
     /**
      * Pattern for the Storage header
-     *     Group 0. Full match	
+     *     Group 0. Full match
      *     Group 1. Storage
-     *     Group 2.	Name of the root element (optional)
+     *     Group 2. Name of the root element (optional)
      */    
     const PATTERN_HEADER_STORAGE = "/^([0-9A-Z]{36})(?:\s+(\w+)){0,1}$/";
 
     /**
      * Pattern to determine the structure of XPath expressions for attributes
-     *     Group 0. Full match	
+     *     Group 0. Full match
      *     Group 1. XPath
-     *     Group 2.	Attribute
+     *     Group 2. Attribute
      */    
     const PATTERN_XPATH_ATTRIBUTE = "/^(\/.*?)\/{0,1}(?<=\/)(?:@|attribute::)(\w+)$/i";
 
     /**
      * Pattern to determine the structure of XPath expressions for pseudo elements
-     *     Group 0. Full match	
+     *     Group 0. Full match
      *     Group 1. XPath
-     *     Group 2.	Attribute
+     *     Group 2. Attribute
      */    
     const PATTERN_XPATH_PSEUDO = "/^(\/.*?)(?:::(before|after|first|last)){0,1}$/i";
 
@@ -305,7 +305,7 @@ class Storage {
         if (filesize($this->store) <= 0) {
             fwrite($this->share,
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" .
-            "<" . $this->root . " ___rev=\"0\" ___oid=\"" . $this->getSerial() . "\"/>");
+            "<" . $this->root . " ___rev=\"0\" ___uid=\"" . $this->getSerial() . "\"/>");
             rewind($this->share);
         }
 
@@ -522,7 +522,7 @@ class Storage {
      * attribute. If necessary, the value is escaped.
      * Another Content-Type are responsed with status 415 (Unsupported Media Type).
      *
-     * The attributes ___rev / ___oid  are used internally and cannot be changed.
+     * The attributes ___rev / ___uid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
      */
     function doPut() {
@@ -553,7 +553,7 @@ class Storage {
         
         // Response:
         //     HTTP/1.0 204 No Content
-        //     Storage-Effects: ... (list of OIDs)
+        //     Storage-Effects: ... (list of UIDs)
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision (number)   
         //     Storage-Space: Total/Used (bytes)
@@ -641,12 +641,12 @@ class Storage {
             $xpath = $matches[1];
             $attribute = $matches[2];
 
-            // The attributes ___rev and ___oid are essential for the internal
+            // The attributes ___rev and ___uid are essential for the internal
             // organization and management of the data and cannot be changed.
             // PUT requests for these attributes are ignored and behave as if
             // no matching node was found. It should say request understood and
             // executed but without effect.
-            if (!in_array($attribute, ["___rev", "___oid"])) {
+            if (!in_array($attribute, ["___rev", "___uid"])) {
                 $targets = (new DOMXpath($this->xml))->query($xpath);
                 if (!empty($targets)) {
                     $this->revision = $this->getRevision() +1;
@@ -656,7 +656,7 @@ class Storage {
                         // addressing of the XML document by the XPath.
                         if ($target->nodeType != XML_ELEMENT_NODE)
                             continue;
-                        $serials[] = $target->getAttribute("___oid");
+                        $serials[] = $target->getAttribute("___uid");
                         $target->setAttribute($attribute, $input); 
                         // The revision is updated at the parent nodes, so you
                         // can later determine which nodes have changed and
@@ -711,9 +711,11 @@ class Storage {
             // The combination with a pseudo element is not possible for a text
             // value. Response with status 415 (Unsupported Media Type).
             if (!empty($pseudo)) {
-                SStorage::addHeaders(415, "Unsupported Media Type");
+                Storage::addHeaders(415, "Unsupported Media Type");
                 exit();
             }   
+
+            $input = file_get_contents('php://input');
             
             // The Content-Type text/xpath is a special of the XMXE Storage.
             // It expects a plain text which is an XPath function.
@@ -742,7 +744,7 @@ class Storage {
                     // analogous to putting attributes.
                     if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
-                    $serials[] = $target->getAttribute("___oid");
+                    $serials[] = $target->getAttribute("___uid");
                     $replace = $this->xml->createElement($target->nodeName, $input);
                     foreach ($target->attributes as $attribute)
                     $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
@@ -789,12 +791,6 @@ class Storage {
         // request will be acknowledged with an error.
         $xml = file_get_contents('php://input');
 
-        // Pseudo elements can be used to put in an XML substructure relative
-        // to the selected element.
-        if (!empty($pseudo)) {
-            // TODO:
-        }
-
         // The request body must also be a valid XML structure, otherwise the
         // request is quit with an error.
         $input = file_get_contents('php://input');
@@ -811,18 +807,18 @@ class Storage {
             exit();
         }
 
-        // The attributes ___rev and ___oid are essential for the internal
+        // The attributes ___rev and ___uid are essential for the internal
         // organization and management of the data and cannot be changed.
-        // When inserting, the attributes ___rev and ___oid are set
+        // When inserting, the attributes ___rev and ___uid are set
         // automatically. These attributes must not be  contained in the XML
-        // structure to be inserted, because all XML elements without ___oid
+        // structure to be inserted, because all XML elements without ___uid
         // attributes are determined after insertion and it is assumed that
-        // they have been newly inserted. This approach was chosen to avoid a
+        // they have been newly inserted. This approach was chosen to avuid a
         // recursive search/iteration in the XML structure to be inserted.
-        $nodes = (new DOMXpath($xml))->query("//*[@___rev|@___oid]");
+        $nodes = (new DOMXpath($xml))->query("//*[@___rev|@___uid]");
         foreach ($nodes as $node) {
             $node->removeAttribute("___rev");
-            $node->removeAttribute("___oid");
+            $node->removeAttribute("___uid");
         }
 
         if ($xml->firstChild->hasChildNodes()) {
@@ -830,43 +826,65 @@ class Storage {
             if (!empty($targets)) {
                 $this->revision = $this->getRevision() +1;
                 foreach ($targets as $target) {
+
                     // Overwriting of the root element is not possible, as it
                     // is an essential part of the storage, and is ignored. It
                     // does not cause to an error, so the behaviour is
                     // analogous to putting attributes.
                     if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
-                    $replace = $target->cloneNode(false);
-                    foreach ($xml->firstChild->childNodes as $insert)
-                        $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
-                    $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
+
+                    // Pseudo elements can be used to put in an XML
+                    // substructure relative to the selected element.
+                    if (empty($pseudo)) {
+                        $replace = $target->cloneNode(false);
+                        foreach ($xml->firstChild->childNodes as $insert)
+                            $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
+                        $target->parentNode->replaceChild($this->xml->importNode($replace), $target);                        
+                    } else if (strcasecmp($pseudo, "before") === 0) {
+                        foreach ($xml->firstChild->childNodes as $insert)
+                            $target->parentNode->insertBefore($this->xml->importNode($insert), $target);
+                    } else if (strcasecmp($pseudo, "after") === 0) {
+                        foreach ($xml->firstChild->childNodes as $insert)
+                            $target->parentNode->appendChild($this->xml->importNode($insert));
+                    } else if (strcasecmp($pseudo, "first") === 0) {
+                        $inserts = $xml->firstChild->childNodes;  
+                        for ($index = $inserts->length -1; $index >= 0; $index--)
+                            $target->insertBefore($this->xml->importNode($inserts->item($index)), $target->firstChild);
+                    } else if (strcasecmp($pseudo, "last") === 0) {                            
+                        foreach ($xml->firstChild->childNodes as $insert)
+                            $target->appendChild($this->xml->importNode($insert));
+                    } else {
+                        Storage::addHeaders(400, "Bad Request");
+                        exit();
+                    }
                 }
             }
         }
 
-        // The attribute ___oid of all newly inserted elements is set.
-        // It is assumed that all elements without the  ___oid attribute are
+        // The attribute ___uid of all newly inserted elements is set.
+        // It is assumed that all elements without the  ___uid attribute are
         // new. The revision of all affected nodes are updated, so you can
         // later determine which nodes have changed and with which revision.
         // Partial access allows the client to check if the data or a tree is
         // still up to date, because he can compare the revision.
 
         $serials = []; 
-        $nodes = (new DOMXpath($this->xml))->query("//*[not(@___oid)]");
+        $nodes = (new DOMXpath($this->xml))->query("//*[not(@___uid)]");
         foreach ($nodes as $node) {
             $serial = $this->getSerial();
             $serials[] = $serial;
-            $node->setAttribute("___oid", $serial); 
+            $node->setAttribute("___uid", $serial); 
             Storage::updateNodeRevision($node, $this->getRevision());
             
-            // Also the OID of the directly addressed element is transmitted to
+            // Also the UID of the directly addressed element is transmitted to
             // the client in the response, because the element itself has not
             // changed, but its content has. Other parent elements are not
             // listed because they are only indirectly affected. So the
             // behaviour is analogous to putting attributes. 
             if ($node->parentNode->nodeType != XML_ELEMENT_NODE)
                 continue;
-            $serial = $node->parentNode->getAttribute("___oid");
+            $serial = $node->parentNode->getAttribute("___uid");
             if (!empty($serial)
                     && !in_array($serial, $serials))
                 $serials[] = $serial;
@@ -912,7 +930,7 @@ class Storage {
      * attribute. If necessary, the value is escaped.
      * Another Content-Type are responsed with status 415 (Unsupported Media Type).
      *
-     * The attributes ___rev / ___oid  are used internally and cannot be changed.
+     * The attributes ___rev / ___uid  are used internally and cannot be changed.
      * Write accesses cause the status 405. 
      */
     function doPatch() {
@@ -941,8 +959,19 @@ class Storage {
         
         // Error Status:
         //    404 Destination does not exist
-        //    405 Write access to attribute ___rev / __oid
+        //    405 Write access to attribute ___rev / __uid
         //    415 Content-Type is not supported
+
+        // PATCH works in principle like PUT.
+        // In comparison PATCH only works for existing elements and attributes.
+        // In addition, no pseudo elements are supported.
+        // The easiest way for the implementation is to check the things that
+        // are not allowed and quit the request with an error.
+        // In all other cases the processing can be passed to PUT.
+
+        // TODO:
+
+        $this->doPut();
     }
 
     function doDelete() {
