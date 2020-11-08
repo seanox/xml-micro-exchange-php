@@ -63,26 +63,6 @@
  * CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
  * with context path if necessary, is used. In this case OPTIONS will hand over
  * the work to CONNECT.
- *  
- *     GET
- * TODO:
- *
- *     PUT
- * Adds to the specified (x)path, a node or an attribute.
- * If the destination already exists, the method behaves like PATCH.
- * PUT expects an existing parent node (destination) to create a new node or
- * attribute. As parent (destination) the path until the last occurrence of the
- * slash or @ is interpreted. Only the last fragment after the last occurrence
- * of slash or @ is used as the node or attribute to be created. Creating new
- * complex branches seems tedious, but here PUT can insert complex XML fragments. 
- * 
- * pseudo-elements
- *
- *     PATCH
- * TODO:
- *
- *     DELETE 
- * TODO:
  *
  * TODO: 
  * - Each node has an internal revision attribute ___rev
@@ -499,77 +479,94 @@ class Storage {
     }
 
     /**
-     * Adds to the specified path, a node or an attribute.
-     * If the destination already exists, the method behaves like PATCH.
-     * PUT expects an existing parent node (destination) to create a new node
-     * or attribute. As parent (destination) the path until the last occurrence
-     * of the slash or @ is interpreted. Only the last fragment after the last
-     * occurrence of slash or @ is used as the node or attribute to be created.
-     * Creating new complex branches seems tedious, but here PUT can insert
-     * complex XML fragments. 
+     * PUT inserts new elements and attributes into the storage.
+     * The position for the insert is defined via an XPath.
+     * XPath uses different notations for elements and attributes.
+     * The notation for attributes use the following structure at the end.
+     *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
+     * The attribute values can be static (text) and dynamic (XPath function).
+     * Values are send as request-body.
+     * Whether they are used as text or XPath function is decided by the
+     * Content-Type header of the request.
+     *     text/plain: static text
+     *     text/xpath: XPath function
      * 
-     * The Content-Type of the request defines the data type.
+     * If the XPath notation corresponds to attributes, elements are assumed.
+     * For elements, the notation for pseudo elements is also supported: 
+     *     <XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
+     * Pseudo elements are a relative position specification to the selected
+     * element.
+     * 
+     * The value of elements can be static (text), dynamic (XPath function) or
+     * or be an XML structure. Again, the value is transmitted with the
+     * request-body and the type of processing is determined by the Content-Type:
+     *     text/plain: static text
+     *     text/xpath: XPath function
+     *     application/xslt+xml: XML structure
+     * 
+     * The PUT method works resolutely and inserts or overwrites existing data.
+     * The processing of the XPath is strict and dispenses with superfluous
+     * spaces. The attributes ___rev / ___uid used internally by the storage
+     * are read-only and cannot be changed.
+     * 
+     * In general, if no target can be reached via XPath, no errors will occur.
+     * The PUT method informs the client about changes made via the response
+     * headers Storage-Effects and Storage-Revision. The header Storage-Effects
+     * contains a list of the UIDs that were directly affected by the change
+     * and also contains the UIDs of newly created elements. If no changes were
+     * made because the XPath cannot find a target or the target is read-only,
+     * the header Storage-Effects can be omitted completely in the response.
+     * Also in this case the request is responded with status 204 as
+     * successfully executed.
+     * 
+     * Syntactic and symantic errors in the request and/or XPath and/or value
+     * can cause error status 400 and 415.
+     * 
+     *     Request:
+     * PUT /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Content-Length: Bytes
+     * Content-Type: application/xslt+xml
+     *     Request-Body:
+     * XML structure
      *
-     * Nodes supports text/plain and application/xslt+xml.
-     *     text/plain
-     * Inserts a text as content for the node (inner node).
-     * If necessary, CDATA is used.
-     *     application/xslt+xml
-     * Replaces the node with an XML fragment (outer node).
-     * Another Content-Type are responsed with status 415 (Unsupported Media Type).
-     *       
-     * Attributes supports only text/plain and replaces the value of the
-     * attribute. If necessary, the value is escaped.
-     * Another Content-Type are responsed with status 415 (Unsupported Media Type).
-     *
-     * The attributes ___rev / ___uid  are used internally and cannot be changed.
-     * Write accesses cause the status 405. 
+     *     Request:
+     * PUT /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Content-Length: Bytes
+     *  Content-Type: text/plain
+     *     Request-Body:
+     * Value as plain text
+     * 
+     *     Request:
+     * PUT /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Content-Length: Bytes
+     * Content-Type: text/xpath
+     *     Request-Body:
+     * name(/*)   
+     *  
+     *     Response:
+     * HTTP/1.0 204 No Content
+     * Storage-Effects: ... (list of UIDs)
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage-Revision: Revision (number)   
+     * Storage-Space: Total/Used (bytes)
+     * Storage-Last-Modified: Timestamp (RFC822)
+     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * 
+     *     Response codes/ behavior:
+     *         HTTP/1.0 204 No Content
+     * - Attributes successfully created or set
+     *         HTTP/1.0 400 Bad Request
+     * - XPath is missing or malformed
+     * - XPath without addressing a target is responded with status 204
+     *         HTTP/1.0 404 Resource Not Found
+     * - Storage is invalid 
+     *         HTTP/1.0 415 Unsupported Media Type
+     * - Attribute request without Content-Type text/plain
      */
     function doPut() {
-    
-        // Request:
-        //     PUT /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Content-Length: Bytes
-        //     Content-Type: application/xslt+xml
-        // Request-Body:
-        //     XML fragment for the node to be added
-
-        // Request:
-        //     PUT /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Content-Length: Bytes
-        //     Content-Type: text/plain
-        // Request-Body:
-        //     Value as plain text
-
-        // Request:
-        //     PUT /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Content-Length: Bytes
-        //     Content-Type: text/xpath
-        // Request-Body:
-        //     name(/*)   
-        
-        // Response:
-        //     HTTP/1.0 204 No Content
-        //     Storage-Effects: ... (list of UIDs)
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Storage-Revision: Revision (number)   
-        //     Storage-Space: Total/Used (bytes)
-        //     Storage-Last-Modified: Timestamp (RFC822)
-        //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
-
-        // Response codes/ behavior:
-        //     HTTP/1.0 204 No Content
-        // - Attributes successfully created or set   
-        //     HTTP/1.0 400 Bad Request
-        // - XPath is missing or malformed
-        // - XPath without addressing a target is responded with status 204
-        //     HTTP/1.0 404 Resource Not Found
-        // - Storage is invalid 
-        //     HTTP/1.0 415 Unsupported Media Type
-        // - Attribute request without Content-Type text/plain
         
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath)) {
