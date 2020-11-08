@@ -1,0 +1,53 @@
+@service = http://127.0.0.1/xmex
+@storage = 0000000000000000000000000000000000PE books
+
+# Test sequence for putting XML structures into storage.
+
+# Initial request to establish the storage
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 5 UIDs 
+# - 4 books are overwritten
+# - all new elements have the attributes ___rev and ___uid
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 76
+
+<book title="A2"/>
+<book title="B2"/>
+<book title="C2"/>
+<book title="D2"/>
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 5 UIDs 
+# - 4 books are overwritten
+# - 4 books with chapter are created
+# - all new elements have the attributes ___rev and ___uid
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text A3</chapter>
+</book>
+
+###

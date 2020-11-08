@@ -1,0 +1,81 @@
+@service = http://127.0.0.1/xmex
+@storage = 0000000000000000000000000000000000PP books
+
+# Test sequence for storing XML structures into storage using pseudo elements.
+# Pseudo elements serve as relative navigation to elements that are addressed
+# by XPath: BEFORE AFTER FIRST LAST
+# They are used to relativize the position of an element. 
+
+# Initial request to establish the storage
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Initial request to establish the storage
+# Expectations:
+# - Status code 204 No Content
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 76
+
+<book title="A2"/>
+<book title="B2"/>
+<book title="C2"/>
+<book title="D2"/>
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - before-elements are put in /books before first book (order A,B,C)
+PUT {{service}}/books/book[1]::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 76
+
+<before id="beforeA"/>
+<before id="beforeB"/>
+<before id="beforeC"/>
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - after-elements are put in /books after last book (order A,B,C)
+PUT {{service}}/books/book[last()]::after HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 76
+
+<after id="afterA"/>
+<after id="afterB"/>
+<after id="afterC"/>
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - first-elements are put in /books as first elements before the existing (order A,B,C)
+PUT {{service}}/books::first HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 76
+
+<first id="firstA"/>
+<first id="firstB"/>
+<first id="firstC"/>
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - last-elements are put in /books as last elements after the existing (order A,B,C)
+PUT {{service}}/books::last HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 76
+
+<last id="lastA"/>
+<last id="lastB"/>
+<last id="lastC"/>
+
+###

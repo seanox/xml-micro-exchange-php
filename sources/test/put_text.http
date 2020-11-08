@@ -1,0 +1,128 @@
+@service = http://127.0.0.1/xmex
+@storage = 0000000000000000000000000000000000PT books
+
+# Test sequence for putting text into elements of the storage.
+
+# Initial request to establish the storage
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 1 UIDs 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+Hello Internet!
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 1 UIDs 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 206
+
+<book title="A2">
+  <comment></comment>
+</book>
+<book title="B2">
+  <comment></comment>
+</book>
+<book title="C2">
+  <comment></comment>
+</book>
+<book title="D2">
+  <comment></comment>
+</book>
+
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 1 UIDs 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PUT {{service}}/books/book[1] HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 6
+
+Text A
+
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 1 UIDs 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PUT {{service}}/books/book/comment HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+Text B
+
+###
+# Using unicode should not cause problems.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 1 UIDs 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with encoded text and without further elements
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 37
+
+№ <123> äüö &&amp; "§-ß" '€'
+
+###
+# Using XPath function should work.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 1 UIDs 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with books as text and without further elements
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+name(/*)
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status 400 Bad Request
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+name(/+)
+
+###
