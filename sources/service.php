@@ -35,22 +35,6 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *     CONNECT
- * Initiates the use of a datasource.
- * A datasource (storage) is a temporary XML construct. It is based on a
- * cryptic ID (storage name) and optionally the name of the root element, which
- * must be transmitted with  every request.
- * This is similar to the header host for virtual servers.
- * The storage is only a temporary place for data exchange. Any client who
- * knows the path can access, use and design it.
- * There are no rules, only the clients know the rules.
- * A storage expires with all information if it is not used (read/write).
- * 
- * In addition, OPTIONS can also be used as an alternative to CONNECT, because
- * CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
- * with context path if necessary, is used. In this case OPTIONS will hand over
- * the work to CONNECT.
- *
  *     OPTIONS
  * Selects one or more elements and also attributes to an XPath and returns
  * meta information about them and the datasource in general.
@@ -121,7 +105,10 @@ class Storage {
     /** Maximum number of files in data storage */
     const QUANTITY = 65535;
 
-    /** Maximum data size of files in data storage in bytes */
+    /** 
+     * Maximum data size of files in data storage in bytes.
+     * The value also limits the size of the requests(-body).
+     */
     const SPACE = 256 *1024;
 
     /** Maximum idle time of the files in seconds */
@@ -293,7 +280,7 @@ class Storage {
         $size = ftell($this->share);
         rewind($this->share);
         $this->xml = new DOMDocument();
-        $this->xml-> loadXML(fread($this->share, $size));
+        $this->xml->loadXML(fread($this->share, $size));
     } 
     
     function close() {
@@ -301,9 +288,19 @@ class Storage {
         if ($this->share == null)
             return;
 
-        ftruncate($this->share, 0);
-        rewind($this->share);
-        fwrite($this->share, $this->xml->saveXML());    
+        // The size of the storage is limited by Storage::SPACE because it is a
+        // volatile micro datasource for short-term data exchange. 
+        // Exceeding it leads to the status xxx.
+        $output = $this->xml->saveXML();
+        if (strlen($output) <= Storage::SPACE) {
+            ftruncate($this->share, 0);
+            rewind($this->share);
+            fwrite($this->share, $output);    
+        } else {
+            header_remove();
+            Storage::addHeaders(413, "Payload Too Large");
+            exit();
+        }
 
         flock($this->share, LOCK_UN);
         fclose($this->share);
@@ -363,49 +360,67 @@ class Storage {
         }
     }
 
+    /**
+     * CONNECT initiates the use of a storage.
+     * A storage is a volatile XML construct that is used via a datasource URL.
+     * The datasource managed several independent storages.
+     * Each storage has a name specified by the client, which must be sent with
+     * each request. This is similar to the header host for virtual servers.
+     * Optionally, the name of the root element can also be defined by the
+     * client.
+     * 
+     * Each client can create a new storage at any time.
+     * Communication is established when all parties use the same name.
+     * There are no rules, only the clients know the rules.
+     * A storage expires with all information if it is not used (read/write).
+     * 
+     * In addition, OPTIONS can also be used as an alternative to CONNECT,
+     * because CONNECT is not an HTTP standard. For this purpose OPTIONS
+     * without XPath, but with context path if necessary, is used. In this case
+     * OPTIONS will hand over the work to CONNECT.
+     * 
+     *     Request:
+     * CONNECT / HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * 
+     *     Request:
+     * CONNECT / HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root
+     * 
+     *    Response:
+     * HTTP/1.0 201 Created
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage-Revision: Revision (number) 
+     * Storage-Space: Total/Used (bytes)
+     * Storage-Last-Modified: Timestamp (RFC822)
+     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * 
+     *     Response:
+     * HTTP/1.0 202 Accepted
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage-Revision: Revision (number)
+     * Storage-Space: Total/Used (bytes)
+     * Storage-Last-Modified: Timestamp (RFC822)
+     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * 
+     *     Response codes / behavior:
+     *         HTTP/1.0 201 Resource Created
+     * - Response can be status 201 if the storage was newly created
+     *         HTTP/1.0 202 Accepted
+     * - Response can be status 202 if the storage already exists#
+     *         HTTP/1.0 400 Bad Request
+     * - Requests without XPath are responded with status 400 Bad Request
+     * - Requests with a invalid Storage header are responded with status 400
+     *   Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
+     * - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
+     *         HTTP/1.0 404 Resource Not Found   
+     * - Only mentioned here for completeness.
+     *   Occurs when the storage exists but the name of the root element does
+     *   not match.  
+     *         HTTP/1.0 507 Insufficient Storage
+     * - Response can be status 507 if the storage is full
+     */
     function doConnect() {
-
-        // Request:
-        //     CONNECT / HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-
-        // Request:
-        //     CONNECT / HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root
-
-        // Response:
-        //     HTTP/1.0 201 Created
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Storage-Revision: Revision (number)   
-        //     Storage-Space: Total/Used (bytes)
-        //     Storage-Last-Modified: Timestamp (RFC822)
-        //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
-
-        // Response:
-        //     HTTP/1.0 202 Accepted
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Storage-Revision: Revision (number)   
-        //     Storage-Space: Total/Used (bytes)
-        //     Storage-Last-Modified: Timestamp (RFC822)
-        //     Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
-
-        // Response codes/ behavior:
-        //     HTTP/1.0 201 Resource Created
-        // - Response can be status 201 if the storage was newly created
-        //     HTTP/1.0 202 Accepted
-        // - Response can be status 202 if the storage already exists
-        //     HTTP/1.0 400 Bad Request
-        // - Requests without XPath are responded with status 400 Bad Request
-        // - Requests with a invalid Storage header are responded with status
-        //   400 Bad Request, exactly 36 characters are expected
-        //   Pattern: [0-9A-Z]{36}
-        // - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
-        //     HTTP/1.0 404 Resource Not Found   
-        // - Only mentioned here for completeness.
-        //   Occurs when the storage exists but the name of the root element
-        //   does not match.  
-        //     HTTP/1.0 507 Insufficient Storage   
-        // - Response can be status 507 if the storage is full
 
         if (!empty($this->xpath)) {
             Storage::addHeaders(400, "Bad Request");
@@ -555,7 +570,7 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * 
-     *     Response codes/ behavior:
+     *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
      * - Attributes successfully created or set
      *         HTTP/1.0 400 Bad Request
@@ -563,6 +578,8 @@ class Storage {
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
      * - Storage is invalid 
+     *         HTTP/1.0 413 Payload Too Large
+     * - Allowed size of the request(-body) and/or storage is exceeded
      *         HTTP/1.0 415 Unsupported Media Type
      * - Attribute request without Content-Type text/plain
      */
@@ -839,11 +856,13 @@ class Storage {
                             $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
                         $target->parentNode->replaceChild($this->xml->importNode($replace), $target);                        
                     } else if (strcasecmp($pseudo, "before") === 0) {
-                        foreach ($xml->firstChild->childNodes as $insert)
-                            $target->parentNode->insertBefore($this->xml->importNode($insert), $target);
+                        if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
+                            foreach ($xml->firstChild->childNodes as $insert)
+                                $target->parentNode->insertBefore($this->xml->importNode($insert), $target);
                     } else if (strcasecmp($pseudo, "after") === 0) {
-                        foreach ($xml->firstChild->childNodes as $insert)
-                            $target->parentNode->appendChild($this->xml->importNode($insert));
+                        if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
+                            foreach ($xml->firstChild->childNodes as $insert)
+                                $target->parentNode->appendChild($this->xml->importNode($insert));
                     } else if (strcasecmp($pseudo, "first") === 0) {
                         $inserts = $xml->firstChild->childNodes;  
                         for ($index = $inserts->length -1; $index >= 0; $index--)
@@ -1119,6 +1138,13 @@ if (substr($xpath, 0, 1) !== "/"
         && !in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["OPTIONS", "CONNECT"]))
     $xpath = "/" . $xpath;        
 $storage = Storage::share($storage, $xpath);
+
+// Storage::SPACE also limits the maximum size of request(-body).
+// If the limit is exceeded, the request is quit with status 413. 
+if (strlen(file_get_contents('php://input')) > Storage::SPACE) {
+    Storage::addHeaders(413, "Payload Too Large");
+    exit();
+}
 
 try {
     switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
