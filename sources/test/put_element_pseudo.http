@@ -79,3 +79,77 @@ Content-Length: 58
 <last id="lastC"/>
 
 ###
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects and 5 UIDs  
+# - No changes in the storage
+PUT {{service}}/books::wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 64
+
+<wrong id="wrongA"/>
+<wrong id="wrongB"/>
+<wrong id="wrongC"/>
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects and 5 UIDs  
+# - No changes in the storage
+PUT {{service}}/books::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 64
+
+<wrong id="wrongA"/>
+<wrong id="wrongB"/>
+<wrong id="wrongC"/>
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects and 5 UIDs  
+# - No changes in the storage
+PUT {{service}}/books::after HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 64
+
+<wrong id="wrongA"/>
+<wrong id="wrongB"/>
+<wrong id="wrongC"/>
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects and 5 UIDs  
+# - No changes in the storage
+PUT {{service}}/*/..::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 64
+
+<wrong id="wrongA"/>
+<wrong id="wrongB"/>
+<wrong id="wrongC"/>
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects and 5 UIDs  
+# - No changes in the storage
+PUT {{service}}/books/..::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 64
+
+<wrong id="wrongA"/>
+<wrong id="wrongB"/>
+<wrong id="wrongC"/>
+
+###

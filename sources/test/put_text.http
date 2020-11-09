@@ -124,3 +124,29 @@ Content-Length: 8
 name(/+)
 
 ###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects and 5 UIDs  
+# - No changes in the storage
+PUT {{service}}/*/.. HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects and 5 UIDs  
+# - No changes in the storage
+PUT {{service}}/books/.. HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###

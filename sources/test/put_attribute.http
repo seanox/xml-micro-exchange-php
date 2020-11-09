@@ -196,3 +196,33 @@ Content-Length: 15
 123456789ABCDEF
 
 ###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+#   the addressing of the XML document is detected
+# - Response without Storage-Effects header, such a request has no effect
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}//books/../@___xxx HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+#   the addressing of a the XML document is detected
+# - Response without Storage-Effects header, such a request has no effect
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}/*/../@___xxx HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
