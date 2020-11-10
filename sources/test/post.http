@@ -171,7 +171,7 @@ Content-Length: 9974
 </cities>
 
 ###
-# Valid XSLT with output
+# Valid XSLT without XPath and with output
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 640
@@ -198,6 +198,35 @@ Content-Length: 841
       </xsl:for-each>
 	    </areas>
     </city>	
+  </xsl:template>
+</xsl:stylesheet>
+
+###
+# Valid XSLT without XPath and with output
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 397
+# - Content-Type: application/xslt+xml
+# - Only an extract of the data selected by XPath.
+POST {{service}}//district[@name='Lichtenberg'] HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 841
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/">
+    <xsl:variable name="district" select="/district/@name"/>  
+    <district name="{$district}">
+	  <quarters>
+	  <xsl:for-each select="//quarter">
+	  <xsl:variable name="quarter" select="@name"/>
+	    <quarter name="{$quarter}"/>
+	  </xsl:for-each>
+      </quarters>
+	</district>
   </xsl:template>
 </xsl:stylesheet>
 
