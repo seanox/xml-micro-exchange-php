@@ -41,13 +41,38 @@ Content-Length: 230
   <chapter>Text A3</chapter>
 </book>
 <book title="B3">
-  <chapter>Text A3</chapter>
+  <chapter>Text B3</chapter>
 </book>
 <book title="C3">
-  <chapter>Text A3</chapter>
+  <chapter>Text C3</chapter>
 </book>
 <book title="D3">
-  <chapter>Text A3</chapter>
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 5 UIDs 
+# - 4 books are overwritten
+# - 4 books with chapter are created
+# - all new elements have the attributes ___rev and ___uid
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter><![CDATA[Text A3]]></chapter>
+</book>
+<book title="B3">
+  <chapter><![CDATA[Text B3]]></chapter>
+</book>
+<book title="C3">
+  <chapter><![CDATA[Text C3]]></chapter>
+</book>
+<book title="D3">
+  <chapter><![CDATA[Text D3]]></chapter>
 </book>
 
 ###
