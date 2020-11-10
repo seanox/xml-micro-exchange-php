@@ -177,6 +177,12 @@ class Storage {
      */    
     const PATTERN_XPATH_PSEUDO = "/^(\/.*?)(?:::(before|after|first|last)){0,1}$/i";
 
+    const CONTENT_TYPE_TEXT = "text/plain";
+    
+    const CONTENT_TYPE_XPATH = "text/xpath";
+    
+    const CONTENT_TYPE_XML = "application/xslt+xml";
+
     private function __construct($storage, $root, $xpath) {
 
         $this->storage = $storage;
@@ -491,6 +497,61 @@ class Storage {
     }
 
     function doPost() {
+
+        // Without existing storage the request is not valid.
+        if (!$this->exists()) {
+            Storage::addHeaders(404, "Resource Not Found");
+            exit();
+        }        
+
+        // POST always expects an valid XSLT template for transformation.
+        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0) {
+            Storage::addHeaders(415, "Unsupported Media Type");
+            exit();
+        }
+
+        // POST always expects an valid XSLT template for transformation.
+        libxml_use_internal_errors(true);
+        $style = new DOMDocument();
+        if (!$style->loadXML(file_get_contents('php://input'))) {
+            Storage::addHeaders(400, "Bad Request");
+            exit();
+        }
+
+        $processor = new XSLTProcessor();
+        $processor->importStyleSheet($style);
+
+        $xml = $this->xml;
+        if (!empty($this->xpath)) {
+            $xml = new DOMDocument();
+            $targets = (new DOMXpath($this->xml))->query($this->xpath);
+            foreach ($targets as $target)
+                $xml->appendChild( $xml->importNode($target, true));
+        }
+        
+        $output = $processor->transformToXML($xml);
+        if ($output === false) {
+            Storage::addHeaders(400, "Bad Request");
+            exit();            
+        }
+         
+        // TODO: Get Content-Type from the stylesheet: <xsl:output method="xml"/>
+        Storage::addHeaders(200, "Success", [
+            "Storage" => $this->storage,
+            "Storage-Revision" => $this->getRevision(),
+            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+            "Storage-Last-Modified" => date(DateTime::RFC822),
+            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822),
+            "Content-Length" => strlen($output),
+            "Content-Type" => "application/xslt+xml"
+        ]);        
+
+        print($output);
+
+        // The function and the reponse are complete.
+        // The storage can be closed and the requests can be terminated.
+        $this->close();
+        exit;
     }
 
     /**
@@ -597,6 +658,13 @@ class Storage {
             exit();
         }
 
+        // Storage::SPACE also limits the maximum size of writing request(-body).
+        // If the limit is exceeded, the request is quit with status 413. 
+        if (strlen(file_get_contents('php://input')) > Storage::SPACE) {
+            Storage::addHeaders(413, "Payload Too Large");
+            exit();
+        }
+
         // For all PUT requests the Content-Type is needed, because for putting
         // in XML structures and text is distinguished.
         if (!isset($_SERVER["CONTENT_TYPE"])) {
@@ -627,7 +695,7 @@ class Storage {
 
             // For attributes only the Content-Type text/plain and text/xpath
             // are supported, for other Content-Types no conversion exists.
-            if (!in_array(strtolower($_SERVER["CONTENT_TYPE"]), ["text/plain", "text/xpath"])) {
+            if (!in_array(strtolower($_SERVER["CONTENT_TYPE"]), [Storage::CONTENT_TYPE_TEXT, Storage::CONTENT_TYPE_XPATH])) {
                 Storage::addHeaders(415, "Unsupported Media Type");
                 exit();                
             }
@@ -641,7 +709,7 @@ class Storage {
             // Content-Type text/plain. Even if the target is mutable, the
             // XPath function is executed only once and the result is put on
             // all targets.
-            if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
+            if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 libxml_use_internal_errors(true);
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false) {
@@ -720,7 +788,7 @@ class Storage {
         // - text/plain for static values (text)
         // - text/xpath for dynamic values, based on XPath functions
 
-        if (in_array(strtolower($_SERVER["CONTENT_TYPE"]), ["text/plain", "text/xpath"])) {
+        if (in_array(strtolower($_SERVER["CONTENT_TYPE"]), [Storage::CONTENT_TYPE_TEXT, "text/xpath"])) {
 
             // The combination with a pseudo element is not possible for a text
             // value. Response with status 415 (Unsupported Media Type).
@@ -796,7 +864,7 @@ class Storage {
         // Only an XML structure can be inserted, nothing else is supported.
         // So only the Content-Type application/xslt+xml can be used.
 
-        if (strcasecmp($_SERVER["CONTENT_TYPE"], "application/xslt+xml") !== 0) {
+        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0) {
             Storage::addHeaders(415, "Unsupported Media Type");
             exit();
         }
@@ -1035,6 +1103,15 @@ class Storage {
 
     static function onError($error, $message, $file, $line, $vars = array()) {
 
+        // Special case XSLTProcessor errors
+        // These cannot be caught any other way. Therefore the error header
+        // is implemented here.
+        $filter = "XSLTProcessor::transformToXml()"; 
+        if (substr($message, 0, strlen($filter)) === $filter) {
+            Storage::addHeaders(400, "Bad Request");
+            exit;
+        }
+
         $unique = "#" . Storage::uniqueId();
         $message = "$message" . PHP_EOL . "\tat $file $line";
         if (!is_numeric($error))
@@ -1131,20 +1208,15 @@ if ((!isset($_SERVER["PATH_INFO"])
     }
 }
 
-// With the exception of CONNECT and OPTIONS, all requests expect an XPath,
-// which must start with a slash.
+// With the exception of CONNECT, OPTIONS and POST, all requests expect an
+// XPath, which must start with a slash.
 // CONNECT and OPTIONS do not use an (X)Path to establish a storage.
+// POST uses the XPath for transformation only optionally to delimit the XML
+// data for the transformation and works also without.
 if (substr($xpath, 0, 1) !== "/"
-        && !in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["OPTIONS", "CONNECT"]))
+        && !in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/" . $xpath;        
 $storage = Storage::share($storage, $xpath);
-
-// Storage::SPACE also limits the maximum size of request(-body).
-// If the limit is exceeded, the request is quit with status 413. 
-if (strlen(file_get_contents('php://input')) > Storage::SPACE) {
-    Storage::addHeaders(413, "Payload Too Large");
-    exit();
-}
 
 try {
     switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
