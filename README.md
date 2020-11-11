@@ -30,6 +30,20 @@ exchange but not as a real-time capable long-term storage.
 Compared to a JSON storage, this datasource supports dynamic and partial access,
 data transformation and a volatile short-term storage. 
 
+__Why all this?__
+
+Static web applications on different clients want to communicate with each
+other, e.g. for games, chats and collaboration.
+
+Smart sensors want to share their data and smart devices want to access this
+data and also exchange data with each other.
+
+Clients can establish dynamically volatile networks.
+
+__In this communication are all participants.__  
+__No one is server or master, all are equal and no one has to know the other.__  
+__All meet without obligation.__
+
 
 # Features
 TODO:
