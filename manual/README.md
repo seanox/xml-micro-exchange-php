@@ -49,9 +49,8 @@ equivalent based on XML, XPath and XSLT was born.
 The focus should be on a public, volatile and short-term data exchange for
 (static) web applications and IoT.
 
--- Just exchange data without a own server landscape.
-
-
+-- Just exchange data without a own server landscape.  
+-- Just exchange data without knowing and managing all clients.
 
 
 ## Installation

@@ -12,6 +12,15 @@
 
 
 # Description
+The origin of the project is the desire for an easily accessible place for data
+exchange on the Internet. Inspired by JSON-Storages the idea of a feature-rich
+equivalent based on XML, XPath and XSLT was born.  
+The focus should be on a public, volatile and short-term data exchange for
+(static) web applications and IoT.
+
+-- Just exchange data without a own server landscape.  
+-- Just exchange data without knowing and managing all clients.  
+
 XML-Micro-Exchange is a volatile RESTful micro datasource.  
 It is designed for easy communication and data exchange of web-based
 applications and for IoT.  
@@ -19,7 +28,7 @@ The XML based datasource is volatile and lives through continuous use and
 expires through inactivity. They are designed for active and near real-time data
 exchange but not as a real-time capable long-term storage.  
 Compared to a JSON storage, this datasource supports dynamic and partial access,
-data transformation and a volatile short-term storage.  
+data transformation and a volatile short-term storage. 
 
 
 # Features
