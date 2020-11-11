@@ -10,47 +10,33 @@ Machine translation with [DeepL](https://deepl.com).
 * [Configuration](#configuration)
 * [API](#api)
   * [CONNECT](#connect)
-    * [Request](#)
-      * [Example](#)
-    * [Reponse](#)
-      * [Example](#)
-    * [Response codes / behavior](#)
+    * [Request](#request)
+    * [Reponse](#reponse)
+    * [Response codes / behavior](#response-codes--behavior)
   * [GET](#get)
-    * [Request](#)
-      * [Example](#)
-    * [Reponse](#)
-      * [Example](#)
-    * [Response codes / behavior](#)
+    * [Request](#request-1)
+    * [Reponse](#reponse-1)
+    * [Response codes / behavior](#response-codes--behavior-1)
   * [DELETE](#delete)
-    * [Request](#)
-      * [Example](#)
-    * [Reponse](#)
-      * [Example](#)
-    * [Response codes / behavior](#)
+    * [Request](#request-2)
+    * [Reponse](#reponse-2)
+    * [Response codes / behavior](#response-codes--behavior-2)
   * [OPTIONS](#options)
-    * [Request](#)
-      * [Example](#)
-    * [Reponse](#)
-      * [Example](#)
-    * [Response codes / behavior](#)
+    * [Request](#request-3)
+    * [Reponse](#reponse-3)
+    * [Response codes / behavior](#response-codes--behavior-3)
   * [PATCH](#patch)
-    * [Request](#)
-      * [Example](#)
-    * [Reponse](#)
-      * [Example](#)
-    * [Response codes / behavior](#)
+    * [Request](#request-4)
+    * [Reponse](#reponse-4)
+    * [Response codes / behavior](#response-codes--behavior-4)
   * [POST](#post)
-    * [Request](#)
-      * [Example](#)
-    * [Reponse](#)
-      * [Example](#)
-    * [Response codes / behavior](#)
+    * [Request](#request-5)
+    * [Reponse](#reponse-5)
+    * [Response codes / behavior](#response-codes--behavior-5)
   * [PUT](#put)
-    * [Request](#)
-      * [Example](#)
-    * [Reponse](#)
-      * [Example](#)
-    * [Response codes / behavior](#)
+    * [Request](#request-6)
+    * [Reponse](#reponse-6)
+    * [Response codes / behavior](#response-codes--behavior-6)
 * [Development](#development)
 * [Test](#test)
 
@@ -61,8 +47,11 @@ The origin of the project is the desire for an easily accessible place for data
 exchange on the Internet. Inspired by JSON-Storages the idea of a feature-rich
 equivalent based on XML, XPath and XSLT was born.  
 The focus should be on a public, volatile and short-term data exchange for
-(static) web applications and IoT -- Just exchange data without a own server
-landscape. 
+(static) web applications and IoT.
+
+-- Just exchange data without a own server landscape.
+
+
 
 
 ## Installation
