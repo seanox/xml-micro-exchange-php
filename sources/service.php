@@ -479,7 +479,7 @@ class Storage {
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
-        //     Content-Length: Bytes
+        //     Content-Length: (bytes)
         //     Content-Type: text/plain        
 
         // Request:
@@ -491,10 +491,48 @@ class Storage {
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
-        //     Content-Length: Bytes
+        //     Content-Length: (bytes)
         //     Content-Type: application/xslt+xml
     }
 
+    /**
+     * POST is another way to query data via transformation.
+     * For this, an XSLT stylesheet is sent with the request-body, which is
+     * then applied by the XSLT processor to the data in storage.
+     * Thus the content type application/xslt+xml is always required.
+     * The client defines the content type for the output with the output-tag
+     * and the method-attribute. 
+     * The XPath is optional for this method and is used to limit and preselect
+     * the data.
+     * 
+     *     Request:
+     * POST /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Content-Length: (bytes)
+     * Content-Type: application/xslt+xml
+     *     Request-Body:
+     * XSLT stylesheet    
+     *  
+     *     Response:
+     * HTTP/1.0 200 Success
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage-Revision: Revision (number)   
+     * Storage-Space: Total/Used (bytes)
+     * Storage-Last-Modified: Timestamp (RFC822)
+     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Content-Length: (bytes)
+     * 
+     *     Response codes / behavior:
+     *         HTTP/1.0 200 Success
+     * - Request was successfully executed
+     *         HTTP/1.0 400 Bad Request
+     * - XPath is malformed
+     * - XSLT Stylesheet is erroneous
+     *         HTTP/1.0 404 Resource Not Found
+     * - Storage is invalid 
+     *         HTTP/1.0 415 Unsupported Media Type
+     * - Attribute request without Content-Type text/plain
+     */
     function doPost() {
 
         // Without existing storage the request is not valid.
@@ -579,7 +617,7 @@ class Storage {
      * element.
      * 
      * The value of elements can be static (text), dynamic (XPath function) or
-     * or be an XML structure. Again, the value is transmitted with the
+     * be an XML structure. Again, the value is transmitted with the
      * request-body and the type of processing is determined by the Content-Type:
      *     text/plain: static text
      *     text/xpath: XPath function
@@ -606,7 +644,7 @@ class Storage {
      *     Request:
      * PUT /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Content-Length: Bytes
+     * Content-Length: (bytes)
      * Content-Type: application/xslt+xml
      *     Request-Body:
      * XML structure
@@ -614,7 +652,7 @@ class Storage {
      *     Request:
      * PUT /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Content-Length: Bytes
+     * Content-Length: (bytes)
      *  Content-Type: text/plain
      *     Request-Body:
      * Value as plain text
@@ -622,7 +660,7 @@ class Storage {
      *     Request:
      * PUT /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Content-Length: Bytes
+     * Content-Length: (bytes)
      * Content-Type: text/xpath
      *     Request-Body:
      * name(/*)   
