@@ -178,9 +178,7 @@ class Storage {
     const PATTERN_XPATH_PSEUDO = "/^(\/.*?)(?:::(before|after|first|last)){0,1}$/i";
 
     const CONTENT_TYPE_TEXT = "text/plain";
-    
     const CONTENT_TYPE_XPATH = "text/xpath";
-    
     const CONTENT_TYPE_XML = "application/xslt+xml";
 
     private function __construct($storage, $root, $xpath) {
@@ -248,6 +246,7 @@ class Storage {
         if (!file_exists(Storage::DIRECTORY))
             mkdir(Storage::DIRECTORY, true);
         $storage = new Storage($storage, $root, $xpath);
+
         if ($storage->exists()) {
             $storage->open();
             // Safe is safe, if not the default 'data'' is used,
@@ -534,8 +533,14 @@ class Storage {
             Storage::addHeaders(400, "Bad Request");
             exit();            
         }
-         
-        // TODO: Get Content-Type from the stylesheet: <xsl:output method="xml"/>
+
+        $media = (new DOMXpath($style))->query("//*[local-name()='output']/@method");
+        if (!empty($media)
+                && $media->length > 0
+                && strcasecmp($media[0]->nodeValue, "text") === 0)
+            $media = Storage::CONTENT_TYPE_TEXT;
+        else $media = Storage::CONTENT_TYPE_XML;             
+
         Storage::addHeaders(200, "Success", [
             "Storage" => $this->storage,
             "Storage-Revision" => $this->getRevision(),
@@ -543,7 +548,7 @@ class Storage {
             "Storage-Last-Modified" => date(DateTime::RFC822),
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822),
             "Content-Length" => strlen($output),
-            "Content-Type" => "application/xslt+xml"
+            "Content-Type" => $media
         ]);        
 
         print($output);
