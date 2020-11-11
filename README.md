@@ -146,6 +146,22 @@ Alternatively, the script can be called directly and passed to XPath as a query
 string.
 
 
+# Manual
+* [Motivation](manual/README.md#motivation)
+* [Installation](manual/README.md#installation)
+* [Configuration](manual/README.md#configuration)
+* [API](manual/README.md#api)
+  * [CONNECT](manual/README.md#connect)
+  * [GET](manual/README.md#get)
+  * [DELETE](manual/README.md#delete)
+  * [OPTIONS](manual/README.md#options)
+  * [PATCH](manual/README.md#patch)
+  * [POST](manual/README.md#post)
+  * [PUT](manual/README.md#put)
+* [Development](manual/README.md#development)
+* [Test](manual/README.md#test)
+
+
 # Changes (Change Log)
 TODO:
 
