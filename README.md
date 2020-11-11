@@ -18,8 +18,8 @@ equivalent based on XML, XPath and XSLT was born.
 The focus should be on a public, volatile and short-term data exchange for
 (static) web applications and IoT.
 
--- Just exchange data without a own server landscape.  
--- Just exchange data without knowing and managing all clients.  
+__Just exchange data without a own server landscape.__  
+__Just exchange data without knowing and managing all clients.__
 
 XML-Micro-Exchange is a volatile RESTful micro datasource.  
 It is designed for easy communication and data exchange of web-based
@@ -99,66 +99,11 @@ specific language governing permissions and limitations under the License.
 TODO:
 
 
-# Installation
-TODO:
-
-
-# Configuration
-The REST API is configured as an absolute (hungry) virtual path. So all requests
-starting with the virtual path are redirected to the PHP script `./service.php`.  
-Means that the script itself cannot be called.  
-The paths of all requests are passed as path-info and thus as virtual paths.
-
-The following HTTP methods must be allowed:  
-`CONNECT`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`  
-The `CONNECT` method is not an HTTP standard, alternative `OPTIONS` can be used.
-
-When using PHP as CGI, the HTTP methods may also need to be allowed. 
-
-
-## Apache HTTPD
-
-Direct to a physical or virtual host:
-
-```
-#httpd-ssl.conf
-RewriteEngine on
-RewriteRule ^/xmex(/.*)*$ service.php
-```
-
-Or in the .htaccess file:
-
-```
-#.htaccess
-RewriteEngine on
-RewriteRule (.*) service.php
-```
-Root can also be used.  
-A context path is not required.
-
-## Seanox Devwex
-```
-[SERVER:HTTP:CGI]
-  ...
-  PHP = CONNECT OPTIONS GET PUT PATCH POST DELETE > ...
-  
-[SERVER:HTTP:REF]
-  ...
-  XMEX = /xmex > /xml-micro-exchange/service.php [A]
-```
-Root can also be used.  
-A context path is not required.
-
-## Other HTTP servers
-Something like Apache HTTPD or Seanox Devwex.  
-Alternatively, the script can be called directly and passed to XPath as a query
-string.
-
-
 # Manual
 * [Motivation](manual/README.md#motivation)
 * [Installation](manual/README.md#installation)
 * [Configuration](manual/README.md#configuration)
+* [Getting Started](#getting-started)
 * [API](manual/README.md#api)
   * [CONNECT](manual/README.md#connect)
   * [GET](manual/README.md#get)
