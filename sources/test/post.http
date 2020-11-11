@@ -3,6 +3,24 @@
 
 # Test sequence for putting text into elements of the storage.
 
+###
+# Storage is not establish 
+# Expectations:
+# - Status code 404 Resource Not Found
+POST {{service}} HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 185
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/"/>
+</xsl:stylesheet>
+
+###
+
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created

@@ -6,6 +6,18 @@
 # by XPath: BEFORE AFTER FIRST LAST
 # They are used to relativize the position of an element. 
 
+###
+# Storage is not establish 
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/books/book[1]::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 22
+
+<before id="beforeA"/>
+
+###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created

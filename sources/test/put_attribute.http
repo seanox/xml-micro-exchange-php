@@ -6,6 +6,18 @@
 # The processing is case-sensitive and more consistent in handling spaces in
 # the XPath - no spaces are supported.
 
+###
+# Storage is not establish 
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+test
+
+###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created

@@ -3,6 +3,18 @@
 
 # Test sequence for putting XML structures into storage.
 
+###
+# Storage is not establish 
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 18
+
+<book title="A1"/>
+
+###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created

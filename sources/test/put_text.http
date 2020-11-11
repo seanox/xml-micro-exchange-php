@@ -3,6 +3,18 @@
 
 # Test sequence for putting text into elements of the storage.
 
+###
+# Storage is not establish 
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+Hello Internet!
+
+###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
