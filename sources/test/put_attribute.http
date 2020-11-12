@@ -70,7 +70,7 @@ Storage: {{storage}}
 Content-Type: text/xpath
 Content-Length: 8
 
-name(/*)
+concat(name(/*), "-Test")
 
 ###
 # Using invalid XPath function should not cause problems.
