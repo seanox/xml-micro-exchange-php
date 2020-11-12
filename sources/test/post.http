@@ -1,4 +1,4 @@
-@service = http://127.0.0.1/xmex
+@service = http://127.0.0.1/xmex!
 @storage = 0000000000000000000000000000000000P0 statistic
 
 # Test sequence for putting text into elements of the storage.
@@ -20,7 +20,6 @@ Content-Length: 185
 </xsl:stylesheet>
 
 ###
-
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created

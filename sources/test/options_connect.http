@@ -1,4 +1,4 @@
-@service = http://127.0.0.1/xmex
+@service = http://127.0.0.1/xmex!
 @storage = 0000000000000000000000000000000000OC
 
 # OPTIONS without path behaves like CONNECT, because CONNECT is no HTTP standard

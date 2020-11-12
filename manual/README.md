@@ -75,12 +75,12 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
 
 ## Apache HTTPD
 
-Direct to a physical or virtual host:
+Direct for a physical or virtual host:
 
 ```
 #httpd-ssl.conf
 RewriteEngine on
-RewriteRule ^/xmex(/.*)*$ service.php
+RewriteRule ^/xmex!(.*)$ service.php
 ```
 
 Or in the .htaccess file:
@@ -91,7 +91,9 @@ RewriteEngine on
 RewriteRule (.*) service.php
 ```
 Root can also be used.  
-A context path is not required.
+A context path is not required, but it is recommended to use a context path
+that ends with a non-alphanumeric character to make the separation between URL
+and XPath more visible.  
 
 ## Seanox Devwex
 ```
@@ -101,10 +103,12 @@ A context path is not required.
   
 [SERVER:HTTP:REF]
   ...
-  XMEX = /xmex > /xml-micro-exchange/service.php [A]
+  XMEX = /xmex! > /xml-micro-exchange/service.php [A]
 ```
 Root can also be used.  
-A context path is not required.
+A context path is not required, but it is recommended to use a context path
+that ends with a non-alphanumeric character to make the separation between URL
+and XPath more visible.  
 
 ## Other HTTP servers
 Something like Apache HTTPD or Seanox Devwex.  
