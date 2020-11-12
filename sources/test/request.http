@@ -7,6 +7,7 @@
 # - Alternative 1st: QUERY_STRING
 # - Alternative 1st: CGI Environment Variable REQUEST
 
+###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
