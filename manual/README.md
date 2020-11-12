@@ -485,16 +485,16 @@ Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 
 The following is used to develop the XML Micro-Exchange:
 
-- [https://www.microsoft.com/de-de/software-download/windows10](Windows 10 Pro) Operating system
-- [https://code.visualstudio.com](Visual Studio Code) Editor
-- [https://marketplace.visualstudio.com/items?itemName=humao.rest-client](REST Client) Testing
-- [https://notepad-plus-plus.org/](Notepad++) Editor for XPath testing
-- [https://community.notepad-plus-plus.org/topic/16983/xml-tools](XML Tools for Notepad++ ) Editor for XPath testing
-- [https://www.php.net/downloads](PHP 7.4.x) Runtime
-- [https://github.com/seanox/devwex](Seanox Devwex 5.3.x) Primary Web Server
-- [https://httpd.apache.org/](Apache HTTP Server 2.4.x) Secondary Web Server
-- [https://ant.apache.org/](Apache Ant 1.10.x) Build
-- [https://git-scm.com/downloads](Git 2.29.x) SCM
+- [Windows 10 Pro](https://www.microsoft.com/de-de/software-download/windows10) Operating system
+- [Visual Studio Code](https://code.visualstudio.com) Editor
+- [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) Testing
+- [Notepad++](https://notepad-plus-plus.org/) Editor for XPath testing
+- [XML Tools for Notepad++](https://community.notepad-plus-plus.org/topic/16983/xml-tools) Editor for XPath testing
+- [PHP 7.4.x](https://www.php.net/downloads) Runtime
+- [Seanox Devwex 5.3.x](https://github.com/seanox/devwex) Primary Web Server
+- [Apache HTTP Server 2.4.x](https://httpd.apache.org/) Secondary Web Server
+- [Apache Ant 1.10.x](https://ant.apache.org/) Build
+- [Git 2.29.x](https://git-scm.com/downloads) SCM
 
 The specifications are not binding, but should only give an orientation and help in understanding.
 
