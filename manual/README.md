@@ -483,7 +483,20 @@ Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 
 ## Development
 
-TODO:
+The following is used to develop the XML Micro-Exchange:
+
+- [https://www.microsoft.com/de-de/software-download/windows10](Windows 10 Pro) Operating system
+- [https://code.visualstudio.com](Visual Studio Code) Editor
+- [https://marketplace.visualstudio.com/items?itemName=humao.rest-client](REST Client) Testing
+- [https://notepad-plus-plus.org/](Notepad++) Editor for XPath testing
+- [https://community.notepad-plus-plus.org/topic/16983/xml-tools](XML Tools for Notepad++ ) Editor for XPath testing
+- [https://www.php.net/downloads](PHP 7.4.x) Runtime
+- [https://github.com/seanox/devwex](Seanox Devwex 5.3.x) Primary Web Server
+- [https://httpd.apache.org/](Apache HTTP Server 2.4.x) Secondary Web Server
+- [https://ant.apache.org/](Apache Ant 1.10.x) Build
+- [https://git-scm.com/downloads](Git 2.29.x) SCM
+
+The specifications are not binding, but should only give an orientation and help in understanding.
 
 
 ## Test
