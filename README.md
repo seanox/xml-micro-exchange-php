@@ -126,6 +126,7 @@ TODO:
   * [PATCH](manual/README.md#patch)
   * [POST](manual/README.md#post)
   * [PUT](manual/README.md#put)
+* [Error Handling](manual/README.md#error-handling)     
 * [Development](manual/README.md#development)
 * [Test](manual/README.md#test)
 

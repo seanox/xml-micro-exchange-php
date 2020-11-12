@@ -38,6 +38,7 @@ Machine translation with [DeepL](https://deepl.com).
     * [Request](#request-6)
     * [Reponse](#reponse-6)
     * [Response codes / behavior](#response-codes--behavior-6)
+* [Error Handling](#error-handling)    
 * [Development](#development)
 * [Test](#test)
 
@@ -183,7 +184,6 @@ Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 ```
 HTTP/1.0 201 Resource Created
 Date: Wed, 11 Nov 2020 12:00:00 GMT
-X-Powered-By: PHP/7.4.4
 Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: 0
@@ -418,7 +418,6 @@ Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 ```
 HTTP/1.0 204 No Content
 Date: Wed, 11 Nov 2020 12:00:00 GMT
-X-Powered-By: PHP/7.4.4
 Storage-Effects: KHDHLTQW18U4:0 KHDHLQJU18U2:0 KHDHLTQW18U4:1 KHDHLTQW18U4:2
 Access-Control-Allow-Origin: *
 Storage: 0000000000000000000000000000000000PE
@@ -446,6 +445,40 @@ Execution-Time: 3
 
 ##### HTTP/1.0 415 Unsupported Media Type
 - Attribute request without Content-Type text/plain
+
+
+## Error Handling
+
+The error return is not always so easy with REST services.  
+Also with XML Micro-Exchange, the recommendation to use server status 400 as
+well as 500 is often not helpful for the client or developer.
+
+In the case of status 400, XML-Micro-Exchange uses the additional header Message
+in the response, which contains more details about the error.
+
+```
+HTTP/1.0 400 Bad Request
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Message: Invalid expression
+Execution-Time: 3
+Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+```
+
+In case of status 500, the additional header Error is used in the response,
+which contains a unique error number.  
+More details about the error or the number can then be found in the log file.  
+Internal errors generally do not contain details in the response, this prevents
+the publication of internal details.
+
+```
+HTTP/1.0 500 Internal Server Error
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Error: #KHF8KO9715S2
+Execution-Time: 16
+Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+```
 
 
 ## Development
