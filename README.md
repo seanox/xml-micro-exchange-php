@@ -22,13 +22,13 @@ __Just exchange data without a own server landscape.__
 __Just exchange data without knowing and managing all clients.__
 
 XML-Micro-Exchange is a volatile RESTful micro datasource.  
-It is designed for easy communication and data exchange of web-based
-applications and for IoT.  
+It is designed for easy communication and data exchange of web applications and
+for IoT.  
 The XML based datasource is volatile and lives through continuous use and
 expires through inactivity. They are designed for active and near real-time data
 exchange but not as a real-time capable long-term storage.  
-Compared to a JSON storage, this datasource supports dynamic and partial access,
-data transformation and a volatile short-term storage. 
+Compared to a JSON storage, this datasource supports more dynamics, partial data
+access, data transformation, and volatile short-term storage. 
 
 __Why all this?__
 
@@ -117,7 +117,7 @@ TODO:
 * [Motivation](manual/README.md#motivation)
 * [Installation](manual/README.md#installation)
 * [Configuration](manual/README.md#configuration)
-* [Getting Started](#getting-started)
+* [Getting Started](manual/README.md#getting-started)
 * [API](manual/README.md#api)
   * [CONNECT](manual/README.md#connect)
   * [GET](manual/README.md#get)
