@@ -235,7 +235,7 @@ class Storage {
     static function share($storage, $xpath) {
 
         if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
-            Storage::addHeaders(400, "Bad Request");
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
             exit();
         }        
 
@@ -428,7 +428,7 @@ class Storage {
     function doConnect() {
 
         if (!empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request");
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
             exit();
         }
         
@@ -493,6 +493,58 @@ class Storage {
         //     Storage-Space: Total/Used (in bytes)
         //     Content-Length: (bytes)
         //     Content-Type: application/xslt+xml
+
+        // In any case an XPath is required for a valid request.
+        if (empty($this->xpath)) {
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
+            exit();
+        }
+
+        // Without existing storage the request is not valid.
+        if (!$this->exists()) {
+            Storage::addHeaders(404, "Resource Not Found");
+            exit();
+        }
+
+        $media = Storage::CONTENT_TYPE_TEXT;
+
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();
+        $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
+        if (!empty(libxml_get_errors())) {
+            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
+            exit();            
+        } else if ($result instanceof DOMNodeList) {
+            $media = Storage::CONTENT_TYPE_XML;
+            $xml = new DOMDocument();
+            if ($result->length == 1) {
+                if ($result[0] instanceof DOMDocument)
+                    $result = [$result[0]->firstChild];
+                $xml->appendChild($xml->importNode($result[0], true));
+                $result = $xml->saveXML();     
+            } else if ($result->length > 0) {
+                $collection = $xml->createElement("collection");
+                $xml->importNode($collection);
+                foreach ($result as $entry)
+                    $collection->appendChild($xml->importNode($entry, true));
+                $xml->appendChild($collection);
+                $result = $xml->saveXML();     
+            } else $result = "";
+        } else if (is_bool($result)) {
+            $result = $result ? "true" : "false";
+        }
+
+        Storage::addHeaders(200, "Success", [
+            "Storage" => $this->storage,
+            "Storage-Revision" => $this->getRevision(),
+            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+            "Storage-Last-Modified" => date(DateTime::RFC822),
+            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822),
+            "Content-Length" => strlen($result),
+            "Content-Type" => $media
+        ]);   
+        print($result);
+        exit;
     }
 
     /**
@@ -549,9 +601,10 @@ class Storage {
 
         // POST always expects an valid XSLT template for transformation.
         libxml_use_internal_errors(true);
+        libxml_clear_errors();
         $style = new DOMDocument();
         if (!$style->loadXML(file_get_contents('php://input'))) {
-            Storage::addHeaders(400, "Bad Request");
+            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
             exit();
         }
 
@@ -563,12 +616,12 @@ class Storage {
             $xml = new DOMDocument();
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
             foreach ($targets as $target)
-                $xml->appendChild( $xml->importNode($target, true));
+                $xml->appendChild($xml->importNode($target, true));
         }
         
         $output = $processor->transformToXML($xml);
         if ($output === false) {
-            Storage::addHeaders(400, "Bad Request");
+            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
             exit();            
         }
 
@@ -691,7 +744,7 @@ class Storage {
         
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request");
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
             exit();
         }
 
@@ -754,9 +807,10 @@ class Storage {
             // all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 libxml_use_internal_errors(true);
+                libxml_clear_errors();
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false) {
-                    Storage::addHeaders(400, "Bad Request");
+                    Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
                     exit();
                 }
             }
@@ -819,7 +873,7 @@ class Storage {
         // If this is not the case, the request is responded with status 400.
 
         if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
-            Storage::addHeaders(400, "Bad Request");
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
             exit();              
         }
 
@@ -851,9 +905,10 @@ class Storage {
             // all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
                 libxml_use_internal_errors(true);
+                libxml_clear_errors();
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false) {
-                    Storage::addHeaders(400, "Bad Request");
+                    Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
                     exit();
                 }
             }
@@ -872,7 +927,7 @@ class Storage {
                     $serials[] = $target->getAttribute("___uid");
                     $replace = $this->xml->createElement($target->nodeName, $input);
                     foreach ($target->attributes as $attribute)
-                    $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
+                        $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
                     $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
                     // The revision is updated at the parent nodes, so you can
                     // later determine which nodes have changed and with which
@@ -926,9 +981,10 @@ class Storage {
         // semantic errors, but the parser only finds structural or syntactic
         // errors
         libxml_use_internal_errors(true);
+        libxml_clear_errors();
         $xml = new DOMDocument();
         if (!$xml->loadXML($input)) {
-            Storage::addHeaders(400, "Bad Request");
+            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
             exit();
         }
 
@@ -982,7 +1038,7 @@ class Storage {
                         foreach ($xml->firstChild->childNodes as $insert)
                             $target->appendChild($this->xml->importNode($insert));
                     } else {
-                        Storage::addHeaders(400, "Bad Request");
+                        Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
                         exit();
                     }
                 }
@@ -1132,7 +1188,7 @@ class Storage {
         // Header Content-Type is not sent by default.
         // PHP has a habit of adding the header automatically, but this is not wanted here.
         // It is removed somewhat unconventionally.
-        if (!array_keys($headers, "context-type")) {
+        if (!in_array("content-type", array_keys($headers))) {
             header("Content-Type: none");
             header_remove("Content-Type"); 
         }
@@ -1151,7 +1207,10 @@ class Storage {
         // is implemented here.
         $filter = "XSLTProcessor::transformToXml()"; 
         if (substr($message, 0, strlen($filter)) === $filter) {
-            Storage::addHeaders(400, "Bad Request");
+            $message = "Invalid XSLT stylesheet";
+            if (!empty(libxml_get_errors()))
+                $message = libxml_get_last_error()->message; 
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
             exit;
         }
 
@@ -1178,7 +1237,7 @@ $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
     $storage = $_SERVER["HTTP_STORAGE"];
 if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
-    Storage::addHeaders(400, "Bad Request");
+    Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
     exit();
 }
 
@@ -1252,13 +1311,14 @@ if ((!isset($_SERVER["PATH_INFO"])
 }
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
-// XPath, which must start with a slash.
+// XPath or XPath function.
 // CONNECT and OPTIONS do not use an (X)Path to establish a storage.
 // POST uses the XPath for transformation only optionally to delimit the XML
 // data for the transformation and works also without.
-if (substr($xpath, 0, 1) !== "/"
+// In the other cases an empty XPath is replaced by the root slash.
+if (empty($xpath)
         && !in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["CONNECT", "OPTIONS", "POST"]))
-    $xpath = "/" . $xpath;        
+    $xpath = "/";        
 $storage = Storage::share($storage, $xpath);
 
 try {
