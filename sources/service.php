@@ -47,7 +47,14 @@
  * CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
  * with context path if necessary, is used. In this case OPTIONS will hand over
  * the work to CONNECT.
- *
+ * 
+ *    Terms / wording
+ * XPath axis / axes
+ * XPath functions
+ * Storage
+ * Datasource
+ * Element
+ * 
  * TODO: 
  * - Each node has an internal revision attribute ___rev
  *   Milliseconds since 01/01/2000 alphanumerical radix 36, therefore also lastmodified
@@ -162,20 +169,20 @@ class Storage {
     const PATTERN_HEADER_STORAGE = "/^([0-9A-Z]{36})(?:\s+(\w+)){0,1}$/";
 
     /**
-     * Pattern to determine the structure of XPath expressions for attributes
+     * Pattern to determine the structure of XPath axis expressions for attributes
      *     Group 0. Full match
-     *     Group 1. XPath
+     *     Group 1. XPath axis
      *     Group 2. Attribute
      */    
-    const PATTERN_XPATH_ATTRIBUTE = "/^(\/.*?)\/{0,1}(?<=\/)(?:@|attribute::)(\w+)$/i";
+    const PATTERN_XPATH_ATTRIBUTE = "/^(.*?)\/{0,}(?<=\/)(?:@|attribute::)(\w+)$/i";
 
     /**
-     * Pattern to determine the structure of XPath expressions for pseudo elements
+     * Pattern to determine the structure of XPath axis expressions for pseudo elements
      *     Group 0. Full match
-     *     Group 1. XPath
+     *     Group 1. XPath axis
      *     Group 2. Attribute
      */    
-    const PATTERN_XPATH_PSEUDO = "/^(\/.*?)(?:::(before|after|first|last)){0,1}$/i";
+    const PATTERN_XPATH_PSEUDO = "/^(.*?)(?:::(before|after|first|last)){0,1}$/i";
 
     const CONTENT_TYPE_TEXT = "text/plain";
     const CONTENT_TYPE_XPATH = "text/xpath";
@@ -503,32 +510,34 @@ class Storage {
         exit;        
     }  
 
+    /**
+     * GET is another way to retrieve data about XPath axes and functions.
+     * For this, the XPath axes or functions is sent with URI.
+     * Depending on whether the request is an XPath axis or an XPath function,
+     * different Content-Type are used for the response.
+     * 
+     *     XPath axes
+     * Conent-Type: application/xslt+xml
+     * When the XPath axis addresses one target, the addressed target is the
+     * root element of the returned XML structure
+     * If the XPath addresses multiple targets, their XML structure is combined
+     * in the root element collection.
+     * 
+     *     XPath function
+     * Conent-Type: text/plain
+     * The result of XPath functions is returned as plain text.
+     * Decimal results use float, booleans the values true and false.
+     * 
+     *     Response codes / behavior:
+     *         HTTP/1.0 200 Success
+     * - Request was successfully executed
+     *         HTTP/1.0 400 Bad Request
+     * - XPath is malformed
+     *         HTTP/1.0 404 Resource Not Found
+     * - Storage is invalid 
+     */ 
     function doGet() {
     
-        // Request:
-        //     GET /<xpath> HTTP/1.0   
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Accept: text/plain
-        // Response (If value of attribute or result of a function):
-        //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Storage-Revision: Revision   
-        //     Storage-Space: Total/Used (in bytes)
-        //     Content-Length: (bytes)
-        //     Content-Type: text/plain        
-
-        // Request:
-        //     GET /<xpath> HTTP/1.0   
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Accept: application/xslt+xml
-        // Response (If response is a partial XML structure):
-        //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-        //     Storage-Revision: Revision   
-        //     Storage-Space: Total/Used (in bytes)
-        //     Content-Length: (bytes)
-        //     Content-Type: application/xslt+xml
-        
         // Without existing storage the request is not valid.
         if (!$this->exists()) {
             Storage::addHeaders(404, "Resource Not Found");
@@ -548,7 +557,10 @@ class Storage {
 
         $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
         if (!empty(libxml_get_errors())) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
+            $message = "Invalid XPath";
+            if (Storage::fetchLastXmlErrorMessage())
+                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
             exit();            
         } else if ($result instanceof DOMNodeList) {
             $media = Storage::CONTENT_TYPE_XML;
@@ -609,6 +621,8 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * Content-Length: (bytes)
+     *     Response-Body:
+     * The result of the transformation
      * 
      *     Response codes / behavior:
      *         HTTP/1.0 200 Success
@@ -641,7 +655,10 @@ class Storage {
         // POST always expects an valid XSLT template for transformation.
         $style = new DOMDocument();
         if (!$style->loadXML(file_get_contents('php://input'))) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
+            $message = "Invalid XSLT stylesheet";
+            if (Storage::fetchLastXmlErrorMessage())
+                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
             exit();
         }
 
@@ -658,7 +675,10 @@ class Storage {
         
         $output = $processor->transformToXML($xml);
         if ($output === false) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
+            $message = "Invalid XSLT stylesheet";
+            if (Storage::fetchLastXmlErrorMessage())
+                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
             exit();            
         }
 
@@ -848,7 +868,10 @@ class Storage {
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false) {
-                    Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
+                    $message = "Invalid XPath";
+                    if (Storage::fetchLastXmlErrorMessage())
+                        $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                    Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
                     exit();
                 }
             }
@@ -944,7 +967,10 @@ class Storage {
             if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false) {
-                    Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
+                    $message = "Invalid XPath";
+                    if (Storage::fetchLastXmlErrorMessage())
+                        $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                    Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
                     exit();
                 }
             }
@@ -1018,7 +1044,10 @@ class Storage {
         // errors
         $xml = new DOMDocument();
         if (!$xml->loadXML($input)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
+            $message = "Invalid XML document";
+            if (Storage::fetchLastXmlErrorMessage())
+                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
             exit();
         }
 
@@ -1211,10 +1240,10 @@ class Storage {
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
                 header("Access-Control-$key: $value");
-        
+
         if (!empty($headers))
             foreach ($headers as $key => $value)
-                header(trim("$key: $value"));
+                header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000)); 
         
@@ -1234,6 +1263,17 @@ class Storage {
             header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");        
     }
 
+    private static function fetchLastXmlErrorMessage() {
+    
+        if (empty(libxml_get_errors()))
+            return false;
+        $message = libxml_get_errors();
+        $message = end($message)->message;
+        $message = preg_replace("/[\r\n]+/", " ", $message);
+        $message = preg_replace("/\.+$/", " ", $message);
+        return trim($message); 
+    }
+
     static function onError($error, $message, $file, $line, $vars = array()) {
 
         // Special case XSLTProcessor errors
@@ -1242,8 +1282,8 @@ class Storage {
         $filter = "XSLTProcessor::transformToXml()"; 
         if (substr($message, 0, strlen($filter)) === $filter) {
             $message = "Invalid XSLT stylesheet";
-            if (!empty(libxml_get_errors()))
-                $message = libxml_get_last_error()->message; 
+            if (Storage::fetchLastXmlErrorMessage())
+                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
             Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
             exit;
         }
