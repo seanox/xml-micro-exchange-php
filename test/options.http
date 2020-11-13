@@ -1,0 +1,151 @@
+@service = http://127.0.0.1/xmex!
+@storage = 0000000000000000000000000000000000O0 books
+
+# Test sequence for OPTIONS requests
+# Tests of the main task of OPTIONS to find out which goals an XPath axis
+# reaches in the URL. The Datasource does not use status 404 for axes that do
+# not address a target. The scope of the XPath axes is mapped via the header
+# Storage-Effects. If an XPath axis has no targets, the header Storage-Effects
+# is not in the Reponse header.
+
+###
+# Storage is not establish 
+# Expectations:
+# - Status code 404 Resource Not Found
+OPTIONS {{service}}/books HTTP/1.0
+Storage: {{storage}}
+
+###
+# Initial request to establish the storage
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Initial request to establish the storage
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with a lot of UIDs 
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 1675
+
+<book title="A1">
+  <chapter title="Chapter A1-1">
+    <paragraph title="Paragraph A1-1-1"/>
+    <paragraph title="Paragraph A1-1-2"/>
+    <paragraph title="Paragraph A1-1-3"/>
+  </chapter>
+  <chapter title="Chapter A1-2">
+    <paragraph title="Paragraph A1-2-1"/>
+    <paragraph title="Paragraph A1-2-2"/>
+    <paragraph title="Paragraph A1-2-3"/>
+  </chapter>
+  <chapter title="Chapter A1-3">
+    <paragraph title="Paragraph A1-3-1"/>
+    <paragraph title="Paragraph A1-3-2"/>
+    <paragraph title="Paragraph A1-3-3"/>
+  </chapter>
+</book>
+<book title="B1">
+  <chapter title="Chapter B1-1">
+    <paragraph title="Paragraph B1-1-1"/>
+    <paragraph title="Paragraph B1-1-2"/>
+    <paragraph title="Paragraph B1-1-3"/>
+  </chapter>
+  <chapter title="Chapter B1-2">
+    <paragraph title="Paragraph B1-2-1"/>
+    <paragraph title="Paragraph B1-2-2"/>
+    <paragraph title="Paragraph B1-2-3"/>
+  </chapter>
+  <chapter title="Chapter B1-3">
+    <paragraph title="Paragraph B1-3-1"/>
+    <paragraph title="Paragraph B1-3-2"/>
+    <paragraph title="Paragraph B1-3-3"/>
+  </chapter>
+</book>
+<book title="C1">
+  <chapter title="Chapter C1-1">
+    <paragraph title="Paragraph C1-1-1"/>
+    <paragraph title="Paragraph C1-1-2"/>
+    <paragraph title="Paragraph C1-1-3"/>
+  </chapter>
+  <chapter title="Chapter C1-2">
+    <paragraph title="Paragraph C1-2-1"/>
+    <paragraph title="Paragraph C1-2-2"/>
+    <paragraph title="Paragraph C1-2-3"/>
+  </chapter>
+  <chapter title="Chapter C1-3">
+    <paragraph title="Paragraph C1-3-1"/>
+    <paragraph title="Paragraph C1-3-2"/>
+    <paragraph title="Paragraph C1-3-3"/>
+  </chapter>
+</book>
+
+###
+# XPath axis addresses the document and thus has a usable target
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects header
+OPTIONS {{service}}/ HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis without usable target or with wrong notation has no effect
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects header
+OPTIONS {{service}}// HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis with a usable target
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID
+OPTIONS {{service}}/books HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis with a usable target
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID
+OPTIONS {{service}}(/books)//chapter HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis with a usable target
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 28x UID
+OPTIONS {{service}}(/books)//paragraph HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis with a usable target
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 3x UID
+OPTIONS {{service}}/books/book HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath function has no effects
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects header
+OPTIONS {{service}}name(/books) HTTP/1.0
+Storage: {{storage}}
+
+###
+# Wrong XPath function has no effects
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects header
+OPTIONS {{service}}wrong(/books) HTTP/1.0
+Storage: {{storage}}
+
+###
