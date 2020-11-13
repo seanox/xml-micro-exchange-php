@@ -11,6 +11,7 @@
 # Header Storage is missing
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 OPTIONS {{service}} HTTP/1.0
 
 ###
@@ -24,6 +25,7 @@ Storage:
 # Header Storage is to short/invalid
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 OPTIONS {{service}} HTTP/1.0
 Storage: 0000000000000000000000000000000000O
 
@@ -31,6 +33,7 @@ Storage: 0000000000000000000000000000000000O
 # Header Storage is to long/invalid
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 OPTIONS {{service}} HTTP/1.0
 Storage: 0000000000000000000000000000000000OCX
 
@@ -38,6 +41,7 @@ Storage: 0000000000000000000000000000000000OCX
 # Header Storage is to long/invalid
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 OPTIONS {{service}} HTTP/1.0
 Storage: 000000000000000000000000000000000-OC
 
@@ -68,6 +72,7 @@ Storage: {{storage}} bookS
 # Storage header is not correct.
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}} books x
 

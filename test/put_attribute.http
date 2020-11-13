@@ -31,6 +31,7 @@ Storage: {{storage}}
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
+# - Storage-Effects: 1x UID
 PUT {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
@@ -49,6 +50,7 @@ test_value<1>
 # - Storage-Expiration is extended
 # - Double quotation marks and the & are encoded correctly
 # - Unicode characters are inserted as UTF-8
+# - Storage-Effects: 1x UID
 PUT {{service}}(/books)/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
@@ -64,6 +66,7 @@ Content-Length: 37
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
+# - Storage-Effects: 1x UID
 # - Double quotation marks and the & are encoded correctly
 # - As value books is used
 PUT {{service}}/books/attribute::attrA HTTP/1.0
@@ -77,6 +80,7 @@ concat(name(/*), "-Test")
 # Using invalid XPath function should not cause problems.
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XPath (Invalid expression)
 PUT {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
@@ -94,6 +98,7 @@ name(/+)
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
+# - Storage-Effects: 1x UID
 PUT {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain

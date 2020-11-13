@@ -24,7 +24,7 @@ Storage: {{storage}}
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 5 UIDs 
+# - Storage-Effects: 5x UID 
 # - 4 books are overwritten
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
@@ -40,7 +40,7 @@ Content-Length: 78
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 5 UIDs 
+# - Storage-Effects: 9x UID
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
@@ -65,7 +65,7 @@ Content-Length: 230
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 5 UIDs 
+# - Storage-Effects: 9x UID
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
@@ -91,7 +91,7 @@ Content-Length: 230
 # Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 5 UIDs 
+# - Storage-Effects: 9x UID
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
@@ -106,7 +106,7 @@ Content-Length: 230
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books/.. HTTP/1.0
 Storage: {{storage}}
@@ -119,7 +119,7 @@ Content-Length: 7
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/*/.. HTTP/1.0
 Storage: {{storage}}

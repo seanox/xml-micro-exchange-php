@@ -252,7 +252,7 @@ Content-Length: 841
 # Valid XSLT without XPath and with output
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 277
+# - Content-Length: 287
 # - Content-Type: text/plain
 # - Only an extract of the data selected by XPath.
 POST {{service}}//district[@name='Lichtenberg'] HTTP/1.0
@@ -308,6 +308,7 @@ Content-Length: 841
 # Wrong XSLT markup, xsl:templatex is used instead of xsl:template
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XSLT stylesheet (xsltParseStylesheetTop: unknown templatex element)
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
@@ -337,6 +338,7 @@ Content-Length: 839
 # Wrong XSLT markup, xsl:templatex is used and is closed by xsl:template
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XSLT stylesheet (Opening and ending tag mismatch...
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
@@ -366,6 +368,7 @@ Content-Length: 842
 # Wrong XSLT markup, city tag is not closed
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XSLT stylesheet (Opening and ending tag mismatch...
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
@@ -395,6 +398,7 @@ Content-Length: 840
 # Wrong XSLT markup, city tag is not closed
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XSLT stylesheet (EndTag: '</' not found)
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
@@ -423,6 +427,7 @@ Content-Length: 828
 # Wrong XSLT EL function sumx (does not exists)
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XSLT stylesheet (Failed to evaluate the expression of variable 'area')
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
@@ -452,6 +457,7 @@ Content-Length: 843
 # Wrong XSLT EL in variable: city attribute: select ] is missing
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XSLT stylesheet (XSLT-variable: Failed to compile the XPath expression ...
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml

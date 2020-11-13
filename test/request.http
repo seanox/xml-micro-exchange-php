@@ -18,7 +18,7 @@ Storage: {{storage}}
 # Preparation of the test
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 5 UIDs 
+# - Storage-Effects: 5x UID 
 # - 4 books are created
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage}}
@@ -33,6 +33,7 @@ Content-Length: 78
 ###
 # Expectations:
 # - Status code 204 No Content
+# - Storage-Effects: 5x UID 
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Title of all books change (Test_1)
@@ -46,6 +47,7 @@ Test_1
 ###
 # Expectations:
 # - Status code 204 No Content
+# - Storage-Effects: 5x UID 
 # - In the storage the attribute is added
 # - Storage-Revision is increased
 # - Title of all books change (Test_2)

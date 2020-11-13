@@ -41,6 +41,7 @@ Content-Length: 78
 ###
 # Expectations:
 # - Status code 204 No Content
+# - Storage-Effects: 4x UID  
 # - before-elements are put in /books before first book (order A,B,C)
 PUT {{service}}/books/book[1]::before HTTP/1.0
 Storage: {{storage}}
@@ -54,6 +55,7 @@ Content-Length: 70
 ###
 # Expectations:
 # - Status code 204 No Content
+# - Storage-Effects: 4x UID  
 # - after-elements are put in /books after last book (order A,B,C)
 PUT {{service}}/books/book[last()]::after HTTP/1.0
 Storage: {{storage}}
@@ -67,6 +69,7 @@ Content-Length: 64
 ###
 # Expectations:
 # - Status code 204 No Content
+# - Storage-Effects: 4x UID  
 # - first-elements are put in /books as first elements before the existing (order A,B,C)
 PUT {{service}}/books::first HTTP/1.0
 Storage: {{storage}}
@@ -80,6 +83,7 @@ Content-Length: 64
 ###
 # Expectations:
 # - Status code 204 No Content
+# - Storage-Effects: 4x UID  
 # - last-elements are put in /books as last elements after the existing (order A,B,C)
 PUT {{service}}/books::last HTTP/1.0
 Storage: {{storage}}
@@ -94,6 +98,7 @@ Content-Length: 58
 # Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
+# - Storage-Effects: 4x UID  
 # - test are put in before all last elements
 PUT {{service}}(/books)//last::before HTTP/1.0
 Storage: {{storage}}
@@ -105,7 +110,7 @@ Content-Length: 58
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books::wrong HTTP/1.0
 Storage: {{storage}}
@@ -120,7 +125,7 @@ Content-Length: 64
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books::before HTTP/1.0
 Storage: {{storage}}
@@ -135,7 +140,7 @@ Content-Length: 64
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books::after HTTP/1.0
 Storage: {{storage}}
@@ -150,7 +155,7 @@ Content-Length: 64
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/*/..::before HTTP/1.0
 Storage: {{storage}}
@@ -165,7 +170,7 @@ Content-Length: 64
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books/..::before HTTP/1.0
 Storage: {{storage}}

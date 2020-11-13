@@ -24,7 +24,7 @@ Storage: {{storage}}
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 1 UIDs 
+# - Storage-Effects: 1x UID 
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -39,7 +39,7 @@ Hello Internet!
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 1 UIDs 
+# - Storage-Effects: 9x UID 
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -65,7 +65,7 @@ Content-Length: 202
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 1 UIDs 
+# - Storage-Effects: 1x UID 
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -81,7 +81,7 @@ Text A
 # Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 1 UIDs 
+# - Storage-Effects: 3x UID 
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -97,7 +97,7 @@ Text B
 # Using unicode should not cause problems.
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 1 UIDs 
+# - Storage-Effects: 1x UID 
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -113,7 +113,7 @@ Content-Length: 37
 # Using XPath function should work.
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with 1 UIDs 
+# - Storage-Effects: 1x UID 
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -129,6 +129,7 @@ name(/*)
 # Using invalid XPath function should not cause problems.
 # Expectations:
 # - Status 400 Bad Request
+# - Message: Invalid XPath (Invalid expression)
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
@@ -140,7 +141,7 @@ name(/+)
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/*/.. HTTP/1.0
 Storage: {{storage}}
@@ -153,7 +154,7 @@ Test
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects and 5 UIDs  
+# - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books/.. HTTP/1.0
 Storage: {{storage}}
