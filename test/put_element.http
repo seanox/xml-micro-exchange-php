@@ -88,6 +88,21 @@ Content-Length: 230
 </book>
 
 ###
+# Use of brackets should not be a problem
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: with 5 UIDs 
+# - 4 books are overwritten
+# - 4 books with chapter are created
+# - all new elements have the attributes ___rev and ___uid
+PUT {{service}}(/books/book)/chapter HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<test/>
+
+###
 # PUT outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content

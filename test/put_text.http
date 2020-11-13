@@ -78,6 +78,7 @@ Content-Length: 6
 Text A
 
 ###
+# Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: with 1 UIDs 
@@ -85,7 +86,7 @@ Text A
 # - Storage-Space is used more
 # - Storage-Expiration is extended
 # - books element with text and without further elements
-PUT {{service}}/books/book/comment HTTP/1.0
+PUT {{service}}(/books/book)/comment HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 6

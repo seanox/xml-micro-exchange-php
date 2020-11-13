@@ -91,6 +91,18 @@ Content-Length: 58
 <last id="lastC"/>
 
 ###
+# Use of brackets should not be a problem
+# Expectations:
+# - Status code 204 No Content
+# - test are put in before all last elements
+PUT {{service}}(/books)//last::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 58
+
+<test/>
+
+###
 # Expectations:
 # - Status code 204 No Content
 # - Without Storage-Effects and 5 UIDs  

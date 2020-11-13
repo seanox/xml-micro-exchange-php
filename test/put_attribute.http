@@ -39,7 +39,8 @@ Content-Length: 13
 test_value<1>
 
 ###
-# Using unicode should not cause problems.
+# Using unicode should not cause problems
+# Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
 # - In the storage the attribute is added
@@ -48,7 +49,7 @@ test_value<1>
 # - Storage-Expiration is extended
 # - Double quotation marks and the & are encoded correctly
 # - Unicode characters are inserted as UTF-8
-PUT {{service}}/books/attribute::attrA HTTP/1.0
+PUT {{service}}(/books)/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 37
