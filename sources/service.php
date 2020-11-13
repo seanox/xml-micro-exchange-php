@@ -465,7 +465,42 @@ class Storage {
         if (empty($this->xpath))
             $this->doConnect();      
 
-        // TODO:
+        // Without existing storage the request is not valid.
+        if (!$this->exists()) {
+            Storage::addHeaders(404, "Resource Not Found");
+            exit();
+        }            
+
+        // In any case an XPath is required for a valid request.
+        if (empty($this->xpath)) {
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
+            exit();
+        }
+
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();
+
+        if ($targets = (new DOMXpath($this->xml))->query($this->xpath)) {
+            $serials = [];
+            foreach ($targets as $target)
+            if ($target instanceof DOMElement)
+                $serials[] = $target->getAttribute("___uid");
+            if (!empty($serials))
+                header("Storage-Effects: " . join(" ", $serials));
+        }
+
+        Storage::addHeaders(204, "No Content", [
+            "Storage" => $this->storage,
+            "Storage-Revision" => $this->getRevision(),
+            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+            "Storage-Last-Modified" => date(DateTime::RFC822),
+            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
+        ]);
+
+        // The function and the reponse are complete.
+        // The storage can be closed and the requests can be terminated.
+        $this->close();
+        exit;        
     }  
 
     function doGet() {
@@ -493,23 +528,24 @@ class Storage {
         //     Storage-Space: Total/Used (in bytes)
         //     Content-Length: (bytes)
         //     Content-Type: application/xslt+xml
-
-        // In any case an XPath is required for a valid request.
-        if (empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-            exit();
-        }
-
+        
         // Without existing storage the request is not valid.
         if (!$this->exists()) {
             Storage::addHeaders(404, "Resource Not Found");
             exit();
         }
 
-        $media = Storage::CONTENT_TYPE_TEXT;
-
+        // In any case an XPath is required for a valid request.
+        if (empty($this->xpath)) {
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
+            exit();
+        }
+        
         libxml_use_internal_errors(true);
         libxml_clear_errors();
+        
+        $media = Storage::CONTENT_TYPE_TEXT;
+
         $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
         if (!empty(libxml_get_errors())) {
             Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
@@ -599,9 +635,10 @@ class Storage {
             exit();
         }
 
-        // POST always expects an valid XSLT template for transformation.
         libxml_use_internal_errors(true);
         libxml_clear_errors();
+
+        // POST always expects an valid XSLT template for transformation.
         $style = new DOMDocument();
         if (!$style->loadXML(file_get_contents('php://input'))) {
             Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
@@ -742,17 +779,17 @@ class Storage {
      */
     function doPut() {
         
-        // In any case an XPath is required for a valid request.
-        if (empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-            exit();
-        }
-
         // Without existing storage the request is not valid.
         if (!$this->exists()) {
             Storage::addHeaders(404, "Resource Not Found");
             exit();
         }
+
+        // In any case an XPath is required for a valid request.
+        if (empty($this->xpath)) {
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
+            exit();
+        }    
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
         // If the limit is exceeded, the request is quit with status 413. 
@@ -766,7 +803,10 @@ class Storage {
         if (!isset($_SERVER["CONTENT_TYPE"])) {
             Storage::addHeaders(415, "Unsupported Media Type");
             exit();                
-        }             
+        }   
+        
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();        
 
         // PUT requests can address attributes and elements via XPath.
         // Multi-axis XPaths allow multiple targets.
@@ -806,8 +846,6 @@ class Storage {
             // XPath function is executed only once and the result is put on
             // all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
-                libxml_use_internal_errors(true);
-                libxml_clear_errors();
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false) {
                     Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
@@ -904,8 +942,6 @@ class Storage {
             // XPath function is executed only once and the result is put on
             // all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
-                libxml_use_internal_errors(true);
-                libxml_clear_errors();
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false) {
                     Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
@@ -980,8 +1016,6 @@ class Storage {
         // parsing? Status 400 or 422 - The decision for 400, because 422 means
         // semantic errors, but the parser only finds structural or syntactic
         // errors
-        libxml_use_internal_errors(true);
-        libxml_clear_errors();
         $xml = new DOMDocument();
         if (!$xml->loadXML($input)) {
             Storage::addHeaders(400, "Bad Request", ["Message" => libxml_get_last_error()->message]);
