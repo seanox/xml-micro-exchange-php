@@ -4,7 +4,7 @@
  * Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  * Diese Software unterliegt der Version 2 der Apache License.
  *
- * XMDS XML-Micro-Datasource
+ * XMEX XML-Micro-Exchange
  * Copyright (C) 2020 Seanox Software Solutions
  *  
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -19,15 +19,120 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  * 
+ *     DESCRIPTION
+ * 
+ * XML-Micro-Exchange is a volatile RESTful micro datasource.
+ * It is designed for easy communication and data exchange of web applications
+ * and for IoT.  
+ * The XML based datasource is volatile and lives through continuous use and
+ * expires through inactivity. They are designed for active and near real-time
+ * data exchange but not as a real-time capable long-term storage.
+ * Compared to a JSON storage, this datasource supports more dynamics, partial
+ * data access, data transformation, and volatile short-term storage. 
+ * 
+ *     TERMS / WORDING
+ * 
+ *         XMEX / XML-Micro-Exchange
+ * Name of the project and the corresponding abbreviation
+ * 
+ *         Datasource
+ * XML-Micro-Exchange is a data service that manages different data areas.
+ * The entirety, so the service itself, is the datasource.
+ * Physically this is the data directory.
+ * 
+ *         Storage
+ * The data areas managed by the XML Micro-Exchange as a data service are
+ * called storage areas. A storage area corresponds to an XML file in the data
+ * directory.
+ * 
+ *         Storage Identifier
+ * Each storage has an identifier, the Storage Identifier.
+ * The Storage Identifier is used as the filename of the corresponding XML file
+ * and must be specified with each request so that the datasource uses the
+ * correct storage.
+ * 
+ *         Element(s)
+ * The content of the XML file of a storage provide the data as object or tree
+ * structure. The data entries are called elements. 
+ * Elements can enclose other elements.
+ * 
+ *         Attribute(s)
+ * Elements can also contain direct values in the form of attributes.
+ * 
+ *         XPath
+ * XPath is a notation for accessing and navigating the XML data structure.
+ * An XPath can be an axis or a function.
+ * 
+ *         XPath Axis
+ * XPath axes address or select elements or attributes.
+ * The axes can have a multidimensional effect.
+ * 
+ *         XPath Axis Pseudo Elements
+ * For PUT requests it is helpful to specify a relative navigation to an XPath
+ * axis. For example first, last, before, after. This extension of the notation
+ * is supported for PUT requests and is added to an XPath axis separated by two
+ * colons at the end (e.g. /root/element::end - means put in element as last).
+ * 
+ *         XPath Function
+ * The XPath notation also supports functions that can be used in combination
+ * with axes and standalone for dynamic data requests. In combination with
+ * XPath axes, the addressing and selection of elements and attributes can be
+ * made dynamic.
+ * 
+ *        Revision
+ * Every change in a storage is expressed as a revision.
+ * This should make it easier for the client to determine whether data has
+ * changed, even for partial requests.
+ * The revision is a counter of changes per request, without any claim of
+ * version management of past revisions.
+ * It starts with initial revision 0 when a storage is created on the first
+ * call. The first change already uses revision 1. 
+ * 
+ * Each element uses a revision in the read-only attribute ___rev, which, as
+ * with all parent revision attributes, is automatically incremented when it
+ * changes.
+ * A change can affect the element itself or the change to its children.
+ * Because the revision is passed up, the root element automatically always
+ * uses the current revision.
+ * 
+ * Changes are: PUT, PATCH, DELETE
+ * 
+ * Write accesses to attribute ___rev are accepted with status 204, will have
+ * no effect from then on and are therefore not listed in the response header
+ * Storage-Effects. 
+ * 
+ *       UID
+ * Each element uses a unique identifier in the form of the read-only attribute
+ * ___uid. The unique identifier is automatically created when an element is
+ * put into storage and never changes.
+ * If elements are created or modified by a request, the created or affected
+ * unique identifiers are sent to the client in the response header
+ * Storage-Effects.
+ * 
+ * The UID uses an alphanumeric format based on radix 36 which, when converted
+ * into a number, gives the timestamps of the creation in milliseconds since
+ * 01/01/2000.
+ * The UID is thus also sortable and provides information about the order in
+ * which elements are created.
+ * 
+ * Write accesses to attribute ___uid are accepted with status 204, will have
+ * no effect from then on and are therefore not listed in the response header
+ * Storage-Effects. 
+ * 
+ *     Transaction / Concurrent Access
+ * In the first version of XML Micro-Exchange all requests to a storage use
+ * flock + LOCK_EX / LOCK_UN, that should change later.
+ * So that also simultaneous accesses are supported, but no dirty reading.
+ * 
  * TODO:    
  * 
- *     Error Handling
+ *     ERROR HANDLING
  * Errors are communicated via the server status and the header 'Error'.
  * The header 'Error' contains only an error number, for security reasons no
  * details. The error number with details can be found in the log file of the
  * service.
  * 
- *     Security
+ *     SECURITY
  * This aspect was deliberately considered and implemented here only in a very
  * rudimentary form. Only the storage(-key) with a length of 36 characters can
  * be regarded as secret.  
@@ -35,6 +140,8 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
+ * TODO: ----
+ * 
  *     OPTIONS
  * Selects one or more elements and also attributes to an XPath and returns
  * meta information about them and the datasource in general.
@@ -47,62 +154,6 @@
  * CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
  * with context path if necessary, is used. In this case OPTIONS will hand over
  * the work to CONNECT.
- * 
- *    Terms / wording
- * XPath axis / axes
- * XPath functions
- * Storage
- * Datasource
- * Element
- * 
- * TODO: 
- * - Each node has an internal revision attribute ___rev
- *   Milliseconds since 01/01/2000 alphanumerical radix 36, therefore also lastmodified
- * - Each node has an internal object identify attribute ___uid 
- *   Long counter and reflects the order of creation
- * - Hopefully it is unlikely that someone wants to use this names. 
- * - The field can be accessed read but not write.   
- *   Writing will cause status 405.
- * - If a node or attribute is changed, the revision of the current node and all its parents is increased.
- *   The revision of the root account +1 is used as value.
- *   The assumption that the root node always contains the current revision.
- *   So it is also traceable if a branch or node has changed during the last transaction.
- * - Access parallel / concurrent
- *   Read accesses are executed in parallel.
- *   Write accesses are executed exclusively and block simultaneous read and write accesses.
- * - Transaction
- *   The write access is exclusive and uses flock + LOCK_EX / LOCK_UN
- * - Multi-functional effect
- *   In the first idea OPTIONS/PUT/PATCH/DELETE could only use unique entities.
- *   But there are advantages (also disadvantages) if a multiple scope is supported. 
- *   For example, change or delete the attributes of all matching entries.
- *   Therefore, the status 300 is also omitted.
- * - OPTIONS: Should return information about the storage and an entity but in the context of the storage,
- *   so no details about the entity, only the indirect statement about Allow, whether the entity exists or not.
- *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
- *   Storage-Revision: Revision
- *   Storage-Size: Bytes
- *   Storage-Expired: Timestamp
- *   Storage-Expiration: Seconds
- *   Storage-Last-Modified: Timestamp
- *   Allow: CONNECT, OPTIONS, GET, PUT, PATCH, DELETE
- *   If the entity does not exist:
- *   Allow: CONNECT, OPTIONS, PUT, PATCH
- *   So only those methods are returned, which can be applied to the storage and the entity.
- * - META: Works like OPTIONS, but the focus is the entity
- *   Same storage informations as with OPTIONS.
- *   Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
- *   Storage-Revision: Revision
- *   Storage-Size: Bytes
- *   Storage-Expired: Timestamp
- *   Storage-Expiration: Seconds
- *   Storage-Last-Modified:
- *   Entity-Identifier: Number
- *   Entity-Revision: Revision  
- *   Entity-Last-Modified: Timestamp 
- *   If the (X)Path is not unique, the response is status 300 and without headers for the entity. 
- *   If the (X)Path is unique, the response is 200 and there is meta information about the entity.
- *   If the entity is not available the request is answered with 404 and without headers for the entity.
  */
 class Storage {
 
@@ -528,6 +579,21 @@ class Storage {
      * The result of XPath functions is returned as plain text.
      * Decimal results use float, booleans the values true and false.
      * 
+     *     Request:
+     * GET /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     *  
+     *     Response:
+     * HTTP/1.0 200 Success
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage-Revision: Revision (number)   
+     * Storage-Space: Total/Used (bytes)
+     * Storage-Last-Modified: Timestamp (RFC822)
+     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Content-Length: (bytes)
+     *     Response-Body:
+     * The result of the XPath request
+     * 
      *     Response codes / behavior:
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
@@ -568,8 +634,13 @@ class Storage {
             if ($result->length == 1) {
                 if ($result[0] instanceof DOMDocument)
                     $result = [$result[0]->firstChild];
-                $xml->appendChild($xml->importNode($result[0], true));
-                $result = $xml->saveXML();     
+                if (($result[0] instanceof DOMAttr)) {
+                    $media = Storage::CONTENT_TYPE_TEXT;
+                    $result = $result[0]->value;
+                } else {
+                    $xml->appendChild($xml->importNode($result[0], true));
+                    $result = $xml->saveXML();
+                }
             } else if ($result->length > 0) {
                 $collection = $xml->createElement("collection");
                 $xml->importNode($collection);
