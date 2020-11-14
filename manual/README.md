@@ -8,6 +8,19 @@ Machine translation with [DeepL](https://deepl.com).
 * [Motivation](#motivation)
 * [Installation](#installation)
 * [Configuration](#configuration)
+* [Terms](#terms)
+  * [Datasource](#)
+  * [Storage](#)
+  * [Storage Identifier](#)
+  * [Element(s)](#)
+  * [Attribute(s)](#)
+  * [XPath](#)
+  * [XPath Axis](#)
+  * [XPath Axis Pseudo Elements](#)
+  * [XPath Function](#)
+  * [Revision](#)
+  * [UID](#)
+  * [Transaction / Concurrent Access](#)
 * [Getting Started](#getting-started)
 * [API](#api)
   * [CONNECT](#connect)
@@ -115,6 +128,93 @@ and XPath more visible.
 Something like Apache HTTPD or Seanox Devwex.  
 Alternatively, the script can be called directly and passed to XPath as a query
 string.
+
+## Terms
+
+### Datasource
+XML-Micro-Exchange is a data service that manages different data areas.  
+The entirety, so the service itself, is the datasource.
+Physically this is the data directory.
+
+### Storage
+The data areas managed by the XML Micro-Exchange as a data service are called
+storage areas. A storage area corresponds to an XML file in the data directory.
+
+### Storage Identifier
+Each storage has an identifier, the Storage Identifier.  
+The Storage Identifier is used as the filename of the corresponding XML file and
+must be specified with each request so that the datasource uses the correct
+storage.
+
+### Element(s)
+The content of the XML file of a storage provide the data as object or tree
+structure. The data entries are called elements.
+Elements can enclose other elements.
+
+### Attribute(s)
+Elements can also contain direct values in the form of attributes.
+
+### XPath
+XPath is a notation for accessing and navigating the XML data structure.  
+An XPath can be an axis or a function.
+
+### XPath Axis
+XPath axes address or select elements or attributes.  
+The axes can have a multidimensional effect.
+
+### XPath Axis Pseudo Elements
+For PUT requests it is helpful to specify a relative navigation to an XPath
+axis. For example first, last, before, after. This extension of the notation is
+supported for PUT requests and is added to an XPath axis separated by two colons
+at the end (e.g. `/root/element::end` - means put in element as last).
+
+### XPath Function
++The XPath notation also supports functions that can be used in combination with
+axes and standalone for dynamic data requests. In combination with XPath axes,
+the addressing and selection of elements and attributes can be made dynamic.
+
+### Revision
+Every change in a storage is expressed as a revision.  
+This should make it easier for the client to determine whether data has changed,
+even for partial requests.  
+The revision is a counter of changes per request, without any claim of version
+management of past revisions.  
+It starts with initial revision 0 when a storage is created on the first call.
+The first change already uses revision 1. 
+
+Each element uses a revision in the read-only attribute `___rev`, which, as
+with all parent revision attributes, is automatically incremented when it
+changes.  
+A change can affect the element itself or the change to its children.  
+Because the revision is passed up, the root element automatically always uses
+the current revision.
+
+Changes are: PUT, PATCH, DELETE
+
+Write accesses to attribute `___rev` are accepted with status 204, will have no
+effect from then on and are therefore not listed in the response header
+`Storage-Effects`. 
+
+### UID
+Each element uses a unique identifier in the form of the read-only attribute
+`___uid`. The unique identifier is automatically created when an element is put
+into storage and never changes.  
+If elements are created or modified by a request, the created or affected unique
+identifiers are sent to the client in the response header `Storage-Effects`.
+
+The UID uses an alphanumeric format based on radix 36 which, when converted into
+a number, gives the timestamps of the creation in milliseconds since 01/01/2000.  
+The UID is thus also sortable and provides information about the order in which
+elements are created.
+
+Write accesses to attribute `___uid` are accepted with status 204, will have no
+effect from then on and are therefore not listed in the response header
+`Storage-Effects`. 
+ 
+### Transaction / Concurrent Access
+In the first version of XML Micro-Exchange all requests to a storage use flock +
+LOCK_EX / LOCK_UN, that should change later. So that also simultaneous accesses
+are supported, but no dirty reading.
 
 
 ## Getting Started
@@ -486,17 +586,18 @@ Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 The following is used to develop the XML Micro-Exchange:
 
 - [Windows 10 Pro](https://www.microsoft.com/de-de/software-download/windows10) Operating system
+- [PHP 7.4.x](https://www.php.net/downloads) Runtime
+- [Seanox Devwex 5.3.x](https://github.com/seanox/devwex) Primary Web Server
+- [Apache HTTP Server 2.4.x](https://httpd.apache.org/) Secondary Web Server
 - [Visual Studio Code](https://code.visualstudio.com) Editor
 - [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) Testing
 - [Notepad++](https://notepad-plus-plus.org/) Editor for XPath testing
 - [XML Tools for Notepad++](https://community.notepad-plus-plus.org/topic/16983/xml-tools) Editor for XPath testing
-- [PHP 7.4.x](https://www.php.net/downloads) Runtime
-- [Seanox Devwex 5.3.x](https://github.com/seanox/devwex) Primary Web Server
-- [Apache HTTP Server 2.4.x](https://httpd.apache.org/) Secondary Web Server
-- [Apache Ant 1.10.x](https://ant.apache.org/) Build
 - [Git 2.29.x](https://git-scm.com/downloads) SCM
+- [Apache Ant 1.10.x](https://ant.apache.org/) Build
 
-The specifications are not binding, but should only give an orientation and help in understanding.
+The specifications are not binding, but should only give an orientation and help
+in understanding.
 
 
 ## Test
