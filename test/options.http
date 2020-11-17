@@ -2,11 +2,15 @@
 @storage = 0000000000000000000000000000000000O0 books
 
 # Test sequence for OPTIONS requests
-# Tests of the main task of OPTIONS to find out which goals an XPath axis
-# reaches in the URL. The Datasource does not use status 404 for axes that do
-# not address a target. The scope of the XPath axes is mapped via the header
-# Storage-Effects. If an XPath axis has no targets, the header Storage-Effects
-# is not in the Reponse header.
+# OPTIONS is used to request the functions to an XPath, which is responded with
+# the Allow header. This method distinguishes between XPath axis and XPath
+# function and uses different Allow headers. Also the existence of the target
+# on an XPath axis has an influence on the response. The method will not use
+# status 404 in relation to non-existing targets, but will offer the methods
+# CONNECT, OPTIONS, PUT via Allow-Header.
+# If the XPath is a function, it is executed and thus validated, but without
+# returning the result.
+# Faulty XPath will cause the status 400.
 
 ###
 # Storage is not establish 
@@ -19,6 +23,13 @@ Storage: {{storage}}
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Initial request to establish an existing storage
+# Expectations:
+# - Status code 202 Accepted
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}}
 
@@ -89,14 +100,15 @@ Content-Length: 1675
 # Expectations:
 # - Status code 204 No Content
 # - Without Storage-Effects header
+# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 OPTIONS {{service}}/ HTTP/1.0
 Storage: {{storage}}
 
 ###
-# XPath axis without usable target or with wrong notation has no effect
+# XPath axis without usable target
 # Expectations:
-# - Status code 204 No Content
-# - Without Storage-Effects header
+# - Status code 400 Bad Request
+# - Message: Invalid XPath Axis (Invalid expression)
 OPTIONS {{service}}// HTTP/1.0
 Storage: {{storage}}
 
@@ -105,6 +117,7 @@ Storage: {{storage}}
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 1x UID
+# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 OPTIONS {{service}}/books HTTP/1.0
 Storage: {{storage}}
 
@@ -113,6 +126,7 @@ Storage: {{storage}}
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 9x UID
+# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 OPTIONS {{service}}(/books)//chapter HTTP/1.0
 Storage: {{storage}}
 
@@ -121,6 +135,7 @@ Storage: {{storage}}
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 28x UID
+# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 OPTIONS {{service}}(/books)//paragraph HTTP/1.0
 Storage: {{storage}}
 
@@ -129,7 +144,17 @@ Storage: {{storage}}
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 3x UID
+# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 OPTIONS {{service}}/books/book HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis with a usable target
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects header
+# - Allow: CONNECT, OPTIONS, PUT
+OPTIONS {{service}}/books/book/new/new HTTP/1.0
 Storage: {{storage}}
 
 ###
@@ -137,15 +162,36 @@ Storage: {{storage}}
 # Expectations:
 # - Status code 204 No Content
 # - Without Storage-Effects header
+# - Allow: CONNECT, OPTIONS, GET, POST
 OPTIONS {{service}}name(/books) HTTP/1.0
 Storage: {{storage}}
 
 ###
 # Wrong XPath function has no effects
+# Because XPath functions are not evaluated or validated via OPTIPONS.
+# The request checks more whether it can be processed.
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath Function (Unregistered function)
+OPTIONS {{service}}wrong(/books) HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis with a target attribute
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID
+# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+OPTIONS {{service}}/books/book[1]/@title HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis without a target attribute
 # Expectations:
 # - Status code 204 No Content
 # - Without Storage-Effects header
-OPTIONS {{service}}wrong(/books) HTTP/1.0
+# - Allow: CONNECT, OPTIONS, PUT
+OPTIONS {{service}}/books/book[1]/@titlex HTTP/1.0
 Storage: {{storage}}
 
 ###
