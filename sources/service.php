@@ -140,20 +140,7 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- * TODO: ----
- * 
- *     OPTIONS
- * Selects one or more elements and also attributes to an XPath and returns
- * meta information about them and the datasource in general.
- * The meta information is returned as response headers that differ in scope
- * and range from XPath as selector for elements and attributes.
- * Primarily the method is used to check what scope an XPath has as selector
- * and is comparable to EXISTS and FILE_INFO in the filesystem. 
- * 
- * In addition, OPTIONS can also be used as an alternative to CONNECT, because
- * CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
- * with context path if necessary, is used. In this case OPTIONS will hand over
- * the work to CONNECT.
+ * TODO:
  */
 class Storage {
 
@@ -211,6 +198,8 @@ class Storage {
      */    
     const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
 
+    const PATTERN_HTTP_REQUEST_URI = "/^(.*?)[!#$*:?@|~]+(.*)$/i";
+
     /**
      * Pattern for the Storage header
      *     Group 0. Full match
@@ -234,6 +223,17 @@ class Storage {
      *     Group 2. Attribute
      */    
     const PATTERN_XPATH_PSEUDO = "/^(.*?)(?:::(before|after|first|last)){0,1}$/i";
+
+    /**
+     * Pattern as indicator for XPath functions
+     * Assumption for interpretation: Slash and dot are indications of an axis
+     * notation, the round brackets can be ignored, the question remains, if
+     * the XPath starts with an axis symbol, then it is an axis, with other
+     * characters at the beginning must be a function.
+     *     Group 0. Full match
+     *     Group 1. XPath function
+     */
+    const PATTERN_XPATH_FUNCTION = "/^(\(*[a-z].*)$/i";
 
     const CONTENT_TYPE_TEXT = "text/plain";
     const CONTENT_TYPE_XPATH = "text/xpath";
@@ -515,6 +515,25 @@ class Storage {
         exit;
     }
 
+    /**
+     * OPTIONS is used to request the functions to an XPath, which is responded
+     * with the Allow header.
+     * This method distinguishes between XPath axis and XPath function and uses
+     * different Allow headers. Also the existence of the target on an XPath
+     * axis has an influence on the response.
+     * The method will not use state 404 in relation to non-existing targets,
+     * but will offer the methods CONNECT, OPTIONS, PUT via Allow-Header.
+     * If the XPath is a function, it is executed and thus validated, but
+     * without returning the result.
+     * Faulty XPath will cause the status 400.
+     *
+     * In addition, OPTIONS can also be used as an alternative to CONNECT,
+     * because CONNECT is not an HTTP standard. For this purpose OPTIONS
+     * without XPath, but with context path if necessary, is used. In this case
+     * OPTIONS will hand over the work to CONNECT.
+     * 
+     * TODO:
+     */
     function doOptions() {
 
         // Without XPath (PATH_INFO) behaves like CONNECT,
@@ -538,13 +557,41 @@ class Storage {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
 
-        if ($targets = (new DOMXpath($this->xml))->query($this->xpath)) {
-            $serials = [];
-            foreach ($targets as $target)
-            if ($target instanceof DOMElement)
-                $serials[] = $target->getAttribute("___uid");
-            if (!empty($serials))
-                header("Storage-Effects: " . join(" ", $serials));
+        $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
+
+        if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
+            $allow = "OPTIONS, GET, POST";
+            $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
+            if (!empty(libxml_get_errors())) {
+                $message = "Invalid XPath Function";
+                if (Storage::fetchLastXmlErrorMessage())
+                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                exit();
+            }
+            $allow = "CONNECT, OPTIONS, GET, POST";
+        } else {
+            $targets = (new DOMXpath($this->xml))->query($this->xpath);
+            if (!empty(libxml_get_errors())) {
+                $message = "Invalid XPath Axis";
+                if (Storage::fetchLastXmlErrorMessage())
+                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                exit();
+            }
+            if ($targets && !empty($targets) && $targets->length > 0) {
+                $serials = [];
+                foreach ($targets as $target) {
+                    if ($target instanceof DOMAttr)
+                        $target = $target->parentNode;
+                    if ($target instanceof DOMElement)
+                        $serials[] = $target->getAttribute("___uid");
+                }
+                if (!empty($serials))
+                    header("Storage-Effects: " . join(" ", $serials));
+                $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
+
+            } else $allow = "CONNECT, OPTIONS, PUT";
         }
 
         Storage::addHeaders(204, "No Content", [
@@ -552,7 +599,8 @@ class Storage {
             "Storage-Revision" => $this->getRevision(),
             "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
             "Storage-Last-Modified" => date(DateTime::RFC822),
-            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
+            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)  ,
+            "Allow" => $allow
         ]);
 
         // The function and the reponse are complete.
@@ -1386,74 +1434,17 @@ if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
     exit();
 }
 
-// Passing from XPath with the URL can cause problems when servers or clients
-// normalize the URL. Then e.g. backslash is changed to slash and multiple
-// slashes are combined.
-// Therefore three ways of passing from XPath are implemented.
-
-$xpath = "";
-
-//     Alternative 1st: QUERY_STRING 
-// Without PATH_INFO the XPath can be send completely as QUERY_STRING.
-// e.g. http://127.0.0.1/xmex?//*/@attribute
-
-if ((!isset($_SERVER["PATH_INFO"])
-                || empty($_SERVER["PATH_INFO"]))
-        && isset($_SERVER['QUERY_STRING'])
-        && !empty($_SERVER['QUERY_STRING'])) {
-    $xpath = $_SERVER['QUERY_STRING'];
-} else {
-
-    //     Alternative 2st: CGI Environment Variable REQUEST
-    // This approach cannot be handled by the client, but is a variant that is
-    // alternatively checked by the service and used if available.
-    // e.g. REQUEST PUT /xmex//*/@attribute HTTP/1.0
-    //
-    // Here the effort is a bit higher, because it might be necessary to determine
-    // the context path, which can already be normalized.
-    // If this approach is available, it must be used because the CGI environment
-    // variable REQUEST exists when the server changes SCRIPT_NAME and PATH_INFO.
-
-    if (isset($_SERVER["REQUEST"])
-            && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $request, PREG_UNMATCHED_AS_NULL)) {
-        
-        // Step 1: Complete decoding of the URL, this should be the same procedure
-        // as for the server
-        $request = urldecode($request[2]);
-        
-        // Step 2: Backslash is replaced by slash 
-        $request = str_replace("\\", "/", $request);
-        
-        // Step 3: Now the structure should be correct, there is still the task to
-        // normalize multiple slashes. This is made iteratively and compared with
-        // each iteration whether the context path matches SCRIPT_NAME.
-        // If this occurs, the length of PATH_INFO can be calculated.
-        $search = $_SERVER["SCRIPT_NAME"];
-        while (true) {
-            if (substr($request, 0, strlen($search)) === $search) {
-                $xpath = substr($request, strlen($search));
-                break;
-            } else if (strpos($request, "//") === false)
-                // Whatever happens, this place should never be reached.
-                throw new Exception("Unexpected exception during runtime");
-            $request = preg_replace("/\/\//", "/", $request, 1);
-        }
-
-    } else {
-
-        //    Standard: Combination of PATH_INFO + QUERY_STRING
-        // The combination is based on the assumption that the XPath, thus also the
-        // URL, can use the question mark. The server will split the URL for the CGI
-        // into PATH_INFO and QUERY_STRING and so the XPath must be reassembled here if
-        // necessary.
-        // e.g. http://127.0.0.1/xmex/books/book[contains(@title,'?')]
-
-        if (isset($_SERVER["PATH_INFO"]))
-            $xpath = $_SERVER["PATH_INFO"];
-        if (isset($_SERVER["QUERY_STRING"]))
-            $xpath .= "?" . $_SERVER["QUERY_STRING"];
-    }
-}
+// The XPath is determined from REQUEST_URI or alternatively from REQUEST
+// because some servers normalize the paths and URI for the CGI.
+// It was not easy to determine the context path for all servers safely and
+// then extract the XPath from the request. Therefore it was decided that the
+// context path and XPath are separated by a symbol or a symbol sequence.
+// The behavior can be customized with Storage::PATTERN_HTTP_REQUEST_URI.
+$xpath = $_SERVER["REQUEST_URI"];
+if (isset($_SERVER["REQUEST"])
+        && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $xpath, PREG_UNMATCHED_AS_NULL))
+    $xpath = $xpath[2];
+$xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
 // XPath or XPath function.
