@@ -74,8 +74,6 @@ TODO:
 
 
 ## Configuration
-
-# Configuration
 The REST API is configured as an absolute (hungry) virtual path. So all requests
 starting with the virtual path are redirected to the PHP script `./service.php`.  
 Means that the script itself cannot be called.  
@@ -87,7 +85,8 @@ The `CONNECT` method is not an HTTP standard, alternative `OPTIONS` can be used.
 
 When using PHP as CGI, the HTTP methods may also need to be allowed. 
 
-## Apache HTTPD
+
+### Apache HTTPD
 
 Direct for a physical or virtual host:
 
@@ -109,7 +108,8 @@ A context path is not required, but it is recommended to use a context path
 that ends with a non-alphanumeric character to make the separation between URL
 and XPath more visible.  
 
-## Seanox Devwex
+
+### Seanox Devwex
 ```
 [SERVER:HTTP:CGI]
   ...
@@ -124,10 +124,11 @@ A context path is not required, but it is recommended to use a context path
 that ends with a non-alphanumeric character to make the separation between URL
 and XPath more visible.  
 
-## Other HTTP servers
+### Other HTTP servers
 Something like Apache HTTPD or Seanox Devwex.  
 Alternatively, the script can be called directly and passed to XPath as a query
 string.
+
 
 ## Terms
 
@@ -294,17 +295,22 @@ Execution-Time: 3
 ```
 
 #### Response codes / behavior
+
 ##### HTTP/1.0 201 Resource Created
 - Response can be status 201 if the storage was newly created
+
 ##### HTTP/1.0 202 Accepted
 - Response can be status 202 if the storage already exists
+
 ##### HTTP/1.0 400 Bad Request
 - Requests without XPath are responded with status 400 Bad Request
 - Requests with a invalid Storage header are responded with status 400  
   Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
 - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
+
 ##### HTTP/1.0 507 Insufficient Storage
 - Response can be status 507 if the storage is full
+
 
 ### GET
 GET queries data about XPath axes and functions.  
@@ -349,29 +355,22 @@ The result of the XPath request
 #### Example
 TODO
 
-#### Response codes / behavior
-##### HTTP/1.0 201 Resource Created
-- Response can be status 201 if the storage was newly created
-##### HTTP/1.0 202 Accepted
-- Response can be status 202 if the storage already exists
-##### HTTP/1.0 400 Bad Request
-- Requests without XPath are responded with status 400 Bad Request
-- Requests with a invalid Storage header are responded with status 400  
-  Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
-- XPath is used from PATH_INFO + QUERY_STRING, not the request URI
-##### HTTP/1.0 507 Insufficient Storage
-- Response can be status 507 if the storage is full
- 
 #### Response codes / behavior:
+
 ##### HTTP/1.0 200 Success
 - Request was successfully executed
+
 ##### HTTP/1.0 400 Bad Request
 - XPath is malformed
+
 ##### HTTP/1.0 404 Resource Not Found
 - Storage is invalid 
+- XPath axis finds no target
+
 
 ### DELETE
 TODO:
+
 
 ### OPTIONS
 OPTIONS is used to request the functions to an XPath, which is responded with
@@ -409,10 +408,13 @@ Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
 TODO:
 
 #### Response codes / behavior
+
 ##### HTTP/1.0 204 No Content
 - Request was successfully executed
+
 #####  HTTP/1.0 400 Bad Request
 - XPath is malformed
+
 ##### HTTP/1.0 404 Resource Not Found
 - Storage is invalid 
 
@@ -489,11 +491,13 @@ Execution-Time: 3
 ##### HTTP/1.0 507 Insufficient Storage
 - Response can be status 507 if the storage is full
 
+
 ### PATCH
 TODO:
 
+
 ### POST
-POST is another way to query data via transformation.  
+POST queries data about XPath axes and functions via transformation.
 For this, an XSLT stylesheet is sent with the request-body, which is then
 applied by the XSLT processor to the data in storage.  
 Thus the content type `application/xslt+xml` is always required.  
@@ -568,9 +572,11 @@ Execution-Time: 4
 
 ##### HTTP/1.0 404 Resource Not Found
 - Storage is invalid 
+- XPath axis finds no target
 
 ##### HTTP/1.0 415 Unsupported Media Type
 - Attribute request without Content-Type text/plain
+
 
 ### PUT
 PUT inserts new elements and attributes into the storage.  
@@ -704,7 +710,7 @@ Execution-Time: 3
 - XPath without addressing a target is responded with status 204
 
 ##### HTTP/1.0 404 Resource Not Found
-- Storage is invalid 
+- Storage is invalid  
 
 ##### HTTP/1.0 413 Payload Too Large
 - Allowed size of the request(-body) and/or storage is exceeded
