@@ -214,7 +214,7 @@ class Storage {
      *     Group 1. XPath axis
      *     Group 2. Attribute
      */    
-    const PATTERN_XPATH_ATTRIBUTE = "/^(.*?)\/{0,}(?<=\/)(?:@|attribute::)(\w+)$/i";
+    const PATTERN_XPATH_ATTRIBUTE = "/((?:^\/+)|(?:^.*?))\/{0,}(?<=\/)(?:@|attribute::)(\w+)$/i";
 
     /**
      * Pattern to determine the structure of XPath axis expressions for pseudo elements
@@ -609,20 +609,16 @@ class Storage {
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $allow = "OPTIONS, GET, POST";
             $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
-            if (!empty(libxml_get_errors())) {
-                $message = "Invalid XPath Function";
-                if (Storage::fetchLastXmlErrorMessage())
-                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            if (Storage::fetchLastXmlErrorMessage()) {
+                $message = "Invalid XPath function (" . Storage::fetchLastXmlErrorMessage() . ")";
                 Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
                 exit();
             }
             $allow = "CONNECT, OPTIONS, GET, POST";
         } else {
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
-            if (!empty(libxml_get_errors())) {
-                $message = "Invalid XPath Axis";
-                if (Storage::fetchLastXmlErrorMessage())
-                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            if (Storage::fetchLastXmlErrorMessage()) {
+                $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
                 exit();
             }
@@ -695,7 +691,8 @@ class Storage {
      *         HTTP/1.0 400 Bad Request
      * - XPath is malformed
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid 
+     * - Storage is invalid  
+     * - XPath axis finds no target
      */ 
     function doGet() {
     
@@ -719,12 +716,11 @@ class Storage {
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
             $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
         else $result = (new DOMXpath($this->xml))->query($this->xpath); 
-        if (!empty(libxml_get_errors())) {
-            $message = "Invalid XPath Axis";
+        if (Storage::fetchLastXmlErrorMessage()) {
+            $message = "Invalid XPath axis";
             if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
-                $message = "Invalid XPath Function";
-            if (Storage::fetchLastXmlErrorMessage())
-                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                $message = "Invalid XPath function";
+            $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
             Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
             exit();            
         } else if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)
@@ -770,7 +766,7 @@ class Storage {
     }
 
     /**
-     * POST is another way to query data via transformation.
+     * POST queries data about XPath axes and functions via transformation.
      * For this, an XSLT stylesheet is sent with the request-body, which is
      * then applied by the XSLT processor to the data in storage.
      * Thus the content type application/xslt+xml is always required.
@@ -828,7 +824,8 @@ class Storage {
 
         // POST always expects an valid XSLT template for transformation.
         $style = new DOMDocument();
-        if (!$style->loadXML(file_get_contents('php://input'))) {
+        if (!$style->loadXML(file_get_contents('php://input'))
+                || Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -841,14 +838,29 @@ class Storage {
 
         $xml = $this->xml;
         if (!empty($this->xpath)) {
+            if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
+                $message = "Invalid XPath (Functions are not supported)";
+                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                exit();    
+            }
             $xml = new DOMDocument();
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
+            if (Storage::fetchLastXmlErrorMessage()) {
+                $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
+                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                exit();            
+            }
+            if (!$targets || empty($targets) || $targets->length <= 0) {
+                Storage::addHeaders(404, "Resource Not Found");
+                exit();  
+            }
             foreach ($targets as $target)
                 $xml->appendChild($xml->importNode($target, true));
         }
         
         $output = $processor->transformToXML($xml);
-        if ($output === false) {
+        if ($output === false
+                || Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -1040,9 +1052,15 @@ class Storage {
             // XPath function is executed only once and the result is put on
             // all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
+                if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
+                    $message = "Invalid XPath (Axes are not supported)";
+                    Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                    exit();
+                }
                 $input = (new DOMXpath($this->xml))->evaluate($input);
-                if ($input === false) {
-                    $message = "Invalid XPath";
+                if ($input === false
+                        || Storage::fetchLastXmlErrorMessage()) {
+                    $message = "Invalid XPath function";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
                     Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
@@ -1055,13 +1073,25 @@ class Storage {
             $xpath = $matches[1];
             $attribute = $matches[2];
 
+            $targets = (new DOMXpath($this->xml))->query($xpath);
+            if (Storage::fetchLastXmlErrorMessage()) {
+                $message = "Invalid XPath axis";
+                if (Storage::fetchLastXmlErrorMessage())
+                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                exit();
+            }
+            if (!$targets || empty($targets) || $targets->length <= 0) {
+                Storage::addHeaders(404, "Resource Not Found");
+                exit();  
+            }
+            
             // The attributes ___rev and ___uid are essential for the internal
             // organization and management of the data and cannot be changed.
             // PUT requests for these attributes are ignored and behave as if
             // no matching node was found. It should say request understood and
             // executed but without effect.
             if (!in_array($attribute, ["___rev", "___uid"])) {
-                $targets = (new DOMXpath($this->xml))->query($xpath);
                 if (!empty($targets)) {
                     $this->revision = $this->getRevision() +1;
                     $serials = []; 
@@ -1140,7 +1170,8 @@ class Storage {
             // all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
                 $input = (new DOMXpath($this->xml))->evaluate($input);
-                if ($input === false) {
+                if ($input === false
+                        || Storage::fetchLastXmlErrorMessage()) {
                     $message = "Invalid XPath";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -1217,7 +1248,8 @@ class Storage {
         // semantic errors, but the parser only finds structural or syntactic
         // errors
         $xml = new DOMDocument();
-        if (!$xml->loadXML($input)) {
+        if (!$xml->loadXML($input)
+                || Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XML document";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
