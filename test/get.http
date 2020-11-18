@@ -2,7 +2,10 @@
 @storage = 0000000000000000000000000000000000G0 statistic
 
 # Test sequence for GET requests.
-# GET requests are one of two ways to query data.
+# GET queries data about XPath axes and functions.  
+# For this, the XPath axis or function is sent with URI.  
+# Depending on whether the request is an XPath axis or an XPath function,
+# different Content-Type are used for the response.
 
 ###
 # Storage is not establish 
@@ -29,7 +32,7 @@ Content-Type: application/xslt+xml
 Content-Length: 9974
 
 <cities>
-  <city name="Berlin">
+  <city name="Berlin" empty="">
     <districts>
       <district name="Charlottenburg-Wilmersdorf">
         <quarters>
@@ -183,7 +186,7 @@ Content-Length: 9974
 # Request for the root in the storage
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 14447
+# - Content-Length: 14456
 # - Content-Type: application/xslt+xml
 # - Complete storage
 GET {{service}}/ HTTP/1.0
@@ -193,7 +196,7 @@ Storage: {{storage}}
 # Request without a path is the same as / for the root in the storage
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 14447
+# - Content-Length: 14456
 # - Content-Type: application/xslt+xml
 # - Complete storage
 GET {{service}} HTTP/1.0
@@ -220,11 +223,18 @@ GET {{service}}(/statistic//districts)/district HTTP/1.0
 Storage: {{storage}}
 
 ###
-# TODO: 404 or 200 without content / see also PUT/POST and more with invalid XPath's
+# Wrong XPath axis expression
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid expression
+# - Message: Invalid XPath Axis (Invalid expression)
 GET {{service}}(/wrong//districts/) HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis without target
+# Expectations:
+# - Status code 404 Resource Not Found
+GET {{service}}/unknown/unknown HTTP/1.0
 Storage: {{storage}}
 
 ###
@@ -251,7 +261,7 @@ Storage: {{storage}}
 # Request with unknown XPath function causes status 400
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Unregistered function
+# - Message: Invalid XPath Function (Unregistered function)
 GET {{service}}wrong(/statistic//districts) HTTP/1.0
 Storage: {{storage}}
 
@@ -293,6 +303,51 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Value: 1
 GET {{service}}count(/statistic) HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis for a attribute should work
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 6
+# - Content-Type: text/plain
+# - Value: Berlin
+GET {{service}}//city[1]/@name HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis for a attribute should work
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 6
+# - Content-Type: text/plain
+# - Value: Berlin
+GET {{service}}//city[1]/attribute::name HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis for a attribute that does not exist should cause status 404
+# Expectations:
+# - Status code 404 Resource Not Found
+GET {{service}}//city[1]/attribute::wrong HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath axis for a empty attribute should work
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 0
+# - Content-Type: text/plain
+GET {{service}}//city[1]/attribute::empty HTTP/1.0
+Storage: {{storage}}
+
+###
+# XPath function with an empty result should work
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 0
+# - Content-Type: text/plain
+GET {{service}}concat('','') HTTP/1.0
 Storage: {{storage}}
 
 ###
