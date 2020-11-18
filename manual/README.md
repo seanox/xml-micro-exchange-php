@@ -294,24 +294,81 @@ Execution-Time: 3
 ```
 
 #### Response codes / behavior
-
 ##### HTTP/1.0 201 Resource Created
 - Response can be status 201 if the storage was newly created
-
 ##### HTTP/1.0 202 Accepted
 - Response can be status 202 if the storage already exists
-
 ##### HTTP/1.0 400 Bad Request
 - Requests without XPath are responded with status 400 Bad Request
 - Requests with a invalid Storage header are responded with status 400  
   Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
 - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
-
 ##### HTTP/1.0 507 Insufficient Storage
 - Response can be status 507 if the storage is full
 
 ### GET
-TODO:
+GET queries data about XPath axes and functions.  
+For this, the XPath axis or function is sent with URI.  
+Depending on whether the request is an XPath axis or an XPath function,
+different Content-Type are used for the response.
+
+#### XPath axis
+Conent-Type: `application/xslt+xml`
+When the XPath axis addresses one target, the addressed target is the root
+element of the returned XML structure.  
+If the XPath addresses multiple targets, their XML structure is combined in the
+root element collection.
+
+#### XPath function
+Conent-Type: `text/plain`  
+The result of XPath functions is returned as plain text.  
+Decimal results use float, booleans the values true and false.
+
+#### Request
+```
+GET /<xpath> HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
+```
+
+#### Example
+TODO
+
+#### Response
+```
+HTTP/1.0 200 Success
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage-Revision: Revision (number)   
+Storage-Space: Total/Used (bytes)
+Storage-Last-Modified: Timestamp (RFC822)
+Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+Content-Length: (bytes)
+    Response-Body:
+The result of the XPath request
+```
+
+#### Example
+TODO
+
+#### Response codes / behavior
+##### HTTP/1.0 201 Resource Created
+- Response can be status 201 if the storage was newly created
+##### HTTP/1.0 202 Accepted
+- Response can be status 202 if the storage already exists
+##### HTTP/1.0 400 Bad Request
+- Requests without XPath are responded with status 400 Bad Request
+- Requests with a invalid Storage header are responded with status 400  
+  Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
+- XPath is used from PATH_INFO + QUERY_STRING, not the request URI
+##### HTTP/1.0 507 Insufficient Storage
+- Response can be status 507 if the storage is full
+ 
+#### Response codes / behavior:
+##### HTTP/1.0 200 Success
+- Request was successfully executed
+##### HTTP/1.0 400 Bad Request
+- XPath is malformed
+##### HTTP/1.0 404 Resource Not Found
+- Storage is invalid 
 
 ### DELETE
 TODO:
@@ -561,7 +618,7 @@ cause error status 400 and 415.
 #### Request
 ```
 PUT /<xpath> HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
 Content-Length: (bytes)
 Content-Type: application/xslt+xml
      Request-Body:
@@ -569,7 +626,7 @@ XML structure
 ```
 ```
 PUT /<xpath> HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
 Content-Length: (bytes)
 Content-Type: text/plain
     Request-Body:
@@ -577,7 +634,7 @@ Value as plain text
 ```
 ```
 PUT /<xpath> HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
 Content-Length: (bytes)
 Content-Type: text/xpath
     Request-Body:
