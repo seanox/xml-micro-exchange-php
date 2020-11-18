@@ -444,11 +444,11 @@ class Storage {
      * 
      *     Request:
      * CONNECT / HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      * 
      *     Request:
      * CONNECT / HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root (identifier / root)
      * 
      *    Response:
      * HTTP/1.0 201 Created
@@ -525,7 +525,7 @@ class Storage {
      * 
      *     Request:
      * OPTIONS /<xpath> HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      *  
      *     Response:
      * HTTP/1.0 204 Success
@@ -551,11 +551,11 @@ class Storage {
      * 
      *     Request:
      * OPTIONS / HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      * 
      *     Request:
      * OPTIONS / HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root (identifier)
      *  
      *    Response:
      * HTTP/1.0 201 Created
@@ -657,15 +657,15 @@ class Storage {
     }  
 
     /**
-     * GET is another way to retrieve data about XPath axes and functions.
-     * For this, the XPath axes or functions is sent with URI.
+     * GET queries data about XPath axes and functions.
+     * For this, the XPath axis or function is sent with URI.
      * Depending on whether the request is an XPath axis or an XPath function,
      * different Content-Type are used for the response.
      * 
-     *     XPath axes
+     *     XPath axis
      * Conent-Type: application/xslt+xml
      * When the XPath axis addresses one target, the addressed target is the
-     * root element of the returned XML structure
+     * root element of the returned XML structure.
      * If the XPath addresses multiple targets, their XML structure is combined
      * in the root element collection.
      * 
@@ -676,7 +676,7 @@ class Storage {
      * 
      *     Request:
      * GET /<xpath> HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      *  
      *     Response:
      * HTTP/1.0 200 Success
@@ -716,12 +716,20 @@ class Storage {
         
         $media = Storage::CONTENT_TYPE_TEXT;
 
-        $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
+        if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
+            $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
+        else $result = (new DOMXpath($this->xml))->query($this->xpath); 
         if (!empty(libxml_get_errors())) {
-            $message = "Invalid XPath";
+            $message = "Invalid XPath Axis";
+            if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
+                $message = "Invalid XPath Function";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
             Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            exit();            
+        } else if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)
+                &&  (!$result || empty($result) || $result->length <= 0)) {
+            Storage::addHeaders(404, "Resource Not Found");
             exit();            
         } else if ($result instanceof DOMNodeList) {
             $media = Storage::CONTENT_TYPE_XML;
@@ -773,7 +781,7 @@ class Storage {
      * 
      *     Request:
      * POST /<xpath> HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      * Content-Length: (bytes)
      * Content-Type: application/xslt+xml
      *     Request-Body:
@@ -919,7 +927,7 @@ class Storage {
      * 
      *     Request:
      * PUT /<xpath> HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      * Content-Length: (bytes)
      * Content-Type: application/xslt+xml
      *     Request-Body:
@@ -927,7 +935,7 @@ class Storage {
      *
      *     Request:
      * PUT /<xpath> HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      * Content-Length: (bytes)
      *  Content-Type: text/plain
      *     Request-Body:
@@ -935,7 +943,7 @@ class Storage {
      * 
      *     Request:
      * PUT /<xpath> HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      * Content-Length: (bytes)
      * Content-Type: text/xpath
      *     Request-Body:
@@ -1349,7 +1357,7 @@ class Storage {
     
         // Request:
         //     PATCH /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         //     Content-Length: 0 Bytes
         //     Content-Type: application/xslt+xml
         // Request-Body:
@@ -1357,7 +1365,7 @@ class Storage {
         
         // Request:
         //     PATCH /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         //     Content-Length: 0 Bytes
         //     Content-Type: text/plain
         // Request-Body:
@@ -1365,7 +1373,7 @@ class Storage {
         
         // Response:
         //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
         
@@ -1390,11 +1398,11 @@ class Storage {
     
         // Request:
         //     DELETE /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ 
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         
         // Response:
         //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
     }
@@ -1492,6 +1500,7 @@ if (isset($_SERVER["REQUEST"])
         && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $xpath, PREG_UNMATCHED_AS_NULL))
     $xpath = $xpath[2];
 $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
+$xpath = urldecode($xpath); 
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
 // XPath or XPath function.
