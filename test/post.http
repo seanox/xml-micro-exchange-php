@@ -2,7 +2,13 @@
 @storage = 0000000000000000000000000000000000P0 statistic
 
 # Test sequence for POST requests.
-# POST requests are one of two ways to query data and then transform it.
+# POST queries data about XPath axes and functions via transformation.
+# For this, an XSLT stylesheet is sent with the request-body, which is then
+# applied by the XSLT processor to the data in storage. Thus the content type
+# application/xslt+xml is always required. The client defines the content type
+# for the output with the output-tag and the method-attribute. 
+# The XPath is optional for this method and is used to limit and preselect
+# the data.
 
 ###
 # Storage is not establish 
@@ -490,6 +496,58 @@ Content-Length: 840
 # - Content-Length: 0
 # - Content-Type: application/xslt+xml
 POST {{service}} HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 185
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/"/>
+</xsl:stylesheet>
+
+
+###
+# Valid XSLT but without output
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 0
+# - Content-Type: application/xslt+xml
+POST {{service}}/statistic/cities/city HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 185
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/"/>
+</xsl:stylesheet>
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+POST {{service}}/statistic/cities/unknow HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 185
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/"/>
+</xsl:stylesheet>
+
+###
+# XPath functions are not supported
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath: functions are not supported
+POST {{service}}name(/statistic) HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
 Content-Length: 185
