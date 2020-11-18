@@ -546,7 +546,7 @@ Content-Length: 185
 # XPath functions are not supported
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid XPath: functions are not supported
+# - Message: Invalid XPath (Functions are not supported)
 POST {{service}}name(/statistic) HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml

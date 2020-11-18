@@ -80,7 +80,7 @@ concat(name(/*), "-Test")
 # Using invalid XPath function should not cause problems.
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid XPath (Invalid expression)
+# - Message: Invalid XPath function (Invalid expression)
 PUT {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
@@ -237,6 +237,28 @@ Content-Length: 15
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 PUT {{service}}/*/../@___xxx HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong/@new HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong/wrong/@new HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15

@@ -108,7 +108,7 @@ Storage: {{storage}}
 # XPath axis without usable target
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid XPath Axis (Invalid expression)
+# - Message: Invalid XPath axis (Invalid expression)
 OPTIONS {{service}}// HTTP/1.0
 Storage: {{storage}}
 
@@ -172,7 +172,7 @@ Storage: {{storage}}
 # The request checks more whether it can be processed.
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid XPath Function (Unregistered function)
+# - Message: Invalid XPath function (Unregistered function)
 OPTIONS {{service}}wrong(/books) HTTP/1.0
 Storage: {{storage}}
 
