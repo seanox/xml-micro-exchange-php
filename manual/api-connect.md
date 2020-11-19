@@ -51,10 +51,17 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root (identifier / root)
 CONNECT / HTTP/1.0
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
+Creates a storage with the identifier 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ if
+it does not yet exist.  
+For the XML structure the default root named data is used.
+
 ``` 
 CONNECT / HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
 ```
+Creates a storage with the identifier 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ if
+it does not yet exist.  
+For the XML structure the root named books is used.
 
 ## Response
 
@@ -88,6 +95,23 @@ Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
 Execution-Time: 3
 ```
+Response if the storage was newly created.  
+Also recognizable by the initial revision 0 in the Storage-Revision header.
+
+```
+HTTP/1.0 202 Accepted
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage-Revision: 0
+Storage-Space: 262144/87
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Execution-Time: 3
+```
+Response, if the storage already exists.  
+The initial revision 0 in the storage revision header shows that this is still
+the initial version without changes.
 
 ## Response codes / behavior
 
