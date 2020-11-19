@@ -24,6 +24,7 @@ data.
   * [HTTP/1.0 400 Bad Request](#http10-400-bad-request)
   * [HTTP/1.0 404 Resource Not Found](#http10-404-resource-not-found)
   * [HTTP/1.0 415 Unsupported Media Type](#http10-415-unsupported-media-type)
+  * [HTTP/1.0 422 Unprocessable Entity](#http10-422-unprocessable-entity)
   
 
 ## Request
@@ -102,6 +103,9 @@ Execution-Time: 4
 
 ### HTTP/1.0 415 Unsupported Media Type
 - Attribute request without Content-Type text/plain
+
+### HTTP/1.0 422 Unprocessable Entity
+- Data in the request body cannot be processed
 
 
 
