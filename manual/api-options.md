@@ -30,11 +30,11 @@ Faulty XPath will cause the status 400.
 * [Request](#request-1)
   * [Example](#example-2)
 * [Response](#response-1)
-  * [Example](#example-2)
+  * [Example](#example-3)
 * [Response codes / behavior](#response-codes--behavior-1)  
   * [HTTP/1.0 201 Resource Created](#http10-201-resource-created)
   * [HTTP/1.0 202 Accepted](#http10-202-accepted)
-  * [HTTP/1.0 400 Bad Request](#http10-400-bad-request-2)
+  * [HTTP/1.0 400 Bad Request](#http10-400-bad-request-1)
   * [HTTP/1.0 507 Insufficient Storage](#http10-507-insufficient-storage)
 
 
