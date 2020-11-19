@@ -63,6 +63,7 @@ Creates a storage with the identifier 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ if
 it does not yet exist.  
 For the XML structure the root named books is used.
 
+
 ## Response
 
 ```
@@ -112,6 +113,7 @@ Execution-Time: 3
 Response, if the storage already exists.  
 The initial revision 0 in the storage revision header shows that this is still
 the initial version without changes.
+
 
 ## Response codes / behavior
 
