@@ -1,7 +1,10 @@
 @service = http://127.0.0.1/xmex!
 @storage = 0000000000000000000000000000000000PE books
 
-# Test sequence for putting XML structures into storage.
+# Test sequence for putting of elements into the storage.
+# PUT inserts new elements and attributes into the storage.
+# The position for the insert is defined via an XPath.
+# XPath uses different notations for elements and attributes.
 
 ###
 # Storage is not establish 
@@ -127,5 +130,27 @@ Content-Type: application/xslt+xml
 Content-Length: 7
 
 <test/>
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong/wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
 
 ###

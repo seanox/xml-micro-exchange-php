@@ -1,10 +1,10 @@
 @service = http://127.0.0.1/xmex!
 @storage = 0000000000000000000000000000000000PA books
 
-# Test sequence for putting of attributes to memory elements.
-# Attributes can be set using /@<name> or /attributes::<name>.
-# The processing is case-sensitive and more consistent in handling spaces in
-# the XPath - no spaces are supported.
+# Test sequence for putting of attributes to storage elements.
+# PUT inserts new elements and attributes into the storage.
+# The position for the insert is defined via an XPath.
+# XPath uses different notations for elements and attributes.
 
 ###
 # Storage is not establish 

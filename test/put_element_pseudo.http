@@ -182,3 +182,33 @@ Content-Length: 64
 <wrong id="wrongC"/>
 
 ###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+PUT {{service}}/wrong::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 64
+
+<wrong id="wrongA"/>
+<wrong id="wrongB"/>
+<wrong id="wrongC"/>
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+PUT {{service}}/wrong/wrong::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 64
+
+<wrong id="wrongA"/>
+<wrong id="wrongB"/>
+<wrong id="wrongC"/>
+
+###
