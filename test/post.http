@@ -313,7 +313,7 @@ Content-Length: 841
 ###
 # Wrong XSLT markup, xsl:templatex is used instead of xsl:template
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (xsltParseStylesheetTop: unknown templatex element)
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
@@ -343,7 +343,7 @@ Content-Length: 839
 ###
 # Wrong XSLT markup, xsl:templatex is used and is closed by xsl:template
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (Opening and ending tag mismatch...
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
@@ -373,7 +373,7 @@ Content-Length: 842
 ###
 # Wrong XSLT markup, city tag is not closed
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (Opening and ending tag mismatch...
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
@@ -403,7 +403,7 @@ Content-Length: 840
 ###
 # Wrong XSLT markup, city tag is not closed
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (EndTag: '</' not found)
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
@@ -432,7 +432,7 @@ Content-Length: 828
 ###
 # Wrong XSLT EL function sumx (does not exists)
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (Failed to evaluate the expression of variable 'area')
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
@@ -462,7 +462,7 @@ Content-Length: 843
 ###
 # Wrong XSLT EL in variable: city attribute: select ] is missing
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (XSLT-variable: Failed to compile the XPath expression ...
 POST {{service}} HTTP/1.0
 Storage: {{storage}}
@@ -506,7 +506,6 @@ Content-Length: 185
   <xsl:output method="xml"/>
   <xsl:template match="/"/>
 </xsl:stylesheet>
-
 
 ###
 # Valid XSLT but without output
