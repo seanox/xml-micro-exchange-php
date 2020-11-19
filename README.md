@@ -58,8 +58,8 @@ alternatively via OPTIONS.
 TODO:
 
 ## Multible axes and targets
-XPath can address multiple elements and attributes simultaneously via multiple
-axes, which can be changed with one call.
+An XPath axis can address several elements and attributes simultaneously, which
+can be changed with one call.
 
 ## XPath Functions
 PUT and PATCH support XML structures and static values (text), as well as XPath
@@ -114,21 +114,22 @@ TODO:
 
 
 # Manual
-* [Motivation](manual/README.md#motivation)
-* [Installation](manual/README.md#installation)
-* [Configuration](manual/README.md#configuration)
-* [Getting Started](manual/README.md#getting-started)
-* [API](manual/README.md#api)
-  * [CONNECT](manual/README.md#connect)
-  * [GET](manual/README.md#get)
-  * [DELETE](manual/README.md#delete)
-  * [OPTIONS](manual/README.md#options)
-  * [PATCH](manual/README.md#patch)
-  * [POST](manual/README.md#post)
-  * [PUT](manual/README.md#put)
-* [Error Handling](manual/README.md#error-handling)     
-* [Development](manual/README.md#development)
-* [Test](manual/README.md#test)
+* [Motivation](manual/motivation.md)
+* [Installation](manual/installation.md)
+* [Configuration](manual/configuration.md)
+* [Terms](manual/terms.md)
+* [Getting Started](manual/getting-started.md)
+* [API](manual/api.md)
+  * [CONNECT](manual/api-connect.md)
+  * [DELETE](manual/api-delete.md)
+  * [GET](manual/api-get.md)
+  * [OPTIONS](manual/api-options.md)
+  * [PATCH](manual/api-patch.md)
+  * [POST](manual/api-post.md)
+  * [PUT](manual/api-put.md)
+* [Error Handling](manual/error-handling.md)     
+* [Development](manual/development.md)
+* [Test](manual/test.md)
 
 
 # Changes (Change Log)
