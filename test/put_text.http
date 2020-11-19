@@ -128,14 +128,50 @@ name(/*)
 ###
 # Using invalid XPath function should not cause problems.
 # Expectations:
-# - Status 400 Bad Request
-# - Message: Invalid XPath (Invalid expression)
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath function (Invalid expression)
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
 Content-Length: 8
 
 name(/+)
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath function (Unregistered function)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+wrong(.)
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath (Axes are not supported)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 12
+
+/wrong/wrong
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath (Axes are not supported)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 1
+
+.
 
 ###
 # PUT outside the root element, shall be ignored
@@ -157,6 +193,28 @@ Test
 # - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books/.. HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###
+# XPath without a target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###
+# XPath without a target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong/wrong HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 4

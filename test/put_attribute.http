@@ -79,7 +79,7 @@ concat(name(/*), "-Test")
 ###
 # Using invalid XPath function should not cause problems.
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 422 Unprocessable Entity
 # - Message: Invalid XPath function (Invalid expression)
 PUT {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
@@ -212,6 +212,58 @@ Content-Type: text/plain
 Content-Length: 15
 
 123456789ABCDEF
+
+###
+# Expectations:
+# - Status code 204 No Content
+#   the addressing of the XML document is detected
+# - Response without Storage-Effects header, such a request has no effect
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}/@attrF HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 15
+
+name(.)
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 15
+
+name(.)
+
+###
+# XPath as value is not supported
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath (Axes are not supported)
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 15
+
+/wrong/wrong
+
+###
+# XPath with wrong function
+# Expectations:
+# - Status code 422 Unprocessable Entity
+Message: Invalid XPath function (Unregistered function)
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 15
+
+wrong(.)
 
 ###
 # PUT outside the root element, shall be ignored
