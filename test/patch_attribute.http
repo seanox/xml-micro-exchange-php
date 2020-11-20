@@ -1,16 +1,14 @@
 @service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000PA books
+@storage = 0000000000000000000000000000000000UA books
 
 # Test sequence for putting of attributes to storage elements.
-# PUT inserts new elements and attributes into the storage.
-# The position for the insert is defined via an XPath.
-# XPath uses different notations for elements and attributes.
+# TODO:
 
 ###
 # Storage is not establish 
 # Expectations:
 # - Status code 404 Resource Not Found
-PUT {{service}}/books/attribute::attrA HTTP/1.0
+PATCH {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 4
@@ -25,6 +23,17 @@ OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}}
 
 ###
+# Attribute does not exist
+# Expectations:
+# - Status code 404 Resource Not Found
+PATCH {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 13
+
+test_value<1>
+
+###
 # Expectations:
 # - Status code 204 No Content
 # - In the storage the attribute is added
@@ -40,18 +49,33 @@ Content-Length: 13
 test_value<1>
 
 ###
+# Expectations:
+# - Status code 204 No Content
+# - In the storage the attribute is patched
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - Storage-Effects: 1x UID
+PATCH {{service}}/books/attribute::attrA HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 13
+
+test_value<2>
+
+###
 # Using unicode should not cause problems
 # Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
-# - In the storage the attribute is added
+# - In the storage the attribute is patched
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
 # - Double quotation marks and the & are encoded correctly
 # - Unicode characters are inserted as UTF-8
 # - Storage-Effects: 1x UID
-PUT {{service}}(/books)/attribute::attrA HTTP/1.0
+PATCH {{service}}(/books)/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 37
@@ -62,14 +86,14 @@ Content-Length: 37
 # Using XPath function should work.
 # Expectations:
 # - Status code 204 No Content
-# - In the storage the attribute is added
+# - In the storage the attribute is patched
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
 # - Storage-Effects: 1x UID
 # - Double quotation marks and the & are encoded correctly
 # - As value books is used
-PUT {{service}}/books/attribute::attrA HTTP/1.0
+PATCH {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
 Content-Length: 8
@@ -81,7 +105,7 @@ concat(name(/*), "-Test")
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XPath function (Invalid expression)
-PUT {{service}}/books/attribute::attrA HTTP/1.0
+PATCH {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
 Content-Length: 8
@@ -94,12 +118,12 @@ name(/+)
 # the previously inserted unicode.
 # Expectations:
 # - Status code 204 No Content
-# - In the storage the attribute is added
+# - In the storage the attribute is patched
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
 # - Storage-Effects: 1x UID
-PUT {{service}}/books/attribute::attrA HTTP/1.0
+PATCH {{service}}/books/attribute::attrA HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 13
@@ -108,9 +132,26 @@ test_value<1>
 
 ###
 # Expectations:
+# - Status code 204 No Content
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - Storage-Effects: 1x UID
+# - Double quotation marks and the & are encoded correctly
+# - As value books is used
+PUT {{service}}/books/@attrB HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# Expectations:
 # - Status code 415 Unsupported Media Type
 #   because the Content-Type is not text/plain.
-PUT {{service}}/books/@attrG HTTP/1.0
+PATCH {{service}}/books/@attrB HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain-x
 Content-Length: 15
@@ -120,12 +161,22 @@ Content-Length: 15
 ###
 # Expectations:
 # - Status code 204 No Content
-# - In the storage the attribute is added
+# - In the storage the attribute is patched
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
 # - Content-Length is mssing but without effect (by the REST Client)
-PUT {{service}}/books/@attrB HTTP/1.0
+PATCH {{service}}/books/@attrB HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+
+test_value<2>
+
+###
+# Everything is case sensitive and therefore the attribute cannot be found.
+# Expectations:
+# - Status code 404 Resource Not Found
+PATCH {{service}}/books/@attrb HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 
@@ -134,51 +185,11 @@ test_value<2>
 ###
 # Expectations:
 # - Status code 204 No Content
-# - In the storage the attribute is added
-# - Storage-Revision is increased
-# - Storage-Space is used more
-# - Storage-Expiration is extended
-# - Content-Length is wring but ignored (by the REST Client)
-PUT {{service}}/books/@attrC HTTP/1.0
-Storage: {{storage}}
-Content-Type: text/plain
-Content-Length: 5
-
-123456789ABCDEF
-
-###
-# Expectations:
-# - Status code 204 No Content
-# - In the storage the attribute is added
-# - Storage-Revision is increased
-# - Storage-Space is used more
-# - Storage-Expiration is extended
-PUT {{service}}/books/@attrD HTTP/1.0
-Storage: {{storage}}
-Content-Type: text/plain
-Content-Length: 15
-
-123456789ABCDEF
-
-###
-# Expectations:
-# - Status code 415 Unsupported Media Type
-#   because the Content-Type is not text/plain.
-PUT {{service}}/books/@attrE HTTP/1.0
-Storage: {{storage}}
-Content-Type: text/plain-x
-Content-Length: 15
-
-123456789ABCDEF
-
-###
-# Expectations:
-# - Status code 204 No Content
 #   attribute ___rev is ignored, but does not cause errors
 # - Response without Storage-Effects header
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
-PUT {{service}}/books/@___rev HTTP/1.0
+PATCH {{service}}/books/@___rev HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15
@@ -192,7 +203,7 @@ Content-Length: 15
 # - Response without Storage-Effects header
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
-PUT {{service}}/books/@___uid HTTP/1.0
+PATCH {{service}}/books/@___uid HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15
@@ -200,6 +211,7 @@ Content-Length: 15
 123456789ABCDEF
 
 ###
+# No attributes can be set in the document.
 # Expectations:
 # - Status code 204 No Content
 #   the addressing of the XML document is detected
@@ -214,39 +226,23 @@ Content-Length: 15
 123456789ABCDEF
 
 ###
+# No attributes can be set in the document.
+# Therefore none is found and status 404 occurs.
 # Expectations:
-# - Status code 204 No Content
-#   the addressing of the XML document is detected
-# - Response without Storage-Effects header, such a request has no effect
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
-PUT {{service}}/@attrF HTTP/1.0
+# - Status code 404 Resource Not Found
+PATCH {{service}}/@attrF HTTP/1.0
 Storage: {{storage}}
-Content-Type: text/xpath
+Content-Type: text/plain
 Content-Length: 15
 
-name(.)
-
-###
-# Expectations:
-# - Status code 204 No Content
-# - In the storage the attribute is added
-# - Storage-Revision is increased
-# - Storage-Space is used more
-# - Storage-Expiration is extended
-PUT {{service}}/books/@attrE HTTP/1.0
-Storage: {{storage}}
-Content-Type: text/xpath
-Content-Length: 15
-
-name(.)
+123456789ABCDEF
 
 ###
 # XPath as value is not supported
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XPath (Axes are not supported)
-PUT {{service}}/books/@attrE HTTP/1.0
+PATCH {{service}}/books/@attrE HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
 Content-Length: 15
@@ -258,7 +254,7 @@ Content-Length: 15
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XPath function (Unregistered function)
-PUT {{service}}/books/@attrE HTTP/1.0
+PATCH {{service}}/books/@attrB HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/xpath
 Content-Length: 15
@@ -273,7 +269,7 @@ wrong(.)
 # - Response without Storage-Effects header, such a request has no effect
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
-PUT {{service}}//books/../@___xxx HTTP/1.0
+PATCH {{service}}//books/../@___xxx HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15
@@ -288,7 +284,7 @@ Content-Length: 15
 # - Response without Storage-Effects header, such a request has no effect
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
-PUT {{service}}/*/../@___xxx HTTP/1.0
+PATCH {{service}}/*/../@___xxx HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15
@@ -299,7 +295,7 @@ Content-Length: 15
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
-PUT {{service}}/wrong/@new HTTP/1.0
+PATCH {{service}}/wrong/@new HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15
@@ -310,7 +306,7 @@ Content-Length: 15
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
-PUT {{service}}/wrong/wrong/@new HTTP/1.0
+PATCH {{service}}/wrong/wrong/@new HTTP/1.0
 Storage: {{storage}}
 Content-Type: text/plain
 Content-Length: 15
