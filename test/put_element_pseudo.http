@@ -109,9 +109,8 @@ Content-Length: 58
 
 ###
 # Expectations:
-# - Status code 204 No Content
-# - Without Storage-Effects
-# - No changes in the storage
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
 PUT {{service}}/books::wrong HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
@@ -182,11 +181,9 @@ Content-Length: 64
 <wrong id="wrongC"/>
 
 ###
-# PUT outside the root element, shall be ignored
+# XPath without target
 # Expectations:
-# - Status code 204 No Content
-# - Without Storage-Effects
-# - No changes in the storage
+# - Status code 404 Resource Not Found
 PUT {{service}}/wrong::before HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
@@ -197,11 +194,9 @@ Content-Length: 64
 <wrong id="wrongC"/>
 
 ###
-# PUT outside the root element, shall be ignored
+# XPath without target
 # Expectations:
-# - Status code 204 No Content
-# - Without Storage-Effects
-# - No changes in the storage
+# - Status code 404 Resource Not Found
 PUT {{service}}/wrong/wrong::before HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
