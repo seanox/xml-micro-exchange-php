@@ -10,7 +10,7 @@ Thus the content type `application/xslt+xml` is always required.
 The client defines the content type for the output with the output-tag and the
 method-attribute.  
 The XPath is optional for this method and is used to limit and preselect the
-data.
+data. The processing is strict and does not accept unnecessary spaces.
 
 
 ## Contents Overview

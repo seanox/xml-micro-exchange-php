@@ -12,6 +12,7 @@ non-existing targets, but will offer the methods `CONNECT`, `OPTIONS`, `PUT`
 via Allow-Header.  
 If the XPath is a function, it is executed and thus validated, but without
 returning the result.  
+The XPath processing is strict and does not accept unnecessary spaces.  
 Faulty XPath will cause the status 400.
 
 

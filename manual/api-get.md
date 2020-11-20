@@ -37,6 +37,8 @@ Conent-Type: `text/plain`
 The result of XPath functions is returned as plain text.  
 Decimal results use float, booleans the values true and false.
 
+The XPath processing is strict and does not accept unnecessary spaces.
+
 
 ## Request
 

@@ -67,9 +67,9 @@ functions that allow dynamic values.
 
 ## Data Query
 Data can be queried in the form of XML structure or substructure if the XPath
-notation represents an axis.  
-If the notation of the query is not an XPath axis, it is interpreted as an XPath
-function and the request is responded with the result as text. 
+notation represents an axis, otherwise the XPath is interpreted as an XPath
+function and responded with the result as text. 
+Thus XPath provides a dynamic syntax for queries.
 
 ## Data Transformation
 The POST method supports data transformation via XSLT.  

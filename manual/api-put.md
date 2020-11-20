@@ -5,7 +5,8 @@
 
 PUT inserts new elements and attributes into the storage.  
 The position for the insert is defined via an XPath.  
-XPath uses different notations for elements and attributes.  
+XPath uses different notations for elements and attributes.
+
 The notation for attributes use the following structure at the end.  
     `<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`
 The attribute values can be static (text) and dynamic (XPath function).  
@@ -15,8 +16,8 @@ Content-Type header of the request:
 - `text/plain`: static text
 - `text/xpath`: XPath function
 
-If the XPath notation corresponds to attributes, elements are assumed.  
-For elements, the notation for pseudo elements is also supported:  
+If the XPath notation does not match the attributes, elements are assumed.  
+For elements, the notation for pseudo elements is supported:
     `<XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
 Pseudo elements are a relative position specification to the selected element.
 
@@ -27,10 +28,10 @@ type of processing is determined by the Content-Type:
 - `text/xpath`: XPath function
 - `application/xslt+xml`: XML structure
 
-The PUT method works resolutely and inserts or overwrites existing data.  
-The processing of the XPath is strict and dispenses with superfluous spaces.
-The attributes `___rev` / `___uid` used internally by the storage are read-only
-and cannot be changed.
+The PUT method works resolutely and inserts or overwrites existing data.
+The XPath processing is strict and does not accept unnecessary spaces.
+The attributes `___rev` / `___uid` used internally by the storage are
+read-only and cannot be changed.
 
 In general, if no target can be reached via XPath, status 404 will occur. In all
 other cases the PUT method informs the client about changes with status 204 and
@@ -40,8 +41,9 @@ the change and also contains the UIDs of newly created elements. If no changes
 were made because the XPath cannot find a writable target, the header
 `Storage-Effects` can be omitted completely in the response. 
 
-Syntactic and symantic errors in the request and/or XPath and/or value can
-cause error status 400 and 415.
+Syntactic and symantic errors in the request and/or XPath and/or value can cause
+error status 400 and 415. If errors occur due to the transmitted request body,
+this causes status 422.
 
 
 ## Contents Overview
