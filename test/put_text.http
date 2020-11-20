@@ -2,6 +2,9 @@
 @storage = 0000000000000000000000000000000000PT books
 
 # Test sequence for putting text into elements of the storage.
+# PUT inserts new elements and attributes into the storage.
+# The position for the insert is defined via an XPath.
+# XPath uses different notations for elements and attributes.
 
 ###
 # Storage is not establish 
