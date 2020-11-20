@@ -826,6 +826,12 @@ class Storage {
             exit();
         }
 
+        if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
+            $message = "Invalid XPath (Functions are not supported)";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            exit();    
+        }        
+
         libxml_use_internal_errors(true);
         libxml_clear_errors();
 
@@ -845,11 +851,6 @@ class Storage {
 
         $xml = $this->xml;
         if (!empty($this->xpath)) {
-            if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
-                $message = "Invalid XPath (Functions are not supported)";
-                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-                exit();    
-            }
             $xml = new DOMDocument();
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
@@ -1020,7 +1021,13 @@ class Storage {
         if (!isset($_SERVER["CONTENT_TYPE"])) {
             Storage::addHeaders(415, "Unsupported Media Type");
             exit();                
-        }   
+        }  
+
+        if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
+            $message = "Invalid XPath (Functions are not supported)";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            exit();    
+        }        
         
         libxml_use_internal_errors(true);
         libxml_clear_errors();        
@@ -1415,43 +1422,61 @@ class Storage {
      * Write accesses cause the status 405. 
      */
     function doPatch() {
-    
-        // Request:
-        //     PATCH /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-        //     Content-Length: 0 Bytes
-        //     Content-Type: application/xslt+xml
-        // Request-Body:
-        //     XML fragment for the node to be added
-        
-        // Request:
-        //     PATCH /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-        //     Content-Length: 0 Bytes
-        //     Content-Type: text/plain
-        // Request-Body:
-        //     Value as plain text     
-        
-        // Response:
-        //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-        //     Storage-Revision: Revision   
-        //     Storage-Space: Total/Used (in bytes)
-        
-        // Error Status:
-        //    404 Destination does not exist
-        //    405 Write access to attribute ___rev / __uid
-        //    415 Content-Type is not supported
 
-        // PATCH works in principle like PUT.
-        // In comparison PATCH only works for existing elements and attributes.
-        // In addition, no pseudo elements are supported.
-        // The easiest way for the implementation is to check the things that
-        // are not allowed and quit the request with an error.
-        // In all other cases the processing can be passed to PUT.
+        // PATCH is implemented like PUT.
+        // There are some additional conditions and restrictions that will be
+        // checked. After that the answer to the request can be passed to PUT. 
+        // - Pseudo elements are not supported
+        // - Target must exist, particularly for attributes
 
-        // TODO:
+        // Without existing storage the request is not valid.
+        if (!$this->exists()) {
+            Storage::addHeaders(404, "Resource Not Found");
+            exit();
+        }
 
+        // In any case an XPath is required for a valid request.
+        if (empty($this->xpath)) {
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
+            exit();
+        }    
+
+        // Storage::SPACE also limits the maximum size of writing request(-body).
+        // If the limit is exceeded, the request is quit with status 413. 
+        if (strlen(file_get_contents('php://input')) > Storage::SPACE) {
+            Storage::addHeaders(413, "Payload Too Large");
+            exit();
+        }
+
+        // For all PUT requests the Content-Type is needed, because for putting
+        // in XML structures and text is distinguished.
+        if (!isset($_SERVER["CONTENT_TYPE"])) {
+            Storage::addHeaders(415, "Unsupported Media Type");
+            exit();                
+        }   
+
+        if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
+            $message = "Invalid XPath (Functions are not supported)";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            exit();    
+        }         
+        
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();          
+
+        $targets = (new DOMXpath($this->xml))->query($this->xpath);
+        if (Storage::fetchLastXmlErrorMessage()) {
+            $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
+            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            exit();
+        }
+        if (!$targets || empty($targets) || $targets->length <= 0) {
+            Storage::addHeaders(404, "Resource Not Found");
+            exit();  
+        }    
+        
+        // The response to the request is delegated to PUT.
+        // The function call is executed and the request is terminated.
         $this->doPut();
     }
 
