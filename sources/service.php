@@ -505,7 +505,7 @@ class Storage {
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)
         ]);
 
-        // The function and the reponse are complete.
+        // The function and the response are complete.
         // The storage can be closed and the requests can be terminated.
         $this->close();
         exit;
@@ -521,6 +521,7 @@ class Storage {
      * CONNECT, OPTIONS, PUT via Allow-Header.
      * If the XPath is a function, it is executed and thus validated, but
      * without returning the result.
+     * The XPath processing is strict and does not accept unnecessary spaces.
      * Faulty XPath will cause the status 400.
      * 
      *     Request:
@@ -646,7 +647,7 @@ class Storage {
             "Allow" => $allow
         ]);
 
-        // The function and the reponse are complete.
+        // The function and the response are complete.
         // The storage can be closed and the requests can be terminated.
         $this->close();
         exit;        
@@ -669,6 +670,8 @@ class Storage {
      * Conent-Type: text/plain
      * The result of XPath functions is returned as plain text.
      * Decimal results use float, booleans the values true and false.
+     * 
+     * The XPath processing is strict and does not accept unnecessary spaces.
      * 
      *     Request:
      * GET /<xpath> HTTP/1.0
@@ -773,7 +776,8 @@ class Storage {
      * The client defines the content type for the output with the output-tag
      * and the method-attribute. 
      * The XPath is optional for this method and is used to limit and preselect
-     * the data.
+     * the data. The processing is strict and does not accept unnecessary
+     * spaces.
      * 
      *     Request:
      * POST /<xpath> HTTP/1.0
@@ -802,8 +806,11 @@ class Storage {
      * - XSLT Stylesheet is erroneous
      *         HTTP/1.0 404 Resource Not Found
      * - Storage is invalid 
+     * - XPath axis finds no target
      *         HTTP/1.0 415 Unsupported Media Type
      * - Attribute request without Content-Type text/plain
+     *         HTTP/1.0 422 Unprocessable Entity
+     * - Data in the request body cannot be processed
      */
     function doPost() {
 
@@ -829,7 +836,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
             exit();
         }
 
@@ -864,7 +871,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
             exit();            
         }
 
@@ -887,7 +894,7 @@ class Storage {
 
         print($output);
 
-        // The function and the reponse are complete.
+        // The function and the response are complete.
         // The storage can be closed and the requests can be terminated.
         $this->close();
         exit;
@@ -897,6 +904,7 @@ class Storage {
      * PUT inserts new elements and attributes into the storage.
      * The position for the insert is defined via an XPath.
      * XPath uses different notations for elements and attributes.
+     * 
      * The notation for attributes use the following structure at the end.
      *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
      * The attribute values can be static (text) and dynamic (XPath function).
@@ -906,8 +914,8 @@ class Storage {
      *     text/plain: static text
      *     text/xpath: XPath function
      * 
-     * If the XPath notation corresponds to attributes, elements are assumed.
-     * For elements, the notation for pseudo elements is also supported: 
+     * If the XPath notation does not match the attributes, elements are
+     * assumed. For elements, the notation for pseudo elements is supported:
      *     <XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
      * Pseudo elements are a relative position specification to the selected
      * element.
@@ -920,22 +928,22 @@ class Storage {
      *     application/xslt+xml: XML structure
      * 
      * The PUT method works resolutely and inserts or overwrites existing data.
-     * The processing of the XPath is strict and dispenses with superfluous
-     * spaces. The attributes ___rev / ___uid used internally by the storage
-     * are read-only and cannot be changed.
+     * The XPath processing is strict and does not accept unnecessary spaces.
+     * The attributes ___rev / ___uid used internally by the storage are
+     * read-only and cannot be changed.
      * 
-     * In general, if no target can be reached via XPath, no errors will occur.
-     * The PUT method informs the client about changes made via the response
-     * headers Storage-Effects and Storage-Revision. The header Storage-Effects
-     * contains a list of the UIDs that were directly affected by the change
-     * and also contains the UIDs of newly created elements. If no changes were
-     * made because the XPath cannot find a target or the target is read-only,
-     * the header Storage-Effects can be omitted completely in the response.
-     * Also in this case the request is responded with status 204 as
-     * successfully executed.
+     * In general, if no target can be reached via XPath, status 404 will
+     * occur. In all other cases the PUT method informs the client about
+     * changes with status 204 and the response headers Storage-Effects and
+     * Storage-Revision. The header Storage-Effects contains a list of the UIDs
+     * that were directly affected by the change and also contains the UIDs of
+     * newly created elements. If no changes were made because the XPath cannot
+     * find a writable target, the header Storage-Effects can be omitted
+     * completely in the response. 
      * 
      * Syntactic and symantic errors in the request and/or XPath and/or value
-     * can cause error status 400 and 415.
+     * can cause error status 400 and 415. If errors occur due to the
+     * transmitted request body, this causes status 422.
      * 
      *     Request:
      * PUT /<xpath> HTTP/1.0
@@ -959,7 +967,7 @@ class Storage {
      * Content-Length: (bytes)
      * Content-Type: text/xpath
      *     Request-Body:
-     * name(/*)   
+     * Value as XPath function
      *  
      *     Response:
      * HTTP/1.0 204 No Content
@@ -978,10 +986,13 @@ class Storage {
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
      * - Storage is invalid 
+     * - XPath axis finds no target
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
      *         HTTP/1.0 415 Unsupported Media Type
      * - Attribute request without Content-Type text/plain
+     *         HTTP/1.0 422 Unprocessable Entity
+     * - Data in the request body cannot be processed
      */
     function doPut() {
         
@@ -1054,7 +1065,7 @@ class Storage {
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
-                    Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
                     exit();
                 }
                 $input = (new DOMXpath($this->xml))->evaluate($input);
@@ -1063,7 +1074,7 @@ class Storage {
                     $message = "Invalid XPath function";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                    Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
                     exit();
                 }
             }
@@ -1092,32 +1103,30 @@ class Storage {
             // no matching node was found. It should say request understood and
             // executed but without effect.
             if (!in_array($attribute, ["___rev", "___uid"])) {
-                if (!empty($targets)) {
-                    $this->revision = $this->getRevision() +1;
-                    $serials = []; 
-                    foreach ($targets as $target) {
-                        // Only elements are supported, this prevents the
-                        // addressing of the XML document by the XPath.
-                        if ($target->nodeType != XML_ELEMENT_NODE)
-                            continue;
-                        $serials[] = $target->getAttribute("___uid");
-                        $target->setAttribute($attribute, $input); 
-                        // The revision is updated at the parent nodes, so you
-                        // can later determine which nodes have changed and
-                        // with which revision. Partial access allows the
-                        // client to check if the data or a tree is still up to
-                        // date, because he can compare the revision.
-                        Storage::updateNodeRevision($target, $this->getRevision());
-                    }
-
-                    // Only the list of serials is an indicator that data has
-                    // changed and whether the revision changes with it.
-                    // If necessary the revision must be corrected if there are
-                    // no data changes.
-                    if (!empty($serials))
-                        header("Storage-Effects: " . join(" ", $serials));
-                    else $this->revision--;     
+                $this->revision = $this->getRevision() +1;
+                $serials = []; 
+                foreach ($targets as $target) {
+                    // Only elements are supported, this prevents the
+                    // addressing of the XML document by the XPath.
+                    if ($target->nodeType != XML_ELEMENT_NODE)
+                        continue;
+                    $serials[] = $target->getAttribute("___uid");
+                    $target->setAttribute($attribute, $input); 
+                    // The revision is updated at the parent nodes, so you
+                    // can later determine which nodes have changed and
+                    // with which revision. Partial access allows the
+                    // client to check if the data or a tree is still up to
+                    // date, because he can compare the revision.
+                    Storage::updateNodeRevision($target, $this->getRevision());
                 }
+
+                // Only the list of serials is an indicator that data has
+                // changed and whether the revision changes with it.
+                // If necessary the revision must be corrected if there are
+                // no data changes.
+                if (!empty($serials))
+                    header("Storage-Effects: " . join(" ", $serials));
+                else $this->revision--;     
             }
 
             Storage::addHeaders(204, "No Content", [
@@ -1128,17 +1137,17 @@ class Storage {
                 "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
             ]);
 
-            // The function and the reponse are complete.
+            // The function and the response are complete.
             // The storage can be closed and the requests can be terminated.
             $this->close();
             exit;
         }
-        
+
         // An XPath for element(s) is then expected here.
         // If this is not the case, the request is responded with status 400.
 
         if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
+            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath axis"]);
             exit();              
         }
 
@@ -1150,7 +1159,7 @@ class Storage {
         // - text/plain for static values (text)
         // - text/xpath for dynamic values, based on XPath functions
 
-        if (in_array(strtolower($_SERVER["CONTENT_TYPE"]), [Storage::CONTENT_TYPE_TEXT, "text/xpath"])) {
+        if (in_array(strtolower($_SERVER["CONTENT_TYPE"]), [Storage::CONTENT_TYPE_TEXT, Storage::CONTENT_TYPE_XPATH])) {
 
             // The combination with a pseudo element is not possible for a text
             // value. Response with status 415 (Unsupported Media Type).
@@ -1168,42 +1177,57 @@ class Storage {
             // Content-Type text/plain. Even if the target is mutable, the
             // XPath function is executed only once and the result is put on
             // all targets.
-            if (strcasecmp($_SERVER["CONTENT_TYPE"], "text/xpath") === 0) {
+            if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
+                if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
+                    $message = "Invalid XPath (Axes are not supported)";
+                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
+                    exit();
+                }
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false
                         || Storage::fetchLastXmlErrorMessage()) {
-                    $message = "Invalid XPath";
+                    $message = "Invalid XPath function";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                    Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
                     exit();
                 }
             }
 
             $serials = []; 
             $targets = (new DOMXpath($this->xml))->query($xpath);
-            if (!empty($targets)) {
-                $this->revision = $this->getRevision() +1;
-                foreach ($targets as $target) {
-                    // Overwriting of the root element is not possible, as it
-                    // is an essential part of the storage, and is ignored. It
-                    // does not cause to an error, so the behaviour is
-                    // analogous to putting attributes.
-                    if ($target->nodeType != XML_ELEMENT_NODE)
-                        continue;
-                    $serials[] = $target->getAttribute("___uid");
-                    $replace = $this->xml->createElement($target->nodeName, $input);
-                    foreach ($target->attributes as $attribute)
-                        $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
-                    $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
-                    // The revision is updated at the parent nodes, so you can
-                    // later determine which nodes have changed and with which
-                    // revision. Partial access allows the client to check if
-                    // the data or a tree is still up to date, because he can
-                    // compare the revision.
-                    Storage::updateNodeRevision($replace, $this->getRevision());                        
-                }
-            }    
+            if (Storage::fetchLastXmlErrorMessage()) {
+                $message = "Invalid XPath axis";
+                if (Storage::fetchLastXmlErrorMessage())
+                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                exit();
+            }
+            if (!$targets || empty($targets) || $targets->length <= 0) {
+                Storage::addHeaders(404, "Resource Not Found");
+                exit();  
+            }
+
+            $this->revision = $this->getRevision() +1;
+            foreach ($targets as $target) {
+                // Overwriting of the root element is not possible, as it
+                // is an essential part of the storage, and is ignored. It
+                // does not cause to an error, so the behaviour is
+                // analogous to putting attributes.
+                if ($target->nodeType != XML_ELEMENT_NODE)
+                    continue;
+                $serials[] = $target->getAttribute("___uid");
+                $replace = $this->xml->createElement($target->nodeName, $input);
+                foreach ($target->attributes as $attribute)
+                    $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
+                $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
+                // The revision is updated at the parent nodes, so you can
+                // later determine which nodes have changed and with which
+                // revision. Partial access allows the client to check if
+                // the data or a tree is still up to date, because he can
+                // compare the revision.
+                Storage::updateNodeRevision($replace, $this->getRevision());                        
+            }
             
             // Only the list of serials is an indicator that data has changed
             // and whether the revision changes with it. If necessary the
@@ -1220,7 +1244,7 @@ class Storage {
                 "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
             ]);  
 
-            // The function and the reponse are complete.
+            // The function and the response are complete.
             // The storage can be closed and the requests can be terminated.
             $this->close();
             exit;
@@ -1235,25 +1259,20 @@ class Storage {
         }
 
         // The request body must also be a valid XML structure, otherwise the
-        // request will be acknowledged with an error.
-        $xml = file_get_contents('php://input');
-
-        // The request body must also be a valid XML structure, otherwise the
         // request is quit with an error.
         $input = file_get_contents('php://input');
         $input = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data>$input</data>";
 
         // The XML is loaded, but what happens if an error occurs during
-        // parsing? Status 400 or 422 - The decision for 400, because 422 means
-        // semantic errors, but the parser only finds structural or syntactic
-        // errors
+        // parsing? Status 400 or 422 - The decision for 422, because 400 means
+        // faulty request. But this is a (semantic) error in the request body.
         $xml = new DOMDocument();
         if (!$xml->loadXML($input)
                 || Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XML document";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
             exit();
         }
 
@@ -1270,46 +1289,56 @@ class Storage {
             $node->removeAttribute("___rev");
             $node->removeAttribute("___uid");
         }
-
+    
         if ($xml->firstChild->hasChildNodes()) {
             $targets = (new DOMXpath($this->xml))->query($xpath);
-            if (!empty($targets)) {
-                $this->revision = $this->getRevision() +1;
-                foreach ($targets as $target) {
+            if (Storage::fetchLastXmlErrorMessage()) {
+                $message = "Invalid XPath axis";
+                if (Storage::fetchLastXmlErrorMessage())
+                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+                exit();
+            }
+            if (!$targets || empty($targets) || $targets->length <= 0) {
+                Storage::addHeaders(404, "Resource Not Found");
+                exit();  
+            }
+            
+            $this->revision = $this->getRevision() +1;
+            foreach ($targets as $target) {
 
-                    // Overwriting of the root element is not possible, as it
-                    // is an essential part of the storage, and is ignored. It
-                    // does not cause to an error, so the behaviour is
-                    // analogous to putting attributes.
-                    if ($target->nodeType != XML_ELEMENT_NODE)
-                        continue;
+                // Overwriting of the root element is not possible, as it
+                // is an essential part of the storage, and is ignored. It
+                // does not cause to an error, so the behaviour is
+                // analogous to putting attributes.
+                if ($target->nodeType != XML_ELEMENT_NODE)
+                    continue;
 
-                    // Pseudo elements can be used to put in an XML
-                    // substructure relative to the selected element.
-                    if (empty($pseudo)) {
-                        $replace = $target->cloneNode(false);
+                // Pseudo elements can be used to put in an XML
+                // substructure relative to the selected element.
+                if (empty($pseudo)) {
+                    $replace = $target->cloneNode(false);
+                    foreach ($xml->firstChild->childNodes as $insert)
+                        $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
+                    $target->parentNode->replaceChild($this->xml->importNode($replace), $target);                        
+                } else if (strcasecmp($pseudo, "before") === 0) {
+                    if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
                         foreach ($xml->firstChild->childNodes as $insert)
-                            $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
-                        $target->parentNode->replaceChild($this->xml->importNode($replace), $target);                        
-                    } else if (strcasecmp($pseudo, "before") === 0) {
-                        if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
-                            foreach ($xml->firstChild->childNodes as $insert)
-                                $target->parentNode->insertBefore($this->xml->importNode($insert), $target);
-                    } else if (strcasecmp($pseudo, "after") === 0) {
-                        if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
-                            foreach ($xml->firstChild->childNodes as $insert)
-                                $target->parentNode->appendChild($this->xml->importNode($insert));
-                    } else if (strcasecmp($pseudo, "first") === 0) {
-                        $inserts = $xml->firstChild->childNodes;  
-                        for ($index = $inserts->length -1; $index >= 0; $index--)
-                            $target->insertBefore($this->xml->importNode($inserts->item($index)), $target->firstChild);
-                    } else if (strcasecmp($pseudo, "last") === 0) {                            
+                            $target->parentNode->insertBefore($this->xml->importNode($insert), $target);
+                } else if (strcasecmp($pseudo, "after") === 0) {
+                    if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
                         foreach ($xml->firstChild->childNodes as $insert)
-                            $target->appendChild($this->xml->importNode($insert));
-                    } else {
-                        Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-                        exit();
-                    }
+                            $target->parentNode->appendChild($this->xml->importNode($insert));
+                } else if (strcasecmp($pseudo, "first") === 0) {
+                    $inserts = $xml->firstChild->childNodes;  
+                    for ($index = $inserts->length -1; $index >= 0; $index--)
+                        $target->insertBefore($this->xml->importNode($inserts->item($index)), $target->firstChild);
+                } else if (strcasecmp($pseudo, "last") === 0) {                            
+                    foreach ($xml->firstChild->childNodes as $insert)
+                        $target->appendChild($this->xml->importNode($insert));
+                } else {
+                    Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
+                    exit();
                 }
             }
         }
@@ -1341,7 +1370,7 @@ class Storage {
                     && !in_array($serial, $serials))
                 $serials[] = $serial;
         }
-
+        
         // Only the list of serials is an indicator that data has changed and
         // whether the revision changes with it. If necessary the revision must
         // be corrected if there are no data changes.
@@ -1357,7 +1386,7 @@ class Storage {
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
         ]);
 
-        // The function and the reponse are complete.
+        // The function and the response are complete.
         // The storage can be closed and the requests can be terminated.
         $this->close();
         exit;
@@ -1490,7 +1519,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
+            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
             exit;
         }
 
