@@ -119,10 +119,10 @@
  * no effect from then on and are therefore not listed in the response header
  * Storage-Effects. 
  * 
- *     Transaction / Concurrent Access
- * In the first version of XML Micro-Exchange all requests to a storage use
- * flock + LOCK_EX / LOCK_UN, that should change later.
- * So that also simultaneous accesses are supported, but no dirty reading.
+ *     Transaction / Simultaneous Access
+ * XML-Micro-Exchange supports simultaneous access.
+ * Read accesses are executed simultaneously.  
+ * Write accesses creates a lock and avoids dirty reading.
  * 
  * TODO:    
  * 
@@ -295,7 +295,7 @@ class Storage {
         }
     }
     
-    static function share($storage, $xpath) {
+    static function share($storage, $xpath, $exclusive = true) {
 
         if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
             Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
@@ -311,8 +311,8 @@ class Storage {
         $storage = new Storage($storage, $root, $xpath);
 
         if ($storage->exists()) {
-            $storage->open();
-            // Safe is safe, if not the default 'data'' is used,
+            $storage->open($exclusive);
+            // Safe is safe, if not the default 'data' is used,
             // the name of the root element must be known.
             // Otherwise the request is quit with status 404 and terminated.
             if (($root ? $root : "data") != $storage->xml->firstChild->nodeName) {
@@ -328,14 +328,14 @@ class Storage {
                 && filesize($this->store) > 0;
     }
 
-    private function open() {
+    private function open($exclusive = true) {
         
         if ($this->share !== null)
             return;
             
-        touch($this->store);    
+        touch($this->store);
         $this->share = fopen($this->store, "c+");
-        flock($this->share, LOCK_EX);
+        flock($this->share, filesize($this->store) <= 0 || $exclusive === true ? LOCK_EX : LOCK_SH);
 
         if (filesize($this->store) <= 0) {
             fwrite($this->share,
@@ -385,7 +385,7 @@ class Storage {
      */
     private function getRevision() {
     
-        $this->open();
+        $this->open(false);
         if (!$this->revision)
             $this->revision = $this->xml->firstChild->getAttribute("___rev");
         return $this->revision;
@@ -499,7 +499,7 @@ class Storage {
 
         $response = [201, "Created"];    
         if (!$this->exists())
-            $this->open();    
+            $this->open(true);    
         else $response = [202, "Accepted"];
         
         Storage::addHeaders($response[0], $response[1], [
@@ -1678,7 +1678,8 @@ $xpath = urldecode($xpath);
 if (empty($xpath)
         && !in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";        
-$storage = Storage::share($storage, $xpath);
+$exclusive = in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["DELETE", "PATCH", "PUT", "POST"]);     
+$storage = Storage::share($storage, $xpath, $exclusive);
 
 try {
     switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
