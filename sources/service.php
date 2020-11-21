@@ -740,7 +740,7 @@ class Storage {
                 }
             } else if ($result->length > 0) {
                 $collection = $xml->createElement("collection");
-                $xml->importNode($collection);
+                $xml->importNode($collection, true);
                 foreach ($result as $entry)
                     $collection->appendChild($xml->importNode($entry, true));
                 $xml->appendChild($collection);
@@ -832,7 +832,7 @@ class Storage {
 
         // POST always expects an valid XSLT template for transformation.
         $style = new DOMDocument();
-        if (!$style->loadXML(file_get_contents('php://input'))
+        if (!$style->loadXML(file_get_contents("php://input"))
                 || Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
@@ -1007,7 +1007,7 @@ class Storage {
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
         // If the limit is exceeded, the request is quit with status 413. 
-        if (strlen(file_get_contents('php://input')) > Storage::SPACE) {
+        if (strlen(file_get_contents("php://input")) > Storage::SPACE) {
             Storage::addHeaders(413, "Payload Too Large");
             exit();
         }
@@ -1056,7 +1056,7 @@ class Storage {
                 exit();                
             }
 
-            $input = file_get_contents('php://input');
+            $input = file_get_contents("php://input");
             
             // The Content-Type text/xpath is a special of the XMXE Storage.
             // It expects a plain text which is an XPath function.
@@ -1170,7 +1170,7 @@ class Storage {
                 exit();
             }   
 
-            $input = file_get_contents('php://input');
+            $input = file_get_contents("php://input");
             
             // The Content-Type text/xpath is a special of the XMXE Storage.
             // It expects a plain text which is an XPath function.
@@ -1221,7 +1221,7 @@ class Storage {
                 $replace = $this->xml->createElement($target->nodeName, $input);
                 foreach ($target->attributes as $attribute)
                     $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
-                $target->parentNode->replaceChild($this->xml->importNode($replace), $target);
+                $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
                 // The revision is updated at the parent nodes, so you can
                 // later determine which nodes have changed and with which
                 // revision. Partial access allows the client to check if
@@ -1261,7 +1261,7 @@ class Storage {
 
         // The request body must also be a valid XML structure, otherwise the
         // request is quit with an error.
-        $input = file_get_contents('php://input');
+        $input = file_get_contents("php://input");
         $input = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><data>$input</data>";
 
         // The XML is loaded, but what happens if an error occurs during
@@ -1320,22 +1320,22 @@ class Storage {
                     $replace = $target->cloneNode(false);
                     foreach ($xml->firstChild->childNodes as $insert)
                         $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
-                    $target->parentNode->replaceChild($this->xml->importNode($replace), $target);                        
+                    $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);                        
                 } else if (strcasecmp($pseudo, "before") === 0) {
                     if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
                         foreach ($xml->firstChild->childNodes as $insert)
-                            $target->parentNode->insertBefore($this->xml->importNode($insert), $target);
+                            $target->parentNode->insertBefore($this->xml->importNode($insert, true), $target);
                 } else if (strcasecmp($pseudo, "after") === 0) {
                     if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
                         foreach ($xml->firstChild->childNodes as $insert)
-                            $target->parentNode->appendChild($this->xml->importNode($insert));
+                            $target->parentNode->appendChild($this->xml->importNode($insert, true));
                 } else if (strcasecmp($pseudo, "first") === 0) {
                     $inserts = $xml->firstChild->childNodes;  
                     for ($index = $inserts->length -1; $index >= 0; $index--)
-                        $target->insertBefore($this->xml->importNode($inserts->item($index)), $target->firstChild);
-                } else if (strcasecmp($pseudo, "last") === 0) {                            
+                        $target->insertBefore($this->xml->importNode($inserts->item($index), true), $target->firstChild);
+                } else if (strcasecmp($pseudo, "last") === 0) {
                     foreach ($xml->firstChild->childNodes as $insert)
-                        $target->appendChild($this->xml->importNode($insert));
+                        $target->appendChild($this->xml->importNode($insert, true));
                 } else {
                     Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
                     exit();
@@ -1507,7 +1507,7 @@ class Storage {
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
         // If the limit is exceeded, the request is quit with status 413. 
-        if (strlen(file_get_contents('php://input')) > Storage::SPACE) {
+        if (strlen(file_get_contents("php://input")) > Storage::SPACE) {
             Storage::addHeaders(413, "Payload Too Large");
             exit();
         }
