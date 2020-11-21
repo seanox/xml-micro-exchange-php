@@ -101,9 +101,9 @@ effect from then on and are therefore not listed in the response header
 `Storage-Effects`. 
  
 ## Transaction / Simultaneous Access
-In the first version of XML Micro-Exchange all requests to a storage use flock +
-LOCK_EX / LOCK_UN, that should change later. So that also simultaneous accesses
-are supported, but no dirty reading.
+XML-Micro-Exchange supports simultaneous access.  
+Read accesses are executed simultaneously.  
+Write accesses creates a lock and avoids dirty reading.
 
 
 
