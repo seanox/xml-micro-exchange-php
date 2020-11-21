@@ -198,6 +198,11 @@ class Storage {
      */    
     const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
 
+    /**
+     * TODO:
+     * If the pattern is empty, null or false, the request URI without context
+     * path will be used. This is helpful when the service is used as a domain.
+     */
     const PATTERN_HTTP_REQUEST_URI = "/^(.*?)[!#$*:?@|~]+(.*)$/i";
 
     /**
@@ -902,7 +907,8 @@ class Storage {
     }
 
     /**
-     * PUT inserts new elements and attributes into the storage.
+     * PUT creates elements and attributes in storage and/or changes the value
+     * of existing ones.
      * The position for the insert is defined via an XPath.
      * XPath uses different notations for elements and attributes.
      * 
@@ -922,8 +928,8 @@ class Storage {
      * element.
      * 
      * The value of elements can be static (text), dynamic (XPath function) or
-     * be an XML structure. Again, the value is transmitted with the
-     * request-body and the type of processing is determined by the Content-Type:
+     * be an XML structure. Also here the value is send with the request-body
+     * and the type of processing is determined by the Content-Type:
      *     text/plain: static text
      *     text/xpath: XPath function
      *     application/xslt+xml: XML structure
@@ -1400,26 +1406,97 @@ class Storage {
     }
 
     /**
-     * Replaces to the specified path, a node or an attribute.
-     * The destination must exist, otherwise the request is answered with status
-     * 404 (Not Found).
+     * PATCH changes existing elements and attributes in storage.
+     * The position for the insert is defined via an XPath.
+     * The method works almost like PUT, but the XPath axis of the request
+     * always expects an existing target.
+     * XPath uses different notations for elements and attributes.
      * 
-     * The Content-Type of the request defines the data type.
+     * The notation for attributes use the following structure at the end.
+     *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
+     * The attribute values can be static (text) and dynamic (XPath function).
+     * Values are send as request-body.
+     * Whether they are used as text or XPath function is decided by the
+     * Content-Type header of the request.
+     *     text/plain: static text
+     *     text/xpath: XPath function
+     * 
+     * If the XPath notation does not match the attributes, elements are
+     * assumed. Unlike the PUT method, no pseudo elements are supported for
+     * elements.
+     * 
+     * The value of elements can be static (text), dynamic (XPath function) or
+     * be an XML structure. Also here the value is send with the request-body
+     * and the type of processing is determined by the Content-Type:
+     *     text/plain: static text
+     *     text/xpath: XPath function
+     *     application/xslt+xml: XML structure
+     * 
+     * The PATH method works resolutely and  overwrites existing data.
+     * The XPath processing is strict and does not accept unnecessary spaces.
+     * The attributes ___rev / ___uid used internally by the storage are
+     * read-only and cannot be changed.
+     * 
+     * In general, if no target can be reached via XPath, status 404 will
+     * occur. In all other cases the PATCH method informs the client about
+     * changes with status 204 and the response headers Storage-Effects and
+     * Storage-Revision. The header Storage-Effects contains a list of the UIDs
+     * that were directly affected by the change elements. If no changes were
+     * made because the XPath cannot find a writable target, the header
+     * Storage-Effects can be omitted completely in the response. 
+     * 
+     * Syntactic and symantic errors in the request and/or XPath and/or value
+     * can cause error status 400 and 415. If errors occur due to the
+     * transmitted request body, this causes status 422.
+     * 
+     *     Request:
+     * PATCH /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
+     * Content-Length: (bytes)
+     * Content-Type: application/xslt+xml
+     *     Request-Body:
+     * XML structure
      *
-     * Nodes supports text/plain and application/xslt+xml.
-     *     text/plain
-     * Inserts a text as content for the node (inner node).
-     * If necessary, CDATA is used.
-     *     application/xslt+xml
-     * Replaces the node with an XML fragment (outer node).
-     * Another Content-Type are responsed with status 415 Unsupported Media Type.
-     *       
-     * Attributes supports only text/plain and replaces the value of the
-     * attribute. If necessary, the value is escaped.
-     * Another Content-Type are responsed with status 415 (Unsupported Media Type).
-     *
-     * The attributes ___rev / ___uid  are used internally and cannot be changed.
-     * Write accesses cause the status 405. 
+     *     Request:
+     * PATCH /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
+     * Content-Length: (bytes)
+     *  Content-Type: text/plain
+     *     Request-Body:
+     * Value as plain text
+     * 
+     *     Request:
+     * PATCH /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
+     * Content-Length: (bytes)
+     * Content-Type: text/xpath
+     *     Request-Body:
+     * Value as XPath function
+     *  
+     *     Response:
+     * HTTP/1.0 204 No Content
+     * Storage-Effects: ... (list of UIDs)
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage-Revision: Revision (number)   
+     * Storage-Space: Total/Used (bytes)
+     * Storage-Last-Modified: Timestamp (RFC822)
+     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * 
+     *     Response codes / behavior:
+     *         HTTP/1.0 204 No Content
+     * - Attributes successfully created or set
+     *         HTTP/1.0 400 Bad Request
+     * - XPath is missing or malformed
+     * - XPath without addressing a target is responded with status 204
+     *         HTTP/1.0 404 Resource Not Found
+     * - Storage is invalid 
+     * - XPath axis finds no target
+     *         HTTP/1.0 413 Payload Too Large
+     * - Allowed size of the request(-body) and/or storage is exceeded
+     *         HTTP/1.0 415 Unsupported Media Type
+     * - Attribute request without Content-Type text/plain
+     *         HTTP/1.0 422 Unprocessable Entity
+     * - Data in the request body cannot be processed
      */
     function doPatch() {
 
@@ -1581,11 +1658,15 @@ if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
 // then extract the XPath from the request. Therefore it was decided that the
 // context path and XPath are separated by a symbol or a symbol sequence.
 // The behavior can be customized with Storage::PATTERN_HTTP_REQUEST_URI.
+// If the pattern is empty, null or false, the request URI without context path
+// will be used. This is helpful when the service is used as a domain.
 $xpath = $_SERVER["REQUEST_URI"];
-if (isset($_SERVER["REQUEST"])
-        && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $xpath, PREG_UNMATCHED_AS_NULL))
-    $xpath = $xpath[2];
-$xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
+if (Storage::PATTERN_HTTP_REQUEST_URI) {
+    if (isset($_SERVER["REQUEST"])
+            && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $xpath, PREG_UNMATCHED_AS_NULL))
+        $xpath = $xpath[2];
+    $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
+}
 $xpath = urldecode($xpath); 
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
