@@ -180,7 +180,7 @@ class Storage {
 
     private $xpath;
 
-    /** Revision of the storage at the start of the request */
+    /** Revision of the storage */
     private $revision;
     
     /** Serial related to the request */
@@ -246,13 +246,14 @@ class Storage {
 
     private function __construct($storage, $root, $xpath) {
 
-        $this->storage = $storage;
-        $this->root    = $root ? $root : "data";
-        $this->store   = Storage::DIRECTORY . "/" . $this->storage; 
-        $this->xpath   = $xpath;
-        $this->change  = false;
-        $this->unique  = Storage::uniqueId();  
-        $this->serial  = 0;
+        $this->storage  = $storage;
+        $this->root     = $root ? $root : "data";
+        $this->store    = Storage::DIRECTORY . "/" . $this->storage; 
+        $this->xpath    = $xpath;
+        $this->change   = false;
+        $this->unique   = Storage::uniqueId();  
+        $this->serial   = 0;
+        $this->revision = 0; 
     }
 
     /**
@@ -349,6 +350,7 @@ class Storage {
         rewind($this->share);
         $this->xml = new DOMDocument();
         $this->xml->loadXML(fread($this->share, $size));
+        $this->revision = $this->xml->firstChild->getAttribute("___rev");
     } 
     
     function close() {
@@ -358,12 +360,14 @@ class Storage {
 
         // The size of the storage is limited by Storage::SPACE because it is a
         // volatile micro datasource for short-term data exchange. 
-        // Exceeding it leads to the status xxx.
+        // An overrun causes the status 413.
         $output = $this->xml->saveXML();
         if (strlen($output) <= Storage::SPACE) {
-            ftruncate($this->share, 0);
-            rewind($this->share);
-            fwrite($this->share, $output);    
+            if ($this->revision != $this->xml->firstChild->getAttribute("___rev")) {
+                ftruncate($this->share, 0);
+                rewind($this->share);
+                fwrite($this->share, $output);    
+            }
         } else {
             header_remove();
             Storage::addHeaders(413, "Payload Too Large");
@@ -375,20 +379,6 @@ class Storage {
 
         $this->share = null;
         $this->xml = null;
-    }
-    
-    /**
-     * Determines the current revision of the storage.
-     * The revision is related to the current request and is used for all data
-     * changes in this context.
-     * @return integer current revision of the storage
-     */
-    private function getRevision() {
-    
-        $this->open(false);
-        if (!$this->revision)
-            $this->revision = $this->xml->firstChild->getAttribute("___rev");
-        return $this->revision;
     }
 
     /**
@@ -504,7 +494,7 @@ class Storage {
         
         Storage::addHeaders($response[0], $response[1], [
             "Storage" => $this->storage,
-            "Storage-Revision" => $this->getRevision(),
+            "Storage-Revision" => $this->revision,
             "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
             "Storage-Last-Modified" => date(DateTime::RFC822),
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)
@@ -645,7 +635,7 @@ class Storage {
 
         Storage::addHeaders(204, "No Content", [
             "Storage" => $this->storage,
-            "Storage-Revision" => $this->getRevision(),
+            "Storage-Revision" => $this->revision,
             "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
             "Storage-Last-Modified" => date(DateTime::RFC822),
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)  ,
@@ -762,7 +752,7 @@ class Storage {
 
         Storage::addHeaders(200, "Success", [
             "Storage" => $this->storage,
-            "Storage-Revision" => $this->getRevision(),
+            "Storage-Revision" => $this->revision,
             "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
             "Storage-Last-Modified" => date(DateTime::RFC822),
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822),
@@ -890,7 +880,7 @@ class Storage {
 
         Storage::addHeaders(200, "Success", [
             "Storage" => $this->storage,
-            "Storage-Revision" => $this->getRevision(),
+            "Storage-Revision" => $this->revision,
             "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
             "Storage-Last-Modified" => date(DateTime::RFC822),
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822),
@@ -1116,7 +1106,6 @@ class Storage {
             // no matching node was found. It should say request understood and
             // executed but without effect.
             if (!in_array($attribute, ["___rev", "___uid"])) {
-                $this->revision = $this->getRevision() +1;
                 $serials = []; 
                 foreach ($targets as $target) {
                     // Only elements are supported, this prevents the
@@ -1130,7 +1119,7 @@ class Storage {
                     // with which revision. Partial access allows the
                     // client to check if the data or a tree is still up to
                     // date, because he can compare the revision.
-                    Storage::updateNodeRevision($target, $this->getRevision());
+                    Storage::updateNodeRevision($target, $this->revision +1);
                 }
 
                 // Only the list of serials is an indicator that data has
@@ -1139,12 +1128,12 @@ class Storage {
                 // no data changes.
                 if (!empty($serials))
                     header("Storage-Effects: " . join(" ", $serials));
-                else $this->revision--;     
             }
 
+            $revision = $this->xml->firstChild->getAttribute("___rev");
             Storage::addHeaders(204, "No Content", [
                 "Storage" => $this->storage,
-                "Storage-Revision" => $this->getRevision(),
+                "Storage-Revision" => $revision,
                 "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
                 "Storage-Last-Modified" => date(DateTime::RFC822),
                 "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
@@ -1221,7 +1210,6 @@ class Storage {
                 exit();  
             }
 
-            $this->revision = $this->getRevision() +1;
             foreach ($targets as $target) {
                 // Overwriting of the root element is not possible, as it
                 // is an essential part of the storage, and is ignored. It
@@ -1239,7 +1227,7 @@ class Storage {
                 // revision. Partial access allows the client to check if
                 // the data or a tree is still up to date, because he can
                 // compare the revision.
-                Storage::updateNodeRevision($replace, $this->getRevision());                        
+                Storage::updateNodeRevision($replace, $this->revision +1);                        
             }
             
             // Only the list of serials is an indicator that data has changed
@@ -1247,11 +1235,11 @@ class Storage {
             // revision must be corrected if there are no data changes.
             if (!empty($serials))
                 header("Storage-Effects: " . join(" ", $serials));
-            else $this->revision--;
 
+            $revision = $this->xml->firstChild->getAttribute("___rev");
             Storage::addHeaders(204, "No Content", [
                 "Storage" => $this->storage,
-                "Storage-Revision" => $this->getRevision(),
+                "Storage-Revision" => $revision,
                 "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
                 "Storage-Last-Modified" => date(DateTime::RFC822),
                 "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
@@ -1317,7 +1305,6 @@ class Storage {
                 exit();  
             }
             
-            $this->revision = $this->getRevision() +1;
             foreach ($targets as $target) {
 
                 // Overwriting of the root element is not possible, as it
@@ -1369,7 +1356,7 @@ class Storage {
             $serial = $this->getSerial();
             $serials[] = $serial;
             $node->setAttribute("___uid", $serial); 
-            Storage::updateNodeRevision($node, $this->getRevision());
+            Storage::updateNodeRevision($node, $this->revision +1);
             
             // Also the UID of the directly addressed element is transmitted to
             // the client in the response, because the element itself has not
@@ -1389,11 +1376,11 @@ class Storage {
         // be corrected if there are no data changes.
         if (!empty($serials))
             header("Storage-Effects: " . join(" ", $serials));
-        else $this->revision--;
 
+        $revision = $this->xml->firstChild->getAttribute("___rev");    
         Storage::addHeaders(204, "No Content", [
             "Storage" => $this->storage,
-            "Storage-Revision" => $this->getRevision(),
+            "Storage-Revision" => $this->revision,
             "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
             "Storage-Last-Modified" => date(DateTime::RFC822),
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
