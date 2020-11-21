@@ -1432,7 +1432,7 @@ class Storage {
      *     text/xpath: XPath function
      *     application/xslt+xml: XML structure
      * 
-     * The PATH method works resolutely and  overwrites existing data.
+     * The PATCH method works resolutely and  overwrites existing data.
      * The XPath processing is strict and does not accept unnecessary spaces.
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
