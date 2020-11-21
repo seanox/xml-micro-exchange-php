@@ -3,7 +3,8 @@
 
 # PUT
 
-PUT inserts new elements and attributes into the storage.  
+PUT creates elements and attributes in storage and/or changes the value of  
+existing ones.
 The position for the insert is defined via an XPath.  
 XPath uses different notations for elements and attributes.
 
@@ -22,8 +23,8 @@ For elements, the notation for pseudo elements is supported:
 Pseudo elements are a relative position specification to the selected element.
 
 The value of elements can be static (text), dynamic (XPath function) or be an
-XML structure. Again, the value is transmitted with the request-body and the
-type of processing is determined by the Content-Type:  
+XML structure. Also here the value is send with the request-body  and the type
+of processing is determined by the Content-Type:
 - `text/plain`: static text
 - `text/xpath`: XPath function
 - `application/xslt+xml`: XML structure
