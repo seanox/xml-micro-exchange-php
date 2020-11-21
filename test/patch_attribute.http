@@ -262,7 +262,7 @@ Content-Length: 15
 wrong(.)
 
 ###
-# PUT outside the root element, shall be ignored
+# PATCH outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
 #   the addressing of the XML document is detected
@@ -277,7 +277,7 @@ Content-Length: 15
 123456789ABCDEF
 
 ###
-# PUT outside the root element, shall be ignored
+# PATCH outside the root element, shall be ignored
 # Expectations:
 # - Status code 204 No Content
 #   the addressing of a the XML document is detected

@@ -1,16 +1,14 @@
 @service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000PE books
+@storage = 0000000000000000000000000000000000UE books
 
-# Test sequence for putting of elements into the storage.
-# PUT inserts new elements and attributes into the storage.
-# The position for the insert is defined via an XPath.
-# XPath uses different notations for elements and attributes.
+# Test sequence for patching elements in the storage.
+# TODO:
 
 ###
 # Storage is not establish 
 # Expectations:
 # - Status code 404 Resource Not Found
-PUT {{service}}/books HTTP/1.0
+PATCH {{service}}/books HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
 Content-Length: 18
@@ -47,7 +45,7 @@ Content-Length: 78
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
-PUT {{service}}/books HTTP/1.0
+PATCH {{service}}/books HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
 Content-Length: 230
@@ -72,7 +70,7 @@ Content-Length: 230
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
-PUT {{service}}/books HTTP/1.0
+PATCH {{service}}/books HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
 Content-Length: 230
@@ -98,7 +96,20 @@ Content-Length: 230
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
-PUT {{service}}(/books/book)/chapter HTTP/1.0
+PATCH {{service}}(/books/book)/chapter HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<test/>
+
+###
+# PATCH outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+PATCH {{service}}/books/.. HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
 Content-Length: 7
@@ -106,63 +117,122 @@ Content-Length: 7
 <test/>
 
 ###
-# PUT does not support XPath functions als axis
+# PATCH outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+PATCH {{service}}/*/.. HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 7
+
+<test/>
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PATCH {{service}}/wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PATCH {{service}}/wrong/wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+123456789ABCDEF
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 2x UID
+# - xxx was created in the first book
+PATCH {{service}}/books/book[1] HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 6
+
+<xxx/>
+
+###
+# PATCH does not support pseudo elements in XPath
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+PATCH {{service}}/books/book[1]::before HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 6
+
+<xxx/>
+
+###
+# PATCH does not support pseudo elements in XPath
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+PATCH {{service}}/books/book[1]::after HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 6
+
+<xxx/>
+
+###
+# PATCH does not support pseudo elements in XPath
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+PATCH {{service}}/books::first HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 6
+
+<xxx/>
+
+###
+# PATCH does not support pseudo elements in XPath
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+PATCH {{service}}/books::last HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 6
+
+<xxx/>
+
+###
+# PATCH does not support pseudo elements in XPath
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+PATCH {{service}}/books::wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 6
+
+<xxx/>
+
+###
+# PATCH does not support XPath functions als axis
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid XPath (Functions are not supported)
-PUT {{service}}name(.) HTTP/1.0
+PATCH {{service}}name(.) HTTP/1.0
 Storage: {{storage}}
 Content-Type: application/xslt+xml
-Content-Length: 7
+Content-Length: 6
 
-<test/>
-
-###
-# PUT outside the root element, shall be ignored
-# Expectations:
-# - Status code 204 No Content
-# - Without Storage-Effects
-# - No changes in the storage
-PUT {{service}}/books/.. HTTP/1.0
-Storage: {{storage}}
-Content-Type: application/xslt+xml
-Content-Length: 7
-
-<test/>
-
-###
-# PUT outside the root element, shall be ignored
-# Expectations:
-# - Status code 204 No Content
-# - Without Storage-Effects
-# - No changes in the storage
-PUT {{service}}/*/.. HTTP/1.0
-Storage: {{storage}}
-Content-Type: application/xslt+xml
-Content-Length: 7
-
-<test/>
-
-###
-# XPath without target
-# Expectations:
-# - Status code 404 Resource Not Found
-PUT {{service}}/wrong HTTP/1.0
-Storage: {{storage}}
-Content-Type: text/plain
-Content-Length: 15
-
-123456789ABCDEF
-
-###
-# XPath without target
-# Expectations:
-# - Status code 404 Resource Not Found
-PUT {{service}}/wrong/wrong HTTP/1.0
-Storage: {{storage}}
-Content-Type: text/plain
-Content-Length: 15
-
-123456789ABCDEF
+<xxx/>
 
 ###
