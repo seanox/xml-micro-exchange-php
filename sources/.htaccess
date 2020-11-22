@@ -1,11 +1,11 @@
 #.htaccess
-#ErrorDocument 400 http://<domain.tld>/error/status-400
-#ErrorDocument 401 http://<domain.tld>/error/status-401
-#ErrorDocument 403 http://<domain.tld>/error/status-403
-#ErrorDocument 404 http://<domain.tld>/error/status-404
-#ErrorDocument 405 http://<domain.tld>/error/status-405
-#ErrorDocument 500 http://<domain.tld>/error/status-500
-#ErrorDocument 503 http://<domain.tld>/error/status-503
+#ErrorDocument 400 https://<domain>/error/status-400
+#ErrorDocument 401 https://<domain>/error/status-401
+#ErrorDocument 403 https://<domain>/error/status-403
+#ErrorDocument 404 https://<domain>/error/status-404
+#ErrorDocument 405 https://<domain>/error/status-405
+#ErrorDocument 500 https://<domain>/error/status-500
+#ErrorDocument 503 https://<domain>/error/status-503
 
 RewriteEngine on
 RewriteRule (.*) service.php
