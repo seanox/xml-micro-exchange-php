@@ -1380,7 +1380,7 @@ class Storage {
         $revision = $this->xml->firstChild->getAttribute("___rev");    
         Storage::addHeaders(204, "No Content", [
             "Storage" => $this->storage,
-            "Storage-Revision" => $this->revision,
+            "Storage-Revision" => $revision,
             "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
             "Storage-Last-Modified" => date(DateTime::RFC822),
             "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
