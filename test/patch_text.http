@@ -1,0 +1,225 @@
+@service = http://127.0.0.1/xmex!
+@storage = 0000000000000000000000000000000000UT books
+
+# Test sequence for patching text in elements of the storage.
+# TODO:
+
+###
+# Storage is not establish 
+# Expectations:
+# - Status code 404 Resource Not Found
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+Hello Internet!
+
+###
+# Initial request to establish the storage
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage}}
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 15
+
+Hello Internet!
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 202
+
+<book title="A2">
+  <comment></comment>
+</book>
+<book title="B2">
+  <comment></comment>
+</book>
+<book title="C2">
+  <comment></comment>
+</book>
+<book title="D2">
+  <comment></comment>
+</book>
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PATCH {{service}}/books/book[1] HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 6
+
+Text A
+
+###
+# Use of brackets should not be a problem
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 3x UID 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with text and without further elements
+PATCH {{service}}(/books/book)/comment HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 6
+
+Text B
+
+###
+# Using unicode should not cause problems.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with encoded text and without further elements
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 37
+
+№ <123> äüö &&amp; "§-ß" '€'
+
+###
+# Using XPath function should work.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID 
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+# - books element with books as text and without further elements
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+name(/*)
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath function (Invalid expression)
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+name(/+)
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath function (Unregistered function)
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 8
+
+wrong(.)
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath (Axes are not supported)
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 12
+
+/wrong/wrong
+
+###
+# Using invalid XPath function should not cause problems.
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath (Axes are not supported)
+PATCH {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/xpath
+Content-Length: 1
+
+.
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+PATCH {{service}}/*/.. HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+PATCH {{service}}/books/.. HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###
+# XPath without a target
+# Expectations:
+# - Status code 404 Resource Not Found
+PATCH {{service}}/wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###
+# XPath without a target
+# Expectations:
+# - Status code 404 Resource Not Found
+PATCH {{service}}/wrong/wrong HTTP/1.0
+Storage: {{storage}}
+Content-Type: text/plain
+Content-Length: 4
+
+Test
+
+###
