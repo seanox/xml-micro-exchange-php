@@ -244,7 +244,7 @@ class Storage {
     const CONTENT_TYPE_XPATH = "text/xpath";
     const CONTENT_TYPE_XML = "application/xslt+xml";
 
-    private function __construct($storage, $root, $xpath) {
+    private function __construct($storage = null, $root = null, $xpath = null) {
 
         $this->storage  = $storage;
         $this->root     = $root ? $root : "data";
@@ -298,10 +298,8 @@ class Storage {
     
     static function share($storage, $xpath, $exclusive = true) {
 
-        if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
-            exit();
-        }        
+        if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
+            (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
         $root = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$2", $storage);
         $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);    
@@ -316,10 +314,8 @@ class Storage {
             // Safe is safe, if not the default 'data' is used,
             // the name of the root element must be known.
             // Otherwise the request is quit with status 404 and terminated.
-            if (($root ? $root : "data") != $storage->xml->firstChild->nodeName) {
-                Storage::addHeaders(404, "Resource Not Found");
-                exit();
-            }
+            if (($root ? $root : "data") != $storage->xml->firstChild->nodeName)
+                $storage->quit(404, "Resource Not Found");
         }
         return $storage; 
     }
@@ -352,27 +348,36 @@ class Storage {
         $this->xml->loadXML(fread($this->share, $size));
         $this->revision = $this->xml->firstChild->getAttribute("___rev");
     } 
-    
+
+    /**
+     * Materializes the XML document from the memory in the file system.
+     * Unlike save, the file is not closed and the data can be modified without
+     * another (PHP)process being able to read the data before finalizing it by
+     * closing it. Materialization is only executed if there are changes in the
+     * XML document, which is determined by the revision of the root element.
+     * The size of the storage is limited by Storage::SPACE because it is a
+     * volatile micro datasource for short-term data exchange. 
+     * An overrun causes the status 413.
+     */
+    function materialize() {
+
+        if ($this->share == null)
+            return;
+        if ($this->revision == $this->xml->firstChild->getAttribute("___rev"))
+            return;
+
+        $output = $this->xml->saveXML();
+        if (strlen($output) > Storage::SPACE)
+            $this->quit(413, "Payload Too Large");
+        ftruncate($this->share, 0);
+        rewind($this->share);
+        fwrite($this->share, $output);    
+    }
+
     function close() {
 
         if ($this->share == null)
             return;
-
-        // The size of the storage is limited by Storage::SPACE because it is a
-        // volatile micro datasource for short-term data exchange. 
-        // An overrun causes the status 413.
-        $output = $this->xml->saveXML();
-        if (strlen($output) <= Storage::SPACE) {
-            if ($this->revision != $this->xml->firstChild->getAttribute("___rev")) {
-                ftruncate($this->share, 0);
-                rewind($this->share);
-                fwrite($this->share, $output);    
-            }
-        } else {
-            header_remove();
-            Storage::addHeaders(413, "Payload Too Large");
-            exit();
-        }
 
         flock($this->share, LOCK_UN);
         fclose($this->share);
@@ -476,34 +481,20 @@ class Storage {
      */
     function doConnect() {
 
-        if (!empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-            exit();
-        }
+        if (!empty($this->xpath))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
         
         $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
-        if (iterator_count($iterator) >= Storage::QUANTITY) {
-            Storage::addHeaders(507, "Insufficient Storage");
-            exit();
-        }
+        if (iterator_count($iterator) >= Storage::QUANTITY)
+            $this->quit(507, "Insufficient Storage");
 
         $response = [201, "Created"];    
         if (!$this->exists())
             $this->open(true);    
         else $response = [202, "Accepted"];
         
-        Storage::addHeaders($response[0], $response[1], [
-            "Storage" => $this->storage,
-            "Storage-Revision" => $this->revision,
-            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-            "Storage-Last-Modified" => date(DateTime::RFC822),
-            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)
-        ]);
-
-        // The function and the response are complete.
-        // The storage can be closed and the requests can be terminated.
-        $this->close();
-        exit;
+        $this->materialize(); 
+        $this->quit($response[0], $response[1]);
     }
 
     /**
@@ -586,16 +577,12 @@ class Storage {
             $this->doConnect();      
 
         // Without existing storage the request is not valid.
-        if (!$this->exists()) {
-            Storage::addHeaders(404, "Resource Not Found");
-            exit();
-        }            
+        if (!$this->exists())
+            $this->quit(404, "Resource Not Found");
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-            exit();
-        }
+        if (empty($this->xpath))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -607,16 +594,14 @@ class Storage {
             $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath function (" . Storage::fetchLastXmlErrorMessage() . ")";
-                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-                exit();
+                $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             $allow = "CONNECT, OPTIONS, GET, POST";
         } else {
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
-                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-                exit();
+                $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if ($targets && !empty($targets) && $targets->length > 0) {
                 $serials = [];
@@ -633,19 +618,7 @@ class Storage {
             } else $allow = "CONNECT, OPTIONS, PUT";
         }
 
-        Storage::addHeaders(204, "No Content", [
-            "Storage" => $this->storage,
-            "Storage-Revision" => $this->revision,
-            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-            "Storage-Last-Modified" => date(DateTime::RFC822),
-            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)  ,
-            "Allow" => $allow
-        ]);
-
-        // The function and the response are complete.
-        // The storage can be closed and the requests can be terminated.
-        $this->close();
-        exit;        
+        $this->quit(204, "No Content", ["Allow" => $allow]);
     }  
 
     /**
@@ -695,16 +668,12 @@ class Storage {
     function doGet() {
     
         // Without existing storage the request is not valid.
-        if (!$this->exists()) {
-            Storage::addHeaders(404, "Resource Not Found");
-            exit();
-        }
+        if (!$this->exists())
+            $this->quit(404, "Resource Not Found");
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-            exit();
-        }
+        if (empty($this->xpath))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
         
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -719,12 +688,10 @@ class Storage {
             if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
                 $message = "Invalid XPath function";
             $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-            exit();            
+            $this->quit(400, "Bad Request", ["Message" => $message]);
         } else if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)
                 &&  (!$result || empty($result) || $result->length <= 0)) {
-            Storage::addHeaders(404, "Resource Not Found");
-            exit();            
+            $this->quit(404, "Resource Not Found");
         } else if ($result instanceof DOMNodeList) {
             $media = Storage::CONTENT_TYPE_XML;
             $xml = new DOMDocument();
@@ -750,17 +717,7 @@ class Storage {
             $result = $result ? "true" : "false";
         }
 
-        Storage::addHeaders(200, "Success", [
-            "Storage" => $this->storage,
-            "Storage-Revision" => $this->revision,
-            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-            "Storage-Last-Modified" => date(DateTime::RFC822),
-            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822),
-            "Content-Length" => strlen($result),
-            "Content-Type" => $media
-        ]);   
-        print($result);
-        exit;
+        $this->quit(200, "Success", ["Content-Type" => $media], $result);   
     }
 
     /**
@@ -810,21 +767,16 @@ class Storage {
     function doPost() {
 
         // Without existing storage the request is not valid.
-        if (!$this->exists()) {
-            Storage::addHeaders(404, "Resource Not Found");
-            exit();
-        }        
+        if (!$this->exists())
+            $this->quit(404, "Resource Not Found");
 
         // POST always expects an valid XSLT template for transformation.
-        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0) {
-            Storage::addHeaders(415, "Unsupported Media Type");
-            exit();
-        }
+        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
+            $this->quit(415, "Unsupported Media Type");
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $message = "Invalid XPath (Functions are not supported)";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-            exit();    
+            $this->quit(400, "Bad Request", ["Message" => $message]);
         }        
 
         libxml_use_internal_errors(true);
@@ -837,8 +789,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
-            exit();
+            $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
         $processor = new XSLTProcessor();
@@ -850,13 +801,10 @@ class Storage {
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
-                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-                exit();            
+                $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0) {
-                Storage::addHeaders(404, "Resource Not Found");
-                exit();  
-            }
+            if (!$targets || empty($targets) || $targets->length <= 0)
+                $this->quit(404, "Resource Not Found");
             foreach ($targets as $target)
                 $xml->appendChild($xml->importNode($target, true));
         }
@@ -867,8 +815,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
-            exit();            
+            $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
         $media = (new DOMXpath($style))->query("//*[local-name()='output']/@method");
@@ -878,22 +825,7 @@ class Storage {
             $media = Storage::CONTENT_TYPE_TEXT;
         else $media = Storage::CONTENT_TYPE_XML;             
 
-        Storage::addHeaders(200, "Success", [
-            "Storage" => $this->storage,
-            "Storage-Revision" => $this->revision,
-            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-            "Storage-Last-Modified" => date(DateTime::RFC822),
-            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822),
-            "Content-Length" => strlen($output),
-            "Content-Type" => $media
-        ]);        
-
-        print($output);
-
-        // The function and the response are complete.
-        // The storage can be closed and the requests can be terminated.
-        $this->close();
-        exit;
+        $this->quit(200, "Success", ["Content-Type" => $media], $output);        
     }
 
     /**
@@ -994,35 +926,26 @@ class Storage {
     function doPut() {
         
         // Without existing storage the request is not valid.
-        if (!$this->exists()) {
-            Storage::addHeaders(404, "Resource Not Found");
-            exit();
-        }
+        if (!$this->exists())
+            $this->quit(404, "Resource Not Found");
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-            exit();
-        }    
+        if (empty($this->xpath))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
         // If the limit is exceeded, the request is quit with status 413. 
-        if (strlen(file_get_contents("php://input")) > Storage::SPACE) {
-            Storage::addHeaders(413, "Payload Too Large");
-            exit();
-        }
+        if (strlen(file_get_contents("php://input")) > Storage::SPACE)
+            $this->quit(413, "Payload Too Large");
 
         // For all PUT requests the Content-Type is needed, because for putting
         // in XML structures and text is distinguished.
-        if (!isset($_SERVER["CONTENT_TYPE"])) {
-            Storage::addHeaders(415, "Unsupported Media Type");
-            exit();                
-        }  
+        if (!isset($_SERVER["CONTENT_TYPE"]))
+            $this->quit(415, "Unsupported Media Type");
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $message = "Invalid XPath (Functions are not supported)";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-            exit();    
+            $this->quit(400, "Bad Request", ["Message" => $message]);
         }        
         
         libxml_use_internal_errors(true);
@@ -1051,10 +974,8 @@ class Storage {
 
             // For attributes only the Content-Type text/plain and text/xpath
             // are supported, for other Content-Types no conversion exists.
-            if (!in_array(strtolower($_SERVER["CONTENT_TYPE"]), [Storage::CONTENT_TYPE_TEXT, Storage::CONTENT_TYPE_XPATH])) {
-                Storage::addHeaders(415, "Unsupported Media Type");
-                exit();                
-            }
+            if (!in_array(strtolower($_SERVER["CONTENT_TYPE"]), [Storage::CONTENT_TYPE_TEXT, Storage::CONTENT_TYPE_XPATH]))
+                $this->quit(415, "Unsupported Media Type");
 
             $input = file_get_contents("php://input");
             
@@ -1068,8 +989,7 @@ class Storage {
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
-                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
-                    exit();
+                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
                 }
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false
@@ -1077,8 +997,7 @@ class Storage {
                     $message = "Invalid XPath function";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
-                    exit();
+                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
                 }
             }
 
@@ -1092,13 +1011,10 @@ class Storage {
                 $message = "Invalid XPath axis";
                 if (Storage::fetchLastXmlErrorMessage())
                     $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-                exit();
+                $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0) {
-                Storage::addHeaders(404, "Resource Not Found");
-                exit();  
-            }
+            if (!$targets || empty($targets) || $targets->length <= 0)
+                $this->quit(404, "Resource Not Found");
             
             // The attributes ___rev and ___uid are essential for the internal
             // organization and management of the data and cannot be changed.
@@ -1130,28 +1046,15 @@ class Storage {
                     header("Storage-Effects: " . join(" ", $serials));
             }
 
-            $revision = $this->xml->firstChild->getAttribute("___rev");
-            Storage::addHeaders(204, "No Content", [
-                "Storage" => $this->storage,
-                "Storage-Revision" => $revision,
-                "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-                "Storage-Last-Modified" => date(DateTime::RFC822),
-                "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
-            ]);
-
-            // The function and the response are complete.
-            // The storage can be closed and the requests can be terminated.
-            $this->close();
-            exit;
+            $this->materialize();
+            $this->quit(204, "No Content");
         }
 
         // An XPath for element(s) is then expected here.
         // If this is not the case, the request is responded with status 400.
 
-        if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath axis"]);
-            exit();              
-        }
+        if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis"]);
 
         $xpath = $matches[1];
         $pseudo = $matches[2];
@@ -1165,10 +1068,8 @@ class Storage {
 
             // The combination with a pseudo element is not possible for a text
             // value. Response with status 415 (Unsupported Media Type).
-            if (!empty($pseudo)) {
-                Storage::addHeaders(415, "Unsupported Media Type");
-                exit();
-            }   
+            if (!empty($pseudo))
+                $this->quit(415, "Unsupported Media Type");
 
             $input = file_get_contents("php://input");
             
@@ -1182,8 +1083,7 @@ class Storage {
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
-                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
-                    exit();
+                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
                 }
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false
@@ -1191,8 +1091,7 @@ class Storage {
                     $message = "Invalid XPath function";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                    Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
-                    exit();
+                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
                 }
             }
 
@@ -1202,13 +1101,10 @@ class Storage {
                 $message = "Invalid XPath axis";
                 if (Storage::fetchLastXmlErrorMessage())
                     $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-                exit();
+                $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0) {
-                Storage::addHeaders(404, "Resource Not Found");
-                exit();  
-            }
+            if (!$targets || empty($targets) || $targets->length <= 0)
+                $this->quit(404, "Resource Not Found");
 
             foreach ($targets as $target) {
                 // Overwriting of the root element is not possible, as it
@@ -1236,28 +1132,15 @@ class Storage {
             if (!empty($serials))
                 header("Storage-Effects: " . join(" ", $serials));
 
-            $revision = $this->xml->firstChild->getAttribute("___rev");
-            Storage::addHeaders(204, "No Content", [
-                "Storage" => $this->storage,
-                "Storage-Revision" => $revision,
-                "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-                "Storage-Last-Modified" => date(DateTime::RFC822),
-                "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
-            ]);  
-
-            // The function and the response are complete.
-            // The storage can be closed and the requests can be terminated.
-            $this->close();
-            exit;
+            $this->materialize();                
+            $this->quit(204, "No Content");  
         }
 
         // Only an XML structure can be inserted, nothing else is supported.
         // So only the Content-Type application/xslt+xml can be used.
 
-        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0) {
-            Storage::addHeaders(415, "Unsupported Media Type");
-            exit();
-        }
+        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
+            $this->quit(415, "Unsupported Media Type");
 
         // The request body must also be a valid XML structure, otherwise the
         // request is quit with an error.
@@ -1273,8 +1156,7 @@ class Storage {
             $message = "Invalid XML document";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
-            exit();
+            $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
         // The attributes ___rev and ___uid are essential for the internal
@@ -1297,13 +1179,10 @@ class Storage {
                 $message = "Invalid XPath axis";
                 if (Storage::fetchLastXmlErrorMessage())
                     $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-                exit();
+                $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0) {
-                Storage::addHeaders(404, "Resource Not Found");
-                exit();  
-            }
+            if (!$targets || empty($targets) || $targets->length <= 0)
+                $this->quit(404, "Resource Not Found");
             
             foreach ($targets as $target) {
 
@@ -1336,10 +1215,7 @@ class Storage {
                 } else if (strcasecmp($pseudo, "last") === 0) {
                     foreach ($xml->firstChild->childNodes as $insert)
                         $target->appendChild($this->xml->importNode($insert, true));
-                } else {
-                    Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
-                    exit();
-                }
+                } else $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
             }
         }
 
@@ -1377,19 +1253,8 @@ class Storage {
         if (!empty($serials))
             header("Storage-Effects: " . join(" ", $serials));
 
-        $revision = $this->xml->firstChild->getAttribute("___rev");    
-        Storage::addHeaders(204, "No Content", [
-            "Storage" => $this->storage,
-            "Storage-Revision" => $revision,
-            "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
-            "Storage-Last-Modified" => date(DateTime::RFC822),
-            "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)                
-        ]);
-
-        // The function and the response are complete.
-        // The storage can be closed and the requests can be terminated.
-        $this->close();
-        exit;
+        $this->materialize();            
+        $this->quit(204, "No Content");
     }
 
     /**
@@ -1494,35 +1359,26 @@ class Storage {
         // - Target must exist, particularly for attributes
 
         // Without existing storage the request is not valid.
-        if (!$this->exists()) {
-            Storage::addHeaders(404, "Resource Not Found");
-            exit();
-        }
+        if (!$this->exists())
+            $this->quit(404, "Resource Not Found");
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath)) {
-            Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid XPath"]);
-            exit();
-        }    
+        if (empty($this->xpath))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
         // If the limit is exceeded, the request is quit with status 413. 
-        if (strlen(file_get_contents("php://input")) > Storage::SPACE) {
-            Storage::addHeaders(413, "Payload Too Large");
-            exit();
-        }
+        if (strlen(file_get_contents("php://input")) > Storage::SPACE)
+            $this->quit(413, "Payload Too Large");
 
         // For all PUT requests the Content-Type is needed, because for putting
         // in XML structures and text is distinguished.
-        if (!isset($_SERVER["CONTENT_TYPE"])) {
-            Storage::addHeaders(415, "Unsupported Media Type");
-            exit();                
-        }   
+        if (!isset($_SERVER["CONTENT_TYPE"]))
+            $this->quit(415, "Unsupported Media Type");
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $message = "Invalid XPath (Functions are not supported)";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-            exit();    
+            $this->quit(400, "Bad Request", ["Message" => $message]);
         }         
         
         libxml_use_internal_errors(true);
@@ -1531,13 +1387,10 @@ class Storage {
         $targets = (new DOMXpath($this->xml))->query($this->xpath);
         if (Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(400, "Bad Request", ["Message" => $message]);
-            exit();
+            $this->quit(400, "Bad Request", ["Message" => $message]);
         }
-        if (!$targets || empty($targets) || $targets->length <= 0) {
-            Storage::addHeaders(404, "Resource Not Found");
-            exit();  
-        }    
+        if (!$targets || empty($targets) || $targets->length <= 0)
+            $this->quit(404, "Resource Not Found");
         
         // The response to the request is delegated to PUT.
         // The function call is executed and the request is terminated.
@@ -1556,35 +1409,82 @@ class Storage {
         //     Storage-Revision: Revision   
         //     Storage-Space: Total/Used (in bytes)
     }
-    
-    static function addHeaders($status, $message, $headers = null) {
-    
+
+    /**
+     * Quit sends a response and ends the connection and closes the storage.
+     * The behavior of the method is hard.
+     * A reponse status and a reponse message are expected.
+     * Optionally, additional headers and data for the response body can be
+     * passed. Headers for storage and data length are set automatically. Data
+     * from the response body is only sent to the client if the response status
+     * is in class 2xx. This also affects the dependent headers Content-Type
+     * and Content-Length.
+     * @param int    $status
+     * @param string $message
+     * @param array  $headers
+     * @param string $data
+     */
+    function quit($status, $message, $headers = null, $data = null) {
+
         header(trim("HTTP/1.0 $status $message"));
         
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
                 header("Access-Control-$key: $value");
+            
+        if (!$headers)
+            $headers = [];        
 
+        // For status class 2xx the storage headers are added.
+        // The revision is read from the current storage because it can change.
+        if ($status >= 200 && $status < 300) {
+            if (!empty($data))
+                $headers = array_merge($headers, ["Content-Length" => strlen($data)]);
+            $headers = array_merge($headers, [
+                "Storage" => $this->storage,
+                "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
+                "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+                "Storage-Last-Modified" => date(DateTime::RFC822),
+                "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)
+            ]);
+        }
+        
         if (!empty($headers))
             foreach ($headers as $key => $value)
                 header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000)); 
-        
-        $headers = array_change_key_case(empty($headers) ? [] : $headers, CASE_LOWER);
-        // Header Content-Type is not sent by default.
-        // PHP has a habit of adding the header automatically, but this is not wanted here.
-        // It is removed somewhat unconventionally.
-        if (!in_array("content-type", array_keys($headers))) {
-            header("Content-Type: none");
-            header_remove("Content-Type"); 
+
+        // Not relevant headers are removed.
+        // To remove, the headers are set before, so that standard headers like
+        // Content-Type are also removed correctly.
+        $filter = ["X-Powered-By"];
+        if ($status < 200 && $status >= 300 
+                || empty($data))
+            $filter[] = "Content-Type";
+        $filter = array_change_key_case($filter, CASE_LOWER);            
+        foreach (headers_list() as $header) {
+            if (!in_array(strtolower($header), $filter))
+                continue;
+            header(header . ": omitted");
+            header_remove(header);                 
         }
+
         // When responding to an error, the default Allow header is added.
         // But only if no Allow header was passed.
         // So the header does not always have to be added manually.
         if ($status >= 400
                 && !array_keys($headers, "allow"))
-            header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");        
+            header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");  
+        
+        if ($status >= 200 && $status < 300
+                && !empty($data))
+            print($data);
+            
+        // The function and the response are complete.
+        // The storage can be closed and the requests can be terminated.
+        $this->close();
+        exit;    
     }
 
     private static function fetchLastXmlErrorMessage() {
@@ -1608,7 +1508,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            Storage::addHeaders(422, "Unprocessable Entity", ["Message" => $message]);
+            (new Storage)->quit(422, "Unprocessable Entity", ["Message" => $message]);
             exit;
         }
 
@@ -1619,7 +1519,7 @@ class Storage {
         $time = time();
         file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message" . PHP_EOL, FILE_APPEND | LOCK_EX);
         if (!headers_sent())
-            Storage::addHeaders(500, "Internal Server Error", ["Error" => $unique]);
+            (new Storage)->quit(500, "Internal Server Error", ["Error" => $unique]);
         exit;
     }
     
@@ -1634,10 +1534,8 @@ set_exception_handler("Storage::onException");
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
     $storage = $_SERVER["HTTP_STORAGE"];
-if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage)) {
-    Storage::addHeaders(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
-    exit();
-}
+if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
+    (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
 // The XPath is determined from REQUEST_URI or alternatively from REQUEST
 // because some servers normalize the paths and URI for the CGI.
@@ -1672,28 +1570,20 @@ try {
     switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
         case "CONNECT":
             $storage->doConnect();
-            break;
         case "OPTIONS":
             $storage->doOptions();
-            break;
         case "GET":
             $storage->doGet();
-            break;
         case "POST":
             $storage->doPost();
-            break;
         case "PUT":
             $storage->doPut();
-            break;
         case "PATCH":
             $storage->doPatch();
-            break;
         case "DELETE":
             $storage->doDelete();
-            break;
         default:
-            Storage::addHeaders(405, "Method Not Allowed");
-            exit();
+            $storage->quit(405, "Method Not Allowed");
     }
 } finally {
     $storage->close();
