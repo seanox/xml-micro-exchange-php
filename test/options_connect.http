@@ -18,6 +18,7 @@ OPTIONS {{service}} HTTP/1.0
 # Header Storage is empty
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 OPTIONS {{service}} HTTP/1.0
 Storage:
 

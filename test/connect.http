@@ -12,12 +12,14 @@
 # Header Storage is missing
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 
 ###
 # Header Storage is empty
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 Storage:
 
@@ -25,6 +27,7 @@ Storage:
 # Header Storage is to short/invalid
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 Storage: 0000000000000000000000000000000000C
 
@@ -32,6 +35,7 @@ Storage: 0000000000000000000000000000000000C
 # Header Storage is to long/invalid
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 Storage: 0000000000000000000000000000000000C0X
 
@@ -39,6 +43,7 @@ Storage: 0000000000000000000000000000000000C0X
 # Header Storage is to long/invalid
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 Storage: 000000000000000000000000000000000-C0
 
@@ -69,6 +74,7 @@ Storage: {{storage}} bookS
 # Storage header is not correct.
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 Storage: {{storage}} books x
 
