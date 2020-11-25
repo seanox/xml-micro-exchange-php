@@ -86,8 +86,10 @@
     <copy file="${workspace.sources}/.htaccess" todir="${workspace.releases}" overwrite="true"/>
     <copy file="${workspace.sources}/service.php" todir="${workspace.releases}" overwrite="true"/>
     <compress-php file="${workspace.releases}/service.php"/>
+    <replaceregexp file="${workspace.releases}/service.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
     <copy file="${workspace.sources}/service.php" tofile="${workspace.releases}/service-dev.php" overwrite="true"/>
     <replaceregexp file="${workspace.releases}/service-dev.php" match="\s+$" replace="" flags="g" byline="true"/>
+    <replaceregexp file="${workspace.releases}/service-dev.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
     <copy file="${workspace}/LICENSE" todir="${workspace.releases}" overwrite="true"/>
     <copy file="${workspace.manual}/README.md" todir="${workspace.releases}" overwrite="true"/>
     <zip destfile="${workspace.releases}/seanox-xmex-${release.version}.zip">
