@@ -244,7 +244,7 @@ class Storage {
     const CONTENT_TYPE_XPATH = "text/xpath";
     const CONTENT_TYPE_XML = "application/xslt+xml";
 
-    private function __construct($storage = null, $root = null, $xpath = null) {
+    function __construct($storage = null, $root = null, $xpath = null) {
 
         $this->storage  = $storage;
         $this->root     = $root ? $root : "data";
@@ -405,7 +405,10 @@ class Storage {
             return strlen($this->xml->saveXML());
         if ($this->share !== null)
             return filesize($this->share);
-        return filesize($this->store);
+        if ($this->store !== null
+                && file_exists($this->store))
+            return filesize($this->store);
+        return 0;
     }
 
     private function getExpiration($format = null) {
@@ -1462,12 +1465,13 @@ class Storage {
         if ($status < 200 && $status >= 300 
                 || empty($data))
             $filter[] = "Content-Type";
-        $filter = array_change_key_case($filter, CASE_LOWER);            
+        $filter = array_map("strtolower", $filter);
         foreach (headers_list() as $header) {
+            $header = trim(preg_replace("/:.*$/", " ", $header)); 
             if (!in_array(strtolower($header), $filter))
                 continue;
-            header(header . ": omitted");
-            header_remove(header);                 
+            header($header . ": omitted");
+            header_remove($header);                 
         }
 
         // When responding to an error, the default Allow header is added.
@@ -1476,6 +1480,83 @@ class Storage {
         if ($status >= 400
                 && !array_keys($headers, "allow"))
             header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");  
+
+        {{{
+
+        // Trace is primarily intended to simplify the validation of requests,
+        // their impact on storage and responses during testing.
+        // Based on hash values the correct function can be checked.
+        // In the released versions the implementation is completely removed.
+
+        // Request-Header-Hash
+        $hash = json_encode([
+            "Method" => isset($_SERVER["REQUEST_METHOD"]) ? strtoupper($_SERVER["REQUEST_METHOD"]) : "",
+            "XPath" => $this->xpath,
+            "Storage" => $this->storage . " " . $this->root,
+            "Content-Length" => isset($_SERVER["HTTP_CONTENT_LENGTH"]) ? strtoupper($_SERVER["HTTP_CONTENT_LENGTH"]) : "",
+            "Content-Type" => isset($_SERVER["HTTP_CONTENT_TYPE"]) ? strtoupper($_SERVER["HTTP_CONTENT_TYPE"]) : "",
+        ]);
+        header("Trace-Request-Header-Hash: " . hash("md5", $hash));
+
+        // Request-Body-Hash
+        $hash = file_get_contents("php://input");
+        $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
+        $hash = preg_replace("/\t/", " ", $hash);
+        header("Trace-Request-Body-Hash: " . hash("md5", $hash));      
+
+        // Response-Header-Hash
+        // Only the XMEX relevant headers are used.
+        $filter = ["Allow", "Storage", "Storage-Revision", "Storage-Space", "Content-Length", "Content-Type", "Message"];
+        $filter = array_map("strtolower", $filter);
+        $headers = headers_list();
+        foreach ($headers as $header)
+            if (!in_array(strtolower(trim(preg_replace("/:.*$/", " ", $header))), $filter)) {
+                $index = array_search($header, $headers);
+                if ($index !== false)
+                    unset($headers[$index]);
+            }
+        // Storage effects are never the same with UIDs.
+        // Therefore, the UIDs are normalized and the header is simplified to
+        // make it comparable. To do this, it is only determined how many
+        // unique's there are, in which order they are arranged and which
+        // serials each unique has.
+        $headers = array_merge($headers, []);
+        asort($headers);
+        foreach (headers_list() as $header) {
+            if (!preg_match("/^Storage-Effects:/i", $header))
+                continue;
+            $header = preg_replace("/^.*?:\s*/", "", $header);
+            $effects = [];
+            foreach (preg_split("/\s+/", $header) as $uid) {
+                $uid = preg_split("/:/", $uid);
+                if (!array_key_exists($uid[0], $effects))
+                    $effects[$uid[0]] = [];
+                $effects[$uid[0]][] = $uid[1]; 
+            }
+            ksort($effects);
+            foreach($effects as $serial => $index) {
+                asort($effects[$serial]);
+                $effects[$serial] = implode(":", $effects[$serial]);
+            }
+            $headers[] = "Storage-Effects: " . implode("\t", array_values($effects));
+            break;
+        }
+        $headers[] = $status . " " . $message;
+        header("Trace-Response-Header-Hash: " . hash("md5", implode("\n", $headers)));
+
+        // Response-Body-Hash
+        $hash = $data;
+        $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
+        $hash = preg_replace("/\t/", " ", $hash);
+        header("Trace-Response-Body-Hash: " . hash("md5", $hash));
+
+        // Storage-Hash
+        $hash = $this->xml ? $this->xml->saveXml() : "";
+        $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
+        $hash = preg_replace("/\t/", " ", $hash);
+        header("Trace-Storage-Hash: " . hash("md5", $hash));         
+
+        }}}
         
         if ($status >= 200 && $status < 300
                 && !empty($data))
