@@ -1487,7 +1487,9 @@ class Storage {
         // their impact on storage and responses during testing.
         // Based on hash values the correct function can be checked.
         // In the released versions the implementation is completely removed.
-
+        // Therefore the code may use computing time or the implementation may
+        // not be perfect.
+        
         // Request-Header-Hash
         $hash = json_encode([
             "Method" => isset($_SERVER["REQUEST_METHOD"]) ? strtoupper($_SERVER["REQUEST_METHOD"]) : "",
@@ -1551,7 +1553,26 @@ class Storage {
         header("Trace-Response-Body-Hash: " . hash("md5", $hash));
 
         // Storage-Hash
+        // Also the storage cannot be compared directly, because here the UID's
+        // use a unique changeable prefix. Therefore the XML is reloaded and
+        // all ___uid attributes are normalized. For this purpose, the unique
+        // of the UIDs is determined, sorted and then replaced by the index
+        // during sorting.
         $hash = $this->xml ? $this->xml->saveXml() : "";
+        if ($hash) {
+            $xml = new DOMDocument();
+            $xml->loadXML($hash);
+            $targets = (new DOMXpath($xml))->query("//*[@___uid]");
+            $uniques = [];
+            foreach ($targets as $target)
+                $uniques[] = $target->getAttribute("___uid");
+            asort($uniques);
+            foreach ($uniques as $index => $uid) {
+                $target = (new DOMXpath($xml))->query("//*[@___uid=\"$uid\"]")->item(0);
+                $target->setAttribute("___uid", preg_replace("/^.*(?=:)/", $index, $uid));
+            }
+            $hash = $xml->saveXml();
+        }
         $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
         header("Trace-Storage-Hash: " . hash("md5", $hash));         
