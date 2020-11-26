@@ -1031,7 +1031,7 @@ class Storage {
                     // addressing of the XML document by the XPath.
                     if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
-                    $serials[] = $target->getAttribute("___uid");
+                    $serials[] = $target->getAttribute("___uid") . ":M";
                     $target->setAttribute($attribute, $input); 
                     // The revision is updated at the parent nodes, so you
                     // can later determine which nodes have changed and
@@ -1116,7 +1116,7 @@ class Storage {
                 // analogous to putting attributes.
                 if ($target->nodeType != XML_ELEMENT_NODE)
                     continue;
-                $serials[] = $target->getAttribute("___uid");
+                $serials[] = $target->getAttribute("___uid") . ":M";
                 $replace = $this->xml->createElement($target->nodeName, $input);
                 foreach ($target->attributes as $attribute)
                     $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
@@ -1233,7 +1233,7 @@ class Storage {
         $nodes = (new DOMXpath($this->xml))->query("//*[not(@___uid)]");
         foreach ($nodes as $node) {
             $serial = $this->getSerial();
-            $serials[] = $serial;
+            $serials[] = $serial . ":A";
             $node->setAttribute("___uid", $serial); 
             Storage::updateNodeRevision($node, $this->revision +1);
             
@@ -1246,8 +1246,9 @@ class Storage {
                 continue;
             $serial = $node->parentNode->getAttribute("___uid");
             if (!empty($serial)
-                    && !in_array($serial, $serials))
-                $serials[] = $serial;
+                    && !in_array($serial . ":A", $serials)
+                    && !in_array($serial . ":M", $serials))
+                $serials[] = $serial . ":M";
         }
         
         // Only the list of serials is an indicator that data has changed and
@@ -1517,7 +1518,7 @@ class Storage {
                 if ($index !== false)
                     unset($headers[$index]);
             }
-        // Storage effects are never the same with UIDs.
+        // Storage-Effects are never the same with UIDs.
         // Therefore, the UIDs are normalized and the header is simplified to
         // make it comparable. To do this, it is only determined how many
         // unique's there are, in which order they are arranged and which
