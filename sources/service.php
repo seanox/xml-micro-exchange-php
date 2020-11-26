@@ -1176,6 +1176,7 @@ class Storage {
             $node->removeAttribute("___uid");
         }
     
+        $serials = [];
         if ($xml->firstChild->hasChildNodes()) {
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
@@ -1199,6 +1200,11 @@ class Storage {
                 // Pseudo elements can be used to put in an XML
                 // substructure relative to the selected element.
                 if (empty($pseudo)) {
+                    // The UIDs of the children that are removed by the
+                    // replacement are determined for storage effects.
+                    $childs = (new DOMXpath($this->xml))->query("//*[@___uid]", $target);
+                    foreach ($childs as $child)
+                        $serials[] = $child->getAttribute("___uid") . ":D"; 
                     $replace = $target->cloneNode(false);
                     foreach ($xml->firstChild->childNodes as $insert)
                         $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
@@ -1228,8 +1234,7 @@ class Storage {
         // later determine which nodes have changed and with which revision.
         // Partial access allows the client to check if the data or a tree is
         // still up to date, because he can compare the revision.
-
-        $serials = []; 
+        
         $nodes = (new DOMXpath($this->xml))->query("//*[not(@___uid)]");
         foreach ($nodes as $node) {
             $serial = $this->getSerial();
@@ -1431,6 +1436,27 @@ class Storage {
     function quit($status, $message, $headers = null, $data = null) {
 
         header(trim("HTTP/1.0 $status $message"));
+
+        // Workaround to remove all default headers.
+        // Some must be set explicitly before removing works.
+        header("Content-Type: omitted");
+        header("Content-Length: omitted");
+
+        // Not relevant headers are removed.
+        // To remove, the headers are set before, so that standard headers like
+        // Content-Type are also removed correctly.
+        $filter = ["X-Powered-By"];
+        if (($status < 200 && $status >= 300) 
+                || empty($data))
+            $filter = array_merge($filter, ["Content-Type", "Content-Length"]);
+        $filter = array_map("strtolower", $filter);
+        foreach (headers_list() as $header) {
+            $header = trim(preg_replace("/:.*$/", " ", $header)); 
+            if (!in_array(strtolower($header), $filter))
+                continue;
+            header($header . ": omitted");
+            header_remove($header);
+        }
         
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
@@ -1458,22 +1484,6 @@ class Storage {
                 header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000)); 
-
-        // Not relevant headers are removed.
-        // To remove, the headers are set before, so that standard headers like
-        // Content-Type are also removed correctly.
-        $filter = ["X-Powered-By"];
-        if ($status < 200 && $status >= 300 
-                || empty($data))
-            $filter[] = "Content-Type";
-        $filter = array_map("strtolower", $filter);
-        foreach (headers_list() as $header) {
-            $header = trim(preg_replace("/:.*$/", " ", $header)); 
-            if (!in_array(strtolower($header), $filter))
-                continue;
-            header($header . ": omitted");
-            header_remove($header);                 
-        }
 
         // When responding to an error, the default Allow header is added.
         // But only if no Allow header was passed.
