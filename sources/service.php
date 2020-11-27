@@ -1513,10 +1513,10 @@ class Storage {
         //     ADDED MODIFIED.
         // Sorting of efficacy / priority (1 is highest):
         //     1:ALL 2:NONE 3:DELETED 3:MODIFIED 3:ADDED
-        $effects = $fetchHeader("Storage-Effects");
+        $effects = $fetchHeader("Storage-Effects", true);
         $effects = $effects ? $effects->value : "";
         $accepts = isset($_SERVER["HTTP_ACCEPT_EFFECTS"]) ? strtolower(trim($_SERVER["HTTP_ACCEPT_EFFECTS"])) : "";
-        $accepts = preg_split("/\s+/", $accepts);
+        $accepts = !empty($accepts) ? preg_split("/\s+/", $accepts) : [];
         $pattern = [];
         if (!empty($accepts)
                 && !in_array("added", $accepts))
@@ -1527,16 +1527,17 @@ class Storage {
         if (empty($accepts)
                 || !in_array("deleted", $accepts))
             $pattern[] = "D";
-        if (!empty($accepts)
+        if (!empty($accepts) 
                 && in_array("none", $accepts))
             $pattern = ["A", "M", "D"];
         if (!empty($accepts)
-            && in_array("all", $accepts))
-        $pattern = [];
+                && in_array("all", $accepts))
+            $pattern = [];
         if (!empty($pattern))
             $effects = preg_replace("/\s*\w+:\w+:[" . implode("|", $pattern) . "]\s*/i", " ", $effects);
+        $effects = trim(preg_replace("/\s{2,}/", " ", $effects));     
         if (!empty($effects))
-            header("Storage-Effects: " . $effects);    
+            header("Storage-Effects: " . $effects); 
         
         foreach ($headers as $key => $value)
             header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
@@ -1595,10 +1596,10 @@ class Storage {
         asort($headers);
         
         $header = $fetchHeader("Storage-Effects");
-        if ($header) {
-            $header = preg_replace("/^.*?:\s*/", "", $header->value);
+        if (!empty($header)
+                && !empty($header->value)) {
             $effects = [];
-            foreach (preg_split("/\s+/", $header) as $uid) {
+            foreach (preg_split("/\s+/", $header->value) as $uid) {
                 $uid = preg_split("/:/", $uid);
                 if (!array_key_exists($uid[0], $effects))
                     $effects[$uid[0]] = [];
