@@ -439,6 +439,10 @@ class Storage {
      * Communication is established when all parties use the same name.
      * There are no rules, only the clients know the rules.
      * A storage expires with all information if it is not used (read/write).
+     *
+     * The response for a CONNECT always contains a Connection-Unique header.
+     * The Unique is unique in the Datasource and in the Storage and can be
+     * used by the client e.g. in XML as attributes to locate his data faster.
      * 
      * In addition, OPTIONS can also be used as an alternative to CONNECT,
      * because CONNECT is not an HTTP standard. For this purpose OPTIONS
@@ -460,6 +464,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Connection-Unique: UID
      * 
      *     Response:
      * HTTP/1.0 202 Accepted
@@ -468,6 +473,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Connection-Unique: UID
      * 
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
@@ -497,7 +503,7 @@ class Storage {
         else $response = [202, "Accepted"];
         
         $this->materialize(); 
-        $this->quit($response[0], $response[1]);
+        $this->quit($response[0], $response[1], ["Connection-Unique" => $this->unique]);
     }
 
     /**
@@ -539,6 +545,10 @@ class Storage {
      * without XPath, but with context path if necessary, is used. In this case
      * OPTIONS will hand over the work to CONNECT.
      * 
+     * The response for a CONNECT always contains a Connection-Unique header.
+     * The Unique is unique in the Datasource and in the Storage and can be
+     * used by the client e.g. in XML as attributes to locate his data faster.
+     * 
      *     Request:
      * OPTIONS / HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
@@ -554,6 +564,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Connection-Unique: UID
      * 
      *     Response:
      * HTTP/1.0 202 Accepted
@@ -562,6 +573,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Connection-Unique: UID
      * 
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
@@ -1435,6 +1447,24 @@ class Storage {
      */
     function quit($status, $message, $headers = null, $data = null) {
 
+        // This is implemented for scanning and modification of headers.
+        // To remove, the headers are set before, so that standard headers like
+        // Content-Type are also removed correctly.
+        $fetchHeader = function($name, $remove = false) {
+            $result = false;
+            foreach (headers_list() as $header) {
+                if (!preg_match("/^\s*" . $name . "\s*:/i", $header))
+                    continue;
+                preg_match("/^\s*(.*?)\s*:\s*(.*)\s*$/", $header, $header, PREG_UNMATCHED_AS_NULL);
+                if ($remove) {
+                    header($header[1] . ": omitted");
+                    header_remove($header[1]);
+                }
+                $result = (object)["name" => $header[1], "value" => $header[2]];   
+            }      
+            return $result;
+        };
+
         header(trim("HTTP/1.0 $status $message"));
 
         // Workaround to remove all default headers.
@@ -1443,20 +1473,14 @@ class Storage {
         header("Content-Length: omitted");
 
         // Not relevant headers are removed.
-        // To remove, the headers are set before, so that standard headers like
-        // Content-Type are also removed correctly.
         $filter = ["X-Powered-By"];
         if (($status < 200 && $status >= 300) 
-                || empty($data))
-            $filter = array_merge($filter, ["Content-Type", "Content-Length"]);
-        $filter = array_map("strtolower", $filter);
-        foreach (headers_list() as $header) {
-            $header = trim(preg_replace("/:.*$/", " ", $header)); 
-            if (!in_array(strtolower($header), $filter))
-                continue;
-            header($header . ": omitted");
-            header_remove($header);
+                || empty($data)) {
+            $filter[] = "Content-Type";
+            $filter[] = "Content-Length";
         }
+        foreach ($filter as $header)
+            $fetchHeader($header, true);
         
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
@@ -1478,12 +1502,44 @@ class Storage {
                 "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)
             ]);
         }
-        
-        if (!empty($headers))
-            foreach ($headers as $key => $value)
-                header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
 
-        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000)); 
+        // The response from the Storage-Effects header can be very extensive.
+        // With the Request-Header Accept-Effects you can define which classes
+        // of UIDs are returned to the client, comparable to a filter.
+        // There are the classes Case-insensitive  ADD, MODIFIED and DELETED
+        // and the pseudonym NONE, which deselects all classes and ALL, which
+        // selects all classes.
+        // If no Accept-Effects header is specified, the default is:
+        //     ADDED MODIFIED.
+        // Sorting of efficacy / priority (1 is highest):
+        //     1:ALL 2:NONE 3:DELETED 3:MODIFIED 3:ADDED
+        $effects = $fetchHeader("Storage-Effects");
+        $effects = $effects ? $effects->value : "";
+        $accepts = isset($_SERVER["HTTP_ACCEPT_EFFECTS"]) ? strtolower(trim($_SERVER["HTTP_ACCEPT_EFFECTS"])) : "";
+        $accepts = preg_split("/\s+/", $accepts);
+        $pattern = [];
+        if (!empty($accepts)
+                && !in_array("added", $accepts))
+            $pattern[] = "A";
+        if (!empty($accepts)
+                && !in_array("modified", $accepts))
+            $pattern[] = "M";
+        if (empty($accepts)
+                || !in_array("deleted", $accepts))
+            $pattern[] = "D";
+        if (!empty($accepts)
+                && in_array("none", $accepts))
+            $pattern = ["A", "M", "D"];
+        if (!empty($accepts)
+            && in_array("all", $accepts))
+        $pattern = [];
+        if (!empty($pattern))
+            $effects = preg_replace("/\s*\w+:\w+:[" . implode("|", $pattern) . "]\s*/i", " ", $effects);
+        if (!empty($effects))
+            header("Storage-Effects: " . $effects);    
+        
+        foreach ($headers as $key => $value)
+            header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
 
         // When responding to an error, the default Allow header is added.
         // But only if no Allow header was passed.
@@ -1491,6 +1547,8 @@ class Storage {
         if ($status >= 400
                 && !array_keys($headers, "allow"))
             header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");  
+
+        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000)); 
 
         {{{
 
@@ -1535,10 +1593,10 @@ class Storage {
         // serials each unique has.
         $headers = array_merge($headers, []);
         asort($headers);
-        foreach (headers_list() as $header) {
-            if (!preg_match("/^Storage-Effects:/i", $header))
-                continue;
-            $header = preg_replace("/^.*?:\s*/", "", $header);
+        
+        $header = $fetchHeader("Storage-Effects");
+        if ($header) {
+            $header = preg_replace("/^.*?:\s*/", "", $header->value);
             $effects = [];
             foreach (preg_split("/\s+/", $header) as $uid) {
                 $uid = preg_split("/:/", $uid);
@@ -1552,8 +1610,15 @@ class Storage {
                 $effects[$serial] = implode(":", $effects[$serial]);
             }
             $headers[] = "Storage-Effects: " . implode("\t", array_values($effects));
-            break;
         }
+        
+        if ($fetchHeader("Connection-Unique"))
+            $headers[] = "Connection-Unique";
+        if ($fetchHeader("Error"))
+            $headers[] = "Error";
+        if ($fetchHeader("Message"))
+            $headers[] = "Message";
+
         $headers[] = $status . " " . $message;
         header("Trace-Response-Header-Hash: " . hash("md5", implode("\n", $headers)));
 
