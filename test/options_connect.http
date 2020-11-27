@@ -51,6 +51,7 @@ Storage: 000000000000000000000000000000000-OC
 # correctly, the storage can be created.
 # Expectations:
 # - Status code 201 Resource Created
+# - Connection-Unique: UID
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}} books
 
@@ -59,6 +60,7 @@ Storage: {{storage}} books
 # correctly, the storage can be shared.
 # Expectations:
 # - Status code 202 Accepted
+# - Connection-Unique: UID
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage}} books
 
