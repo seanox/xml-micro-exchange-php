@@ -218,3 +218,250 @@ Content-Length: 127974
 </book>
 
 ###
+# Preperation of tTest of Accept-Effect - 
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# Without is the same as: AM
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# Empty is the same as: AM
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects:
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# Unknown entries
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects: wronG
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# Only ADDED (case insensitive)
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 8x UID (only ::A)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects: addeD
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# Only MODIFIED (case insensitive)
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID (only ::M)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects: modifieD
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# Only DELETED (case insensitive)
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID (only ::D)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects: deleteD
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# With ALL (case insensitive), ALL wins (AMD)
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 18 UID (AMD)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects: deleteD alL
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# With ALL + NONE (case insensitive), ALL wins (AMD)
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 18 UID (AMD)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects: deleteD alL nonE
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
+# Test of Accept-Effect
+# With NONE and without ALL (case insensitive), NONE wins
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 18 UID (AMD)
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage}}
+Accept-Effects: deleteD nonE
+Content-Type: application/xslt+xml
+Content-Length: 230
+
+<book title="A3">
+  <chapter>Text A3</chapter>
+</book>
+<book title="B3">
+  <chapter>Text B3</chapter>
+</book>
+<book title="C3">
+  <chapter>Text C3</chapter>
+</book>
+<book title="D3">
+  <chapter>Text D3</chapter>
+</book>
+
+###
