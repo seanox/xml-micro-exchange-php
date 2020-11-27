@@ -84,6 +84,10 @@ CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
 with context path if necessary, is used. In this case OPTIONS will hand over
 the work to CONNECT.
 
+The response for a CONNECT always contains a Connection-Unique header.  
+The Unique is unique in the Datasource and in the Storage and can be used by the
+client e.g. in XML as attributes to locate his data faster.
+
 
 ## Request
 ```
@@ -114,6 +118,7 @@ Storage-Revision: Revision (number)
 Storage-Space: Total/Used (bytes)
 Storage-Last-Modified: Timestamp (RFC822)
 Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+Connection-Unique: UID
 ```
 ``` 
 HTTP/1.0 202 Accepted
@@ -122,6 +127,7 @@ Storage-Revision: Revision (number)
 Storage-Space: Total/Used (bytes)
 Storage-Last-Modified: Timestamp (RFC822)
 Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+Connection-Unique: UID
 ```
 
 ### Example
@@ -134,6 +140,7 @@ Storage-Revision: 0
 Storage-Space: 262144/87
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Connection-Unique: ABI0ZX99X13M
 Execution-Time: 3
 ```
 
