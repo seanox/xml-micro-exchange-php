@@ -1,6 +1,3 @@
-@service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000G0 statistic
-
 # Test sequence for GET requests.
 # GET queries data about XPath axes and functions.  
 # For this, the XPath axis or function is sent with URI.  
@@ -12,14 +9,26 @@
 # Expectations:
 # - Status code 404 Resource Not Found
 GET {{service}}/ HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "866a1915855902ead151fbec366fa7f7");
+});
+%}
 
 ###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a1a4faef35e31fdb556a2954e0df21bc");
+});
+%}
 
 ###
 # Initial request to establish the storage
@@ -27,9 +36,8 @@ Storage: {{storage}}
 # - Status code 204 No Content
 # - Storage-Effects: with a lot of UIDs 
 PUT {{service}}/statistic HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
 Content-Type: application/xslt+xml
-Content-Length: 9974
 
 <cities>
   <city name="Berlin" empty="">
@@ -182,6 +190,12 @@ Content-Length: 9974
   </city>
 </cities>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "10fe8eac4d196b44855b6e13b763137a");
+});
+%}
+
 ###
 # Request for the root in the storage
 # Expectations:
@@ -190,7 +204,13 @@ Content-Length: 9974
 # - Content-Type: application/xslt+xml
 # - Complete storage
 GET {{service}}/ HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9a2d54f3395bbdb151a97ce825285767");
+});
+%}
 
 ###
 # Request without a path is the same as / for the root in the storage
@@ -200,7 +220,13 @@ Storage: {{storage}}
 # - Content-Type: application/xslt+xml
 # - Complete storage
 GET {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9a2d54f3395bbdb151a97ce825285767");
+});
+%}
 
 ###
 # Brackets in XPath also work
@@ -209,8 +235,15 @@ Storage: {{storage}}
 # - Content-Length: 14263
 # - Content-Type: application/xslt+xml
 # - Only an extract of districts
-GET {{service}}(/statistic//districts) HTTP/1.0
-Storage: {{storage}}
+# - URI: (/statistic//districts)
+GET {{service}}0x282f7374617469737469632f2f64697374726963747329 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "05fbc5fea87f3198b341bd9fbdd5078f");
+});
+%}
 
 ###
 # Brackets in XPath also work
@@ -219,23 +252,43 @@ Storage: {{storage}}
 # - Content-Length: 14141
 # - Content-Type: application/xslt+xml
 # - Only an extract of all district entries as collection
-GET {{service}}(/statistic//districts)/district HTTP/1.0
-Storage: {{storage}}
+# - URI: (/statistic//districts)/district
+GET {{service}}0x282f7374617469737469632f2f646973747269637473292f6469737472696374 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "34852723736eb719f8835229ba5ea334");
+});
+%}
 
 ###
 # Wrong XPath axis expression
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid XPath Axis (Invalid expression)
-GET {{service}}(/wrong//districts/) HTTP/1.0
-Storage: {{storage}}
+# - Message: Invalid XPath (Invalid expression)
+# - URI: (/wrong//districts/)
+GET {{service}}0x282f77726f6e672f2f6469737472696374732f29 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "140a45574326e3bfd498369ec9b6a049");
+});
+%}
 
 ###
 # XPath axis without target
 # Expectations:
 # - Status code 404 Resource Not Found
 GET {{service}}/unknown/unknown HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d5ae98194b0b57c993a371a2a6246e03");
+});
+%}
 
 ###
 # XPath functions should work
@@ -244,8 +297,15 @@ Storage: {{storage}}
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Value: 1
-GET {{service}}count(/statistic//districts) HTTP/1.0
-Storage: {{storage}}
+# - URI: count(/statistic//districts)
+GET {{service}}0x636f756e74282f7374617469737469632f2f6469737472696374732920 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5e2ac70cfad3ac73e73440744b4de23a");
+});
+%}
 
 ###
 # XPath functions should work
@@ -255,15 +315,28 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Value: statistic
 GET {{service}}name(/statistic) HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cec16d6e53c51ea93c3ebe87d21d2a13");
+});
+%}
 
 ###
 # Request with unknown XPath function causes status 400
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid XPath Function (Unregistered function)
-GET {{service}}wrong(/statistic//districts) HTTP/1.0
-Storage: {{storage}}
+# - Message: Invalid XPath function (Unregistered function)
+# - URI: wrong(/statistic//districts)
+GET {{service}}0x77726f6e67282f7374617469737469632f2f64697374726963747329 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f808558070c996352ca12453d55024a2");
+});
+%}
 
 ###
 # XPath functions with return type boolean should work
@@ -272,8 +345,15 @@ Storage: {{storage}}
 # - Content-Length: 5
 # - Content-Type: text/plain
 # - Value: false
-GET {{service}}count(/statistic//districts)<0 HTTP/1.0
-Storage: {{storage}}
+# - URI: count(/statistic//districts)<0
+GET {{service}}0x636f756e74282f7374617469737469632f2f646973747269637473293c30 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c398dceb9b8a3c780b3121235f5f974d");
+});
+%}
 
 ###
 # XPath functions with return type boolean should work
@@ -282,8 +362,15 @@ Storage: {{storage}}
 # - Content-Length: 4
 # - Content-Type: text/plain
 # - Value: true
-GET {{service}}count(/statistic//districts)>0 HTTP/1.0
-Storage: {{storage}}
+# - URI: count(/statistic//districts)>0
+GET {{service}}0x636f756e74282f7374617469737469632f2f646973747269637473293e30 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "15e3f9e4b21b1f87f5da227f89830bd3");
+});
+%}
 
 ###
 # XPath functions with return type boolean should work
@@ -292,8 +379,15 @@ Storage: {{storage}}
 # - Content-Length: 5
 # - Content-Type: text/plain
 # - Value: false
-GET {{service}}count(/statistic//districts)>100 HTTP/1.0
-Storage: {{storage}}
+# - URI: count(/statistic//districts)>100
+GET {{service}}0x636f756e74282f7374617469737469632f2f646973747269637473293e313030 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c9352dd57d4312d97b8291c516549c70");
+});
+%}
 
 ###
 # XPath functions should work
@@ -303,7 +397,13 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Value: 1
 GET {{service}}count(/statistic) HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5f73b1c4b5b284b6160abecd2e50ee91");
+});
+%}
 
 ###
 # XPath axis for a attribute should work
@@ -312,8 +412,15 @@ Storage: {{storage}}
 # - Content-Length: 6
 # - Content-Type: text/plain
 # - Value: Berlin
-GET {{service}}//city[1]/@name HTTP/1.0
-Storage: {{storage}}
+# - URI: //city[1]/@name
+GET {{service}}0x2f2f636974795b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ec29e9d0aab070f84ea1ff52cb0767d1");
+});
+%}
 
 ###
 # XPath axis for a attribute should work
@@ -322,15 +429,29 @@ Storage: {{storage}}
 # - Content-Length: 6
 # - Content-Type: text/plain
 # - Value: Berlin
-GET {{service}}//city[1]/attribute::name HTTP/1.0
-Storage: {{storage}}
+# - URI: //city[1]/attribute::name
+GET {{service}}0x2f2f636974795b315d2f6174747269627574653a3a6e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9d0e00222ba38aa114bcea5c0ec8dc60");
+});
+%}
 
 ###
 # XPath axis for a attribute that does not exist should cause status 404
 # Expectations:
 # - Status code 404 Resource Not Found
-GET {{service}}//city[1]/attribute::wrong HTTP/1.0
-Storage: {{storage}}
+# - URI: //city[1]/attribute::wrong
+GET {{service}}0x2f2f636974795b315d2f6174747269627574653a3a77726f6e67 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e98c904bba20518324412a8be2a11346");
+});
+%}
 
 ###
 # XPath axis for a empty attribute should work
@@ -338,8 +459,15 @@ Storage: {{storage}}
 # - Status code 200 Success
 # - Content-Length: 0
 # - Content-Type: text/plain
-GET {{service}}//city[1]/attribute::empty HTTP/1.0
-Storage: {{storage}}
+# - URI: //city[1]/attribute::empty
+GET {{service}}0x2F2F636974795b315d2f6174747269627574653a3a656d707479 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "66738ab64011b88b9551252d12bf9d5c");
+});
+%}
 
 ###
 # XPath function with an empty result should work
@@ -348,7 +476,13 @@ Storage: {{storage}}
 # - Content-Length: 0
 # - Content-Type: text/plain
 GET {{service}}concat('','') HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ba81c75ba76ce89561655e66a0f4dce4");
+});
+%}
 
 ###
 # XPath expression for direct processing
@@ -358,7 +492,13 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Response-Body: 3
 GET {{service}}1%2B2 HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b725810bdf3dd339f622dd9de2d4c5d0");
+});
+%}
 
 ###
 # XPath expression for direct processing
@@ -368,7 +508,13 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Response-Body: -2
 GET {{service}}1-3 HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e37bf8457dd1fb0453b6be261151128b");
+});
+%}
 
 ###
 # XPath expression for direct processing
@@ -378,7 +524,13 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Response-Body: Hallo
 GET {{service}}'Hallo' HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2c7ec17845dcad65ecc8aeb09cb3b70e");
+});
+%}
 
 ###
 # XPath expression for direct processing
@@ -388,7 +540,13 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Response-Body: false
 GET {{service}}1=2 HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "aa22557b95e57f905277c2fba9b62e63");
+});
+%}
 
 ###
 # XPath expression for direct processing
@@ -398,7 +556,13 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Response-Body: true
 GET {{service}}1!=2 HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e980208bf2816749b0b5c994e6ee7b31");
+});
+%}
 
 ###
 # XPath expression for direct processing
@@ -408,7 +572,13 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Response-Body: false
 GET {{service}}2!=2 HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6733b8b4db9e0530e299a1a38ade8af2");
+});
+%}
 
 ###
 # XPath expression for direct processing
@@ -418,6 +588,12 @@ Storage: {{storage}}
 # - Content-Type: text/plain
 # - Response-Body: true
 GET {{service}}2=2 HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "85dab7dc28a39c8276527d167ebc5560");
+});
+%}
 
 ###

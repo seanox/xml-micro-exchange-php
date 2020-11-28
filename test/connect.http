@@ -1,6 +1,3 @@
-@service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000C0
-
 # CONNECT is not an HTTP standard, alternative OPTIONS without path can be used.
 # The behavior is the same.
 
@@ -15,6 +12,12 @@
 # - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "59d59a9a5d39767ace824014ed73264c");
+});
+%}
+
 ###
 # Header Storage is empty
 # Expectations:
@@ -22,6 +25,12 @@ CONNECT {{service}} HTTP/1.0
 # - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 Storage:
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "59d59a9a5d39767ace824014ed73264c");
+});
+%}
 
 ###
 # Header Storage is to short/invalid
@@ -31,6 +40,12 @@ Storage:
 CONNECT {{service}} HTTP/1.0
 Storage: 0000000000000000000000000000000000C
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "43802b0c495990a4b5f5d76d51607252");
+});
+%}
+
 ###
 # Header Storage is to long/invalid
 # Expectations:
@@ -38,6 +53,12 @@ Storage: 0000000000000000000000000000000000C
 # - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
 Storage: 0000000000000000000000000000000000C0X
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6bc94142380135fd83b9310f3e00a432");
+});
+%}
 
 ###
 # Header Storage is to long/invalid
@@ -47,6 +68,12 @@ Storage: 0000000000000000000000000000000000C0X
 CONNECT {{service}} HTTP/1.0
 Storage: 000000000000000000000000000000000-C0
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "85624548bccf21756bfe09438b8592bc");
+});
+%}
+
 ###
 # Everything is correct, storage and name of the root element are transmitted
 # correctly, the storage can be created.
@@ -54,7 +81,13 @@ Storage: 000000000000000000000000000000000-C0
 # - Status code 201 Resource Created
 # - Connection-Unique: UID
 CONNECT {{service}} HTTP/1.0
-Storage: {{storage}} books
+Storage: {{storage_connect}} books
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cb31d489019952b2c22db35e72ff5d38");
+});
+%}
 
 ###
 # Everything is correct, storage and name of the root element are transmitted
@@ -63,14 +96,26 @@ Storage: {{storage}} books
 # - Status code 202 Accepted
 # - Connection-Unique: UID
 CONNECT {{service}} HTTP/1.0
-Storage: {{storage}} books
+Storage: {{storage_connect}} books
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7969c65622ecd3a592602ee8a27fb1f9");
+});
+%}
 
 ###
 # Name of the root element is not correct.
 # Expectations:
 # - Status code 404 Resource Not Found
 CONNECT {{service}} HTTP/1.0
-Storage: {{storage}} bookS
+Storage: {{storage_connect}} bookS
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "481e8f7a38fddeaba491d832fbe74827");
+});
+%}
 
 ###
 # Storage header is not correct.
@@ -78,7 +123,13 @@ Storage: {{storage}} bookS
 # - Status code 400 Bad Request
 # - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
-Storage: {{storage}} books x
+Storage: {{storage_connect}} books x
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ada64c580164e386be7c3d52bb0c186d");
+});
+%}
 
 ###
 # Name of the root element is not correct.
@@ -88,6 +139,12 @@ Storage: {{storage}} books x
 # Expectations:
 # - Status code 404 Resource Not Found
 CONNECT {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_connect}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "67fd2b0c6de94eb33a697d780c2a91b4");
+});
+%}
 
 ###
