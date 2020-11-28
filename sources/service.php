@@ -1753,7 +1753,11 @@ if (Storage::PATTERN_HTTP_REQUEST_URI) {
         $xpath = $xpath[2];
     $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 }
-$xpath = urldecode($xpath);
+if (preg_match("/^0x([A-Fa-f0-9]{2})+$/", $xpath))
+    $xpath = hex2bin(substr($xpath, 2));
+else if (preg_match("/^Base64:[A-Za-z0-9\+\/]+=*$/", $xpath))
+    $xpath = hex2bin(substr($xpath, 7));
+else $xpath = urldecode($xpath);
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
 // XPath or XPath function.
