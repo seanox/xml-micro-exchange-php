@@ -300,7 +300,7 @@ class Storage {
             (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
         $root = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$2", $storage);
-        $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);    
+        $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);
 
         Storage::cleanUp();
         if (!file_exists(Storage::DIRECTORY))
@@ -315,7 +315,7 @@ class Storage {
             if (($root ? $root : "data") != $storage->xml->firstChild->nodeName)
                 $storage->quit(404, "Resource Not Found");
         }
-        return $storage; 
+        return $storage;
     }
 
     private function exists() {
@@ -324,10 +324,10 @@ class Storage {
     }
 
     private function open($exclusive = true) {
-        
+
         if ($this->share !== null)
             return;
-            
+
         touch($this->store);
         $this->share = fopen($this->store, "c+");
         flock($this->share, filesize($this->store) <= 0 || $exclusive === true ? LOCK_EX : LOCK_SH);
@@ -339,13 +339,13 @@ class Storage {
             rewind($this->share);
         }
 
-        fseek($this->share, 0, SEEK_END); 
+        fseek($this->share, 0, SEEK_END);
         $size = ftell($this->share);
         rewind($this->share);
         $this->xml = new DOMDocument();
         $this->xml->loadXML(fread($this->share, $size));
         $this->revision = $this->xml->firstChild->getAttribute("___rev");
-    } 
+    }
 
     /**
      * Materializes the XML document from the memory in the file system.
@@ -354,7 +354,7 @@ class Storage {
      * closing it. Materialization is only executed if there are changes in the
      * XML document, which is determined by the revision of the root element.
      * The size of the storage is limited by Storage::SPACE because it is a
-     * volatile micro datasource for short-term data exchange. 
+     * volatile micro datasource for short-term data exchange.
      * An overrun causes the status 413.
      */
     function materialize() {
@@ -369,7 +369,7 @@ class Storage {
             $this->quit(413, "Payload Too Large");
         ftruncate($this->share, 0);
         rewind($this->share);
-        fwrite($this->share, $output);    
+        fwrite($this->share, $output);
     }
 
     function close() {
@@ -398,7 +398,7 @@ class Storage {
      * @return integer current size of the storage
      */
     private function getSize() {
-    
+
         if ($this->xml !== null)
             return strlen($this->xml->saveXML());
         if ($this->share !== null)
@@ -432,7 +432,7 @@ class Storage {
      * each request. This is similar to the header host for virtual servers.
      * Optionally, the name of the root element can also be defined by the
      * client.
-     * 
+     *
      * Each client can create a new storage at any time.
      * Communication is established when all parties use the same name.
      * There are no rules, only the clients know the rules.
@@ -441,29 +441,29 @@ class Storage {
      * The response for a CONNECT always contains a Connection-Unique header.
      * The Unique is unique in the Datasource and in the Storage and can be
      * used by the client e.g. in XML as attributes to locate his data faster.
-     * 
+     *
      * In addition, OPTIONS can also be used as an alternative to CONNECT,
      * because CONNECT is not an HTTP standard. For this purpose OPTIONS
      * without XPath, but with context path if necessary, is used. In this case
      * OPTIONS will hand over the work to CONNECT.
-     * 
+     *
      *     Request:
      * CONNECT / HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-     * 
+     *
      *     Request:
      * CONNECT / HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root (identifier / root)
-     * 
+     *
      *    Response:
      * HTTP/1.0 201 Created
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number) 
+     * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * Connection-Unique: UID
-     * 
+     *
      *     Response:
      * HTTP/1.0 202 Accepted
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -472,7 +472,7 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * Connection-Unique: UID
-     * 
+     *
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
      * - Response can be status 201 if the storage was newly created
@@ -490,17 +490,17 @@ class Storage {
 
         if (!empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
-        
+
         $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
         if (iterator_count($iterator) >= Storage::QUANTITY)
             $this->quit(507, "Insufficient Storage");
 
-        $response = [201, "Created"];    
+        $response = [201, "Created"];
         if (!$this->exists())
-            $this->open(true);    
+            $this->open(true);
         else $response = [202, "Accepted"];
-        
-        $this->materialize(); 
+
+        $this->materialize();
         $this->quit($response[0], $response[1], ["Connection-Unique" => $this->unique]);
     }
 
@@ -516,54 +516,54 @@ class Storage {
      * without returning the result.
      * The XPath processing is strict and does not accept unnecessary spaces.
      * Faulty XPath will cause the status 400.
-     * 
+     *
      *     Request:
      * OPTIONS /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-     *  
+     *
      *     Response:
      * HTTP/1.0 204 Success
      * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)   
+     * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
-     * 
+     *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
      * - XPath is malformed
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid 
+     * - Storage is invalid
      *
      * In addition, OPTIONS can also be used as an alternative to CONNECT,
      * because CONNECT is not an HTTP standard. For this purpose OPTIONS
      * without XPath, but with context path if necessary, is used. In this case
      * OPTIONS will hand over the work to CONNECT.
-     * 
+     *
      * The response for a CONNECT always contains a Connection-Unique header.
      * The Unique is unique in the Datasource and in the Storage and can be
      * used by the client e.g. in XML as attributes to locate his data faster.
-     * 
+     *
      *     Request:
      * OPTIONS / HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-     * 
+     *
      *     Request:
      * OPTIONS / HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root (identifier)
-     *  
+     *
      *    Response:
      * HTTP/1.0 201 Created
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number) 
+     * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * Connection-Unique: UID
-     * 
+     *
      *     Response:
      * HTTP/1.0 202 Accepted
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -572,7 +572,7 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * Connection-Unique: UID
-     * 
+     *
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
      * - Response can be status 201 if the storage was newly created
@@ -587,7 +587,7 @@ class Storage {
         // because CONNECT is no HTTP standard.
         // The function call is executed and the request is terminated.
         if (empty($this->xpath))
-            $this->doConnect();      
+            $this->doConnect();
 
         // Without existing storage the request is not valid.
         if (!$this->exists())
@@ -604,7 +604,7 @@ class Storage {
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $allow = "OPTIONS, GET, POST";
-            $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
+            $result = (new DOMXpath($this->xml))->evaluate($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath function (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
@@ -632,54 +632,54 @@ class Storage {
         }
 
         $this->quit(204, "No Content", ["Allow" => $allow]);
-    }  
+    }
 
     /**
      * GET queries data about XPath axes and functions.
      * For this, the XPath axis or function is sent with URI.
      * Depending on whether the request is an XPath axis or an XPath function,
      * different Content-Type are used for the response.
-     * 
+     *
      *     XPath axis
      * Conent-Type: application/xslt+xml
      * When the XPath axis addresses one target, the addressed target is the
      * root element of the returned XML structure.
      * If the XPath addresses multiple targets, their XML structure is combined
      * in the root element collection.
-     * 
+     *
      *     XPath function
      * Conent-Type: text/plain
      * The result of XPath functions is returned as plain text.
      * Decimal results use float, booleans the values true and false.
-     * 
+     *
      * The XPath processing is strict and does not accept unnecessary spaces.
-     * 
+     *
      *     Request:
      * GET /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-     *  
+     *
      *     Response:
      * HTTP/1.0 200 Success
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)   
+     * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * Content-Length: (bytes)
      *     Response-Body:
      * The result of the XPath request
-     * 
+     *
      *     Response codes / behavior:
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
      * - XPath is malformed
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid  
+     * - Storage is invalid
      * - XPath axis finds no target
-     */ 
+     */
     function doGet() {
-    
+
         // Without existing storage the request is not valid.
         if (!$this->exists())
             $this->quit(404, "Resource Not Found");
@@ -687,15 +687,15 @@ class Storage {
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
-        
+
         libxml_use_internal_errors(true);
         libxml_clear_errors();
-        
+
         $media = Storage::CONTENT_TYPE_TEXT;
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
-            $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
-        else $result = (new DOMXpath($this->xml))->query($this->xpath); 
+            $result = (new DOMXpath($this->xml))->evaluate($this->xpath);
+        else $result = (new DOMXpath($this->xml))->query($this->xpath);
         if (Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XPath";
             if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
@@ -724,13 +724,13 @@ class Storage {
                 foreach ($result as $entry)
                     $collection->appendChild($xml->importNode($entry, true));
                 $xml->appendChild($collection);
-                $result = $xml->saveXML();     
+                $result = $xml->saveXML();
             } else $result = "";
         } else if (is_bool($result)) {
             $result = $result ? "true" : "false";
         }
 
-        $this->quit(200, "Success", ["Content-Type" => $media], $result);   
+        $this->quit(200, "Success", ["Content-Type" => $media], $result);
     }
 
     /**
@@ -739,30 +739,30 @@ class Storage {
      * then applied by the XSLT processor to the data in storage.
      * Thus the content type application/xslt+xml is always required.
      * The client defines the content type for the output with the output-tag
-     * and the method-attribute. 
+     * and the method-attribute.
      * The XPath is optional for this method and is used to limit and preselect
      * the data. The processing is strict and does not accept unnecessary
      * spaces.
-     * 
+     *
      *     Request:
      * POST /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      * Content-Length: (bytes)
      * Content-Type: application/xslt+xml
      *     Request-Body:
-     * XSLT stylesheet    
-     *  
+     * XSLT stylesheet
+     *
      *     Response:
      * HTTP/1.0 200 Success
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)   
+     * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      * Content-Length: (bytes)
      *     Response-Body:
      * The result of the transformation
-     * 
+     *
      *     Response codes / behavior:
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
@@ -770,7 +770,7 @@ class Storage {
      * - XPath is malformed
      * - XSLT Stylesheet is erroneous
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid 
+     * - Storage is invalid
      * - XPath axis finds no target
      *         HTTP/1.0 415 Unsupported Media Type
      * - Attribute request without Content-Type text/plain
@@ -790,7 +790,7 @@ class Storage {
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $message = "Invalid XPath (Functions are not supported)";
             $this->quit(400, "Bad Request", ["Message" => $message]);
-        }        
+        }
 
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -821,7 +821,7 @@ class Storage {
             foreach ($targets as $target)
                 $xml->appendChild($xml->importNode($target, true));
         }
-        
+
         $output = $processor->transformToXML($xml);
         if ($output === false
                 || Storage::fetchLastXmlErrorMessage()) {
@@ -836,9 +836,9 @@ class Storage {
                 && $media->length > 0
                 && strcasecmp($media[0]->nodeValue, "text") === 0)
             $media = Storage::CONTENT_TYPE_TEXT;
-        else $media = Storage::CONTENT_TYPE_XML;             
+        else $media = Storage::CONTENT_TYPE_XML;
 
-        $this->quit(200, "Success", ["Content-Type" => $media], $output);        
+        $this->quit(200, "Success", ["Content-Type" => $media], $output);
     }
 
     /**
@@ -846,7 +846,7 @@ class Storage {
      * of existing ones.
      * The position for the insert is defined via an XPath.
      * XPath uses different notations for elements and attributes.
-     * 
+     *
      * The notation for attributes use the following structure at the end.
      *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
      * The attribute values can be static (text) and dynamic (XPath function).
@@ -855,25 +855,25 @@ class Storage {
      * Content-Type header of the request.
      *     text/plain: static text
      *     text/xpath: XPath function
-     * 
+     *
      * If the XPath notation does not match the attributes, elements are
      * assumed. For elements, the notation for pseudo elements is supported:
      *     <XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
      * Pseudo elements are a relative position specification to the selected
      * element.
-     * 
+     *
      * The value of elements can be static (text), dynamic (XPath function) or
      * be an XML structure. Also here the value is send with the request-body
      * and the type of processing is determined by the Content-Type:
      *     text/plain: static text
      *     text/xpath: XPath function
      *     application/xslt+xml: XML structure
-     * 
+     *
      * The PUT method works resolutely and inserts or overwrites existing data.
      * The XPath processing is strict and does not accept unnecessary spaces.
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
-     * 
+     *
      * In general, if no target can be reached via XPath, status 404 will
      * occur. In all other cases the PUT method informs the client about
      * changes with status 204 and the response headers Storage-Effects and
@@ -881,12 +881,12 @@ class Storage {
      * that were directly affected by the change and also contains the UIDs of
      * newly created elements. If no changes were made because the XPath cannot
      * find a writable target, the header Storage-Effects can be omitted
-     * completely in the response. 
-     * 
+     * completely in the response.
+     *
      * Syntactic and symantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
      * transmitted request body, this causes status 422.
-     * 
+     *
      *     Request:
      * PUT /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
@@ -902,7 +902,7 @@ class Storage {
      *  Content-Type: text/plain
      *     Request-Body:
      * Value as plain text
-     * 
+     *
      *     Request:
      * PUT /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
@@ -910,16 +910,16 @@ class Storage {
      * Content-Type: text/xpath
      *     Request-Body:
      * Value as XPath function
-     *  
+     *
      *     Response:
      * HTTP/1.0 204 No Content
      * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)   
+     * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
-     * 
+     *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
      * - Attributes successfully created or set
@@ -927,7 +927,7 @@ class Storage {
      * - XPath is missing or malformed
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid 
+     * - Storage is invalid
      * - XPath axis finds no target
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
@@ -937,7 +937,7 @@ class Storage {
      * - Data in the request body cannot be processed
      */
     function doPut() {
-        
+
         // Without existing storage the request is not valid.
         if (!$this->exists())
             $this->quit(404, "Resource Not Found");
@@ -947,7 +947,7 @@ class Storage {
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
-        // If the limit is exceeded, the request is quit with status 413. 
+        // If the limit is exceeded, the request is quit with status 413.
         if (strlen(file_get_contents("php://input")) > Storage::SPACE)
             $this->quit(413, "Payload Too Large");
 
@@ -959,10 +959,10 @@ class Storage {
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $message = "Invalid XPath (Functions are not supported)";
             $this->quit(400, "Bad Request", ["Message" => $message]);
-        }        
-        
+        }
+
         libxml_use_internal_errors(true);
-        libxml_clear_errors();        
+        libxml_clear_errors();
 
         // PUT requests can address attributes and elements via XPath.
         // Multi-axis XPaths allow multiple targets.
@@ -983,7 +983,7 @@ class Storage {
 
             // The following Conten-Type is supported for attributes:
             // - text/plain for static values (text)
-            // - text/xpath for dynamic values, based on XPath functions            
+            // - text/xpath for dynamic values, based on XPath functions
 
             // For attributes only the Content-Type text/plain and text/xpath
             // are supported, for other Content-Types no conversion exists.
@@ -991,7 +991,7 @@ class Storage {
                 $this->quit(415, "Unsupported Media Type");
 
             $input = file_get_contents("php://input");
-            
+
             // The Content-Type text/xpath is a special of the XMXE Storage.
             // It expects a plain text which is an XPath function.
             // The XPath function is first once applied to the current XML
@@ -1028,21 +1028,21 @@ class Storage {
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
                 $this->quit(404, "Resource Not Found");
-            
+
             // The attributes ___rev and ___uid are essential for the internal
             // organization and management of the data and cannot be changed.
             // PUT requests for these attributes are ignored and behave as if
             // no matching node was found. It should say request understood and
             // executed but without effect.
             if (!in_array($attribute, ["___rev", "___uid"])) {
-                $serials = []; 
+                $serials = [];
                 foreach ($targets as $target) {
                     // Only elements are supported, this prevents the
                     // addressing of the XML document by the XPath.
                     if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
                     $serials[] = $target->getAttribute("___uid") . ":M";
-                    $target->setAttribute($attribute, $input); 
+                    $target->setAttribute($attribute, $input);
                     // The revision is updated at the parent nodes, so you
                     // can later determine which nodes have changed and
                     // with which revision. Partial access allows the
@@ -1085,7 +1085,7 @@ class Storage {
                 $this->quit(415, "Unsupported Media Type");
 
             $input = file_get_contents("php://input");
-            
+
             // The Content-Type text/xpath is a special of the XMXE Storage.
             // It expects a plain text which is an XPath function.
             // The XPath function is first once applied to the current XML
@@ -1108,7 +1108,7 @@ class Storage {
                 }
             }
 
-            $serials = []; 
+            $serials = [];
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath axis";
@@ -1136,17 +1136,17 @@ class Storage {
                 // revision. Partial access allows the client to check if
                 // the data or a tree is still up to date, because he can
                 // compare the revision.
-                Storage::updateNodeRevision($replace, $this->revision +1);                        
+                Storage::updateNodeRevision($replace, $this->revision +1);
             }
-            
+
             // Only the list of serials is an indicator that data has changed
             // and whether the revision changes with it. If necessary the
             // revision must be corrected if there are no data changes.
             if (!empty($serials))
                 header("Storage-Effects: " . join(" ", $serials));
 
-            $this->materialize();                
-            $this->quit(204, "No Content");  
+            $this->materialize();
+            $this->quit(204, "No Content");
         }
 
         // Only an XML structure can be inserted, nothing else is supported.
@@ -1185,7 +1185,7 @@ class Storage {
             $node->removeAttribute("___rev");
             $node->removeAttribute("___uid");
         }
-    
+
         $serials = [];
         if ($xml->firstChild->hasChildNodes()) {
             $targets = (new DOMXpath($this->xml))->query($xpath);
@@ -1197,7 +1197,7 @@ class Storage {
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
                 $this->quit(404, "Resource Not Found");
-            
+
             foreach ($targets as $target) {
 
                 // Overwriting of the root element is not possible, as it
@@ -1214,11 +1214,11 @@ class Storage {
                     // replacement are determined for storage effects.
                     $childs = (new DOMXpath($this->xml))->query("//*[@___uid]", $target);
                     foreach ($childs as $child)
-                        $serials[] = $child->getAttribute("___uid") . ":D"; 
+                        $serials[] = $child->getAttribute("___uid") . ":D";
                     $replace = $target->cloneNode(false);
                     foreach ($xml->firstChild->childNodes as $insert)
-                        $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));  
-                    $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);                        
+                        $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));
+                    $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
                 } else if (strcasecmp($pseudo, "before") === 0) {
                     if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
                         foreach ($xml->firstChild->childNodes as $insert)
@@ -1228,7 +1228,7 @@ class Storage {
                         foreach ($xml->firstChild->childNodes as $insert)
                             $target->parentNode->appendChild($this->xml->importNode($insert, true));
                 } else if (strcasecmp($pseudo, "first") === 0) {
-                    $inserts = $xml->firstChild->childNodes;  
+                    $inserts = $xml->firstChild->childNodes;
                     for ($index = $inserts->length -1; $index >= 0; $index--)
                         $target->insertBefore($this->xml->importNode($inserts->item($index), true), $target->firstChild);
                 } else if (strcasecmp($pseudo, "last") === 0) {
@@ -1244,19 +1244,19 @@ class Storage {
         // later determine which nodes have changed and with which revision.
         // Partial access allows the client to check if the data or a tree is
         // still up to date, because he can compare the revision.
-        
+
         $nodes = (new DOMXpath($this->xml))->query("//*[not(@___uid)]");
         foreach ($nodes as $node) {
             $serial = $this->getSerial();
             $serials[] = $serial . ":A";
-            $node->setAttribute("___uid", $serial); 
+            $node->setAttribute("___uid", $serial);
             Storage::updateNodeRevision($node, $this->revision +1);
-            
+
             // Also the UID of the directly addressed element is transmitted to
             // the client in the response, because the element itself has not
             // changed, but its content has. Other parent elements are not
             // listed because they are only indirectly affected. So the
-            // behaviour is analogous to putting attributes. 
+            // behaviour is analogous to putting attributes.
             if ($node->parentNode->nodeType != XML_ELEMENT_NODE)
                 continue;
             $serial = $node->parentNode->getAttribute("___uid");
@@ -1265,14 +1265,14 @@ class Storage {
                     && !in_array($serial . ":M", $serials))
                 $serials[] = $serial . ":M";
         }
-        
+
         // Only the list of serials is an indicator that data has changed and
         // whether the revision changes with it. If necessary the revision must
         // be corrected if there are no data changes.
         if (!empty($serials))
             header("Storage-Effects: " . join(" ", $serials));
 
-        $this->materialize();            
+        $this->materialize();
         $this->quit(204, "No Content");
     }
 
@@ -1282,7 +1282,7 @@ class Storage {
      * The method works almost like PUT, but the XPath axis of the request
      * always expects an existing target.
      * XPath uses different notations for elements and attributes.
-     * 
+     *
      * The notation for attributes use the following structure at the end.
      *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
      * The attribute values can be static (text) and dynamic (XPath function).
@@ -1291,35 +1291,35 @@ class Storage {
      * Content-Type header of the request.
      *     text/plain: static text
      *     text/xpath: XPath function
-     * 
+     *
      * If the XPath notation does not match the attributes, elements are
      * assumed. Unlike the PUT method, no pseudo elements are supported for
      * elements.
-     * 
+     *
      * The value of elements can be static (text), dynamic (XPath function) or
      * be an XML structure. Also here the value is send with the request-body
      * and the type of processing is determined by the Content-Type:
      *     text/plain: static text
      *     text/xpath: XPath function
      *     application/xslt+xml: XML structure
-     * 
+     *
      * The PATCH method works resolutely and  overwrites existing data.
      * The XPath processing is strict and does not accept unnecessary spaces.
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
-     * 
+     *
      * In general, if no target can be reached via XPath, status 404 will
      * occur. In all other cases the PATCH method informs the client about
      * changes with status 204 and the response headers Storage-Effects and
      * Storage-Revision. The header Storage-Effects contains a list of the UIDs
      * that were directly affected by the change elements. If no changes were
      * made because the XPath cannot find a writable target, the header
-     * Storage-Effects can be omitted completely in the response. 
-     * 
+     * Storage-Effects can be omitted completely in the response.
+     *
      * Syntactic and symantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
      * transmitted request body, this causes status 422.
-     * 
+     *
      *     Request:
      * PATCH /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
@@ -1335,7 +1335,7 @@ class Storage {
      *  Content-Type: text/plain
      *     Request-Body:
      * Value as plain text
-     * 
+     *
      *     Request:
      * PATCH /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
@@ -1343,16 +1343,16 @@ class Storage {
      * Content-Type: text/xpath
      *     Request-Body:
      * Value as XPath function
-     *  
+     *
      *     Response:
      * HTTP/1.0 204 No Content
      * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)   
+     * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
-     * 
+     *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
      * - Attributes successfully created or set
@@ -1360,7 +1360,7 @@ class Storage {
      * - XPath is missing or malformed
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid 
+     * - Storage is invalid
      * - XPath axis finds no target
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
@@ -1373,7 +1373,7 @@ class Storage {
 
         // PATCH is implemented like PUT.
         // There are some additional conditions and restrictions that will be
-        // checked. After that the answer to the request can be passed to PUT. 
+        // checked. After that the answer to the request can be passed to PUT.
         // - Pseudo elements are not supported
         // - Target must exist, particularly for attributes
 
@@ -1386,7 +1386,7 @@ class Storage {
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
-        // If the limit is exceeded, the request is quit with status 413. 
+        // If the limit is exceeded, the request is quit with status 413.
         if (strlen(file_get_contents("php://input")) > Storage::SPACE)
             $this->quit(413, "Payload Too Large");
 
@@ -1398,10 +1398,10 @@ class Storage {
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
             $message = "Invalid XPath (Functions are not supported)";
             $this->quit(400, "Bad Request", ["Message" => $message]);
-        }         
-        
+        }
+
         libxml_use_internal_errors(true);
-        libxml_clear_errors();          
+        libxml_clear_errors();
 
         $targets = (new DOMXpath($this->xml))->query($this->xpath);
         if (Storage::fetchLastXmlErrorMessage()) {
@@ -1410,22 +1410,22 @@ class Storage {
         }
         if (!$targets || empty($targets) || $targets->length <= 0)
             $this->quit(404, "Resource Not Found");
-        
+
         // The response to the request is delegated to PUT.
         // The function call is executed and the request is terminated.
         $this->doPut();
     }
 
     function doDelete() {
-    
+
         // Request:
         //     DELETE /<xpath> HTTP/1.0
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-        
+
         // Response:
         //     HTTP/1.0 200 Successful
         //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-        //     Storage-Revision: Revision   
+        //     Storage-Revision: Revision
         //     Storage-Space: Total/Used (in bytes)
     }
 
@@ -1458,8 +1458,8 @@ class Storage {
                     header($header[1] . ": omitted");
                     header_remove($header[1]);
                 }
-                $result = (object)["name" => $header[1], "value" => $header[2]];   
-            }      
+                $result = (object)["name" => $header[1], "value" => $header[2]];
+            }
             return $result;
         };
 
@@ -1472,25 +1472,26 @@ class Storage {
 
         // Not relevant headers are removed.
         $filter = ["X-Powered-By"];
-        if (($status < 200 && $status >= 300) 
+        if (($status < 200 && $status >= 300)
                 || empty($data)) {
             $filter[] = "Content-Type";
             $filter[] = "Content-Length";
         }
         foreach ($filter as $header)
             $fetchHeader($header, true);
-        
+
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
                 header("Access-Control-$key: $value");
-            
+
         if (!$headers)
-            $headers = [];        
+            $headers = [];
 
         // For status class 2xx the storage headers are added.
         // The revision is read from the current storage because it can change.
         if ($status >= 200 && $status < 300) {
-            if (!empty($data))
+            if (!empty($data)
+                    || $status == 200)
                 $headers = array_merge($headers, ["Content-Length" => strlen($data)]);
             $headers = array_merge($headers, [
                 "Storage" => $this->storage,
@@ -1525,7 +1526,7 @@ class Storage {
         if (empty($accepts)
                 || !in_array("deleted", $accepts))
             $pattern[] = "D";
-        if (!empty($accepts) 
+        if (!empty($accepts)
                 && in_array("none", $accepts))
             $pattern = ["A", "M", "D"];
         if (!empty($accepts)
@@ -1533,10 +1534,10 @@ class Storage {
             $pattern = [];
         if (!empty($pattern))
             $effects = preg_replace("/\s*\w+:\w+:[" . implode("|", $pattern) . "]\s*/i", " ", $effects);
-        $effects = trim(preg_replace("/\s{2,}/", " ", $effects));     
+        $effects = trim(preg_replace("/\s{2,}/", " ", $effects));
         if (!empty($effects))
-            header("Storage-Effects: " . $effects); 
-        
+            header("Storage-Effects: " . $effects);
+
         foreach ($headers as $key => $value)
             header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
 
@@ -1545,9 +1546,9 @@ class Storage {
         // So the header does not always have to be added manually.
         if ($status >= 400
                 && !array_keys($headers, "allow"))
-            header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");  
+            header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");
 
-        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000)); 
+        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000));
 
         {{{
 
@@ -1557,7 +1558,7 @@ class Storage {
         // In the released versions the implementation is completely removed.
         // Therefore the code may use computing time or the implementation may
         // not be perfect.
-        
+
         // Request-Header-Hash
         $hash = json_encode([
             "Method" => isset($_SERVER["REQUEST_METHOD"]) ? strtoupper($_SERVER["REQUEST_METHOD"]) : "",
@@ -1572,7 +1573,7 @@ class Storage {
         $hash = file_get_contents("php://input");
         $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
-        header("Trace-Request-Body-Hash: " . hash("md5", $hash));      
+        header("Trace-Request-Body-Hash: " . hash("md5", $hash));
 
         // Response-Header-Hash
         // Only the XMEX relevant headers are used.
@@ -1592,7 +1593,7 @@ class Storage {
         // serials each unique has.
         $headers = array_merge($headers, []);
         asort($headers);
-        
+
         $header = $fetchHeader("Storage-Effects");
         if (!empty($header)
                 && !empty($header->value)) {
@@ -1601,7 +1602,7 @@ class Storage {
                 $uid = preg_split("/:/", $uid);
                 if (!array_key_exists($uid[0], $effects))
                     $effects[$uid[0]] = [];
-                $effects[$uid[0]][] = $uid[1]; 
+                $effects[$uid[0]][] = $uid[1];
             }
             ksort($effects);
             foreach($effects as $serial => $index) {
@@ -1610,7 +1611,7 @@ class Storage {
             }
             $headers[] = "Storage-Effects: " . implode("\t", array_values($effects));
         }
-        
+
         if ($fetchHeader("Connection-Unique"))
             $headers[] = "Connection-Unique";
         if ($fetchHeader("Error"))
@@ -1625,6 +1626,20 @@ class Storage {
         $hash = $data;
         $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
+        // The UID is variable and must be normalized so that the hash can be
+        // compared later. Therefore the uniques of the UIDs are collected in
+        // an array. The index in the array is then the new unique.
+        if (preg_match_all("/\b___uid=\"[A-Z\d\:]+\"/i", $hash, $matches, PREG_PATTERN_ORDER )) {
+            $uniques = [];
+            foreach ($matches[0] as $unique) {
+                if (preg_match("/\b(___uid=\")([A-Z\d]+)(:[A-Z\d]+\")/i", $unique, $match)) {
+                    if (!in_array($match[2], $uniques))
+                        $uniques[] = $match[2];
+                    $unique = array_search($match[2], $uniques);
+                    $hash = str_replace($match[0], $match[1] . $unique . $match[3], $hash);
+                }
+            }
+        }
         header("Trace-Response-Body-Hash: " . hash("md5", $hash));
 
         // Storage-Hash
@@ -1650,8 +1665,8 @@ class Storage {
         }
         $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
-        header("Trace-Storage-Hash: " . hash("md5", $hash));   
-        
+        header("Trace-Storage-Hash: " . hash("md5", $hash));
+
         $hash = [
             $fetchHeader("Trace-Request-Header-Hash")->value,
             $fetchHeader("Trace-Request-Body-Hash")->value,
@@ -1659,29 +1674,29 @@ class Storage {
             $fetchHeader("Trace-Response-Body-Hash")->value,
             $fetchHeader("Trace-Storage-Hash")->value
         ];
-        header("Trace-Composite-Hash: " . hash("md5", implode(" ", $hash)));   
+        header("Trace-Composite-Hash: " . hash("md5", implode(" ", $hash)));
 
         }}}
-        
+
         if ($status >= 200 && $status < 300
                 && !empty($data))
             print($data);
-            
+
         // The function and the response are complete.
         // The storage can be closed and the requests can be terminated.
         $this->close();
-        exit;    
+        exit;
     }
 
     private static function fetchLastXmlErrorMessage() {
-    
+
         if (empty(libxml_get_errors()))
             return false;
         $message = libxml_get_errors();
         $message = end($message)->message;
         $message = preg_replace("/[\r\n]+/", " ", $message);
         $message = preg_replace("/\.+$/", " ", $message);
-        return trim($message); 
+        return trim($message);
     }
 
     static function onError($error, $message, $file, $line, $vars = array()) {
@@ -1689,7 +1704,7 @@ class Storage {
         // Special case XSLTProcessor errors
         // These cannot be caught any other way. Therefore the error header
         // is implemented here.
-        $filter = "XSLTProcessor::transformToXml()"; 
+        $filter = "XSLTProcessor::transformToXml()";
         if (substr($message, 0, strlen($filter)) === $filter) {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
@@ -1708,7 +1723,7 @@ class Storage {
             (new Storage)->quit(500, "Internal Server Error", ["Error" => $unique]);
         exit;
     }
-    
+
     static function onException($exception) {
         Storage::onError(get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
     }
@@ -1738,7 +1753,7 @@ if (Storage::PATTERN_HTTP_REQUEST_URI) {
         $xpath = $xpath[2];
     $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 }
-$xpath = urldecode($xpath); 
+$xpath = urldecode($xpath);
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
 // XPath or XPath function.
