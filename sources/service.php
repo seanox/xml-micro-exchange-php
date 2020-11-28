@@ -235,10 +235,8 @@ class Storage {
      * notation, the round brackets can be ignored, the question remains, if
      * the XPath starts with an axis symbol, then it is an axis, with other
      * characters at the beginning must be a function.
-     *     Group 0. Full match
-     *     Group 1. XPath function
      */
-    const PATTERN_XPATH_FUNCTION = "/^(\(*[a-z].*)$/i";
+    const PATTERN_XPATH_FUNCTION = "/^[\(\s]*[^\/\.\s\(].*$/";
 
     const CONTENT_TYPE_TEXT = "text/plain";
     const CONTENT_TYPE_XPATH = "text/xpath";
@@ -699,7 +697,7 @@ class Storage {
             $result = (new DOMXpath($this->xml))->evaluate($this->xpath); 
         else $result = (new DOMXpath($this->xml))->query($this->xpath); 
         if (Storage::fetchLastXmlErrorMessage()) {
-            $message = "Invalid XPath axis";
+            $message = "Invalid XPath";
             if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
                 $message = "Invalid XPath function";
             $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -1563,8 +1561,8 @@ class Storage {
         // Request-Header-Hash
         $hash = json_encode([
             "Method" => isset($_SERVER["REQUEST_METHOD"]) ? strtoupper($_SERVER["REQUEST_METHOD"]) : "",
-            "XPath" => $this->xpath,
-            "Storage" => $this->storage . " " . $this->root,
+            "URI" => isset($_SERVER["REQUEST_URI"]) ? strtoupper($_SERVER["REQUEST_URI"]) : "",
+            "Storage" => isset($_SERVER["HTTP_STORAGE"]) ? strtoupper($_SERVER["HTTP_STORAGE"]) : "",
             "Content-Length" => isset($_SERVER["HTTP_CONTENT_LENGTH"]) ? strtoupper($_SERVER["HTTP_CONTENT_LENGTH"]) : "",
             "Content-Type" => isset($_SERVER["HTTP_CONTENT_TYPE"]) ? strtoupper($_SERVER["HTTP_CONTENT_TYPE"]) : "",
         ]);
@@ -1652,7 +1650,16 @@ class Storage {
         }
         $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
-        header("Trace-Storage-Hash: " . hash("md5", $hash));         
+        header("Trace-Storage-Hash: " . hash("md5", $hash));   
+        
+        $hash = [
+            $fetchHeader("Trace-Request-Header-Hash")->value,
+            $fetchHeader("Trace-Request-Body-Hash")->value,
+            $fetchHeader("Trace-Response-Header-Hash")->value,
+            $fetchHeader("Trace-Response-Body-Hash")->value,
+            $fetchHeader("Trace-Storage-Hash")->value
+        ];
+        header("Trace-Composite-Hash: " . hash("md5", implode(" ", $hash)));   
 
         }}}
         
