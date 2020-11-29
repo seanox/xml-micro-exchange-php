@@ -1,6 +1,3 @@
-@service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000PE books
-
 # Test sequence for putting of elements into the storage.
 # PUT inserts new elements and attributes into the storage.
 # The position for the insert is defined via an XPath.
@@ -11,18 +8,29 @@
 # Expectations:
 # - Status code 404 Resource Not Found
 PUT {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 18
 
 <book title="A1"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7bdb2cc428edca395600125d24273508");
+});
+%}
 
 ###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "91f8f6b8d10f408bb6d8a7e0a5008544");
+});
+%}
 
 ###
 # Expectations:
@@ -31,14 +39,19 @@ Storage: {{storage}}
 # - 4 books are overwritten
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 78
 
 <book title="A2"/>
 <book title="B2"/>
 <book title="C2"/>
 <book title="D2"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ce856d2d29f05fac37a15dd0ac6c6ea9");
+});
+%}
 
 ###
 # Expectations:
@@ -48,9 +61,8 @@ Content-Length: 78
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 230
 
 <book title="A3">
   <chapter>Text A3</chapter>
@@ -65,6 +77,12 @@ Content-Length: 230
   <chapter>Text D3</chapter>
 </book>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8daa16dfb5ea3be81d310ae2e45a809d");
+});
+%}
+
 ###
 # Expectations:
 # - Status code 204 No Content
@@ -73,9 +91,8 @@ Content-Length: 230
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 230
 
 <book title="A3">
   <chapter><![CDATA[Text A3]]></chapter>
@@ -90,6 +107,12 @@ Content-Length: 230
   <chapter><![CDATA[Text D3]]></chapter>
 </book>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "420ab13a0c4e47ee1295e3053333c1eb");
+});
+%}
+
 ###
 # Use of brackets should not be a problem
 # Expectations:
@@ -99,23 +122,34 @@ Content-Length: 230
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}(/books/book)/chapter HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 7
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1a35dd1ba2b8ab279ad5253573f4a57f");
+});
+%}
 
 ###
 # PUT does not support XPath functions als axis
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid XPath (Functions are not supported)
-PUT {{service}}name(.) HTTP/1.0
-Storage: {{storage}}
+# - URI: name(.)
+PUT {{service}}0x6e616d65282e29 HTTP/1.0
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 7
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7b96a5280ab0c9ea1ed35bab4e33bba1");
+});
+%}
 
 ###
 # PUT outside the root element, shall be ignored
@@ -123,12 +157,18 @@ Content-Length: 7
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
-PUT {{service}}/books/.. HTTP/1.0
-Storage: {{storage}}
+# - URI: /books/..
+PUT {{service}}0x2f626f6f6b732f2e2e HTTP/1.0
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 7
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f68b8f1d866e4eb541fbab0b00dab8d3");
+});
+%}
 
 ###
 # PUT outside the root element, shall be ignored
@@ -136,33 +176,49 @@ Content-Length: 7
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
-PUT {{service}}/*/.. HTTP/1.0
-Storage: {{storage}}
+#- URI: /*/..
+PUT {{service}}0x2f2a2f2e2e HTTP/1.0
+Storage: {{storage_put_element}}
 Content-Type: application/xslt+xml
-Content-Length: 7
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a94d13d93efcd4a4f11990630a230121");
+});
+%}
 
 ###
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
 PUT {{service}}/wrong HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
 Content-Type: text/plain
-Content-Length: 15
 
 123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7466014b6b74615bf41d55469e6d0e1e");
+});
+%}
 
 ###
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
 PUT {{service}}/wrong/wrong HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element}}
 Content-Type: text/plain
-Content-Length: 15
 
 123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "92b77856690c82d12e26ed6597dcccbf");
+});
+%}
 
 ###

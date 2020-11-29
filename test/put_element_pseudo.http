@@ -1,6 +1,3 @@
-@service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000PP books
-
 # Test sequence for storing XML structures into storage using pseudo elements.
 # Pseudo elements serve as relative navigation to elements that are addressed
 # by XPath: BEFORE AFTER FIRST LAST
@@ -10,61 +7,87 @@
 # Storage is not establish 
 # Expectations:
 # - Status code 404 Resource Not Found
-PUT {{service}}/books/book[1]::before HTTP/1.0
-Storage: {{storage}}
+PUT {{service}}/books/book%5B1%5D::before HTTP/1.0
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 22
 
 <before id="beforeA"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f56291f189e50c8133598c20a1505661");
+});
+%}
 
 ###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f127c85bd245a7f423fbe47570cf4d7c");
+});
+%}
 
 ###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 204 No Content
 PUT {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 78
 
 <book title="A2"/>
 <book title="B2"/>
 <book title="C2"/>
 <book title="D2"/>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5ebf7bc80f14bceec36cf050eaff357e");
+});
+%}
+
 ###
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 4x UID  
 # - before-elements are put in /books before first book (order A,B,C)
-PUT {{service}}/books/book[1]::before HTTP/1.0
-Storage: {{storage}}
+PUT {{service}}/books/book%5B1%5D::before HTTP/1.0
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 70
 
 <before id="beforeA"/>
 <before id="beforeB"/>
 <before id="beforeC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e4eee7d7f3bce9b7c8ca3027f1d59b47");
+});
+%}
 
 ###
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 4x UID  
 # - after-elements are put in /books after last book (order A,B,C)
-PUT {{service}}/books/book[last()]::after HTTP/1.0
-Storage: {{storage}}
+PUT {{service}}/books/book%5Blast()%5D::after HTTP/1.0
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <after id="afterA"/>
 <after id="afterB"/>
 <after id="afterC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b077ea7f2308e28a863ec56b46b596b0");
+});
+%}
 
 ###
 # Expectations:
@@ -72,13 +95,18 @@ Content-Length: 64
 # - Storage-Effects: 4x UID  
 # - first-elements are put in /books as first elements before the existing (order A,B,C)
 PUT {{service}}/books::first HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <first id="firstA"/>
 <first id="firstB"/>
 <first id="firstC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7f7ced1a18267dd4e72cd9fa3af50b70");
+});
+%}
 
 ###
 # Expectations:
@@ -86,13 +114,18 @@ Content-Length: 64
 # - Storage-Effects: 4x UID  
 # - last-elements are put in /books as last elements after the existing (order A,B,C)
 PUT {{service}}/books::last HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 58
 
 <last id="lastA"/>
 <last id="lastB"/>
 <last id="lastC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d2ea03e4a22f5f995c47b8a55f371e71");
+});
+%}
 
 ###
 # Use of brackets should not be a problem
@@ -100,25 +133,36 @@ Content-Length: 58
 # - Status code 204 No Content
 # - Storage-Effects: 4x UID  
 # - test are put in before all last elements
-PUT {{service}}(/books)//last::before HTTP/1.0
-Storage: {{storage}}
+# - URI: (/books)//last::before
+PUT {{service}}0x282f626f6f6b73292f2f6c6173743a3a6265666f7265 HTTP/1.0
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 58
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8e3ebbd35827fd03e63d3a506500ce62");
+});
+%}
 
 ###
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
 PUT {{service}}/books::wrong HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
 <wrong id="wrongC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0a2f1f003c0f40fd864fb394c98e3343");
+});
+%}
 
 ###
 # PUT outside the root element, shall be ignored
@@ -127,13 +171,18 @@ Content-Length: 64
 # - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books::before HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
 <wrong id="wrongC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0da3df688a96094ae3b8bb4323e464ef");
+});
+%}
 
 ###
 # PUT outside the root element, shall be ignored
@@ -142,13 +191,18 @@ Content-Length: 64
 # - Without Storage-Effects
 # - No changes in the storage
 PUT {{service}}/books::after HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
 <wrong id="wrongC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1f1ce96aeb80fad5236bdd52aea214ca");
+});
+%}
 
 ###
 # PUT outside the root element, shall be ignored
@@ -156,14 +210,20 @@ Content-Length: 64
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
-PUT {{service}}/*/..::before HTTP/1.0
-Storage: {{storage}}
+# - URI: /*/..::before
+PUT {{service}}0x2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
 <wrong id="wrongC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9ed6ca66a37ac007b590b02be8e58332");
+});
+%}
 
 ###
 # PUT outside the root element, shall be ignored
@@ -171,39 +231,55 @@ Content-Length: 64
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
-PUT {{service}}/books/..::before HTTP/1.0
-Storage: {{storage}}
+# - URI: /books/..::before
+PUT {{service}}0x2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
 <wrong id="wrongC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "410221d6aec78588854bc4d7a3032b4c");
+});
+%}
 
 ###
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
 PUT {{service}}/wrong::before HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
 <wrong id="wrongC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7d5e6204fc4a8cd883cc784202b3735a");
+});
+%}
 
 ###
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
 PUT {{service}}/wrong/wrong::before HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
-Content-Length: 64
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
 <wrong id="wrongC"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "69ab500840f66343178aaf9bdce32c90");
+});
+%}
 
 ###

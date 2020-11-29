@@ -1,6 +1,3 @@
-@service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000P0 statistic
-
 # Test sequence for POST requests.
 # POST queries data about XPath axes and functions via transformation.
 # For this, an XSLT stylesheet is sent with the request-body, which is then
@@ -15,9 +12,8 @@
 # Expectations:
 # - Status code 404 Resource Not Found
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 185
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -26,12 +22,24 @@ Content-Length: 185
   <xsl:template match="/"/>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "62b81b8bf8502c65dc1d0848d26a7415");
+});
+%}
+
 ###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "071e0b3063cbc9b068af4ba3f7e8050a");
+});
+%}
 
 ###
 # Initial request to establish the storage
@@ -39,9 +47,8 @@ Storage: {{storage}}
 # - Status code 204 No Content
 # - Storage-Effects: with a lot of UIDs 
 PUT {{service}}/statistic HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 9974
 
 <cities>
   <city name="Berlin">
@@ -194,6 +201,12 @@ Content-Length: 9974
   </city>
 </cities>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e2b50c94759210cb0d29d1237443c4f7");
+});
+%}
+
 ###
 # Valid XSLT without XPath and with output
 # Expectations:
@@ -201,9 +214,8 @@ Content-Length: 9974
 # - Content-Length: 640
 # - Content-Type: application/xslt+xml
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 841
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -225,6 +237,12 @@ Content-Length: 841
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a908cb9f36ceb7bd4de41e8079634a2e");
+});
+%}
+
 ###
 # Valid XSLT without XPath and with output
 # Expectations:
@@ -232,10 +250,10 @@ Content-Length: 841
 # - Content-Length: 397
 # - Content-Type: application/xslt+xml
 # - Only an extract of the data selected by XPath.
-POST {{service}}//district[@name='Lichtenberg'] HTTP/1.0
-Storage: {{storage}}
+# - URI: //district[@name='Lichtenberg']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d HTTP/1.0
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 841
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -254,6 +272,12 @@ Content-Length: 841
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4140a0ba26d78c9fe2af419e463a7348");
+});
+%}
+
 ###
 # Valid XSLT without XPath and with output
 # Expectations:
@@ -261,10 +285,10 @@ Content-Length: 841
 # - Content-Length: 287
 # - Content-Type: text/plain
 # - Only an extract of the data selected by XPath.
-POST {{service}}//district[@name='Lichtenberg'] HTTP/1.0
-Storage: {{storage}}
+# - URI: //district[@name='Lichtenberg']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d HTTP/1.0
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 841
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -281,14 +305,19 @@ Quarters of district: <xsl:value-of select="/district/@name"/>
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8b7f839b50d8ac98cfe423724beda141");
+});
+%}
+
 ###
 # Wrong Content-Type
 # Expectations:
 # - Status code 415 Unsupported Media Type
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml-x
-Content-Length: 841
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -310,15 +339,20 @@ Content-Length: 841
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a40ef28870a3275e83dc6cc88aee9dea");
+});
+%}
+
 ###
 # Wrong XSLT markup, xsl:templatex is used instead of xsl:template
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (xsltParseStylesheetTop: unknown templatex element)
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 839
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -340,15 +374,20 @@ Content-Length: 839
   </xsl:templatex>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "23c185d61f7c5f61ad4aed3b958dc65f");
+});
+%}
+
 ###
 # Wrong XSLT markup, xsl:templatex is used and is closed by xsl:template
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (Opening and ending tag mismatch...
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 842
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -370,15 +409,20 @@ Content-Length: 842
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9e85dcb35c7af506d6e68cfd2236e4d6");
+});
+%}
+
 ###
 # Wrong XSLT markup, city tag is not closed
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (Opening and ending tag mismatch...
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 840
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -400,15 +444,20 @@ Content-Length: 840
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "85fbd3aa0dff3a89936d16dd89c6e608");
+});
+%}
+
 ###
 # Wrong XSLT markup, city tag is not closed
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (EndTag: '</' not found)
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 828
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -429,15 +478,20 @@ Content-Length: 828
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1753515968de0e1a7f6d55e9526b8b61");
+});
+%}
+
 ###
 # Wrong XSLT EL function sumx (does not exists)
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (Failed to evaluate the expression of variable 'area')
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 843
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -459,15 +513,20 @@ Content-Length: 843
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7c6ae6b87ea4b0c35fde5f74436da095");
+});
+%}
+
 ###
 # Wrong XSLT EL in variable: city attribute: select ] is missing
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (XSLT-variable: Failed to compile the XPath expression ...
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 840
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -489,6 +548,12 @@ Content-Length: 840
   </xsl:template>
 </xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9fb90ecf8a90acd32579bdafca3c3e8e");
+});
+%}
+
 ###
 # Valid XSLT but without output
 # Expectations:
@@ -496,9 +561,8 @@ Content-Length: 840
 # - Content-Length: 0
 # - Content-Type: application/xslt+xml
 POST {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 185
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -506,6 +570,12 @@ Content-Length: 185
   <xsl:output method="xml"/>
   <xsl:template match="/"/>
 </xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1f8b41f9fb687ccd3646f675e4284b72");
+});
+%}
 
 ###
 # Valid XSLT but without output
@@ -514,9 +584,8 @@ Content-Length: 185
 # - Content-Length: 0
 # - Content-Type: application/xslt+xml
 POST {{service}}/statistic/cities/city HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 185
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -524,15 +593,20 @@ Content-Length: 185
   <xsl:output method="xml"/>
   <xsl:template match="/"/>
 </xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d0df5f9d0e9743a6f8afbf2c7d19564a");
+});
+%}
 
 ###
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
 POST {{service}}/statistic/cities/unknow HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 185
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -540,6 +614,12 @@ Content-Length: 185
   <xsl:output method="xml"/>
   <xsl:template match="/"/>
 </xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1ef4d9ec8079e35f873934be3cac206e");
+});
+%}
 
 ###
 # XPath functions are not supported
@@ -547,9 +627,8 @@ Content-Length: 185
 # - Status code 400 Bad Request
 # - Message: Invalid XPath (Functions are not supported)
 POST {{service}}name(/statistic) HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Content-Length: 185
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -557,5 +636,11 @@ Content-Length: 185
   <xsl:output method="xml"/>
   <xsl:template match="/"/>
 </xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "23d1e1b791b92dc5ae30aa3c8dd37bff");
+});
+%}
 
 ###

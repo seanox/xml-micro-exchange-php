@@ -1,6 +1,3 @@
-@service = http://127.0.0.1/xmex!
-@storage = 0000000000000000000000000000000000UE books
-
 # Test sequence for patching elements in the storage.
 # TODO:
 
@@ -9,18 +6,29 @@
 # Expectations:
 # - Status code 404 Resource Not Found
 PATCH {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 18
 
 <book title="A1"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3d59b1e415f62fc59ea0d1ad694a21d9");
+});
+%}
 
 ###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
 OPTIONS {{service}} HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "861bea7b934160b4ee7e45d51ac10726");
+});
+%}
 
 ###
 # Expectations:
@@ -29,14 +37,19 @@ Storage: {{storage}}
 # - 4 books are overwritten
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 78
 
 <book title="A2"/>
 <book title="B2"/>
 <book title="C2"/>
 <book title="D2"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9756174094dd7a89c643ebbe7ab17416");
+});
+%}
 
 ###
 # Expectations:
@@ -46,9 +59,8 @@ Content-Length: 78
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
 PATCH {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 230
 
 <book title="A3">
   <chapter>Text A3</chapter>
@@ -63,6 +75,12 @@ Content-Length: 230
   <chapter>Text D3</chapter>
 </book>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a708c2d03355e5a4bfbab37c0df81366");
+});
+%}
+
 ###
 # Expectations:
 # - Status code 204 No Content
@@ -71,9 +89,8 @@ Content-Length: 230
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
 PATCH {{service}}/books HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 230
 
 <book title="A3">
   <chapter><![CDATA[Text A3]]></chapter>
@@ -88,20 +105,31 @@ Content-Length: 230
   <chapter><![CDATA[Text D3]]></chapter>
 </book>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8e573dbfb5bd51f8e721fe0901884973");
+});
+%}
+
 ###
 # Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID
+# - Storage-Effects: 8x UID
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
 PATCH {{service}}(/books/book)/chapter HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 230
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4c2b4e0667d1f11eeb2f0bafdb9567ce");
+});
+%}
 
 ###
 # PATCH outside the root element, shall be ignored
@@ -109,12 +137,18 @@ Content-Length: 230
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
-PATCH {{service}}/books/.. HTTP/1.0
-Storage: {{storage}}
+# - URI: /books/..
+PATCH {{service}}0x2f626f6f6b732f2e2e HTTP/1.0
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 7
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "48fd9188898e7ed50fbeda8f6276cb00");
+});
+%}
 
 ###
 # PATCH outside the root element, shall be ignored
@@ -122,70 +156,101 @@ Content-Length: 7
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
-PATCH {{service}}/*/.. HTTP/1.0
-Storage: {{storage}}
+# - URI: /*/..
+PATCH {{service}}0x2f2a2f2e2e HTTP/1.0
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 7
 
 <test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fabcf679d86a0e52d59beece68b1c835");
+});
+%}
 
 ###
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
 PATCH {{service}}/wrong HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: text/plain
-Content-Length: 15
 
 123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "08fd48aa6e2073cebeb491ba84501a99");
+});
+%}
 
 ###
 # XPath without target
 # Expectations:
 # - Status code 404 Resource Not Found
 PATCH {{service}}/wrong/wrong HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: text/plain
-Content-Length: 15
 
 123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1b3c2ce6854ca93fa70521a426953331");
+});
+%}
 
 ###
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 2x UID
 # - xxx was created in the first book
-PATCH {{service}}/books/book[1] HTTP/1.0
-Storage: {{storage}}
+PATCH {{service}}/books/book%5B1%5D HTTP/1.0
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 6
 
 <xxx/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "82270123dd48f432eca9132884248d1c");
+});
+%}
 
 ###
 # PATCH does not support pseudo elements in XPath
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
-PATCH {{service}}/books/book[1]::before HTTP/1.0
-Storage: {{storage}}
+PATCH {{service}}/books/book%5B1%5D::before HTTP/1.0
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 6
 
 <xxx/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8275d420d1da21b078ae7efa4d6f1eb2");
+});
+%}
 
 ###
 # PATCH does not support pseudo elements in XPath
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
-PATCH {{service}}/books/book[1]::after HTTP/1.0
-Storage: {{storage}}
+PATCH {{service}}/books/book%5B1%5D::after HTTP/1.0
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 6
 
 <xxx/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a497432e4afb3f7c8c620d1008b6cdd7");
+});
+%}
 
 ###
 # PATCH does not support pseudo elements in XPath
@@ -193,11 +258,16 @@ Content-Length: 6
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
 PATCH {{service}}/books::first HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 6
 
 <xxx/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d84133f0c3e2b241f9d5610eefa833f7");
+});
+%}
 
 ###
 # PATCH does not support pseudo elements in XPath
@@ -205,11 +275,16 @@ Content-Length: 6
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
 PATCH {{service}}/books::last HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 6
 
 <xxx/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "17eda0d989909c8bd760eba81b858b25");
+});
+%}
 
 ###
 # PATCH does not support pseudo elements in XPath
@@ -217,22 +292,33 @@ Content-Length: 6
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
 PATCH {{service}}/books::wrong HTTP/1.0
-Storage: {{storage}}
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 6
 
 <xxx/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9aff3689927bd3a55005eb443162d887");
+});
+%}
 
 ###
 # PATCH does not support XPath functions als axis
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid XPath (Functions are not supported)
-PATCH {{service}}name(.) HTTP/1.0
-Storage: {{storage}}
+# - URI: name(.)
+PATCH {{service}}0x6e616d65282e29 HTTP/1.0
+Storage: {{storage_patch_element}}
 Content-Type: application/xslt+xml
-Content-Length: 6
 
 <xxx/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6dd342474fb9c7fffdc7f05692d93927");
+});
+%}
 
 ###
