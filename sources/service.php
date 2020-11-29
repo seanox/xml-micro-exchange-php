@@ -1548,7 +1548,7 @@ class Storage {
                 && !array_keys($headers, "allow"))
             header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");
 
-        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000));
+        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
         {{{
 
@@ -1667,12 +1667,16 @@ class Storage {
         $hash = preg_replace("/\t/", " ", $hash);
         header("Trace-Storage-Hash: " . hash("md5", $hash));
 
+        $hash = $this->xpath;
+        header("Trace-XPath-Hash: " . hash("md5", $this->xpath));
+
         $hash = [
             $fetchHeader("Trace-Request-Header-Hash")->value,
             $fetchHeader("Trace-Request-Body-Hash")->value,
             $fetchHeader("Trace-Response-Header-Hash")->value,
             $fetchHeader("Trace-Response-Body-Hash")->value,
-            $fetchHeader("Trace-Storage-Hash")->value
+            $fetchHeader("Trace-Storage-Hash")->value,
+            $fetchHeader("Trace-XPath-Hash")->value
         ];
         header("Trace-Composite-Hash: " . hash("md5", implode(" ", $hash)));
 
