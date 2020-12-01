@@ -922,7 +922,7 @@ class Storage {
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
-     * - Attributes successfully created or set
+     * - Element(s) or attribute(s) successfully created or set
      *         HTTP/1.0 400 Bad Request
      * - XPath is missing or malformed
      * - XPath without addressing a target is responded with status 204
@@ -1355,7 +1355,7 @@ class Storage {
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
-     * - Attributes successfully created or set
+     * - Element(s) or attribute(s) successfully created or set
      *         HTTP/1.0 400 Bad Request
      * - XPath is missing or malformed
      * - XPath without addressing a target is responded with status 204
@@ -1416,17 +1416,95 @@ class Storage {
         $this->doPut();
     }
 
+    /**
+     * TODO:
+     *
+     *     Request:
+     * DELETE /<xpath> HTTP/1.0
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
+     *
+     *     Response:
+     * HTTP/1.0 200  Successful
+     * Storage-Effects: ... (list of UIDs)
+     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     * Storage-Revision: Revision (number)
+     * Storage-Space: Total/Used (bytes)
+     * Storage-Last-Modified: Timestamp (RFC822)
+     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     *
+     *     Response codes / behavior:
+     *         HTTP/1.0 200  Successful
+     * - Element(s) or attribute(s) successfully deleted
+     *         HTTP/1.0 400 Bad Request
+     * - XPath is missing or malformed
+     * - XPath without addressing a target is responded with status 204
+     *         HTTP/1.0 404 Resource Not Found
+     * - Storage is invalid
+     * - XPath axis finds no target
+     */
     function doDelete() {
 
-        // Request:
-        //     DELETE /<xpath> HTTP/1.0
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
+        // Without existing storage the request is not valid.
+        if (!$this->exists())
+            $this->quit(404, "Resource Not Found");
 
-        // Response:
-        //     HTTP/1.0 200 Successful
-        //     Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-        //     Storage-Revision: Revision
-        //     Storage-Space: Total/Used (in bytes)
+        // In any case an XPath is required for a valid request.
+        if (empty($this->xpath))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
+
+        if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
+            $message = "Invalid XPath (Functions are not supported)";
+            $this->quit(400, "Bad Request", ["Message" => $message]);
+        }
+
+        $targets = (new DOMXpath($this->xml))->query($this->xpath);
+        if (Storage::fetchLastXmlErrorMessage()) {
+            $message = "Invalid XPath axis";
+            if (Storage::fetchLastXmlErrorMessage())
+                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            $this->quit(400, "Bad Request", ["Message" => $message]);
+        }
+
+        if (!$targets || empty($targets) || $targets->length <= 0)
+            $this->quit(404, "Resource Not Found");
+
+        // TODO: Pseudo FIRST, LAST, BEFORE, AFTER
+        //       $targets => selected childs of pseudo elements
+
+        $serials = [];
+        foreach ($targets as $target) {
+            if ($target->nodeType === XML_ATTRIBUTE_NODE) {
+                if (!$target->parentNode
+                        || $target->parentNode->nodeType !== XML_ELEMENT_NODE
+                        || in_array($target->name, ["___rev", "___uid"]))
+                    continue;
+                $parent = $target->parentNode;
+                $parent->removeAttribute($target->name);
+                $serials[] = $parent->getAttribute("___uid") . ":M";
+                Storage::updateNodeRevision($parent, $this->revision +1);
+            } else if ($target->nodeType === XML_ELEMENT_NODE) {
+                if (!$target->parentNode
+                        || $target->parentNode->nodeType !== XML_ELEMENT_NODE)
+                    continue;
+                $serials[] = $target->getAttribute("___uid") . ":D";
+                $nodes = (new DOMXpath($target))->query("//*[@___uid]");
+                foreach ($nodes as $node)
+                    $serials[] = $nodes->getAttribute("___uid") . ":D";
+                $parent = $target->parentNode;
+                $parent->removeAttribute($target->name);
+                $serials[] = $parent->getAttribute("___uid") . ":M";
+                Storage::updateNodeRevision($parent, $this->revision +1);
+            }
+        }
+
+        // Only the list of serials is an indicator that data has changed and
+        // whether the revision changes with it. If necessary the revision must
+        // be corrected if there are no data changes.
+        if (!empty($serials))
+            header("Storage-Effects: " . join(" ", $serials));
+
+        $this->materialize();
+        $this->quit(200, "Success");
     }
 
     /**
@@ -1473,7 +1551,7 @@ class Storage {
         // Not relevant headers are removed.
         $filter = ["X-Powered-By"];
         if (($status < 200 && $status >= 300)
-                || empty($data)) {
+                || $data === "" || $data === null) {
             $filter[] = "Content-Type";
             $filter[] = "Content-Length";
         }
@@ -1490,7 +1568,7 @@ class Storage {
         // For status class 2xx the storage headers are added.
         // The revision is read from the current storage because it can change.
         if ($status >= 200 && $status < 300) {
-            if (!empty($data)
+            if (($data !== "" && $data !== null)
                     || $status == 200)
                 $headers = array_merge($headers, ["Content-Length" => strlen($data)]);
             $headers = array_merge($headers, [
@@ -1509,7 +1587,9 @@ class Storage {
         // and the pseudonym NONE, which deselects all classes and ALL, which
         // selects all classes.
         // If no Accept-Effects header is specified, the default is:
-        //     ADDED MODIFIED.
+        //     ADDED MODIFIED
+        // Except for the DELETE method, which is the default:
+        //     MODIFIED DELETED
         // Sorting of efficacy / priority (1 is highest):
         //     1:ALL 2:NONE 3:DELETED 3:MODIFIED 3:ADDED
         $effects = $fetchHeader("Storage-Effects", true);
@@ -1517,15 +1597,24 @@ class Storage {
         $accepts = isset($_SERVER["HTTP_ACCEPT_EFFECTS"]) ? strtolower(trim($_SERVER["HTTP_ACCEPT_EFFECTS"])) : "";
         $accepts = !empty($accepts) ? preg_split("/\s+/", $accepts) : [];
         $pattern = [];
-        if (!empty($accepts)
-                && !in_array("added", $accepts))
-            $pattern[] = "A";
+        if (strtoupper($_SERVER["REQUEST_METHOD"]) !== "DELETE") {
+            if (!empty($accepts)
+                    && !in_array("added", $accepts))
+                $pattern[] = "A";
+            if (empty($accepts)
+                    || !in_array("deleted", $accepts))
+                $pattern[] = "D";
+        } else {
+            if (empty($accepts)
+                    || !in_array("added", $accepts))
+                $pattern[] = "A";
+            if (!empty($accepts)
+                    && !in_array("deleted", $accepts))
+                $pattern[] = "D";
+        }
         if (!empty($accepts)
                 && !in_array("modified", $accepts))
             $pattern[] = "M";
-        if (empty($accepts)
-                || !in_array("deleted", $accepts))
-            $pattern[] = "D";
         if (!empty($accepts)
                 && in_array("none", $accepts))
             $pattern = ["A", "M", "D"];
@@ -1619,7 +1708,9 @@ class Storage {
         if ($fetchHeader("Message"))
             $headers[] = "Message";
 
-        $headers[] = $status . " " . $message;
+        // Status Message should not be used because different hashes may be
+        // calculated for tests on different web servers.
+        $headers[] = $status;
         header("Trace-Response-Header-Hash: " . hash("md5", implode("\n", $headers)));
 
         // Response-Body-Hash
@@ -1683,7 +1774,7 @@ class Storage {
         }}}
 
         if ($status >= 200 && $status < 300
-                && !empty($data))
+                && $data !== "" && $data !== null)
             print($data);
 
         // The function and the response are complete.
