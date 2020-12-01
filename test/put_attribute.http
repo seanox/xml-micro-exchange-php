@@ -15,7 +15,7 @@ test
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "07c2ef5e65fcca76894e0f85389bc2fe");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4be4d47d14c74b1c88f733d1ab0d9df6");
 });
 %}
 
@@ -28,7 +28,7 @@ Storage: {{storage_put_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fc0bb272d9c7cff96ae3896f29b2217c");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "801d692f0b376fec2fa2fa15ea1b49bb");
 });
 %}
 
@@ -48,7 +48,7 @@ test_value<1>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "40fddb20923905a32977345c30ddae8a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7fca5e586511786da8456c18ae5cc866");
 });
 %}
 
@@ -72,7 +72,7 @@ Content-Type: text/plain
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a54ede89546fa52317bdbea484cbb1e5");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8533ab209f99887a217216c5bdaca821");
 });
 %}
 
@@ -95,7 +95,7 @@ concat(name(/*), "-Test")
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ad33b04e1c7a79a91b79b1ff76a6e142");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c00d3c844ae261b8ad7806716e2b880d");
 });
 %}
 
@@ -112,7 +112,7 @@ name(/+)
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0c7b60a0f1a974cf134ac88771e62e04");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9a115bf06878400b50b613c8bc654fc5");
 });
 %}
 
@@ -135,7 +135,7 @@ test_value<1>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2cba8ad93b577d370056e2ab156a4d4c");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "781f30f1e45f3905b85fdb981c27502a");
 });
 %}
 
@@ -151,7 +151,245 @@ Content-Type: text/plain-x
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b29ceed387aa118c8cccf9590dfab5d4");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "dafef35c5d42cfc4159b0a1d0c4fb248");
+});
+%}
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+PUT {{service}}/books/@attrD HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ddead25190d4250371c7093c7ba627c5");
+});
+%}
+
+###
+# Expectations:
+# - Status code 415 Unsupported Media Type
+#   because the Content-Type is not text/plain.
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain-x
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9c5c79484974db51f8a844c9923cfbe0");
+});
+%}
+
+###
+# Expectations:
+# - Status code 204 No Content
+#   attribute ___rev is ignored, but does not cause errors
+# - Response without Storage-Effects header
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}/books/@___rev HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "900e6389a2e43b702386daf9cbae520f");
+});
+%}
+
+###
+# Expectations:
+# - Status code 204 No Content
+#   attribute ___uid is ignored, but does not cause errors
+# - Response without Storage-Effects header
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}/books/@___uid HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0d4f0e700c34681d0e92eadab440be8b");
+});
+%}
+
+###
+# Expectations:
+# - Status code 204 No Content
+#   the addressing of the XML document is detected
+# - Response without Storage-Effects header, such a request has no effect
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}/@attrF HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2d72899c3f669eebe88f18064cafc0ac");
+});
+%}
+
+###
+# Expectations:
+# - Status code 204 No Content
+#   the addressing of the XML document is detected
+# - Response without Storage-Effects header, such a request has no effect
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+PUT {{service}}/@attrF HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/xpath
+
+name(.)
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "00653f7f88b8dcf2c6d71c6b3179fcc0");
+});
+%}
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - In the storage the attribute is added
+# - Storage-Revision is increased
+# - Storage-Space is used more
+# - Storage-Expiration is extended
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/xpath
+
+name(.)
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1e813322735506755996141790d042c9");
+});
+%}
+
+###
+# XPath as value is not supported
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath (Axes are not supported)
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/xpath
+
+/wrong/wrong
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bbdabc32c65bdeef159e96a882881eb7");
+});
+%}
+
+###
+# XPath with wrong function
+# Expectations:
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XPath function (Unregistered function)
+PUT {{service}}/books/@attrE HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/xpath
+
+wrong(.)
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "28fae7d9cff04d8b1dd19ea0609e894f");
+});
+%}
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+#   the addressing of the XML document is detected
+# - Response without Storage-Effects header, such a request has no effect
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+# - URI: //books/../@___xxx
+PUT {{service}}0x2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "950730c5592fa6c54d13c79e936a3810");
+});
+%}
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+#   the addressing of a the XML document is detected
+# - Response without Storage-Effects header, such a request has no effect
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+# - URI: /*/../@___xxx
+PUT {{service}}0x2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "164a657033a26371e69b53a5dd209ffe");
+});
+%}
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong/@new HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6dd114d0f0193caeb717131510d0a18e");
+});
+%}
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/wrong/wrong/@new HTTP/1.0
+Storage: {{storage_put_attribute}}
+Content-Type: text/plain
+
+123456789ABCDEF
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c82ad3dcb0252ba6f1f423e684337d5b");
 });
 %}
 
@@ -197,243 +435,5 @@ client.test("unittest", function() {
 #    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "XXXX");
 #});
 #%}
-
-###
-# Expectations:
-# - Status code 204 No Content
-# - In the storage the attribute is added
-# - Storage-Revision is increased
-# - Storage-Space is used more
-# - Storage-Expiration is extended
-PUT {{service}}/books/@attrD HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "48ca2989998acb0d46c6b331e869c0e2");
-});
-%}
-
-###
-# Expectations:
-# - Status code 415 Unsupported Media Type
-#   because the Content-Type is not text/plain.
-PUT {{service}}/books/@attrE HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain-x
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5056ffffec8c3747488c4e4384cf61c8");
-});
-%}
-
-###
-# Expectations:
-# - Status code 204 No Content
-#   attribute ___rev is ignored, but does not cause errors
-# - Response without Storage-Effects header
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
-PUT {{service}}/books/@___rev HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b4242f235a81531675f1ec582e6fd69f");
-});
-%}
-
-###
-# Expectations:
-# - Status code 204 No Content
-#   attribute ___uid is ignored, but does not cause errors
-# - Response without Storage-Effects header
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
-PUT {{service}}/books/@___uid HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bd3cce88eb8166899e4e5c2121d2174c");
-});
-%}
-
-###
-# Expectations:
-# - Status code 204 No Content
-#   the addressing of the XML document is detected
-# - Response without Storage-Effects header, such a request has no effect
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
-PUT {{service}}/@attrF HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f985db0754e6390b0eb11d6f7da7882b");
-});
-%}
-
-###
-# Expectations:
-# - Status code 204 No Content
-#   the addressing of the XML document is detected
-# - Response without Storage-Effects header, such a request has no effect
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
-PUT {{service}}/@attrF HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/xpath
-
-name(.)
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bc7f9ca5f7903f168b644b830672622c");
-});
-%}
-
-###
-# Expectations:
-# - Status code 204 No Content
-# - In the storage the attribute is added
-# - Storage-Revision is increased
-# - Storage-Space is used more
-# - Storage-Expiration is extended
-PUT {{service}}/books/@attrE HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/xpath
-
-name(.)
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e2af5fdd090ab954b353db4beb95ee2e");
-});
-%}
-
-###
-# XPath as value is not supported
-# Expectations:
-# - Status code 422 Unprocessable Entity
-# - Message: Invalid XPath (Axes are not supported)
-PUT {{service}}/books/@attrE HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/xpath
-
-/wrong/wrong
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d1a397b7846e8ccbfe1ac66a59c20a41");
-});
-%}
-
-###
-# XPath with wrong function
-# Expectations:
-# - Status code 422 Unprocessable Entity
-# - Message: Invalid XPath function (Unregistered function)
-PUT {{service}}/books/@attrE HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/xpath
-
-wrong(.)
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "17e82184b5e4aaf0792c5d0c3aef365d");
-});
-%}
-
-###
-# PUT outside the root element, shall be ignored
-# Expectations:
-# - Status code 204 No Content
-#   the addressing of the XML document is detected
-# - Response without Storage-Effects header, such a request has no effect
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
-# - URI: //books/../@___xxx
-PUT {{service}}0x2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4cea4ed48416431d0fd7d5821377cf0f");
-});
-%}
-
-###
-# PUT outside the root element, shall be ignored
-# Expectations:
-# - Status code 204 No Content
-#   the addressing of a the XML document is detected
-# - Response without Storage-Effects header, such a request has no effect
-# - Storage-Revision is not increased
-# - Storage-Expiration is extended
-# - URI: /*/../@___xxx
-PUT {{service}}0x2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9bb6c33126f425f2688a3b1ea2f47ef4");
-});
-%}
-
-###
-# XPath without target
-# Expectations:
-# - Status code 404 Resource Not Found
-PUT {{service}}/wrong/@new HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b5d71ecd8b61555efa5321f6c29d9bdb");
-});
-%}
-
-###
-# XPath without target
-# Expectations:
-# - Status code 404 Resource Not Found
-PUT {{service}}/wrong/wrong/@new HTTP/1.0
-Storage: {{storage_put_attribute}}
-Content-Type: text/plain
-
-123456789ABCDEF
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "07a8cc3dc32c4b951629e68910533b89");
-});
-%}
 
 ###

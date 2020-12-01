@@ -13,7 +13,7 @@ OPTIONS {{service}} HTTP/1.0
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5690f14b40156593c2a2f9390e776d85");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "65fd1d9fabd6b13645a24861b299d4b3");
 });
 %}
 
@@ -27,7 +27,7 @@ Storage:
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5690f14b40156593c2a2f9390e776d85");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "65fd1d9fabd6b13645a24861b299d4b3");
 });
 %}
 
@@ -41,7 +41,7 @@ Storage: 0000000000000000000000000000000000O
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "dfd8ee74b3a478144ea46f11dc047c84");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "72e96e3cc2b49a354a2c0c3865ecafc7");
 });
 %}
 
@@ -55,7 +55,7 @@ Storage: 0000000000000000000000000000000000OCX
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "83ebaac539bd12b3fe06c30976d50982");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0e2da76c213e7cfb3a7cc7393d5fad13");
 });
 %}
 
@@ -69,7 +69,7 @@ Storage: 000000000000000000000000000000000-OC
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9f4705b9bf5b88d1e48ec99d2038c402");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "75e522d81dfe1835d7f4aea77b40f9c7");
 });
 %}
 
@@ -84,7 +84,7 @@ Storage: {{storage_options_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "46043ef6fd041ba4237e4a6c8ac7fc41");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e1d5d93f105efe6e61c8cec311967908");
 });
 %}
 
@@ -99,7 +99,7 @@ Storage: {{storage_options_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f4b2d6bbf502a4165ba125771608124a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "297793d1a91b249d7fd7ceed732cbe68");
 });
 %}
 
@@ -112,7 +112,7 @@ Storage: {{storage_options_connect}} bookS
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "804a8541def358dab69125bfbf63ff94");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a7d1b780e173cf6a008614939db910c8");
 });
 %}
 
@@ -126,7 +126,7 @@ Storage: {{storage_options_connect}} books x
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "742796e056c31e995b1f4501155aef0b");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "97d29c3d18323c70e6c02d2153b5a613");
 });
 %}
 
@@ -142,7 +142,7 @@ Storage: {{storage_options_connect}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bf5cfa7b9500e0e742024cd31af482e1");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3603fa9d4c7a6ba46fcaf7ba9db41c01");
 });
 %}
 
