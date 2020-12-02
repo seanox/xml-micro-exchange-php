@@ -1,0 +1,115 @@
+# Test sequence for deleting of elements in the storage.
+# TODO:
+
+###
+# Storage is not establish
+# Round brackets in XPath should not be a problem.
+# Expectations:
+# - Status code 404 Resource Not Found
+DELETE {{service}}(/books/book%5B1%5D)/chapter%5B1%5D/text%5B1%5D HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "480b1946273219edc6e7cbca6edd4a8c");
+});
+%}
+
+###
+# Initial request to establish the storage
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2b39844617fc023e0ee78490aae2938c");
+});
+%}
+
+###
+# Preparation of the storage for the tests
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID
+# - 4 books are overwritten
+# - 4 books with chapter are created
+# - all new elements have the attributes ___rev and ___uid
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage_delete_element}}
+Content-Type: application/xslt+xml
+
+<book title="Book-A" a="A" b="A" c="A" d="A">
+  <chapter title="Chapter-A-A">
+    <text title="Text A1"/>
+    <text title="Text A2"/>
+    <text title="Text A3"/>
+  </chapter>
+  <chapter title="Chapter-B">
+    <text title="Text A4"/>
+    <text title="Text A5"/>
+    <text title="Text A6"/>
+  </chapter>
+</book>
+<book title="Book-B" a="B" b="B" c="B" d="B">
+  <chapter title="Chapter-B-A">
+    <text title="Text B1"/>
+    <text title="Text B2"/>
+    <text title="Text B3"/>
+  </chapter>
+  <chapter title="Chapter-B-B">
+    <text title="Text B4"/>
+    <text title="Text B5"/>
+    <text title="Text B6"/>
+  </chapter>
+</book>
+<book title="Book-C" a="C" b="C" c="C" d="C">
+  <chapter title="Chapter-C-A">
+    <text title="Text C1"/>
+    <text title="Text C2"/>
+    <text title="Text C3"/>
+  </chapter>
+  <chapter title="Chapter-C-B">
+    <text title="Text C4"/>
+    <text title="Text C5"/>
+    <text title="Text C6"/>
+  </chapter>
+</book>
+<book title="Book-D" a="D" b="D" c="D" d="D">
+  <chapter title="Chapter-D-A">
+    <text title="Text D1"/>
+    <text title="Text D2"/>
+    <text title="Text D3"/>
+  </chapter>
+  <chapter title="Chapter-D-B">
+    <text title="Text D4"/>
+    <text title="Text D5"/>
+    <text title="Text D6"/>
+  </chapter>
+</book>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5333138273d817a279f54651517519b8");
+});
+%}
+
+###
+# Deletes the first text in the first chapter of the first book.
+# Round brackets in XPath should not be a problem.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Effects: 2x UID (D/M)
+# - Storage-Revision: was increased
+# - Attribute /books/book[1]/chapter[1]/text[1] was deleted
+DELETE {{service}}(/books/book%5B1%5D)/chapter%5B1%5D/text%5B1%5D HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "TODO");
+});
+%}
+
+###
