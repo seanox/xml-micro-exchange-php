@@ -283,3 +283,21 @@ client.test("unittest", function() {
 %}
 
 ###
+# Pseudo-element first for an empty element should work
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 2x UID (A/M)
+# - URI: //*[@id='lastC']::first
+PUT {{service}}0x2f2f2a5b4069643d276c61737443275d3a3a6669727374 HTTP/1.0
+Storage: {{storage_put_element_pseudo}}
+Content-Type: application/xslt+xml
+
+<test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "75af5d814fa222aea727e0b14f1ef80b");
+});
+%}
+
+###

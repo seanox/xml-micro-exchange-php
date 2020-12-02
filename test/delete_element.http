@@ -96,19 +96,16 @@ client.test("unittest", function() {
 %}
 
 ###
-# Deletes the first text in the first chapter of the first book.
-# Round brackets in XPath should not be a problem.
+# Invalid XPath /books/book[1]x
 # Expectations:
-# - Status code 200 Success
-# - Storage-Effects: 2x UID (D/M)
-# - Storage-Revision: was increased
-# - Attribute /books/book[1]/chapter[1]/text[1] was deleted
-DELETE {{service}}(/books/book%5B1%5D)/chapter%5B1%5D/text%5B1%5D HTTP/1.0
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+DELETE {{service}}(/books/book%5B1%5D)/chapter%5B1%5D/text%5B1%5Dx HTTP/1.0
 Storage: {{storage_delete_element}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "TODO");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5c705134ce3d9db38e92c7651950a41b");
 });
 %}
 
