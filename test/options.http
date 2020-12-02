@@ -285,3 +285,18 @@ client.test("unittest", function() {
 %}
 
 ###
+# Invalid XPath /books/book[1]x
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+OPTIONS {{service}}/books/book%5B1%5Dx HTTP/1.0
+Storage: {{storage_options}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "de745d69fbaa687d6887aa92e1e8af11");
+});
+%}
+
+###
