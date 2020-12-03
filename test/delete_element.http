@@ -110,3 +110,98 @@ client.test("unittest", function() {
 %}
 
 ###
+# Deleting an element must work
+# The indirectly deleted UIDs must be contained in Storage-Effects
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID-D, 1x UID-M
+# - Storage-Revision is increased
+DELETE {{service}}/books/book%5B1%5D HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bded5d4c83fcf6c8feda4e1987a43a31");
+});
+%}
+
+###
+# Deleting an element must work
+# The indirectly deleted UIDs must be contained in Storage-Effects
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID-D, 1x UID-M
+# - Storage-Revision is increased
+DELETE {{service}}/books/book%5B@title='Book-B'%5D HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "736146c664e61cf7257abf7d658c6635");
+});
+%}
+
+###
+# The Book-B is deleted and cannot be deleted again
+# The indirectly deleted UIDs must be contained in Storage-Effects
+# Expectations:
+# - Status code 404 Resource Not Found
+# - Storage-Revision is not increased
+DELETE {{service}}/books/book%5B@title='Book-B'%5D HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8e0a3975b3645c8cf9d0550ce51b5c32");
+});
+%}
+
+###
+# DELETE outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+# - Storage-Revision is not increased
+# - URI: /books/..
+DELETE {{service}}0x2f626f6f6b732f2e2e HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2068824d5a41623b82f3bffc63687e86");
+});
+%}
+
+###
+#  XPath functions are not supported
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath (Functions are not supported)
+DELETE {{service}}name(.) HTTP/1.0
+Storage: {{storage_delete_element}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8b7bdfc64a46b24b46a514e212c86115");
+});
+%}
+
+###
+# Root element can be deleted,
+# but is automatically recreated with a new UID and incremented revision.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 19x UID-D, 1x UID-A
+# - Storage-Revision is increased
+DELETE {{service}}/books HTTP/1.0
+Storage: {{storage_delete_element}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3d0dc2adc376feb9336eac714f077394");
+});
+%}
+
+###

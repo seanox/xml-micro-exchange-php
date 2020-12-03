@@ -158,7 +158,7 @@ client.test("unittest", function() {
 ###
 # Attribute a does exist and can be deleted
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Storage-Effects: 1x UID (M)
 # - Storage-Revision: was increased
 # - Attribute /books/book[1]/attribute::a was deleted
@@ -167,7 +167,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8d5712c1cfb9b217ac6fd15b1ee6e850");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6f3ae0ba7d63968e3344bc07fc10b071");
 });
 %}
 
@@ -187,7 +187,7 @@ client.test("unittest", function() {
 ###
 # Attribute b does exist and can be deleted
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Storage-Effects: 1x UID (M)
 # - Storage-Revision: was increased
 # - Attribute /books/book[1]/@b was deleted
@@ -196,7 +196,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ef0129897a793ac454a27ecb8e03f1c0");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1ce82483eadee816876ec1bc93b9c0e4");
 });
 %}
 
@@ -216,7 +216,7 @@ client.test("unittest", function() {
 ###
 # Count of text-attributes in book[1]
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Response-Body: 6
@@ -234,7 +234,7 @@ client.test("unittest", function() {
 # Attribute does not exist
 # Round brackets in XPath should not be a problem.
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Storage-Effects: 6x UIDs (M)
 # - Storage-Revision: was increased
 # - All title attributes in  book[1] was deleted
@@ -244,14 +244,14 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3c01b9d5f474459e61158373c3db1dc4");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bde51da2b6b51366ab8f0c25c6a6ca09");
 });
 %}
 
 ###
 # Count of text-attributes in book[1]
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Response-Body: 0
@@ -268,7 +268,7 @@ client.test("unittest", function() {
 ###
 # Count of text-attributes in book[1]
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Response-Body: 6
@@ -286,7 +286,7 @@ client.test("unittest", function() {
 # Attribute does not exist
 # Round brackets in XPath should not be a problem.
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Storage-Effects: 6x UIDs (M)
 # - Storage-Revision: was increased
 # - All title attributes in  book[2] was deleted
@@ -296,14 +296,14 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c4a548b60d01bf3e1e31ffc060a8bcec");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cf8e39a073684a8da8d8ae1ce7ff3d22");
 });
 %}
 
 ###
 # Count of text-attributes in book[1]
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Response-Body: 0
@@ -319,7 +319,7 @@ client.test("unittest", function() {
 
 ###
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 #   attribute ___rev is ignored, but does not cause errors
 # - Response without Storage-Effects header
 # - Storage-Revision is not increased
@@ -329,13 +329,13 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2384b26d991c70109c5bbbdf5ebb245a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bfe3a88c644967c6fe8948c2477c19d7");
 });
 %}
 
 ###
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 #   attribute ___uid is ignored, but does not cause errors
 # - Response without Storage-Effects header
 # - Storage-Revision is not increased
@@ -345,7 +345,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ca82cac21a5b5b96296d0e85eb76c8cf");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9e57ff04051184f7059022edeffcfa86");
 });
 %}
 

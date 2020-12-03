@@ -340,7 +340,7 @@ client.test("unittest", function() {
 # Only ADDED (case insensitive)
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 8x UID (only ::A)
+# - Storage-Effects: 8x UID-A
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: addeD
@@ -370,7 +370,7 @@ client.test("unittest", function() {
 # Only MODIFIED (case insensitive)
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 1x UID (only ::M)
+# - Storage-Effects: 1x UID-M
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: modifieD
@@ -400,7 +400,7 @@ client.test("unittest", function() {
 # Only DELETED (case insensitive)
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID (only ::D)
+# - Storage-Effects: 9x UID-D
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: deleteD
@@ -421,7 +421,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d31e8899ed3e3eef1923f38418f14e8e");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "183d04e2abf73d182a384e6696a99664");
 });
 %}
 
@@ -430,7 +430,7 @@ client.test("unittest", function() {
 # With ALL (case insensitive), ALL wins (AMD)
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 18 UID (AMD)
+# - Storage-Effects: 18 UID-AMD
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: deleteD alL
@@ -451,7 +451,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3d618e0bb838a8c8b2f5465112f15cd7");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "135a6b27b40344642e2a146c42d8de52");
 });
 %}
 
@@ -460,7 +460,7 @@ client.test("unittest", function() {
 # With ALL + NONE (case insensitive), ALL wins (AMD)
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 18 UID (AMD)
+# - Storage-Effects: 18 UID-AMD
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: deleteD alL nonE
@@ -481,7 +481,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "080cfe5b57c60fc493194e3797809b77");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d5b72a6774f0002c50d127c15dce1e1d");
 });
 %}
 
@@ -490,7 +490,7 @@ client.test("unittest", function() {
 # With NONE and without ALL (case insensitive), NONE wins
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 18 UID (AMD)
+# - Storage-Effects: 18 UID-AMD
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: deleteD nonE
