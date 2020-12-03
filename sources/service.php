@@ -1065,7 +1065,6 @@ class Storage {
 
         // An XPath for element(s) is then expected here.
         // If this is not the case, the request is responded with status 400.
-
         if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis"]);
 
@@ -1212,7 +1211,7 @@ class Storage {
                 if (empty($pseudo)) {
                     // The UIDs of the children that are removed by the
                     // replacement are determined for storage effects.
-                    $childs = (new DOMXpath($this->xml))->query("//*[@___uid]", $target);
+                    $childs = (new DOMXpath($this->xml))->query(".//*[@___uid]", $target);
                     foreach ($childs as $child)
                         $serials[] = $child->getAttribute("___uid") . ":D";
                     $replace = $target->cloneNode(false);
@@ -1457,7 +1456,22 @@ class Storage {
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
 
-        $targets = (new DOMXpath($this->xml))->query($this->xpath);
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();
+
+        $pseudo = false;
+        if (preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath)) {
+            $xpath = $this->xpath;
+        } else {
+            // An XPath for element(s) is then expected here.
+            // If this is not the case, the request is responded with status 400.
+            if (!preg_match(Storage::PATTERN_XPATH_PSEUDO, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL))
+                $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis"]);
+            $xpath = $matches[1];
+            $pseudo = $matches[2];
+        }
+
+        $targets = (new DOMXpath($this->xml))->query($xpath);
         if (Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XPath axis";
             if (Storage::fetchLastXmlErrorMessage())
@@ -1468,8 +1482,15 @@ class Storage {
         if (!$targets || empty($targets) || $targets->length <= 0)
             $this->quit(404, "Resource Not Found");
 
-        // TODO: Pseudo FIRST, LAST, BEFORE, AFTER
-        //       $targets => selected childs of pseudo elements
+        // Pseudo elements can be used to delete in an XML substructure
+        // relative to the selected element.
+        if ($pseudo) {
+            if (strcasecmp($pseudo, "before") === 0) {
+            } else if (strcasecmp($pseudo, "after") === 0) {
+            } else if (strcasecmp($pseudo, "first") === 0) {
+            } else if (strcasecmp($pseudo, "last") === 0) {
+            } else $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
+        }
 
         $serials = [];
         foreach ($targets as $target) {
@@ -1487,11 +1508,11 @@ class Storage {
                         || $target->parentNode->nodeType !== XML_ELEMENT_NODE)
                     continue;
                 $serials[] = $target->getAttribute("___uid") . ":D";
-                $nodes = (new DOMXpath($target))->query("//*[@___uid]");
+                $nodes = (new DOMXpath($this->xml))->query(".//*[@___uid]", $target);
                 foreach ($nodes as $node)
-                    $serials[] = $nodes->getAttribute("___uid") . ":D";
+                    $serials[] = $node->getAttribute("___uid") . ":D";
                 $parent = $target->parentNode;
-                $parent->removeAttribute($target->name);
+                $parent->removeChild($target);
                 $serials[] = $parent->getAttribute("___uid") . ":M";
                 Storage::updateNodeRevision($parent, $this->revision +1);
             }
@@ -1501,7 +1522,7 @@ class Storage {
         // whether the revision changes with it. If necessary the revision must
         // be corrected if there are no data changes.
         if (!empty($serials))
-            header("Storage-Effects: " . join(" ", $serials));
+            header("Storage-Effects: " . join(" ", array_unique($serials)));
 
         $this->materialize();
         $this->quit(200, "Success");
