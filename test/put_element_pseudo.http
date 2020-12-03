@@ -170,6 +170,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
+# - Storage-Revision is not increased
 PUT {{service}}/books::before HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
@@ -190,6 +191,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
+# - Storage-Revision is not increased
 PUT {{service}}/books::after HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xslt+xml
@@ -210,6 +212,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
+# - Storage-Revision is not increased
 # - URI: /*/..::before
 PUT {{service}}0x2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
@@ -231,6 +234,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
+# - Storage-Revision is not increased
 # - URI: /books/..::before
 PUT {{service}}0x2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}

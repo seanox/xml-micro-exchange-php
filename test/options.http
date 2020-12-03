@@ -227,7 +227,6 @@ client.test("unittest", function() {
 # XPath function has no effects
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects header
 # - Allow: CONNECT, OPTIONS, GET, POST
 OPTIONS {{service}}name(/books) HTTP/1.0
 Storage: {{storage_options}}
@@ -273,7 +272,6 @@ client.test("unittest", function() {
 # XPath axis without a target attribute
 # Expectations:
 # - Status code 204 No Content
-# - Without Storage-Effects header
 # - Allow: CONNECT, OPTIONS, PUT
 OPTIONS {{service}}/books/book%5B1%5D/@titlex HTTP/1.0
 Storage: {{storage_options}}

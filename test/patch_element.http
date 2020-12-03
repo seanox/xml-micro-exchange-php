@@ -137,6 +137,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
+# - Storage-Revision is not increased
 # - URI: /books/..
 PATCH {{service}}0x2f626f6f6b732f2e2e HTTP/1.0
 Storage: {{storage_patch_element}}
@@ -156,6 +157,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - No changes in the storage
+# - Storage-Revision is not increased
 # - URI: /*/..
 PATCH {{service}}0x2f2a2f2e2e HTTP/1.0
 Storage: {{storage_patch_element}}

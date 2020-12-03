@@ -232,7 +232,7 @@ client.test("unittest", function() {
 %}
 
 ###
-# Everything is case sensitive and therefore the attribute cannot be found.
+# Everything is case sensitive and therefore the attribute can't be found.
 # Expectations:
 # - Status code 404 Resource Not Found
 PATCH {{service}}/books/@attrb HTTP/1.0

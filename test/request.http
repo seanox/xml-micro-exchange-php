@@ -310,6 +310,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Without Storage-Effects
+# - Storage-Revision is not increased
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: wronG
