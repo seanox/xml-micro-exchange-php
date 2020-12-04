@@ -205,3 +205,89 @@ client.test("unittest", function() {
 %}
 
 ###
+# Preparation of the storage for the tests
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 9x UID
+# - 4 books are overwritten
+# - 4 books with chapter are created
+# - all new elements have the attributes ___rev and ___uid
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage_delete_element}}
+Content-Type: application/xslt+xml
+
+<book title="Book-A" a="A" b="A" c="A" d="A">
+  <chapter title="Chapter-A-A">
+    <text title="Text A1"/>
+    <text title="Text A2"/>
+    <text title="Text A3"/>
+  </chapter>
+  <chapter title="Chapter-B">
+    <text title="Text A4"/>
+    <text title="Text A5"/>
+    <text title="Text A6"/>
+  </chapter>
+</book>
+<book title="Book-B" a="B" b="B" c="B" d="B">
+  <chapter title="Chapter-B-A">
+    <text title="Text B1"/>
+    <text title="Text B2"/>
+    <text title="Text B3"/>
+  </chapter>
+  <chapter title="Chapter-B-B">
+    <text title="Text B4"/>
+    <text title="Text B5"/>
+    <text title="Text B6"/>
+  </chapter>
+</book>
+<book title="Book-C" a="C" b="C" c="C" d="C">
+  <chapter title="Chapter-C-A">
+    <text title="Text C1"/>
+    <text title="Text C2"/>
+    <text title="Text C3"/>
+  </chapter>
+  <chapter title="Chapter-C-B">
+    <text title="Text C4"/>
+    <text title="Text C5"/>
+    <text title="Text C6"/>
+  </chapter>
+</book>
+<book title="Book-D" a="D" b="D" c="D" d="D">
+  <chapter title="Chapter-D-A">
+    <text title="Text D1"/>
+    <text title="Text D2"/>
+    <text title="Text D3"/>
+  </chapter>
+  <chapter title="Chapter-D-B">
+    <text title="Text D4"/>
+    <text title="Text D5"/>
+    <text title="Text D6"/>
+  </chapter>
+</book>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "30f4c828bcd323236ae519cc2f478582");
+});
+%}
+
+###
+# Recursive deletion of all elements by a relative and generous XPath.
+# The root element must be recreated.
+# The Storage-Effects must be optimized and obsolete entries must be cleaned up.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 37x UID-D, 1x UID-A
+# - Storage-Revision is increased
+# - URI: //*[@___uid]
+DELETE {{service}}0x2f2f2a5b405f5f5f7569645d HTTP/1.0
+Storage: {{storage_delete_element}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3ba9a54f959de9786b314ba10f725191");
+});
+%}
+
+###

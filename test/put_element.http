@@ -320,3 +320,24 @@ client.test("unittest", function() {
 %}
 
 ###
+# Recursive putting of all elements by a relative and generous XPath.
+# The Storage-Effects must be optimized and obsolete entries must be cleaned up.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 36x UID-D, 1x UID-A, 1x UID-M
+# - Storage-Revision is increased
+# - URI: //*[@___uid]
+PUT {{service}}0x2f2f2a5b405f5f5f7569645d HTTP/1.0
+Storage: {{storage_put_element}}
+Accept-Effects: ALL
+Content-Type: application/xslt+xml
+
+<test/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bd0afa04af39a5c9190dad8281d9cb42");
+});
+%}
+
+###
