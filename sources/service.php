@@ -418,7 +418,7 @@ class Storage {
 
     private static function updateNodeRevision($node, $revision) {
 
-        while ($node->nodeType == XML_ELEMENT_NODE) {
+        while ($node && $node->nodeType === XML_ELEMENT_NODE) {
             $node->setAttribute("___rev", $revision);
             $node = $node->parentNode;
         }
@@ -625,7 +625,7 @@ class Storage {
                         $serials[] = $target->getAttribute("___uid");
                 }
                 if (!empty($serials))
-                    header("Storage-Effects: " . join(" ", array_unique($serials)));
+                    header("Storage-Effects: " . join(" ", $serials));
                 $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
 
             } else $allow = "CONNECT, OPTIONS, PUT";
@@ -1056,7 +1056,7 @@ class Storage {
                 // If necessary the revision must be corrected if there are
                 // no data changes.
                 if (!empty($serials))
-                    header("Storage-Effects: " . join(" ", array_unique($serials)));
+                    header("Storage-Effects: " . join(" ", $serials));
             }
 
             $this->materialize();
@@ -1142,7 +1142,7 @@ class Storage {
             // and whether the revision changes with it. If necessary the
             // revision must be corrected if there are no data changes.
             if (!empty($serials))
-                header("Storage-Effects: " . join(" ", array_unique($serials)));
+                header("Storage-Effects: " . join(" ", $serials));
 
             $this->materialize();
             $this->quit(204, "No Content");
@@ -1269,7 +1269,7 @@ class Storage {
         // whether the revision changes with it. If necessary the revision must
         // be corrected if there are no data changes.
         if (!empty($serials))
-            header("Storage-Effects: " . join(" ", array_unique($serials)));
+            header("Storage-Effects: " . join(" ", $serials));
 
         $this->materialize();
         $this->quit(204, "No Content");
@@ -1531,7 +1531,7 @@ class Storage {
         // whether the revision changes with it. If necessary the revision must
         // be corrected if there are no data changes.
         if (!empty($serials))
-            header("Storage-Effects: " . join(" ", array_unique($serials)));
+            header("Storage-Effects: " . join(" ", $serials));
 
         $this->materialize();
         $this->quit(204, "No Content");
@@ -1622,8 +1622,30 @@ class Storage {
         //     MODIFIED DELETED
         // Sorting of efficacy / priority (1 is highest):
         //     1:ALL 2:NONE 3:DELETED 3:MODIFIED 3:ADDED
-        $effects = $fetchHeader("Storage-Effects", true);
-        $effects = $effects ? $effects->value : "";
+
+        // Before that, the effects are minimized by removing obsolete entries.
+        // Obsolete entries are caused by a relative XPath in the PUT, PATCH
+        // and DELETE methods when elements are recursively modified and then
+        // also deleted.
+
+        $serials = $fetchHeader("Storage-Effects", true);
+        $serials = $serials ? $serials->value : "";
+        if (!empty($serials)) {
+            $serials = preg_split("/\s+/", $serials);
+            $serials = array_unique($serials);
+            foreach ($serials as $serial) {
+                if (substr($serial, -2) !== ":D")
+                    continue;
+                $search = substr($serial, 0, -2) . ":M";
+                if (in_array($search, $serials))
+                    unset($serials[array_search($search, $serials)]);
+                $search = substr($serial, 0, -2) . ":A";
+                if (in_array($search, $serials))
+                    unset($serials[array_search($search, $serials)]);
+            }
+            $serials = implode(" ", $serials);
+        }
+
         $accepts = isset($_SERVER["HTTP_ACCEPT_EFFECTS"]) ? strtolower(trim($_SERVER["HTTP_ACCEPT_EFFECTS"])) : "";
         $accepts = !empty($accepts) ? preg_split("/\s+/", $accepts) : [];
         $pattern = [];
@@ -1652,10 +1674,10 @@ class Storage {
                 && in_array("all", $accepts))
             $pattern = [];
         if (!empty($pattern))
-            $effects = preg_replace("/\s*\w+:\w+:[" . implode("|", $pattern) . "]\s*/i", " ", $effects);
-        $effects = trim(preg_replace("/\s{2,}/", " ", $effects));
-        if (!empty($effects))
-            header("Storage-Effects: " . $effects);
+            $serials = preg_replace("/\s*\w+:\w+:[" . implode("|", $pattern) . "]\s*/i", " ", $serials);
+        $serials = trim(preg_replace("/\s{2,}/", " ", $serials));
+        if (!empty($serials))
+            header("Storage-Effects: " . $serials);
 
         foreach ($headers as $key => $value)
             header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
