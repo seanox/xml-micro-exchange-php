@@ -625,7 +625,7 @@ class Storage {
                         $serials[] = $target->getAttribute("___uid");
                 }
                 if (!empty($serials))
-                    header("Storage-Effects: " . join(" ", $serials));
+                    header("Storage-Effects: " . join(" ", array_unique($serials)));
                 $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
 
             } else $allow = "CONNECT, OPTIONS, PUT";
@@ -1056,7 +1056,7 @@ class Storage {
                 // If necessary the revision must be corrected if there are
                 // no data changes.
                 if (!empty($serials))
-                    header("Storage-Effects: " . join(" ", $serials));
+                    header("Storage-Effects: " . join(" ", array_unique($serials)));
             }
 
             $this->materialize();
@@ -1142,7 +1142,7 @@ class Storage {
             // and whether the revision changes with it. If necessary the
             // revision must be corrected if there are no data changes.
             if (!empty($serials))
-                header("Storage-Effects: " . join(" ", $serials));
+                header("Storage-Effects: " . join(" ", array_unique($serials)));
 
             $this->materialize();
             $this->quit(204, "No Content");
@@ -1269,7 +1269,7 @@ class Storage {
         // whether the revision changes with it. If necessary the revision must
         // be corrected if there are no data changes.
         if (!empty($serials))
-            header("Storage-Effects: " . join(" ", $serials));
+            header("Storage-Effects: " . join(" ", array_unique($serials)));
 
         $this->materialize();
         $this->quit(204, "No Content");
@@ -1423,7 +1423,7 @@ class Storage {
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      *
      *     Response:
-     * HTTP/1.0 200  Successful
+     * HTTP/1.0 204 No Content
      * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
@@ -1432,7 +1432,7 @@ class Storage {
      * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
      *
      *     Response codes / behavior:
-     *         HTTP/1.0 200  Successful
+     *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully deleted
      *         HTTP/1.0 400 Bad Request
      * - XPath is missing or malformed
@@ -1505,7 +1505,7 @@ class Storage {
                 Storage::updateNodeRevision($parent, $this->revision +1);
             } else if ($target->nodeType === XML_ELEMENT_NODE) {
                 if (!$target->parentNode
-                        || $target->parentNode->nodeType !== XML_ELEMENT_NODE)
+                        || !in_array($target->parentNode->nodeType, [XML_ELEMENT_NODE, XML_DOCUMENT_NODE]))
                     continue;
                 $serials[] = $target->getAttribute("___uid") . ":D";
                 $nodes = (new DOMXpath($this->xml))->query(".//*[@___uid]", $target);
@@ -1513,8 +1513,17 @@ class Storage {
                     $serials[] = $node->getAttribute("___uid") . ":D";
                 $parent = $target->parentNode;
                 $parent->removeChild($target);
-                $serials[] = $parent->getAttribute("___uid") . ":M";
-                Storage::updateNodeRevision($parent, $this->revision +1);
+                if ($parent->nodeType === XML_DOCUMENT_NODE) {
+                    $target = $this->xml->createElement($this->root);
+                    $target = $this->xml->appendChild($target);
+                    Storage::updateNodeRevision($target, $this->revision +1);
+                    $serial = $this->getSerial();
+                    $serials[] = $serial . ":A";
+                    $target->setAttribute("___uid", $serial);
+                } else {
+                    $serials[] = $parent->getAttribute("___uid") . ":M";
+                    Storage::updateNodeRevision($parent, $this->revision +1);
+                }
             }
         }
 
@@ -1525,7 +1534,7 @@ class Storage {
             header("Storage-Effects: " . join(" ", array_unique($serials)));
 
         $this->materialize();
-        $this->quit(200, "Success");
+        $this->quit(204, "No Content");
     }
 
     /**
