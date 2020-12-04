@@ -151,6 +151,9 @@ Execution-Time: 3
 
 ### HTTP/1.0 204 No Content
 - Attributes successfully created or set
+- Write access to read-only attributes does not cause status 403, because a
+  XPath can be multi-dimensional this is difficult, so the server status
+  quits the success of the method and the `Storage-Effects` header the effects
 
 ### HTTP/1.0 400 Bad Request
 - XPath is missing or malformed
