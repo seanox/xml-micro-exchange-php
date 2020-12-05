@@ -21,7 +21,7 @@ client.test("unittest", function() {
 # Preparation of the test
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 5x UID 
+# - Storage-Effects: 4x UID-A 1x UID-M
 # - 4 books are created
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
@@ -42,7 +42,7 @@ client.test("unittest", function() {
 # Preparation of the test
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 5x UID 
+# - Storage-Effects: 4x UID-A 1x UID-M
 # - 4 books are created
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
@@ -221,7 +221,7 @@ client.test("unittest", function() {
 # Preperation of test of Accept-Effect
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID
+# - Storage-Effects: 8x UID-A 1x UID-M
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Content-Type: application/xslt+xml
@@ -250,7 +250,7 @@ client.test("unittest", function() {
 # Without is the same as: AM
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID
+# - Storage-Effects: 8x UID-A 1x UID-M
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Content-Type: application/xslt+xml
@@ -279,7 +279,7 @@ client.test("unittest", function() {
 # Empty is the same as: AM
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID
+# - Storage-Effects: 8x UID-A 1x UID-M
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects:

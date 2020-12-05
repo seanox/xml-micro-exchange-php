@@ -35,7 +35,7 @@ client.test("unittest", function() {
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 1x UID 
+# - Storage-Effects: 1x UID-M
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -55,7 +55,7 @@ client.test("unittest", function() {
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID 
+# - Storage-Effects: 8x UID-A 1x UID-M
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -128,7 +128,7 @@ client.test("unittest", function() {
 # Using unicode should not cause problems.
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 1x UID 
+# - Storage-Effects: 1x UID-M
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -149,7 +149,7 @@ client.test("unittest", function() {
 # Using XPath function should work.
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 1x UID 
+# - Storage-Effects: 1x UID-M
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended

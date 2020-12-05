@@ -32,7 +32,7 @@ client.test("unittest", function() {
 # Preparation of the storage for the tests
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID
+# - Storage-Effects: 36x UID-A 1x UID-M
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
@@ -208,7 +208,7 @@ client.test("unittest", function() {
 # Preparation of the storage for the tests
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 9x UID
+# - Storage-Effects: 36x UID-A 1x UID-M
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid

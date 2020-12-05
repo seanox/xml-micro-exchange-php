@@ -52,7 +52,7 @@ client.test("unittest", function() {
 # Initial request to establish the storage
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with a lot of UIDs 
+# - Storage-Effects: 36x UID-A 1x UID-M
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_options}}
 Content-Type: application/xslt+xml
