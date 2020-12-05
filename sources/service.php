@@ -1563,7 +1563,7 @@ class Storage {
                     continue;
                 preg_match("/^\s*(.*?)\s*:\s*(.*)\s*$/", $header, $header, PREG_UNMATCHED_AS_NULL);
                 if ($remove) {
-                    header($header[1] . ": omitted");
+                    header($header[1] . ":");
                     header_remove($header[1]);
                 }
                 $result = (object)["name" => $header[1], "value" => $header[2]];
@@ -1575,8 +1575,8 @@ class Storage {
 
         // Workaround to remove all default headers.
         // Some must be set explicitly before removing works.
-        header("Content-Type: omitted");
-        header("Content-Length: omitted");
+        header("Content-Type:");
+        header("Content-Length:");
 
         // Not relevant headers are removed.
         $filter = ["X-Powered-By"];
@@ -1693,6 +1693,14 @@ class Storage {
 
         {{{
 
+        $fetchRequestHeader = function(...$names) {
+            foreach ($names as $name)
+                if (isset($_SERVER[$name])
+                        && !empty($_SERVER[$name]))
+                  return $_SERVER[$name];
+            return "";
+        };
+
         // Trace is primarily intended to simplify the validation of requests,
         // their impact on storage and responses during testing.
         // Based on hash values the correct function can be checked.
@@ -1702,11 +1710,11 @@ class Storage {
 
         // Request-Header-Hash
         $hash = json_encode([
-            "Method" => isset($_SERVER["REQUEST_METHOD"]) ? strtoupper($_SERVER["REQUEST_METHOD"]) : "",
-            "URI" => isset($_SERVER["REQUEST_URI"]) ? strtoupper($_SERVER["REQUEST_URI"]) : "",
-            "Storage" => isset($_SERVER["HTTP_STORAGE"]) ? strtoupper($_SERVER["HTTP_STORAGE"]) : "",
-            "Content-Length" => isset($_SERVER["HTTP_CONTENT_LENGTH"]) ? strtoupper($_SERVER["HTTP_CONTENT_LENGTH"]) : "",
-            "Content-Type" => isset($_SERVER["HTTP_CONTENT_TYPE"]) ? strtoupper($_SERVER["HTTP_CONTENT_TYPE"]) : "",
+            "Method" => strtoupper($fetchRequestHeader("REQUEST_METHOD")),
+            "URI" => urldecode($fetchRequestHeader("REQUEST_URI")),
+            "Storage" => $fetchRequestHeader("HTTP_STORAGE"),
+            "Content-Length" => strtoupper($fetchRequestHeader("HTTP_CONTENT_LENGTH", "CONTENT_LENGTH")),
+            "Content-Type" => strtoupper($fetchRequestHeader("HTTP_CONTENT_TYPE", "CONTENT_TYPE"))
         ]);
         header("Trace-Request-Header-Hash: " . hash("md5", $hash));
 
