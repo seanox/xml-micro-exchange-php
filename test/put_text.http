@@ -15,7 +15,7 @@ Hello Internet!
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "268f68670b73e00c91cae0978d22030a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7aca0c1fcd1790aabeac9e9d1df891b2");
 });
 %}
 
@@ -28,7 +28,7 @@ Storage: {{storage_put_text}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4f4fff666adbf1a83ca1fdd00cde5042");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ab25abe0a4244226c93adbe75e3b9d91");
 });
 %}
 
@@ -48,7 +48,7 @@ Hello Internet!
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c13dd2fc3a4f46166047e373d53abcfb");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6f00f022d6afe9648fcafbbf45fabc74");
 });
 %}
 
@@ -79,14 +79,14 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "446018459bd688acbc8f11adca88ff9e");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fc947ad2a4d07d544e362658fff248e9");
 });
 %}
 
 ###
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 1x UID 
+# - Storage-Effects: 1x UID-M
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -99,7 +99,7 @@ Text A
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "dbea6943a22a38e83ce3058f76f74e2a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d401908b1a5cc155a903d198bc034f83");
 });
 %}
 
@@ -107,7 +107,7 @@ client.test("unittest", function() {
 # Use of brackets should not be a problem
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 3x UID 
+# - Storage-Effects: 3x UID-M
 # - Storage-Revision is increased
 # - Storage-Space is used more
 # - Storage-Expiration is extended
@@ -120,7 +120,7 @@ Text B
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "aa5fd00f7bf636c81f98a74923ee92a6");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e3354c4caead5358296c11dd32ebce55");
 });
 %}
 
@@ -141,7 +141,7 @@ Content-Type: text/plain
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7f12583f234f2fc729613fa74d5298ff");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "602323ec33c2edd6e6a142716e0b5362");
 });
 %}
 
@@ -162,7 +162,7 @@ name(/*)
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "33ae25769daea1b1651299f67537d85c");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "77d2b1940c5ee86604bc021c1d9feaf7");
 });
 %}
 
@@ -179,7 +179,7 @@ name(/+)
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a38c71b8f42c6e68a7216964ba4b7662");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e111785e5e0dfc4b474d3211bef94532");
 });
 %}
 
@@ -196,7 +196,7 @@ wrong(.)
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4446429efc721735b0884053ddb4cb8a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5466749b74e3733ef179cf5e4432ccd2");
 });
 %}
 
@@ -213,7 +213,7 @@ Content-Type: text/xpath
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "569487ebece70a2b4d24c972abbc083a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fa1108d5be087e3b05bf5367a37ac5d3");
 });
 %}
 
@@ -230,7 +230,7 @@ Content-Type: text/xpath
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9795f3599994338939903c8070abd84e");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "79bf97dade748ad447af7a3a1f6da4e5");
 });
 %}
 
@@ -250,7 +250,7 @@ Test
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8428fe570d0ce63993dc68f44c871291");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9042e64606df4b7c699997599710ad40");
 });
 %}
 
@@ -270,7 +270,7 @@ Test
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "925e42fb68a6d2257603fa2ac1c2b06f");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ee7c5836d33b44ad302fa57b5621af58");
 });
 %}
 
@@ -286,7 +286,7 @@ Test
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9d320adb67735fa7bbe3d143f99f41d6");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "86b6c0d1e2b69c3aa761060e9bef7844");
 });
 %}
 
@@ -302,7 +302,7 @@ Test
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0da4eb19c5b284f6450704bee8079ee8");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d92916f87b85a5d38ed2779b5f5d9988");
 });
 %}
 
