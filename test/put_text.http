@@ -307,3 +307,56 @@ client.test("unittest", function() {
 %}
 
 ###
+# Overwriting an element must work
+# The indirectly deleted UIDs must be contained in Storage-Effect
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 10x UID-A, 1x UID-M
+# - Storage-Revision is increased
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage_put_text}}
+Accept-Effects: ALL
+Content-Type: application/xslt+xml
+
+<chapter title="Chapter-X-A">
+  <text title="Text X1"/>
+  <text title="Text X2"/>
+  <text title="Text X3"/>
+</chapter>
+<chapter title="Chapter-X-B">
+  <text title="Text X4"/>
+  <text title="Text X5"/>
+  <text title="Text X6" ___uid="KIC2D3GJ1DWE:35" ___rev="5">
+    Text
+    <!-- Comment -->
+    Text
+    <a><b></b></a>
+  </text>
+</chapter>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "444667485ee94654a1b7d8fd8e4ce57a");
+});
+%}
+
+###
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID-M
+# - Storage-Revision is increased
+# - Storage: text title="Text X6" includes only "test", comments and text were deleted
+PUT {{service}}/books/chapter%5B2%5D/text%5B3%5D HTTP/1.0
+Storage: {{storage_put_text}}
+Accept-Effects: ALL
+Content-Type: text/plain
+
+test
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d3b787f5cf504f25587f73505b9c9b69");
+});
+%}
+
+###
