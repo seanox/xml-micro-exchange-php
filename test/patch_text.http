@@ -305,8 +305,7 @@ client.test("unittest", function() {
 %}
 
 ###
-# Overwriting an element must work
-# The indirectly deleted UIDs must be contained in Storage-Effect
+# Preparation for the next test
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 10x UID-A, 1x UID-M
