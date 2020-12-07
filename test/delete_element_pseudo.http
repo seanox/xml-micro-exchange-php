@@ -1,0 +1,252 @@
+# Test sequence for deleting of pseudo elements in the storage.
+# TODO:
+
+###
+# Storage is not establish
+# Round brackets in XPath should not be a problem.
+# Expectations:
+# - Status code 404 Resource Not Found
+DELETE {{service}}(/books/book%5B1%5D)/chapter%5B1%5D::first HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f55bcf81d29ae5756f037a953c049e8f");
+});
+%}
+
+###
+# Initial request to establish the storage
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "69cf6bbcc2d3ca9c5dce0b262c55ecbd");
+});
+%}
+
+###
+# Preparation of the storage for the tests
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 108x UID-A 1x UID-M
+# - 4 books are overwritten
+# - 4 books with chapter are created
+# - all new elements have the attributes ___rev and ___uid
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Content-Type: application/xslt+xml
+
+<book title="Book-A" a="A" b="A" c="A" d="A">
+  <chapter title="Chapter-A-A">
+    Text Text 1
+    <text title="Text A1"/>
+    Text Text 2
+    <text title="Text A2"/>
+    Text Text 3
+    <text title="Text A3"/>
+    Text Text 4
+  </chapter>
+  <chapter title="Chapter-B">
+    <text title="Text A4"/>
+    <text title="Text A5"/>
+    <text title="Text A6"/>
+    <text title="Text A7"/>
+    <text title="Text A8"/>
+    <text title="Text A9"/>
+    <text title="Text AA"/>
+    <text title="Text AB"/>
+    <text title="Text AC"/>
+    <text title="Text AD"/>
+    <text title="Text AE"/>
+    <text title="Text AF"/>
+  </chapter>
+</book>
+<book title="Book-B" a="B" b="B" c="B" d="B">
+  <chapter title="Chapter-B-A">
+    <text title="Text B1"/>
+    <text title="Text B2"/>
+    <text title="Text B3"/>
+  </chapter>
+  <chapter title="Chapter-B-B">
+    <text title="Text B4"/>
+    <text title="Text B5"/>
+    <text title="Text B6"/>
+    <text title="Text B7"/>
+    <text title="Text B8"/>
+    <text title="Text B9"/>
+    <text title="Text BA"/>
+    <text title="Text BB"/>
+    <text title="Text BC"/>
+    <text title="Text BD"/>
+    <text title="Text BE"/>
+    <text title="Text BF"/>
+  </chapter>
+</book>
+<book title="Book-C" a="C" b="C" c="C" d="C">
+  <chapter title="Chapter-C-A">
+    <text title="Text C1"/>
+    <text title="Text C2"/>
+    <text title="Text C3"/>
+  </chapter>
+  <chapter title="Chapter-C-B">
+    <text title="Text C4"/>
+    <text title="Text C5"/>
+    <text title="Text C6"/>
+    <text title="Text C7"/>
+    <text title="Text C8"/>
+    <text title="Text C9"/>
+    <text title="Text CA"/>
+    <text title="Text CB"/>
+    <text title="Text CC"/>
+    <text title="Text CD"/>
+    <text title="Text CE"/>
+    <text title="Text CF"/>
+  </chapter>
+</book>
+<book title="Book-D" a="D" b="D" c="D" d="D">
+  <chapter title="Chapter-D-A">
+    <text title="Text D1"/>
+    <text title="Text D2"/>
+    <text title="Text D3"/>
+  </chapter>
+  <chapter title="Chapter-D-B">
+    <text title="Text D4"/>
+    <text title="Text D5"/>
+    <text title="Text D6"/>
+    <text title="Text D7"/>
+    <text title="Text D8"/>
+    <text title="Text D9"/>
+    <text title="Text DA"/>
+    <text title="Text DB"/>
+    <text title="Text DC"/>
+    <text title="Text DD"/>
+    <text title="Text DE"/>
+    <text title="Text DF"/>
+  </chapter>
+</book>
+<book title="Book-E" a="E" b="E" c="E" d="E">
+  <chapter title="Chapter-E-A">
+    <text title="Text E1"/>
+    <text title="Text E2"/>
+    <text title="Text E3"/>
+  </chapter>
+  <chapter title="Chapter-E-B">
+    <text title="Text E4"/>
+    <text title="Text E5"/>
+    <text title="Text E6"/>
+    <text title="Text E7"/>
+    <text title="Text E8"/>
+    <text title="Text E9"/>
+    <text title="Text EA"/>
+    <text title="Text EB"/>
+    <text title="Text EC"/>
+    <text title="Text ED"/>
+    <text title="Text EE"/>
+    <text title="Text EF"/>
+  </chapter>
+</book>
+<book title="Book-F" a="F" b="F" c="F" d="F">
+  <chapter title="Chapter-F-A">
+    <text title="Text F1"/>
+    <text title="Text F2"/>
+    <text title="Text F3"/>
+  </chapter>
+  <chapter title="Chapter-F-B">
+    <text title="Text F4"/>
+    <text title="Text F5"/>
+    <text title="Text F6"/>
+    <text title="Text F7"/>
+    <text title="Text F8"/>
+    <text title="Text F9"/>
+    <text title="Text FA"/>
+    <text title="Text FB"/>
+    <text title="Text FC"/>
+    <text title="Text FD"/>
+    <text title="Text FE"/>
+    <text title="Text FF"/>
+  </chapter>
+</book>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7606fb7cd6796d44cdfc620044433a06");
+});
+%}
+
+###
+# Delete the first element in all chapters.
+# Because of the request body when putting, the first element is always a text
+# element with line break. Therefore there are no Deletes in the
+# Storage-Effects header.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 12x UID-M
+# - Storage: In all chapters the first text entry was deleted
+DELETE {{service}}(/books/book)/chapter::first HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a8942dd001bf7d889939cf15e7ecaf73");
+});
+%}
+
+###
+# In the second delete pass, elements are also included and thus
+# Storage-Effects header also contains delete entries.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 12x UID-D, 12x UID-M
+# - Storage: In all chapters the first text entry was deleted
+DELETE {{service}}(/books/book)/chapter::first HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fcde99949d32cbb4820ea3aac804b100");
+});
+%}
+
+###
+# Delete the last element in all chapters.
+# Because of the request body when putting, the first element is always a text
+# element with line break. Therefore there are no Deletes in the
+# Storage-Effects header.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 12x UID-M
+# - Storage: In all chapters the last text entry was deleted
+DELETE {{service}}(/books/book)/chapter::last HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "87d436ed5f5347188ac202b23ee9baa0");
+});
+%}
+
+###
+# In the second delete pass, elements are also included and thus
+# Storage-Effects header also contains delete entries.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 12x UID-D, 12x UID-M
+# - Storage: In all chapters the last entry was deleted
+DELETE {{service}}(/books/book)/chapter::last HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6b966c9587009bcd634042d2eb557039");
+});
+%}
+
+###
