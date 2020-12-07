@@ -1223,9 +1223,15 @@ class Storage {
                         foreach ($xml->firstChild->childNodes as $insert)
                             $target->parentNode->insertBefore($this->xml->importNode($insert, true), $target);
                 } else if (strcasecmp($pseudo, "after") === 0) {
-                    if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
-                        foreach ($xml->firstChild->childNodes as $insert)
-                            $target->parentNode->appendChild($this->xml->importNode($insert, true));
+                    if ($target->parentNode->nodeType == XML_ELEMENT_NODE) {
+                        $nodes = [];
+                        foreach($xml->firstChild->childNodes as $node)
+                            array_unshift($nodes, $node);
+                        foreach ($nodes as $insert)
+                            if ($target->nextSibling)
+                                $target->parentNode->insertBefore($this->xml->importNode($insert, true), $target->nextSibling);
+                            else $target->parentNode->appendChild($this->xml->importNode($insert, true));
+                    }
                 } else if (strcasecmp($pseudo, "first") === 0) {
                     $inserts = $xml->firstChild->childNodes;
                     for ($index = $inserts->length -1; $index >= 0; $index--)
@@ -1418,6 +1424,14 @@ class Storage {
     /**
      * TODO:
      *
+     * If the XPath notation does not match the attributes, elements are
+     * assumed. For elements, the notation for pseudo elements is supported:
+     *     <XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
+     * Pseudo elements are a relative position specification to the selected
+     * element.
+     *
+     * TODO:
+     *
      *     Request:
      * DELETE /<xpath> HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
@@ -1488,7 +1502,15 @@ class Storage {
             if (strcasecmp($pseudo, "before") === 0) {
             } else if (strcasecmp($pseudo, "after") === 0) {
             } else if (strcasecmp($pseudo, "first") === 0) {
+                $childs = [];
+                foreach ($targets as $target)
+                    $childs[] = $target->firstChild;
+                $targets = $childs;
             } else if (strcasecmp($pseudo, "last") === 0) {
+                $childs = [];
+                foreach ($targets as $target)
+                    $childs[] = $target->lastChild;
+                $targets = $childs;
             } else $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
         }
 
@@ -1503,14 +1525,16 @@ class Storage {
                 $parent->removeAttribute($target->name);
                 $serials[] = $parent->getAttribute("___uid") . ":M";
                 Storage::updateNodeRevision($parent, $this->revision +1);
-            } else if ($target->nodeType === XML_ELEMENT_NODE) {
+            } else if ($target->nodeType !== XML_DOCUMENT_NODE) {
                 if (!$target->parentNode
                         || !in_array($target->parentNode->nodeType, [XML_ELEMENT_NODE, XML_DOCUMENT_NODE]))
                     continue;
-                $serials[] = $target->getAttribute("___uid") . ":D";
-                $nodes = (new DOMXpath($this->xml))->query(".//*[@___uid]", $target);
-                foreach ($nodes as $node)
-                    $serials[] = $node->getAttribute("___uid") . ":D";
+                if ($target instanceof DOMElement) {
+                    $serials[] = $target->getAttribute("___uid") . ":D";
+                    $nodes = (new DOMXpath($this->xml))->query(".//*[@___uid]", $target);
+                    foreach ($nodes as $node)
+                        $serials[] = $node->getAttribute("___uid") . ":D";
+                }
                 $parent = $target->parentNode;
                 $parent->removeChild($target);
                 if ($parent->nodeType === XML_DOCUMENT_NODE) {
@@ -1709,9 +1733,13 @@ class Storage {
         // not be perfect.
 
         // Request-Header-Hash
+        $uri = $_SERVER["REQUEST_URI"];
+        if (isset($_SERVER["REQUEST"])
+                && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $uri, PREG_UNMATCHED_AS_NULL))
+            $uri = $uri[2];
         $hash = json_encode([
             "Method" => strtoupper($fetchRequestHeader("REQUEST_METHOD")),
-            "URI" => urldecode($fetchRequestHeader("REQUEST_URI")),
+            "URI" => urldecode($uri),
             "Storage" => $fetchRequestHeader("HTTP_STORAGE"),
             "Content-Length" => strtoupper($fetchRequestHeader("HTTP_CONTENT_LENGTH", "CONTENT_LENGTH")),
             "Content-Type" => strtoupper($fetchRequestHeader("HTTP_CONTENT_TYPE", "CONTENT_TYPE"))
