@@ -1,5 +1,10 @@
 # Test sequence for putting of attributes to storage elements.
-# TODO:
+
+# PATCH changes existing elements and attributes in storage.
+# The position for the insert is defined via an XPath.
+# The method works almost like PUT, but the XPath axis of the request
+# always expects an existing target.
+# XPath uses different notations for elements and attributes.
 
 ###
 # Storage is not establish 

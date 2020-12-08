@@ -517,6 +517,8 @@ client.test("unittest", function() {
 
 ###
 # TODO: not supported test case
+# The REST HTTP client expects a query string with parameters and complements
+# the query string with = characters.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 5x UID

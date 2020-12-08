@@ -1,5 +1,7 @@
 # Test sequence for putting of attributes to storage elements.
-# PUT inserts new elements and attributes into the storage.
+
+# PUT creates elements and attributes in storage and/or changes the value
+# of existing ones.
 # The position for the insert is defined via an XPath.
 # XPath uses different notations for elements and attributes.
 
@@ -395,6 +397,8 @@ client.test("unittest", function() {
 
 ###
 # TODO: not supported test case
+# The JetBrains HTTP client automatically adds the Content-Length header to the
+# requestand the request should be tested without the Content-Length header.
 # Expectations:
 # - Status code 204 No Content
 # - In the storage the attribute is added
@@ -416,6 +420,8 @@ client.test("unittest", function() {
 
 ###
 # TODO: not supported test case
+# The JetBrains HTTP client automatically adds the Content-Length header to the
+# requestand the request should be tested with a wrong Content-Length header.
 # Expectations:
 # - Status code 204 No Content
 # - In the storage the attribute is added

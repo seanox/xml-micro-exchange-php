@@ -1,12 +1,15 @@
 # Test sequence for OPTIONS requests
-# OPTIONS is used to request the functions to an XPath, which is responded with
-# the Allow header. This method distinguishes between XPath axis and XPath
-# function and uses different Allow headers. Also the existence of the target
-# on an XPath axis has an influence on the response. The method will not use
-# status 404 in relation to non-existing targets, but will offer the methods
+
+# OPTIONS is used to request the functions to an XPath, which is responded
+# with the Allow header.
+# This method distinguishes between XPath axis and XPath function and uses
+# different Allow headers. Also the existence of the target on an XPath
+# axis has an influence on the response. The method will not use status
+# 404 in relation to non-existing targets, but will offer the methods
 # CONNECT, OPTIONS, PUT via Allow-Header.
-# If the XPath is a function, it is executed and thus validated, but without
-# returning the result.
+# If the XPath is a function, it is executed and thus validated, but
+# without returning the result.
+# The XPath processing is strict and does not accept unnecessary spaces.
 # Faulty XPath will cause the status 400.
 
 ###

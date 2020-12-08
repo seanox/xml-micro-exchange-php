@@ -1,5 +1,8 @@
 # Test sequence for deleting of pseudo elements in the storage.
-# TODO:
+
+# DELETE deletes elements and attributes in the storage.
+# The position for deletion  is defined via an XPath.
+# XPath uses different notations for elements and attributes.
 
 ###
 # Storage is not establish
@@ -504,11 +507,10 @@ client.test("unittest", function() {
 # - Storage-Effects: 4x UID-D, 1x UID-M
 DELETE {{service}}/books/book%5Blast()%5D/chapter%5Blast()%5D::before HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
-Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "37867eb1a8d70bcac0b3464db6d09636");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1c4e7f010d3d84eaaf7aaf70a3a9f8f8");
 });
 %}
 
@@ -519,11 +521,10 @@ client.test("unittest", function() {
 # - Without Storage-Effects
 DELETE {{service}}/books::before HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
-Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c2f9fe1f1d53dabdefafee72c03ac30c");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "62dcef832ad0e05e82955bc4879931bf");
 });
 %}
 
@@ -534,11 +535,70 @@ client.test("unittest", function() {
 # - Without Storage-Effects
 DELETE {{service}}/books::after HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
-Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "eba297d07d5841e983cd4ebf87b2db4f");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5fba072455ad6f03185b2c8f0859c16f");
+});
+%}
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+# - Storage-Revision is not increased
+# - URI: /*/..::before
+DELETE {{service}}0x2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "97cfc1d08993b1c3e110b88cd7c2aecd");
+});
+%}
+
+###
+# PUT outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - No changes in the storage
+# - Storage-Revision is not increased
+# - URI: /books/..::before
+DELETE {{service}}0x2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4f43315f25ae53c89e24f560b1927dab");
+});
+%}
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+DELETE {{service}}/wrong::before HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c523d69115c8c2e0a23e4ad42eb1ec12");
+});
+%}
+
+###
+# XPath without target
+# Expectations:
+# - Status code 404 Resource Not Found
+DELETE {{service}}/wrong/wrong::before HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "97332c9e815dc0323d9ceee804d54166");
 });
 %}
 
