@@ -516,6 +516,59 @@ client.test("unittest", function() {
 %}
 
 ###
+# The hex encoding from XPath must work.
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 85
+# - URI: //book[last()]/chapter[last()]
+GET {{service}}0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d HTTP/1.0
+Storage: {{storage_request}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f3d3a5f168371164199b6e2b597f9be1");
+});
+%}
+
+###
+# A wrong hex encoding of XPath should be interpreted as unknown target.
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 85
+# - URI: //book[last()]/chapter[last()]
+GET {{service}}0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X HTTP/1.0
+Storage: {{storage_request}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "56cdd1fb6695d9bc44d3f267778818a6");
+});
+%}
+
+###
+# The Base64 encoding from XPath must work.
+# TODO: not supported test case
+# The REST HTTP client interprets the colon after Base64 as a control
+# character, the URI fades the space and protocol from the request,
+# making the request invalid.
+# But the request can be sent via Console + Telnet.
+#     telnet 127.0.0.1 80
+#     GET /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld HTTP/1.0
+#     Storage: 0000000000000000000000000000000000R0 books
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 85
+# - URI: //book[last()]/chapter[last()]
+#GET {{service}}Base64:ALy9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld HTTP/1.0
+#Storage: {{storage_request}}
+#
+#> {%
+#client.test("unittest", function() {
+#    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7e5b42b72e1759e1d8c092e721c598f7");
+#});
+#%}
+
+###
 # TODO: not supported test case
 # The REST HTTP client expects a query string with parameters and complements
 # the query string with = characters.
