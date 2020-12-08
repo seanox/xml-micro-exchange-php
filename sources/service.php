@@ -1500,16 +1500,34 @@ class Storage {
         // relative to the selected element.
         if ($pseudo) {
             if (strcasecmp($pseudo, "before") === 0) {
+                $childs = [];
+                foreach ($targets as $target) {
+                    if (!$target->previousSibling)
+                        continue;
+                    for ($previous = $target->previousSibling; $previous; $previous = $previous->previousSibling)
+                        $childs[] = $previous;
+                }
+                $targets = $childs;
             } else if (strcasecmp($pseudo, "after") === 0) {
+                $childs = [];
+                foreach ($targets as $target) {
+                    if (!$target->nextSibling)
+                        continue;
+                    for ($next = $target->nextSibling; $next; $next = $next->nextSibling)
+                        $childs[] = $next;
+                }
+                $targets = $childs;
             } else if (strcasecmp($pseudo, "first") === 0) {
                 $childs = [];
                 foreach ($targets as $target)
-                    $childs[] = $target->firstChild;
+                    if ($target->firstChild)
+                        $childs[] = $target->firstChild;
                 $targets = $childs;
             } else if (strcasecmp($pseudo, "last") === 0) {
                 $childs = [];
                 foreach ($targets as $target)
-                    $childs[] = $target->lastChild;
+                    if ($target->lastChild)
+                        $childs[] = $target->lastChild;
                 $targets = $childs;
             } else $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
         }
