@@ -117,14 +117,48 @@
  * 
  * Write accesses to attribute ___uid are accepted with status 204, will have
  * no effect from then on and are therefore not listed in the response header
- * Storage-Effects. 
- * 
- *     Transaction / Simultaneous Access
+ * Storage-Effects.
+ *
+ *     REQUEST
+ * The implementation works RESTfull and uses normal HTTP request.
+ * For the addressing of targets XPath axes and XPath functions are used,
+ * which are transmitted as part of the URI path.
+ * Because XPath has a different structure than the URI, even if it uses
+ * similar characters, clients and/or gateways may experience syntax problems
+ * when optimizing the request.
+ * For this reason different ways of transmission and escape are supported for
+ * the XPath.
+ *
+ *        URI (not escaped)
+ * e.g. /xmex!//book[last()]/chapter[last()]
+ *
+ *        URI + URL Encoding
+ * The XPath is used URL encoding.
+ * e.g. /xmex!//book%5Blast()%5D/chapter%5Blast()%5D
+ * is equivalent to: /xmex!//book[last()]/chapter[last()]
+ *
+ *        XPath as query string and URL encoding
+ * The XPath is transmitted as a query string.
+ * e.g. /xmex!?//book[last()]/chapter[last()]
+ *      /xmex!?//book%5Blast()%5D/chapter%5Blast()%5D
+ *      /xmex?//book[last()]/chapter[last()]
+ *      /xmex?//book%5Blast()%5D/chapter%5Blast()%5D
+ * is equivalent to: /xmex!//book[last()]/chapter[last()]
+ *
+ *        XPath as hexadecimal string
+ * The URI starts with 0x after the XPath separator:
+ * e.g. /xmex!0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d
+ * is equivalent to: /xmex!//book[last()]/chapter[last()]
+ *
+ *        XPath as Base64 encoded string
+ * The URI starts with Base64 after the XPath separator:
+ * e.g. /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
+ * is equivalent to: /xmex!//book[last()]/chapter[last()]
+ *
+ *     TRANSACTION / SIMULTANEOUS ACCESS
  * XML-Micro-Exchange supports simultaneous access.
  * Read accesses are executed simultaneously.  
  * Write accesses creates a lock and avoids dirty reading.
- * 
- * TODO:    
  * 
  *     ERROR HANDLING
  * Errors are communicated via the server status and the header 'Error'.
@@ -139,8 +173,6 @@
  * For further security the approach of Basic Authentication, Digest Access
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
- *
- * TODO:
  */
 class Storage {
 
@@ -167,17 +199,23 @@ class Storage {
      *     e.g. Allow-Origin -> Access-Control-Allow-Origin
      */
     const CORS = ["Allow-Origin" => "*"];
-    
+
+    /** Current Storage instanc */
     private $storage;
 
+    /** Current Name of the root element */
     private $root;
-    
+
+    /** Current name of the Storage */
     private $store;
-    
+
+    /** Current Storage instanc */
     private $share;
 
+    /** Current DOMDocument */
     private $xml;
 
+    /** Current XPath */
     private $xpath;
 
     /** Revision of the storage */
@@ -199,9 +237,12 @@ class Storage {
     const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
 
     /**
-     * TODO:
+     * Pattern for separating URI-Path and XPath.
      * If the pattern is empty, null or false, the request URI without context
      * path will be used. This is helpful when the service is used as a domain.
+     *     Group 0. Full match
+     *     Group 1. URI-Path
+     *     Group 2. XPath
      */
     const PATTERN_HTTP_REQUEST_URI = "/^(.*?)[!#$*:?@|~]+(.*)$/i";
 
@@ -238,10 +279,17 @@ class Storage {
      */
     const PATTERN_XPATH_FUNCTION = "/^[\(\s]*[^\/\.\s\(].*$/";
 
+    /** Constants of used content types */
     const CONTENT_TYPE_TEXT = "text/plain";
     const CONTENT_TYPE_XPATH = "text/xpath";
     const CONTENT_TYPE_XML = "application/xslt+xml";
 
+    /**
+     * Constructor creates a new Storage object.
+     * @param string @storage
+     * @param string @root
+     * @param string @xpath
+     */
     function __construct($storage = null, $root = null, $xpath = null) {
 
         $this->storage  = $storage;
@@ -293,7 +341,17 @@ class Storage {
             closedir($handle);
         }
     }
-    
+
+    /**
+     * Opens a storage with a XPath for the current request.
+     * The storage can optionally be opened exclusively for write access.
+     * If the storage to be opened does not yet exist, it is initialized.
+     * Simultaneous requests must then wait through the file lock.
+     * @param  string  $storage
+     * @param  string  $xpath
+     * @param  boolean $exclusive
+     * @return Storage Instance of the Storage
+     */
     static function share($storage, $xpath, $exclusive = true) {
 
         if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
@@ -318,11 +376,22 @@ class Storage {
         return $storage;
     }
 
+    /**
+     * Return TRUE if the storage already exists.
+     * @return TRUE if the storage already exists
+     */
     private function exists() {
         return file_exists($this->store)
                 && filesize($this->store) > 0;
     }
 
+    /**
+     * Opens the storage for the current request.
+     * The storage can optionally be opened exclusively for write access.
+     * If the storage to be opened does not yet exist, it is initialized.
+     * Simultaneous requests must then wait through the file lock.
+     * @param boolean $exclusive
+     */
     private function open($exclusive = true) {
 
         if ($this->share !== null)
@@ -372,6 +441,7 @@ class Storage {
         fwrite($this->share, $output);
     }
 
+    /** Closes the storage for the current request. */
     function close() {
 
         if ($this->share == null)
@@ -409,6 +479,11 @@ class Storage {
         return 0;
     }
 
+    /**
+     * Calculates the expiration date of the storage and optionally formats it.
+     * @param  string $format
+     * @return string expiration date of the storage, optionally formatted
+     */
     private function getExpiration($format = null) {
 
         $date = new DateTime();
@@ -416,6 +491,11 @@ class Storage {
         return $format ? $date->format($format) : $date->getTimestamp();
     }
 
+    /**
+     * Updates rerusive the revision for an element and all parent elements.
+     * param DOMElement $node
+     * param string     revision
+     */
     private static function updateNodeRevision($node, $revision) {
 
         while ($node && $node->nodeType === XML_ELEMENT_NODE) {
@@ -1422,7 +1502,12 @@ class Storage {
     }
 
     /**
-     * TODO:
+     * DELETE deletes elements and attributes in the storage.
+     * The position for deletion  is defined via an XPath.
+     * XPath uses different notations for elements and attributes.
+     *
+     * The notation for attributes use the following structure at the end.
+     *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
      *
      * If the XPath notation does not match the attributes, elements are
      * assumed. For elements, the notation for pseudo elements is supported:
@@ -1430,7 +1515,23 @@ class Storage {
      * Pseudo elements are a relative position specification to the selected
      * element.
      *
-     * TODO:
+     * The DELETE method works resolutely and deletes existing data.
+     * The XPath processing is strict and does not accept unnecessary spaces.
+     * The attributes ___rev / ___uid used internally by the storage are
+     * read-only and cannot be changed.
+     *
+     * In general, if no target can be reached via XPath, status 404 will
+     * occur. In all other cases the DELETE method informs the client about
+     * changes with status 204 and the response headers Storage-Effects and
+     * Storage-Revision. The header Storage-Effects contains a list of the UIDs
+     * that were directly affected by the change and also contains the UIDs of
+     * newly created elements (e.g. when the root element is deleted, a new one
+     * is automatically created). If no changes were made because the XPath
+     * cannot find a writable target, the header Storage-Effects can be omitted
+     * completely in the response.
+     *
+     * Syntactic and symantic errors in the request and/or XPath can cause
+     * error status 400.
      *
      *     Request:
      * DELETE /<xpath> HTTP/1.0
@@ -1889,6 +1990,10 @@ class Storage {
         exit;
     }
 
+    /**
+     * Returns the last caused XML error, otherwise FALSE
+     * @return mixed the last caused XML error, otherwise FALSE
+     */
     private static function fetchLastXmlErrorMessage() {
 
         if (empty(libxml_get_errors()))
@@ -1900,6 +2005,15 @@ class Storage {
         return trim($message);
     }
 
+    /**
+     * General error handling.
+     * Writes a formatted log file in the working directory and quits the
+     * request with an error status.
+     * @param string $error
+     * @param string $message
+     * @param string $file
+     * @param array  $vars
+     */
     static function onError($error, $message, $file, $line, $vars = array()) {
 
         // Special case XSLTProcessor errors
@@ -1925,6 +2039,12 @@ class Storage {
         exit;
     }
 
+    /**
+     * General exception handling.
+     * Writes a formatted log file in the working directory and quits the
+     * request with an error status.
+     * @param Exception $exception
+     */
     static function onException($exception) {
         Storage::onError(get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
     }
@@ -1957,7 +2077,7 @@ if (Storage::PATTERN_HTTP_REQUEST_URI) {
 if (preg_match("/^0x([A-Fa-f0-9]{2})+$/", $xpath))
     $xpath = hex2bin(substr($xpath, 2));
 else if (preg_match("/^Base64:[A-Za-z0-9\+\/]+=*$/", $xpath))
-    $xpath = hex2bin(substr($xpath, 7));
+    $xpath = base64_decode(substr($xpath, 7));
 else $xpath = urldecode($xpath);
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
