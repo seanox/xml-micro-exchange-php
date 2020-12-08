@@ -198,18 +198,19 @@ client.test("unittest", function() {
 
 ###
 # In the second delete pass, elements are also included and thus
+# The syntax of pseudo elements is case-insentive
 # Storage-Effects header also contains delete entries.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 12x UID-D, 12x UID-M
 # - Storage: In all chapters the first text entry was deleted
-DELETE {{service}}(/books/book)/chapter::first HTTP/1.0
+DELETE {{service}}(/books/book)/chapter::firsT HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fcde99949d32cbb4820ea3aac804b100");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "909fd37f468440c163d97adfb7ecbc55");
 });
 %}
 
@@ -234,18 +235,310 @@ client.test("unittest", function() {
 
 ###
 # In the second delete pass, elements are also included and thus
+# The syntax of pseudo elements is case-insentive
 # Storage-Effects header also contains delete entries.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 12x UID-D, 12x UID-M
 # - Storage: In all chapters the last entry was deleted
-DELETE {{service}}(/books/book)/chapter::last HTTP/1.0
+DELETE {{service}}(/books/book)/chapter::lasT HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6b966c9587009bcd634042d2eb557039");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "94e5011f7ede01354fdea01b72c9c1b7");
+});
+%}
+
+###
+# Invalid/unknown pseudo elements are interpreted as invalid XPath axis
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+DELETE {{service}}(/books/book)/chapter::wrong HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c8e1ce7ff106030176d2530ade4aff8f");
+});
+%}
+
+###
+# Preparation of the storage for the tests
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 36x UID-A 1x UID-M
+PUT {{service}}/books HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Content-Type: application/xslt+xml
+
+<book title="Book-E" a="E" b="E" c="E" d="E">
+  <chapter title="Chapter-E-A">
+    <text title="Text E1"/>
+    <text title="Text E2"/>
+    <text title="Text E3"/>
+  </chapter>
+  <chapter title="Chapter-E-B">
+    Text
+    <text title="Text E4"/>
+    Text
+    <text title="Text E5"/>
+    Text
+    <text title="Text E6"/>
+    Text
+    <text title="Text E7"/>
+    Text
+    <text title="Text E8"/>
+    Text
+    <text title="Text E9"/>
+    Text
+    <text title="Text EA"/>
+    Text
+    <text title="Text EB"/>
+    Text
+    <text title="Text EC"/>
+    Text
+    <text title="Text ED"/>
+    Text
+    <text title="Text EE"/>
+    Text
+    <text title="Text EF"/>
+    Text
+  </chapter>
+</book>
+<book title="Book-F" a="F" b="F" c="F" d="F">
+  <chapter title="Chapter-F-A">
+    <text title="Text F1"/>
+    <text title="Text F2"/>
+    <text title="Text F3"/>
+  </chapter>
+  <chapter title="Chapter-F-B">
+    Text
+    <text title="Text F4"/>
+    Text
+    <text title="Text F5"/>
+    Text
+    <text title="Text F6"/>
+    Text
+    <text title="Text F7"/>
+    Text
+    <text title="Text F8"/>
+    Text
+    <text title="Text F9"/>
+    Text
+    <text title="Text FA"/>
+    Text
+    <text title="Text FB"/>
+    Text
+    <text title="Text FC"/>
+    Text
+    <text title="Text FD"/>
+    Text
+    <text title="Text FE"/>
+    Text
+    <text title="Text FF"/>
+    Text
+  </chapter>
+</book>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f239804c8abc7fff6d1d7956d3617134");
+});
+%}
+
+###
+# Delete all elements (nodes and text) before //text[@title='Text EA'].
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 6x UID-D 1x UID-M
+# - URI: //text[@title='Text EA']::before
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204541275d3a3a6265666f7265 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "31b3142e42036c440fe816e07f089f5c");
+});
+%}
+
+###
+# Delete all elements (nodes and text) after //text[@title='Text FA'].
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 6x UID-D 1x UID-M
+# - URI: //text[@title='Text FA']::after
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204641275d3a3a6166746572 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0f9b9fd91a8f343d505bbae9c05be92d");
+});
+%}
+
+###
+# XPath functions are not supported
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath (Functions are not supported)
+DELETE {{service}}name(.) HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9f7cf18f4f8ae596d5805516936d620e");
+});
+%}
+
+###
+# Before on the first element must be executed, but has no effect.
+# The request is preparation, because a text element exits before the first element.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID-M
+# - URI: //text[@title='Text F1']::before
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f1b65a068ef27ac87e9082bb8e0e7ef7");
+});
+%}
+
+###
+# Before on the first element must be executed, but has no effect.
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - URI: //text[@title='Text F1']::before
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5fce3502bfa2bf4b47f2514e4d366274");
+});
+%}
+
+###
+# After on the last element must be executed, but has no effect.
+# The request is preparation, because a text element exits before the first element.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID-M
+# - URI: //text[@title='Text F3']::after
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9b12cbcbd0e0c84821fefd62edab1ef4");
+});
+%}
+
+###
+# After on the last element must be executed, but has no effect.
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - URI: //text[@title='Text F3']::after
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "58b3fad09075bc225785cfea820d6747");
+});
+%}
+
+###
+# First in with an empty element should not be a problem
+# The request just has no effect
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - URI: //text[@title='Text F9']::first
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204639275d3a3a6669727374 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f2510fc19cd5cb1680dba6455f2f8c21");
+});
+%}
+
+###
+# Last in with an empty element should not be a problem
+# The request just has no effect
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+# - URI: //text[@title='Text F9']::last
+DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204639275d3a3a6c617374 HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Accept-Effects: ALL
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "84da049a940f2e0c23cb3449b4f67862");
+});
+%}
+
+###
+# Axes with positons function must work
+# For the last book, the chapter before the last chapter must be deleted.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 4x UID-D, 1x UID-M
+DELETE {{service}}/books/book%5Blast()%5D/chapter%5Blast()%5D::before HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Content-Type: application/xslt+xml
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "37867eb1a8d70bcac0b3464db6d09636");
+});
+%}
+
+###
+# Delete outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+DELETE {{service}}/books::before HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Content-Type: application/xslt+xml
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c2f9fe1f1d53dabdefafee72c03ac30c");
+});
+%}
+
+###
+# Delete outside the root element, shall be ignored
+# Expectations:
+# - Status code 204 No Content
+# - Without Storage-Effects
+DELETE {{service}}/books::after HTTP/1.0
+Storage: {{storage_delete_element_pseudo}}
+Content-Type: application/xslt+xml
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "eba297d07d5841e983cd4ebf87b2db4f");
 });
 %}
 
