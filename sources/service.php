@@ -1978,6 +1978,11 @@ class Storage {
         ];
         header("Trace-Composite-Hash: " . hash("md5", implode(" ", $hash)));
 
+        if (file_exists("trace.log")
+                && (time() -filemtime("trace.log")) > 1)
+            file_put_contents("trace.log", PHP_EOL, FILE_APPEND | LOCK_EX);
+        file_put_contents("trace.log", hash("md5", implode(" ", $hash)) . PHP_EOL, FILE_APPEND | LOCK_EX);
+
         }}}
 
         if ($status >= 200 && $status < 300
