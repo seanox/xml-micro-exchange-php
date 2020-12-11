@@ -1822,14 +1822,19 @@ class Storage {
         if (!empty($serials))
             header("Storage-Effects: " . $serials);
 
-        foreach ($headers as $key => $value)
-            header(trim("$key: " .  preg_replace("/[\r\n]+/", " ", $value)));
+        foreach ($headers as $key => $value) {
+            $value = trim(preg_replace("/[\r\n]+/", " ", $value));
+            if (strlen(trim($value)) > 0)
+                header("$key: $value");
+            else header_remove($key);
+        }
 
         // When responding to an error, the default Allow header is added.
         // But only if no Allow header was passed.
         // So the header does not always have to be added manually.
-        if ($status >= 400
-                && !array_keys($headers, "allow"))
+        $headers = array_change_key_case($headers, CASE_LOWER);
+        if (in_array($status, [201, 202, 405])
+                && !array_key_exists("allow", $headers))
             header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
@@ -1864,12 +1869,14 @@ class Storage {
             "Content-Type" => strtoupper($fetchRequestHeader("HTTP_CONTENT_TYPE", "CONTENT_TYPE"))
         ]);
         header("Trace-Request-Header-Hash: " . hash("md5", $hash));
+        $trace = [hash("md5", $hash) . " Trace-Request-Header-Hash", $hash];
 
         // Request-Body-Hash
         $hash = file_get_contents("php://input");
         $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
         header("Trace-Request-Body-Hash: " . hash("md5", $hash));
+        $trace = array_merge($trace, [hash("md5", $hash) . " Trace-Request-Body-Hash"]);
 
         // Response-Header-Hash
         // Only the XMEX relevant headers are used.
@@ -1919,6 +1926,7 @@ class Storage {
         // calculated for tests on different web servers.
         $headers[] = $status;
         header("Trace-Response-Header-Hash: " . hash("md5", implode("\n", $headers)));
+        $trace = array_merge($trace, [hash("md5", implode("\n", $headers)) . " Trace-Response-Header-Hash", json_encode($headers)]);
 
         // Response-Body-Hash
         $hash = $data;
@@ -1939,6 +1947,7 @@ class Storage {
             }
         }
         header("Trace-Response-Body-Hash: " . hash("md5", $hash));
+        $trace = array_merge($trace, [hash("md5", $hash) . " Trace-Response-Body-Hash"]);
 
         // Storage-Hash
         // Also the storage cannot be compared directly, because here the UID's
@@ -1964,9 +1973,11 @@ class Storage {
         $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
         header("Trace-Storage-Hash: " . hash("md5", $hash));
+        $trace = array_merge($trace, [hash("md5", $hash) . " Trace-Storage-Hash"]);
 
         $hash = $this->xpath;
         header("Trace-XPath-Hash: " . hash("md5", $this->xpath));
+        $trace = array_merge($trace, [hash("md5", $this->xpath) . " Trace-XPath-Hash", $this->xpath]);
 
         $hash = [
             $fetchHeader("Trace-Request-Header-Hash")->value,
@@ -1977,11 +1988,22 @@ class Storage {
             $fetchHeader("Trace-XPath-Hash")->value
         ];
         header("Trace-Composite-Hash: " . hash("md5", implode(" ", $hash)));
+        $trace = array_merge($trace, [hash("md5", implode(" ", $hash)) . " Trace-Composite-Hash"]);
+        $trace = array_filter($trace, function($entry) {
+            return $entry !== null && strlen(trim($entry)) > 0;
+        });
+
+        $trace = "\t" . implode(PHP_EOL . "\t", $trace) . PHP_EOL;
+        if ($this->xml && $this->xml->firstChild)
+            $trace = "\tStorage Identifier: ". $this->storage . " Revision:" . $this->xml->firstChild->getAttribute("___rev") . " Space:". $this->getSize() . PHP_EOL . $trace;
+        $trace = "\tResponse Status:" . $status . " Length:" . strlen($data) . PHP_EOL . $trace;
+        $trace = "\tRequest Method:" . strtoupper($_SERVER["REQUEST_METHOD"]) . " XPath:" . $this->xpath . " Length:" . strlen($data) . PHP_EOL . $trace;
+        $trace = hash("md5", implode(" ", $hash)) . PHP_EOL . $trace;
 
         if (file_exists("trace.log")
                 && (time() -filemtime("trace.log")) > 1)
             file_put_contents("trace.log", PHP_EOL, FILE_APPEND | LOCK_EX);
-        file_put_contents("trace.log", hash("md5", implode(" ", $hash)) . PHP_EOL, FILE_APPEND | LOCK_EX);
+        file_put_contents("trace.log", $trace, FILE_APPEND | LOCK_EX);
 
         }}}
 
