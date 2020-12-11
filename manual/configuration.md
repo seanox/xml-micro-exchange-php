@@ -3,6 +3,10 @@
 
 # Configuration
 
+__This chapter is only relevant if you want to run the Datasource on your own
+server. If you want to use an existing Datasource on the Internet, you can skip
+this chapter.__
+
 The REST API is configured as an absolute (hungry) virtual path. So all requests
 starting with the virtual path are redirected to the PHP script `./service.php`.  
 Means that the script itself cannot be called.  
