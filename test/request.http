@@ -13,7 +13,7 @@ Storage: {{storage_request}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "710b480195c6f690605688dc30c75f6d");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0519bd9453b186c6c07406fe2f238092");
 });
 %}
 
@@ -122,7 +122,7 @@ Content-Type: text/plain
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1c55a16abf211e1024345b70895b7075");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2165a8ff552fd0cd82623500ce04baa6");
 });
 %}
 
@@ -213,7 +213,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "29513d4346374cdf20cff1256f71f725");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "57e27312c0067f4f2b6b9bcdaa5c6106");
 });
 %}
 
@@ -533,15 +533,14 @@ client.test("unittest", function() {
 ###
 # A wrong hex encoding of XPath should be interpreted as unknown target.
 # Expectations:
-# - Status code 200 Success
-# - Content-Length: 85
+# - Status code 400 Bad Request
 # - URI: //book[last()]/chapter[last()]
 GET {{service}}0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X HTTP/1.0
 Storage: {{storage_request}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "56cdd1fb6695d9bc44d3f267778818a6");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3763a3c3a08c1a9c9164eba0e7d21de8");
 });
 %}
 
