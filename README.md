@@ -116,7 +116,8 @@ TODO:
 # Free XML-Micro-Exchange 
 [https://seanox.com/xmex!](https://seanox.com/xmex!) 65536 Storages x 256 kB  
 __Please do not get confused, the API is online.  
-Requests without storage identifier (see manual) are answered with status 400.__
+Requests without storage identifier (see [manual](manual/README.md#manual)) are
+answered with status 400.__
 
 
 # Manual
