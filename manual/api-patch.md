@@ -41,7 +41,7 @@ affected by the change and also contains the UIDs of newly created elements. If
 no changes were made because the XPath cannot find a writable target, the header
 `Storage-Effects` can be omitted completely in the response. 
 
-Syntactic and symantic errors in the request and/or XPath and/or value can cause
+Syntactic and semantic errors in the request and/or XPath and/or value can cause
 error status 400 and 415. If errors occur due to the transmitted request body,
 this causes status 422.
 

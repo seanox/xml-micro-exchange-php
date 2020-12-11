@@ -25,7 +25,7 @@ different Content-Type are used for the response.
 
 ## XPath axis
 
-Conent-Type: `application/xslt+xml`
+Content-Type: `application/xslt+xml`
 When the XPath axis addresses one target, the addressed target is the root
 element of the returned XML structure.  
 If the XPath addresses multiple targets, their XML structure is combined in the
@@ -33,7 +33,7 @@ root element collection.
 
 ## XPath function
 
-Conent-Type: `text/plain`  
+Content-Type: `text/plain`  
 The result of XPath functions is returned as plain text.  
 Decimal results use float, booleans the values true and false.
 
