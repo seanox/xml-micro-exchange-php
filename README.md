@@ -114,7 +114,7 @@ TODO:
 
 
 # Free XML-Micro-Exchange 
-[https://xmex-seanox.com/](https://xmex-seanox.com/) 65536 Storages x 256 kB comes soon
+[https://seanox.com/xmex!](https://seanox.com/xmex!) 65536 Storages x 256 kB
 
 
 # Manual
