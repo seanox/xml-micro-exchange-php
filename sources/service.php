@@ -200,7 +200,7 @@ class Storage {
      */
     const CORS = ["Allow-Origin" => "*"];
 
-    /** Current Storage instanc */
+    /** Current Storage instance */
     private $storage;
 
     /** Current Name of the root element */
@@ -209,7 +209,7 @@ class Storage {
     /** Current name of the Storage */
     private $store;
 
-    /** Current Storage instanc */
+    /** Current Storage instance */
     private $share;
 
     /** Current DOMDocument */
@@ -232,7 +232,7 @@ class Storage {
      *     Group 0. Full match
      *     Group 1. Method
      *     Group 2. URI
-     *     Group 3. Protocoll
+     *     Group 3. Protocol
      */    
     const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
 
@@ -314,7 +314,7 @@ class Storage {
         // the method is less than one millisecond. This is ignored here,
         // assuming that the port reassignment is greater than one millisecond.
 
-        // Structure of the Unique-Id [? MICROSECONNECTORS][4 PORT]
+        // Structure of the Unique-Id [? MICROSECONDS][4 PORT]
         $unique = base_convert($_SERVER["REMOTE_PORT"], 10, 36);
         $unique = str_pad($unique, 4, 0, STR_PAD_LEFT);
         $unique = base_convert(round(microtime(true) *1000), 10, 36) . $unique;
@@ -492,7 +492,7 @@ class Storage {
     }
 
     /**
-     * Updates rerusive the revision for an element and all parent elements.
+     * Updates recursive the revision for an element and all parent elements.
      * param DOMElement $node
      * param string     revision
      */
@@ -721,14 +721,14 @@ class Storage {
      * different Content-Type are used for the response.
      *
      *     XPath axis
-     * Conent-Type: application/xslt+xml
+     * Content-Type: application/xslt+xml
      * When the XPath axis addresses one target, the addressed target is the
      * root element of the returned XML structure.
      * If the XPath addresses multiple targets, their XML structure is combined
      * in the root element collection.
      *
      *     XPath function
-     * Conent-Type: text/plain
+     * Content-Type: text/plain
      * The result of XPath functions is returned as plain text.
      * Decimal results use float, booleans the values true and false.
      *
@@ -963,7 +963,7 @@ class Storage {
      * find a writable target, the header Storage-Effects can be omitted
      * completely in the response.
      *
-     * Syntactic and symantic errors in the request and/or XPath and/or value
+     * Syntactic and semantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
      * transmitted request body, this causes status 422.
      *
@@ -1061,7 +1061,7 @@ class Storage {
 
         if (preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
 
-            // The following Conten-Type is supported for attributes:
+            // The following Content-Type is supported for attributes:
             // - text/plain for static values (text)
             // - text/xpath for dynamic values, based on XPath functions
 
@@ -1151,7 +1151,7 @@ class Storage {
         $xpath = $matches[1];
         $pseudo = $matches[2];
 
-        // The following Conten-Type is supported for elements:
+        // The following Content-Type is supported for elements:
         // - application/xslt+xml for XML structures
         // - text/plain for static values (text)
         // - text/xpath for dynamic values, based on XPath functions
@@ -1257,7 +1257,7 @@ class Storage {
         // automatically. These attributes must not be  contained in the XML
         // structure to be inserted, because all XML elements without ___uid
         // attributes are determined after insertion and it is assumed that
-        // they have been newly inserted. This approach was chosen to avuid a
+        // they have been newly inserted. This approach was chosen to avoid a
         // recursive search/iteration in the XML structure to be inserted.
         $nodes = (new DOMXpath($xml))->query("//*[@___rev|@___uid]");
         foreach ($nodes as $node) {
@@ -1401,7 +1401,7 @@ class Storage {
      * made because the XPath cannot find a writable target, the header
      * Storage-Effects can be omitted completely in the response.
      *
-     * Syntactic and symantic errors in the request and/or XPath and/or value
+     * Syntactic and semantics errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
      * transmitted request body, this causes status 422.
      *
@@ -1530,7 +1530,7 @@ class Storage {
      * cannot find a writable target, the header Storage-Effects can be omitted
      * completely in the response.
      *
-     * Syntactic and symantic errors in the request and/or XPath can cause
+     * Syntactic and semantic errors in the request and/or XPath can cause
      * error status 400.
      *
      *     Request:
@@ -1683,7 +1683,7 @@ class Storage {
     /**
      * Quit sends a response and ends the connection and closes the storage.
      * The behavior of the method is hard.
-     * A reponse status and a reponse message are expected.
+     * A response status and a response message are expected.
      * Optionally, additional headers and data for the response body can be
      * passed. Headers for storage and data length are set automatically. Data
      * from the response body is only sent to the client if the response status
