@@ -7,12 +7,14 @@ DELETE deletes elements and attributes in the storage.
 The position for deletion is defined via an XPath.  
 XPath uses different notations for elements and attributes.
 
-The notation for attributes use the following structure at the end.
-    `<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`
+The notation for attributes use the following structure at the end.  
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+    `<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`  
 
-If the XPath notation does not match the attributes, elements are assumed. For
-elements, the notation for pseudo elements is supported:
-    `<XPath>::first`, `<XPath>::last`, `<XPath>::before` or `<XPath>::after`
+If the XPath notation does not match the attributes, elements are assumed.  
+For elements, the notation for pseudo elements is supported:  
+&#160;&#160;&#160;&#160;&#160;&#160;
+    `<XPath>::first`, `<XPath>::last`, `<XPath>::before` or `<XPath>::after`  
 Pseudo elements are a relative position specification to the selected element.
 
 The DELETE method works resolutely and deletes existing data.  

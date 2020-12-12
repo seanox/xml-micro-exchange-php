@@ -11,7 +11,8 @@ always based on an existing XPath axis as the parent target.
 XPath uses different notations for elements and attributes.
 
 The notation for attributes use the following structure at the end.  
-    `<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+    `<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`  
 The attribute values can be static (text) and dynamic (XPath function).  
 Values are send as request-body.
 Whether they are used as text or XPath function is decided by the
@@ -20,8 +21,9 @@ Content-Type header of the request:
 - `text/xpath`: XPath function
 
 If the XPath notation does not match the attributes, elements are assumed.  
-For elements, the notation for pseudo elements is supported:
-    `<XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
+For elements, the notation for pseudo elements is supported:  
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+    `<XPath>::first`, `<XPath>::last`, `<XPath>::before` or `<XPath>::after`
 Pseudo elements are a relative position specification to the selected element.
 
 The value of elements can be static (text), dynamic (XPath function) or be an

@@ -10,7 +10,8 @@ expects an existing target.
 XPath uses different notations for elements and attributes.
 
 The notation for attributes use the following structure at the end.  
-    `<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+`<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`  
 The attribute values can be static (text) and dynamic (XPath function).  
 Values are send as request-body.
 Whether they are used as text or XPath function is decided by the
