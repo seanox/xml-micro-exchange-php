@@ -6,9 +6,9 @@
 PUT creates elements and attributes in storage and/or changes the value of  
 existing ones.
 The position for the insert is defined via an XPath.  
-XPath uses different notations for elements and attributes.  
 For better understanding, the method should be called PUT INTO, because it is
-always based on an existing XPath axis as the parent target.
+always based on an existing XPath axis as the parent target.  
+XPath uses different notations for elements and attributes.
 
 The notation for attributes use the following structure at the end.  
     `<XPath>/@<attribute>` or `<XPath>/attribute::<attribute>`
