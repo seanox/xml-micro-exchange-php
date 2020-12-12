@@ -4,8 +4,9 @@
 # Motivation
 
 The origin of the project is the desire for an easily accessible place for data
-exchange on the Internet. Inspired by JSON-Storages the idea of a feature-rich
-equivalent based on XML, XPath and XSLT was born.  
+exchange on the Internet.  
+Inspired by JSON-Storages the idea of a feature-rich equivalent based on XML,
+XPath and XSLT was born.  
 The focus should be on a public, volatile and short-term data exchange for
 (static) web applications and IoT.
 

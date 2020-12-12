@@ -290,7 +290,6 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
-# - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 OPTIONS {{service}}/books/book%5B1%5Dx HTTP/1.0
 Storage: {{storage_options}}
 
