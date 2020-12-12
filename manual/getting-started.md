@@ -14,10 +14,12 @@ What is and does XML-Micro-Exchange?
 
 It is an volatile NoSQL datasource on the internet.  
 The data source is a gathering place for data exchange for static
-web-applications and IoT or for other Internet-based modules and components.  
+web-applications and IoT or for other Internet-based modules and components.
+
 NoSQL is a hint at the feature set and support for querying and transforming
 data, as well functions for the data access. Because the data source can do
 more than just write and read data.  
+
 Volatile means that the data is not stored permanently. The data source lives
 on regular use, without this its stored data will expire.
 
@@ -81,7 +83,7 @@ There is still a simple table in the pub.
 Now comes the first guest. Opens the door to the pub, goes to the table and
 thus opens the regular's table.
 
-For the XML Micro-Exchange, this is a CONNECT request with the familiar things:
+For XML-Micro-Exchange, this is a CONNECT request with the familiar things:
 Address, Storage Identifier and name from the root element.
 
 Here it is important to know that the example in the use the full URL instead
@@ -103,45 +105,47 @@ Storage: THEREGULARSTABLEASVERYASIMPLEEXAMPLE table
 Everyone who knows the address and storage identifier and, as in our example,
 the name of the root element can participate in the regulars' table.
 
+Our first guest is John Doe.
+John knows the rituals and rules of the regulars' table and the pub.  
+_Anyone joining the regulars' table must check that it has been arranged
+correctly and do so when required._  
 
+John knows from the response status 201 that he was the first to create the
+regulars' table, that there is a guest list where he signs in as a guest and
+that there is also a section for the conversations. But he does not know
+whether someone else has joined the regulars' table in the meantime and
+followed the rule for arranging it. John's scheme could delete data that was
+created in the meantime.
 
-Our first guest is John Doe and he can't know who is coming and if they will
-know him. That's why he wants to publish his name at the regulars' table.  
-He knows how to do it, because he knows the rituals and rules of the regulars'
-table and the pub.  
-So he knows by response status 201 that he opened the regulars' table, that
-there is a guest list where he signs in as a guest and that there is also a
-section for the conversations.  
-His task now is to prepare the regulars' table.  
-In other databases, this can be compared to preparing the schema.
-What he does not know, because we are in the Internet, whether in the meantime
-someone else has come to the regulars' table.  
-The rules of the regulars' table say: Everyone who comes to the regulars'
-table must check whether the regulars' table is prepared correctly. If not he
-must do it, even if he is not the first. There are several reasons why the
-preparation of the regulars' table was not completed by the first guest.
+XML Micro-Exchange supports simultaneous accesses, but no locking mechanism.  
+The solution and also the reason why there is no locking mechanism can be found
+in the XPath functions.  
+We can initialize the regulars' table relative.  
 
-Now it gets a bit tricky because of the simultaneous accesses and because there
-is no locking mechanism.
+```
+PUT https://seanox.com/xmex!/table::last HTTP/1.0
+Storage: THEREGULARSTABLEASVERYASIMPLEEXAMPLE table
+Content-Type: application/xslt+xml
+Content-Lenght: 25
 
-So John knows the schema:
-
-```xml
-<table>
-  <guests/>
-  <conversation/>
-</table>
+<guests/>
+<conversation/>
 ```
 
-Because there is a risk that he is not alone and that his scheme could delete
-already existing data, he proceeds relatively.  
-Relative means, it does not create the complete schema, but it adds the
-sections one by one.  
-Because the rule of the regulars' table says: Always use the first element in
-the storage for a section, all participants get along with it, if sections are
-created several times.  
-So Jon creates the sections at the end of the table element and then deletes
-all superfluous elements if they are not the first.
+_Another rule to the regular table says: always use only the first element of
+elements of the sections._  
+So we can completely put the scheme at the end of the table. Even though the
+elements may exist multiple times, all participants will only use the first
+one. Through the XPath we can delete all superfluous elements in a second
+request, because we know there will be only two.  
+The cleanup is quite generous in this example.
+
+```
+DELETE https://seanox.com/xmex!/table/*[position()>2] HTTP/1.0
+Storage: THEREGULARSTABLEASVERYASIMPLEEXAMPLE table
+```
+
+Now John has arranged the regulars' table.
 
 TODO:
 
