@@ -13,8 +13,9 @@
 
 # Description
 The origin of the project is the desire for an easily accessible place for data
-exchange on the Internet. Inspired by JSON-Storages the idea of a feature-rich
-equivalent based on XML, XPath and XSLT was born.  
+exchange on the Internet.  
+Inspired by JSON-Storages the idea of a feature-rich equivalent based on XML,
+XPath and XSLT was born.  
 The focus should be on a public, volatile and short-term data exchange for
 (static) web applications and IoT.
 
@@ -117,7 +118,7 @@ TODO:
 [https://seanox.com/xmex!](https://seanox.com/xmex!) 65536 Storages x 256 kB  
 __Please do not get confused, the API is online.  
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
-answered with status 400.__
+responded with status 400.__
 
 
 # Manual
