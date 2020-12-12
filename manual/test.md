@@ -56,11 +56,12 @@ The used hash values have a tolerance, but are still very sensitive to changes
 in the code, which is deliberate. Therefore, it happens that after changes the
 behavior of unit tests is correct, but hash values need to be updated.  
 For this purpose, the file `./sources/trace.log` is created in test mode, this
-can then be compared in more detail with versions before and after a change.  
+can then be compared in more detail with versions before and after a change.
 This file then also provides the new hash values that are put into the unit
 tests with the `./test/update.js` script.  
-The script uses node.js as runtime environment and expects as argument the path
-to a trace file from which the hash values should be used.
+The script uses [node.js](https://nodejs.org) as runtime environment and
+expects as argument the path to a trace file from which the hash values should
+be used.
 
 ```
 node update.js ../sources/trace.log
