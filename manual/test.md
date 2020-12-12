@@ -49,8 +49,8 @@ testing purposes and are removed from a release during the build process.
 ```
 
 Each response contains the `Execution-Time` header, which contains the
-processing time in milliseconds. This excludes the time for creating the hash
-codes.  
+processing time in milliseconds.  
+This excludes the time for creating the hash codes.  
 
 The used hash values have a tolerance, but are still very sensitive to changes
 in the code, which is deliberate. Therefore, it happens that after changes the
