@@ -364,7 +364,7 @@ class Storage {
             (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
         $root = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$2", $storage);
-        $storage = strtoupper(preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage));
+        $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);
 
         Storage::cleanUp();
         if (!file_exists(Storage::DIRECTORY))
@@ -1769,7 +1769,7 @@ class Storage {
         // The response from the Storage-Effects header can be very extensive.
         // With the Request-Header Accept-Effects you can define which classes
         // of UIDs are returned to the client, comparable to a filter.
-        // There are the classes Case-insensitive  ADD, MODIFIED and DELETED
+        // There are the classes case-insensitive  ADD, MODIFIED and DELETED
         // and the pseudonym NONE, which deselects all classes and ALL, which
         // selects all classes.
         // If no Accept-Effects header is specified, the default is:
