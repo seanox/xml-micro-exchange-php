@@ -364,7 +364,7 @@ class Storage {
             (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
         $root = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$2", $storage);
-        $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);
+        $storage = strtoupper(preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage));
 
         Storage::cleanUp();
         if (!file_exists(Storage::DIRECTORY))
@@ -2092,6 +2092,16 @@ class Storage {
 
 set_error_handler("Storage::onError");
 set_exception_handler("Storage::onException");
+
+// The API should always be used by URI mapping, so that a separation between
+// URI and XPath is also visually recognizable. The direct call from the script
+// is responded with status 404.
+$script = basename(__FILE__);
+if (isset($_SERVER["PHP_SELF"])
+        && preg_match("/\/" . str_replace(".", "\\.", $script) . "([\/\?].*){0,1}$/", $_SERVER["PHP_SELF"])
+        && (!isset($_SERVER["REDIRECT_URL"])
+                || empty($_SERVER["REDIRECT_URL"])))
+    (new Storage)->quit(404, "Resource Not Found");
 
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
