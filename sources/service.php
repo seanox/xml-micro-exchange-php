@@ -22,7 +22,7 @@
  *     DESCRIPTION
  * 
  * XML-Micro-Exchange is a volatile RESTful micro datasource.
- * It is designed for easy communication and data exchange of web applications
+ * It is designed for easy communication and data exchange of web-applications
  * and for IoT.  
  * The XML based datasource is volatile and lives through continuous use and
  * expires through inactivity. They are designed for active and near real-time
@@ -161,15 +161,21 @@
  * Write accesses creates a lock and avoids dirty reading.
  * 
  *     ERROR HANDLING
- * Errors are communicated via the server status and the header 'Error'.
+ * Errors are communicated via the server status 500 and the header 'Error'.
  * The header 'Error' contains only an error number, for security reasons no
  * details. The error number with details can be found in the log file of the
  * service.
- * 
+ * In the case of status 400 and 422, XML-Micro-Exchange uses the additional
+ * header Message in the response, which contains more details about the error.
+ * The difference between status 400 and 422 is that status 400 always refers
+ * to the request and 422 to the request body. With status 400, errors are
+ * detected in the request itself, and with status 422, errors are detected in
+ * the content of the request body.
+ *
  *     SECURITY
  * This aspect was deliberately considered and implemented here only in a very
- * rudimentary form. Only the storage(-key) with a length of 36 characters can
- * be regarded as secret.  
+ * rudimentary form. Only the storage(-key) with a length of 1 - 64 characters
+ * can be regarded as secret.
  * For further security the approach of Basic Authentication, Digest Access
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
@@ -244,7 +250,7 @@ class Storage {
      *     Group 1. URI-Path
      *     Group 2. XPath
      */
-    const PATTERN_HTTP_REQUEST_URI = "/^(.*?)[!#$*:?@|~]+(.*)$/i";
+    const PATTERN_HTTP_REQUEST_URI = "/^(.*?)[!#\$\*:\?@\|~]+(.*)$/i";
 
     /**
      * Pattern for the Storage header
@@ -252,7 +258,7 @@ class Storage {
      *     Group 1. Storage
      *     Group 2. Name of the root element (optional)
      */    
-    const PATTERN_HEADER_STORAGE = "/^([0-9A-Z]{36})(?:\s+(\w+)){0,1}$/";
+    const PATTERN_HEADER_STORAGE = "/^(\w{1,64})(?:\s+(\w+)){0,1}$/";
 
     /**
      * Pattern to determine the structure of XPath axis expressions for attributes
@@ -559,9 +565,8 @@ class Storage {
      *         HTTP/1.0 202 Accepted
      * - Response can be status 202 if the storage already exists#
      *         HTTP/1.0 400 Bad Request
-     * - Requests without XPath are responded with status 400 Bad Request
-     * - Requests with a invalid Storage header are responded with status 400
-     *   Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - XPath is missing or malformed
      * - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
      *         HTTP/1.0 507 Insufficient Storage
      * - Response can be status 507 if the storage is full
@@ -614,9 +619,10 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
-     * - XPath is malformed
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - XPath is missing or malformed
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid
+     * - Storage does not exist
      *
      * In addition, OPTIONS can also be used as an alternative to CONNECT,
      * because CONNECT is not an HTTP standard. For this purpose OPTIONS
@@ -753,9 +759,10 @@ class Storage {
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
-     * - XPath is malformed
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - XPath is missing or malformed
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid
+     * - Storage does not exist
      * - XPath axis finds no target
      */
     function doGet() {
@@ -847,10 +854,11 @@ class Storage {
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
-     * - XPath is malformed
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - XPath is missing or malformed
      * - XSLT Stylesheet is erroneous
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid
+     * - Storage does not exist
      * - XPath axis finds no target
      *         HTTP/1.0 415 Unsupported Media Type
      * - Attribute request without Content-Type text/plain
@@ -925,6 +933,8 @@ class Storage {
      * PUT creates elements and attributes in storage and/or changes the value
      * of existing ones.
      * The position for the insert is defined via an XPath.
+     * For better understanding, the method should be called PUT INTO, because
+     * it is always based on an existing XPath axis as the parent target.
      * XPath uses different notations for elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
@@ -1004,10 +1014,11 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully created or set
      *         HTTP/1.0 400 Bad Request
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid
+     * - Storage does not exist
      * - XPath axis finds no target
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
@@ -1442,10 +1453,11 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully created or set
      *         HTTP/1.0 400 Bad Request
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid
+     * - Storage does not exist
      * - XPath axis finds no target
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
@@ -1503,7 +1515,7 @@ class Storage {
 
     /**
      * DELETE deletes elements and attributes in the storage.
-     * The position for deletion  is defined via an XPath.
+     * The position for deletion is defined via an XPath.
      * XPath uses different notations for elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
@@ -1550,10 +1562,11 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully deleted
      *         HTTP/1.0 400 Bad Request
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage is invalid
+     * - Storage does not exist
      * - XPath axis finds no target
      */
     function doDelete() {
@@ -1889,14 +1902,14 @@ class Storage {
                 if ($index !== false)
                     unset($headers[$index]);
             }
+        $headers = array_merge($headers, []);
+        asort($headers);
+
         // Storage-Effects are never the same with UIDs.
         // Therefore, the UIDs are normalized and the header is simplified to
         // make it comparable. To do this, it is only determined how many
         // unique's there are, in which order they are arranged and which
         // serials each unique has.
-        $headers = array_merge($headers, []);
-        asort($headers);
-
         $header = $fetchHeader("Storage-Effects");
         if (!empty($header)
                 && !empty($header->value)) {
