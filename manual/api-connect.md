@@ -132,9 +132,8 @@ the initial version without changes.
 - Response can be status 202 if the storage already exists
 
 ### HTTP/1.0 400 Bad Request
-- Requests without XPath are responded with status 400 Bad Request
-- Requests with a invalid Storage header are responded with status 400  
-  Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
+- Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+- XPath is missing or malformed
 - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
 
 ### HTTP/1.0 507 Insufficient Storage

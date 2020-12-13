@@ -160,11 +160,12 @@ Execution-Time: 3
   quits the success of the method and the `Storage-Effects` header the effects
 
 ### HTTP/1.0 400 Bad Request
+- Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
 - XPath is missing or malformed
 - XPath without addressing a target is responded with status 204
 
 ### HTTP/1.0 404 Resource Not Found
-- Storage is invalid  
+- Storage does not exist 
 - XPath axis finds no target
 
 ### HTTP/1.0 413 Payload Too Large

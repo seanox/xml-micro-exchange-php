@@ -94,11 +94,12 @@ Execution-Time: 4
 - Request was successfully executed
 
 ### HTTP/1.0 400 Bad Request
-- XPath is malformed
+- Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+- XPath is missing or malformed
 - XSLT Stylesheet is erroneous
 
 ### HTTP/1.0 404 Resource Not Found
-- Storage is invalid 
+- Storage does not exist
 - XPath axis finds no target
 
 ### HTTP/1.0 415 Unsupported Media Type

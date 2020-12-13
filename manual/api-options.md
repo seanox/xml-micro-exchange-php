@@ -74,10 +74,11 @@ TODO:
 - Request was successfully executed
 
 ###  HTTP/1.0 400 Bad Request
-- XPath is malformed
+- Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+- XPath is missing or malformed
 
 ### HTTP/1.0 404 Resource Not Found
-- Storage is invalid 
+- Storage does not exist
 
 In addition, OPTIONS can also be used as an alternative to CONNECT, because
 CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
@@ -154,9 +155,8 @@ Execution-Time: 3
 - Response can be status 202 if the storage already exists
 
 ### HTTP/1.0 400 Bad Request
-- Requests without XPath are responded with status 400 Bad Request
-- Requests with a invalid Storage header are responded with status 400  
-  Bad Request, exactly 36 characters are expected - Pattern [0-9A-Z]{36}
+- Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+- XPath is missing or malformed
 - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
 
 ### HTTP/1.0 507 Insufficient Storage
