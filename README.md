@@ -17,13 +17,13 @@ exchange on the Internet.
 Inspired by JSON-Storages the idea of a feature-rich equivalent based on XML,
 XPath and XSLT was born.  
 The focus should be on a public, volatile and short-term data exchange for
-(static) web applications and IoT.
+(static) web-applications and IoT.
 
 __Just exchange data without a own server landscape.__  
 __Just exchange data without knowing and managing all clients.__
 
 XML-Micro-Exchange is a volatile RESTful micro datasource.  
-It is designed for easy communication and data exchange of web applications and
+It is designed for easy communication and data exchange of web-applications and
 for IoT.  
 The XML based datasource is volatile and lives through continuous use and
 expires through inactivity. They are designed for active and near real-time data
@@ -33,7 +33,7 @@ access, data transformation, and volatile short-term storage.
 
 __Why all this?__
 
-Static web applications on different clients want to communicate with each
+Static web-applications on different clients want to communicate with each
 other, e.g. for games, chats and collaboration.
 
 Smart sensors want to share their data and smart devices want to access this
@@ -79,8 +79,8 @@ transmitted via POST.
 
 ## Security
 This aspect was deliberately considered and implemented here only in a very
-rudimentary form. Only the storage(-key) with a length of 36 characters can be
-regarded as secret.  
+rudimentary form. Only the storage(-key) with a length of 1 - 64 characters can
+be regarded as secret.  
 For further security the approach of Basic Authentication, Digest Access
 Authentication and/or Server/Client certificates is followed, which is
 configured outside of the XMEX (XML-Micro-Exchange) at the web server.
