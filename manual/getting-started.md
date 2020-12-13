@@ -155,7 +155,7 @@ Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
 
 Now John has arranged the regulars' table.
 
-John is now waiting for more guests, the server and the innkeeper.  
+John is now waiting for more guests and the innkeeper.  
 So that all notice him, he puts his name in the guest list.
 
 ```
@@ -170,6 +170,28 @@ Content-Lenght: 56
 John could make sure and check beforehand if there are people with the same
 name and he could delete any duplicate entries.  
 We ignore that in this example.
+
+While John waits, he sends pull requests to keep the storage with the data and
+to get the revision from the storage.
+
+```
+OPTIONS https://seanox.com/xmex! HTTP/1.0
+Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+```
+
+The revision is applied to all elements in the storage. It is a counter of
+changes in the storage per request. When the data in the storage is changed
+with a request, the counter is incremented. The newly calculated revision is
+then set for all changed elements and recursively for all parent elements. This
+way the root element always has the latest revision. The clients can use the
+revision to find out if there are changes on the element level.  
+Technically, the revision is the `___rev` attribute in the XML file from the
+storage. All elements have this attribute, which is managed by the storage. The
+`___rev` attribute is read-only.
+
+John also uses the revision.  
+If the revision of the storage changes, he knows that the data for the
+regulars' table has changed. This way he doesn't have to monitor all the data.
 
 
 ## More Guests are Coming
@@ -235,12 +257,13 @@ John notices the new guests and greets everyone.
 ```
 GET https://seanox.com/xmex!count(/table/guests[1]/persons/person)>1 HTTP/1.0
 Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
-Content-Type: text/plain
 ```
 
 With the support of XPath functions, the query for new guests can be
 implemented like this.  
-The response is `true` or `false`.
+The response is `true` or `false`.  
+A Content-Type is not required for the request. Return values of an XPath
+function are always of type `text/plain`.
 
 TODO:
 
