@@ -72,7 +72,7 @@ client.test("unittest", function() {
 %}
 
 ###
-# The storage identifier is case-insensitive
+# The storage identifier is case-sensitive
 # Expectations:
 # - Status code 202 Accepted
 CONNECT {{service}} HTTP/1.0
@@ -85,15 +85,15 @@ client.test("unittest", function() {
 %}
 
 ###
-# The storage identifier is case-insensitive
+# The storage identifier is case-sensitive
 # Expectations:
-# - Status code 202 Accepted
+# - Status code 201 Resource Created
 CONNECT {{service}} HTTP/1.0
 Storage: C________10________20________30________40________50________60__a
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "341579322b160bded169f9de52d4cb9b");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9c27e3f985b57fb2c67ce62cd6c813a2");
 });
 %}
 
@@ -149,7 +149,7 @@ Storage: {{storage_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d5e4fd39417edceea3cc20e7cf61600f");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0a26978d1edecbe47cf3b0d7ed9e57ae");
 });
 %}
 
@@ -164,7 +164,7 @@ Storage: {{storage_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "152a0a8cb823384d77ec8af2a4989a62");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6a6ae22584bd01f40ae1da2c8348d2d0");
 });
 %}
 
@@ -177,7 +177,7 @@ Storage: {{storage_connect}} bookS
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "60003fc7558af7f3b0ad8fa60715066a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8a216e276a45ea9e9b771c66d06798e4");
 });
 %}
 
@@ -191,7 +191,7 @@ Storage: {{storage_connect}} books x
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e4083f68db7a25e97b21269d25f9f9cc");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8c9ebab0755662e6c2b0bdb62484eced");
 });
 %}
 
@@ -207,7 +207,7 @@ Storage: {{storage_connect}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5d4ba6fd338ce059feb0b99ebedf7124");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "995c59e4c2e65b76c188fc3f6c78dad2");
 });
 %}
 
