@@ -33,30 +33,94 @@ client.test("unittest", function() {
 %}
 
 ###
-# Header Storage is to short/invalid
-# Expectations:
-# - Status code 400 Bad Request
-# - Message: Invalid storage identifier
-CONNECT {{service}} HTTP/1.0
-Storage: 0000000000000000000000000000000000C
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "61a78f8497ebec812f075d25a260e83e");
-});
-%}
-
-###
 # Header Storage is to long/invalid
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
-Storage: 0000000000000000000000000000000000C0X
+Storage: C________10________20________30________40________50________60____
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9a278f1c75367e2bdf5650b4214cff29");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3be8c8592f41c531ba4cb44cc37ffe21");
+});
+%}
+
+###
+# Expectations:
+# - Status code 201 Resource Created
+CONNECT {{service}} HTTP/1.0
+Storage: C________10________20________30________40________50________60___
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f47b9a4121d9b0af25b6d0cef56baeb1");
+});
+%}
+
+###
+# The storage identifier with the max. length
+# Expectations:
+# - Status code 201 Resource Created
+CONNECT {{service}} HTTP/1.0
+Storage: C________10________20________30________40________50________60__A
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d5018f587b7e386b823ea133e9d1a65a");
+});
+%}
+
+###
+# The storage identifier is case-insensitive
+# Expectations:
+# - Status code 202 Accepted
+CONNECT {{service}} HTTP/1.0
+Storage: C________10________20________30________40________50________60__A
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "001bc21796b3f607548fc34fa7b355d5");
+});
+%}
+
+###
+# The storage identifier is case-insensitive
+# Expectations:
+# - Status code 202 Accepted
+CONNECT {{service}} HTTP/1.0
+Storage: C________10________20________30________40________50________60__a
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9c27e3f985b57fb2c67ce62cd6c813a2");
+});
+%}
+
+###
+# The storage identifier with the min. length
+# Expectations:
+# - Status code 201 Resource Created
+CONNECT {{service}} HTTP/1.0
+Storage: C
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "472d60bfc19e32fd3378ed5da45d619e");
+});
+%}
+
+###
+# The storage identifier with with invalid character(s)
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid storage identifier
+CONNECT {{service}} HTTP/1.0
+Storage: ?
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5a492eb218bdfe58f6b865ebc97ca2e3");
 });
 %}
 
