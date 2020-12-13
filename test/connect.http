@@ -93,7 +93,7 @@ Storage: C________10________20________30________40________50________60__a
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9c27e3f985b57fb2c67ce62cd6c813a2");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "341579322b160bded169f9de52d4cb9b");
 });
 %}
 

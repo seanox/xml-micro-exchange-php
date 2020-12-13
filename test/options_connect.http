@@ -92,7 +92,7 @@ Storage: O________10________20________30________40________50________60__a
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "940fbf0de26df46ce85c66f8f631e8e2");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7eaadd006de706d2591dfb4af0fe13b1");
 });
 %}
 
