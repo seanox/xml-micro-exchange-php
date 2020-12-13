@@ -298,9 +298,12 @@ class Storage {
      */
     function __construct($storage = null, $root = null, $xpath = null) {
 
+        // The storage identifier is case-sensitive.
+        // To ensure that this also works with Windows, Base64 encoding is used.
+
         $this->storage  = $storage;
         $this->root     = $root ? $root : "data";
-        $this->store    = Storage::DIRECTORY . "/" . $this->storage; 
+        $this->store    = Storage::DIRECTORY . "/" . base64_encode($this->storage);
         $this->xpath    = $xpath;
         $this->change   = false;
         $this->unique   = Storage::uniqueId();  
