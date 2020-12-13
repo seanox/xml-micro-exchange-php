@@ -553,7 +553,7 @@ client.test("unittest", function() {
 # But the request can be sent via Console + Telnet.
 #     telnet 127.0.0.1 80
 #     GET /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld HTTP/1.0
-#     Storage: 0000000000000000000000000000000000R0 books
+#     Storage: UnitTest_Storage_R0 books
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 85

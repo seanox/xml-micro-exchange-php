@@ -93,7 +93,7 @@ Storage: C________10________20________30________40________50________60__a
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9c27e3f985b57fb2c67ce62cd6c813a2");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "54278ffa5a062bdc74d8f56a16bda139");
 });
 %}
 
@@ -125,16 +125,16 @@ client.test("unittest", function() {
 %}
 
 ###
-# Header Storage is to long/invalid
+# Header Storage is to invalid
 # Expectations:
 # - Status code 400 Bad Request
 # - Message: Invalid storage identifier
 CONNECT {{service}} HTTP/1.0
-Storage: 000000000000000000000000000000000-C0
+Storage: UnitTest_Storage-C0
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5e8649f975a8a0319475a56740def049");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6acf462d86898b81fde6504333125e79");
 });
 %}
 
@@ -199,7 +199,7 @@ client.test("unittest", function() {
 # Name of the root element is not correct.
 # Without specification the default 'data' is used.
 #   Storage header corresponds to: 
-# Storage: 0000000000000000000000000000000000C0 data 
+# Storage: UnitTest_Storage_C0 data
 # Expectations:
 # - Status code 404 Resource Not Found
 CONNECT {{service}} HTTP/1.0
