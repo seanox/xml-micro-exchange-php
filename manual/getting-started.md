@@ -62,14 +62,15 @@ error status is normal for requests without storage identifier.
 The storage identifier is 1 - 64 characters long and consists only of numbers,
 upper/lower case letters and underscore. Any character string can be used.
 
-For our example, we will derive the storage identifier from the following old
-Berlin address.
+For our example, we will derive the storage identifier from the following
+fictitious address:
 
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Wagner-Eck  
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Siegfriedstr. 1  
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1130 Berlin
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Blue Bear  
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;12 East 8th Street  
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;New York, NY 10003
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;USA
 
-__Storage Identifier:__ `DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01`
+__Storage Identifier:__ `US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01`
 
 Here it is important to understand that we are in a public space and cannot
 exclude that the storage identifier is already used, which can be queried. If
@@ -98,7 +99,7 @@ of the usual URI.
 
 ```
 CONNECT https://seanox.com/xmex! HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
 Because CONNECT is not a standard HTTP method, the OPTIONS method can also be
@@ -106,7 +107,25 @@ used.
 
 ```
 OPTIONS https://seanox.com/xmex! HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+```
+
+In both cases, the request is responded to with the response header
+`Connection-Unique`. This unique ID can then be used by the client if it wants
+to use connection- or session-specific keys in the storage.
+
+```
+HTTP/1.0 202 Accepted / 201 Resource Created
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
+Storage-Revision: 0
+Storage-Space: 262144/83
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Connection-Unique: ABI0ZX99X13M
+Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+Execution-Time: 6 ms
 ```
 
 Everyone who knows the address and storage identifier and, as in our example,
@@ -131,7 +150,7 @@ We can initialize the regulars' table relative.
 
 ```
 PUT https://seanox.com/xmex!/table::last HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 49
 
@@ -140,6 +159,23 @@ Content-Lenght: 49
   <conversation/>
 </guests>
 ```
+```
+HTTP/1.0 204 No Content
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage-Effects: KIO4IVSL12OS:0:A KIO4IV7C12OP:0:M KIO4IVSL12OS:1:A KIO4IVSL12OS:2:A
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
+Storage-Revision: 1
+Storage-Space: 262144/244
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Connection-Unique: ABI0ZX99X13M
+Execution-Time: 6 ms
+```
+
+Each request that causes changes in the storage is responded to with an
+overview of the effects in the response header `Storage-Effects` -- more about
+this later.
 
 ___A rule from the regulars' table: Always use only the first element of
 elements of the sections.___
@@ -150,7 +186,7 @@ request, because we know there will be only two.
 
 ```
 DELETE https://seanox.com/xmex!/table/guests[position()>1] HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
 Now John has arranged the regulars' table.
@@ -160,7 +196,7 @@ So that all notice him, he puts his name in the guest list.
 
 ```
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 56
 
@@ -176,18 +212,29 @@ to get the revision from the storage.
 
 ```
 OPTIONS https://seanox.com/xmex! HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+```
+```
+HTTP/1.0 202 Accepted
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
+Storage-Revision: 2
+Storage-Space: 262144/344
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Connection-Unique: ABI0ZX99X13M
+Execution-Time: 6 ms
 ```
 
-The revision is applied to all elements in the storage. It is a counter of
-changes in the storage per request. When the data in the storage is changed
-with a request, the counter is incremented. The newly calculated revision is
-then set for all changed elements and recursively for all parent elements. This
-way the root element always has the latest revision. The clients can use the
-revision to find out if there are changes on the element level.  
-Technically, the revision is the `___rev` attribute in the XML file from the
-storage. All elements have this attribute, which is managed by the storage. The
-`___rev` attribute is read-only.
+The revision is a counter for changes in storage per request.  
+If a request causes changes in the storage, no matter how many, the counter is
+automatically incremented. The revision is managed by the storage. It is an
+read only attribute named `___rev` that is automatically added to all elements.  
+When changes are made in the storage, the revision is updated from the affected
+element and recursively from all parent elements. This ensures that the root
+element always has the latest revision. Clients can use the revision to detect
+changes at the element level without monitoring the complete storage.
 
 John also uses the revision.  
 If the revision of the storage changes, he knows that the data for the
@@ -207,11 +254,11 @@ know the state of the regulars' table, they arrange it in the same way as John.
 
 ```
 OPTIONS https://seanox.com/xmex! HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 ```
 PUT https://seanox.com/xmex!/table::last HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 49
 
@@ -222,14 +269,14 @@ Content-Lenght: 49
 ```
 ```
 DELETE https://seanox.com/xmex!/table/guests[position()>1] HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
 And they also put their names in the guest list.
 
 ```
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 56
 
@@ -237,7 +284,7 @@ Content-Lenght: 56
 ```
 ```
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 5
 
@@ -245,7 +292,7 @@ Content-Lenght: 5
 ```
 ```
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 57
 
@@ -256,7 +303,7 @@ John notices the new guests and greets everyone.
 
 ```
 GET https://seanox.com/xmex!count(/table/guests[1]/persons/person)>1 HTTP/1.0
-Storage: DE_1130_BERLIN_SIEGFRIESTR_1_WAGNER_ECK_T_01 table
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
 With the support of XPath functions, the query for new guests can be
