@@ -101,7 +101,7 @@ Storage-Space: 262144/87
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
 Connection-Unique: ABI0ZX99X13M
-Execution-Time: 3
+Execution-Time: 3 ms
 ```
 Response if the storage was newly created.  
 Also recognizable by the initial revision 0 in the Storage-Revision header.
@@ -116,7 +116,7 @@ Storage-Space: 262144/87
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
 Connection-Unique: ABI0ZX99X13M
-Execution-Time: 3
+Execution-Time: 3 ms
 ```
 Response, if the storage already exists.  
 The initial revision 0 in the storage revision header shows that this is still
