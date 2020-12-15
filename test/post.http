@@ -310,7 +310,7 @@ Quarters of district: <xsl:value-of select="/district/@name"/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "190f96a4f9d44c33ec000b37757cbb98");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "46229e697d1fd09323d7758c84cba245");
 });
 %}
 
