@@ -1896,7 +1896,7 @@ class Storage {
 
         // Response-Header-Hash
         // Only the XMEX relevant headers are used.
-        $filter = ["Allow", "Storage", "Storage-Revision", "Storage-Space", "Content-Length", "Content-Type", "Message"];
+        $filter = ["Allow", "Storage", "Storage-Revision", "Storage-Space", "Content-Length", "Message"];
         $filter = array_map("strtolower", $filter);
         $headers = headers_list();
         foreach ($headers as $header)
@@ -1905,8 +1905,14 @@ class Storage {
                 if ($index !== false)
                     unset($headers[$index]);
             }
-        $headers = array_merge($headers, []);
+
+        // Optional meta info like charset or encoding in the Content-Type are removed
+        $header = $fetchHeader("Content-Type", false);
+        if ($header)
+            $headers[] = "Content-Type: " . preg_replace("/^(.*?)(\;.*){0,1}$/", "$1", $header->value);
         asort($headers);
+
+        $headers = array_merge($headers, []);
 
         // Storage-Effects are never the same with UIDs.
         // Therefore, the UIDs are normalized and the header is simplified to
