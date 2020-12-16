@@ -1,12 +1,5 @@
 #.htaccess
-#ErrorDocument 400 http://<domain.tld>/error/status-400
-#ErrorDocument 401 http://<domain.tld>/error/status-401
-#ErrorDocument 403 http://<domain.tld>/error/status-403
-#ErrorDocument 404 http://<domain.tld>/error/status-404
-#ErrorDocument 405 http://<domain.tld>/error/status-405
-#ErrorDocument 500 http://<domain.tld>/error/status-500
-#ErrorDocument 503 http://<domain.tld>/error/status-503
-
 RewriteEngine on
-RewriteRule (^xmex!.*) service.php [END]
+RewriteRule (^xmex!.*) service.php [L]
+RewriteRule service.php - [L]
 RewriteRule (.*) - [R=404,L]
