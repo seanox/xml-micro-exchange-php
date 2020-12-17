@@ -64,9 +64,10 @@ that time, or is another regular table for other guests, can be ignored.
 
 In the context of the XML-Micro-Exchange, the regulars' table is an XML file
 called Storage.  
-Each storage has a 1 - 64 character name consisting only of numbers and letters.
-Optionally there is a name for the root element, as default `data` is used.
-Which are the two secrets a regulars' table can have.  
+Each storage has a 1 - 64 characters long and consists only of numbers,
+upper/lower case letters and underscore. Optionally there is a name for the
+root element, as default `data` is used. Which are the two secrets a regulars'
+table can have.  
 
 
 ## Place and Address
