@@ -12,18 +12,25 @@ datasource and are described in separate chapters.
 
 What is and does XML-Micro-Exchange?
 
-It is an volatile NoSQL datasource on the internet.  
-The data source is a gathering place for data exchange for static
+It is an volatile NoSQL stateless micro datasource for the internet.  
+The datasource is a gathering place for data exchange for static
 web-applications and IoT or for other Internet-based modules and components.
 
-NoSQL is a hint at the feature set and support for querying and transforming
-data, as well functions for the data access. Because the data source can do
-more than just write and read data.  
-
-Volatile means that the data is not stored permanently. The data source lives
+Volatile means that the data is not stored permanently. The datasource lives
 on regular use, without this its stored data will expire.
 
-Think of the data source as a regulars' table in a pub in their town.  
+NoSQL is a hint at the feature set and support for querying and transforming
+data, as well functions for the data access. Because the datasource can do
+more than just write and read data.  
+
+Stateless, as all requests are processed independently with the current state
+of the data. There are no transactions and no fixed connections.
+
+Micro, because the datasource is more of a data cell. The storage space is
+recommended less than 1 MB. That sounds small but is very much for a stateless
+communication.
+
+Think of the datasource as a regulars' table in a pub in their town.  
 Anyone who knows the address can come.  
 They are in the public space and yet private.  
 Everyone is equal. Only the participants have their rituals and rules, but not
@@ -33,6 +40,19 @@ which data and in which form he brings in or takes out.
 
 In the following, we will take a closer look at the regulars' table and
 understand, implement and use.
+
+
+## Contents Overview
+
+* [The Regulars' Table](#the-regulars-table)
+* [Place and Address](#place-and-address)
+* [The First Guest](#the-first-guest)
+* [More Guests are Coming](#more-guests-are-coming)
+* [Small Talk](#small-talk)
+* [The Innkeeper](#the-innkeeper)
+* [The Eavesdropping Statistician](#the-eavesdropping-statistician)
+* [A Clean Sendoff](#a-clean-sendoff)
+* [Final End](#final-end)
 
 
 ## The Regulars' Table
@@ -67,7 +87,7 @@ fictitious address:
 
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Blue Bear  
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;12 East 8th Street  
-&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;New York, NY 10003
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;New York, NY 10003  
 &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;USA
 
 __Storage Identifier:__ `US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01`
@@ -207,8 +227,8 @@ John could make sure and check beforehand if there are people with the same
 name and he could delete any duplicate entries.  
 We ignore that in this example.
 
-While John waits, he sends pull requests to keep the storage with the data and
-to get the revision from the storage.
+While John waits, he uses polling and sends repeated requests to keep the
+storage with the data and to get the revision from the storage.
 
 ```
 OPTIONS https://seanox.com/xmex! HTTP/1.0
@@ -286,7 +306,7 @@ Content-Lenght: 56
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 5
+Content-Lenght: 58
 
 <person name="Mike Ross" email="mike.ross@example.local"/>
 ```
@@ -299,7 +319,10 @@ Content-Lenght: 57
 <person name="Dan Star" email="dan.star@@example.local"/>
 ```
 
-John notices the new guests and greets everyone.
+John notices something happening at the regulars' table.  
+In the response to the OPTIONS request, which is sent periodically (polling),
+the revision changed. It is time to look at the guest list and so he notices
+the new guests and greets everyone.
 
 ```
 GET https://seanox.com/xmex!count(/table/guests[1]/persons/person)>1 HTTP/1.0
@@ -311,6 +334,175 @@ implemented like this.
 The response is `true` or `false`.  
 A Content-Type is not required for the request. Return values of an XPath
 function are always of type `text/plain`.
+
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 88
+
+<message from="john.doe@example.local">Hello, nice to meet you all. I am John.</message>
+```
+
+The other guests also realize that they are in companionship and greet the round and introduce themselves.
+
+```
+GET https://seanox.com/xmex!count(/table/guests[1]/persons/person)>1 HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 88
+
+<message from="jane.doe@example.local">Hello, nice to meet you all. I am Jane.</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 89
+
+<message from="mike.ross@example.local">Hello, nice to meet you all. I am Mike.</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 88
+
+<message from="dan.star@@example.local">Hello, nice to meet you all. I am Dan.</message>
+```
+
+## Small Talk
+
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 78
+
+<message from="dan.star@@example.local">
+    Where do you come from?</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 100
+
+<message from="john.doe@example.local">
+    I'm from Hempstead and have a small bookstore.</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 102
+
+<message from="jane.doe@example.local">
+    I live in Long Island and have an antique store.</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 117
+
+<message from="mike.ross@example.local">
+    I live in Queens, work for a shipping company on a cargo ship.</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 96
+
+<message from="dan.star@@example.local">
+    I work and live in Yonkers as a gardener.</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 107
+
+<message from="dan.star@@example.local">
+    In this beautiful weather I arrived with my scooter.</message>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 82
+
+<message from="dan.star@@example.local">
+    I like to look at the city.</message>
+```
+
+___A rule from the regulars' table: Maintain your conversation, but do not save
+more than 5 messages.___
+
+XML Micro-Exchange is a place to exchange information. Active participants
+should actively communicate here. However, it is not intended to be a classic
+data store for archiving. The participants should have the change to read and
+process the data in rest and to provide new data and no more.
+
+A small talk or a chat quickly collects a lot of data.  
+Even this flood of data can be well managed and cleaned with XPath functions
+and this without transactions.
+
+```
+DELETE https://seanox.com/xmex!//conversation[1]/message[position()<=count(//conversation[1]/message)-5] HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+```
+
+This request deletes all messages, except the max. last five.
+
+Let's look at the response.
+Here the effect on the storage is visible in the Storage-Effects header. This header contains the UIDs of the elements that are directly affected by the request. We get back the UIDs of all deleted and modified elements.
+
+```
+HTTP/1.0 204 No Content
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage-Effects: KISQNB6B14NT:0:D KISQNABR14NI:2:M KISQNB9814NU:0:D
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
+Storage-Revision: 15
+Storage-Space: 262144/1321
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Execution-Time: 4 ms
+```
+
+Then here is also a good place to clarify the misunderstanding of the server
+status 404.  
+The 404 status refers to storage and XPath (target).
+Storage and XPath can be compared with HOST and URI, if one cannot be found,
+the request is responded with status 404.
+
+In our case, if the request is repeated and the XPath axis cannot address any elements to be deleted,
+for example because there are less than 5 messages in the conversation,
+the request is responded with status 404.
+
+
+## The Innkeeper
+
+TODO:
+
+
+## The Eavesdropping Statistician
+
+TODO:
+
+
+## A Clean Sendoff
+
+TODO:
+
+
+## Final End
 
 TODO:
 
