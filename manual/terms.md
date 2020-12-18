@@ -88,13 +88,24 @@ effect from then on and are therefore not listed in the response header
 Each element uses a unique identifier in the form of the read-only attribute
 `___uid`. The unique identifier is automatically created when an element is put
 into storage and never changes.  
-If elements are created or modified by a request, the created or affected unique
-identifiers are sent to the client in the response header `Storage-Effects`.
+If elements are created, modified or deleted by a request, the created or
+affected unique identifiers are sent to the client in the response header
+`Storage-Effects`.
 
 The UID uses an alphanumeric format based on radix 36 which, when converted into
 a number, gives the timestamps of the creation in milliseconds since 01/01/2000.  
 The UID is thus also sortable and provides information about the order in which
-elements are created.
+elements are created.  
+In the `Storage-Effects` header the UID are extended by an additional suffix,
+which tells what happened to the element. Supported are `:A` for added, `:M`
+for modified and `:D` for deleted.  
+Because the content in the `Storage-Effects` header can be very large, the
+scope can be controlled with the `Accept-Effects` header. A space-separated
+list of desired contents is expected as values.  
+Supported are: `ALL`, `NONE`, `ADDED`, `MODIFIED`, `DELETED` (case-insensitive).  
+For all requests except DELETE, no deleted items are output in the
+`Storage-Effects` header, this must be deliberately enabled with
+`Accept-Effects` header.
 
 Write accesses to attribute `___uid` are accepted with status 204, will have no
 effect from then on and are therefore not listed in the response header
