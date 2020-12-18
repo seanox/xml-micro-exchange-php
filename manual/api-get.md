@@ -31,6 +31,10 @@ element of the returned XML structure.
 If the XPath addresses multiple targets, their XML structure is combined in the
 root element collection.
 
+Content-Type: `text/plain`
+If the XPath addresses exactly one attribute, the value is returned as text.
+
+
 ## XPath function
 
 Content-Type: `text/plain`  
