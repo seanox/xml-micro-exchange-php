@@ -65,7 +65,8 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
 Storage-Revision: Revision (number)   
 Storage-Space: Total/Used (bytes)
 Storage-Last-Modified: Timestamp (RFC822)
-Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+Storage-Expiration: Timestamp (RFC822)
+Storage-Expiration-Time: Timeout (milliseconds)
 Content-Length: (bytes)
 ```
 
@@ -77,9 +78,10 @@ Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: 1
-Storage-Space: 262144/14384
+Storage-Space: 262144/14384 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Content-Length: 26
 Execution-Time: 4 ms
 

@@ -29,7 +29,8 @@ Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: 123
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Execution-Time: 9 ms
 Trace-Request-Header-Hash: 1779972845e8da0e4b584dbff411a96f
 Trace-Request-Body-Hash: a698f9151a9bb0f9f70fa1d1373b131f

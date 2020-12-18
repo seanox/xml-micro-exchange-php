@@ -76,7 +76,8 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: Revision (number) 
 Storage-Space: Total/Used (bytes)
 Storage-Last-Modified: Timestamp (RFC822)
-Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+Storage-Expiration: Timestamp (RFC822)
+Storage-Expiration-Time: Timeout (milliseconds)
 Connection-Unique: UID
 ```
 ``` 
@@ -85,7 +86,8 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: Revision (number)
 Storage-Space: Total/Used (bytes)
 Storage-Last-Modified: Timestamp (RFC822)
-Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+Storage-Expiration: Timestamp (RFC822)
+Storage-Expiration-Time: Timeout (milliseconds)
 Connection-Unique: UID
 ```
 
@@ -97,9 +99,10 @@ Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: 0
-Storage-Space: 262144/87
+Storage-Space: 262144/87 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Connection-Unique: ABI0ZX99X13M
 Execution-Time: 3 ms
 ```
@@ -112,9 +115,10 @@ Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: 0
-Storage-Space: 262144/87
+Storage-Space: 262144/87 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Connection-Unique: ABI0ZX99X13M
 Execution-Time: 3 ms
 ```
