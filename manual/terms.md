@@ -96,12 +96,12 @@ The UID uses an alphanumeric format based on radix 36 which, when converted into
 a number, gives the timestamps of the creation in milliseconds since 01/01/2000.  
 The UID is thus also sortable and provides information about the order in which
 elements are created.  
+
 In the `Storage-Effects` header the UID are extended by an additional suffix,
 which tells what happened to the element. Supported are `:A` for added, `:M`
-for modified and `:D` for deleted.  
-Because the content in the `Storage-Effects` header can be very large, the
-scope can be controlled with the `Accept-Effects` header. A space-separated
-list of desired contents is expected as values.  
+for modified and `:D` for deleted. Because the content in the `Storage-Effects`
+header can be very large, the scope can be controlled with the `Accept-Effects`
+header. A space-separated list of desired contents is expected as values.  
 Supported are: `ALL`, `NONE`, `ADDED`, `MODIFIED`, `DELETED` (case-insensitive).  
 For all requests except DELETE, no deleted items are output in the
 `Storage-Effects` header, this must be deliberately enabled with
