@@ -59,7 +59,6 @@ Also the reponse  has additional headers.
       </td>
     </tr>
     <tr>
-    <tr>
       <td>
         Storage
       </td>
