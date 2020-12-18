@@ -3,7 +3,7 @@
 
 # API
 
-The API uses the HTTP with the following additional headers.
+The API uses the HTTP with additional request headers.
 
 <table>
   <thead>
@@ -34,6 +34,11 @@ The API uses the HTTP with the following additional headers.
       </td>
     </tr>
   </tbody>
+</table>
+
+Also the Reponse header has additional headers.
+
+<table>
   <thead>
     <tr>
       <th>
