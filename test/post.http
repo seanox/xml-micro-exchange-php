@@ -230,19 +230,19 @@ Content-Type: application/xslt+xml
     <city name="{$city}" area="{$area}">
       <areas>
       <xsl:for-each select="//city[@name='Berlin']//district">
-	      <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
+	    <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
         <xsl:variable name="district" select="@name"/>
         <xsl:variable name="sum" select="sum(.//quarter/@area)"/>
         <area district="{$district}" sum="{$sum}"/>
       </xsl:for-each>
-	    </areas>
+	  </areas>
     </city>	
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f16ef8b58ede676f9b03094150252627");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2f1ea328bbac65f31ee4a6922522dcd2");
 });
 %}
 
@@ -332,19 +332,19 @@ Content-Type: application/xslt+xml-x
     <city name="{$city}" area="{$area}">
       <areas>
       <xsl:for-each select="//city[@name='Berlin']//district">
-	      <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
+	    <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
         <xsl:variable name="district" select="@name"/>
         <xsl:variable name="sum" select="sum(.//quarter/@area)"/>
         <area district="{$district}" sum="{$sum}"/>
       </xsl:for-each>
-	    </areas>
+	  </areas>
     </city>	
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c17d4222d32c4fd9dd02440278755d33");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a2de0329bcb910edd87741f25430013a");
 });
 %}
 
@@ -402,19 +402,19 @@ Content-Type: application/xslt+xml
     <city name="{$city}" area="{$area}">
       <areas>
       <xsl:for-each select="//city[@name='Berlin']//district">
-	      <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
+	    <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
         <xsl:variable name="district" select="@name"/>
         <xsl:variable name="sum" select="sum(.//quarter/@area)"/>
         <area district="{$district}" sum="{$sum}"/>
       </xsl:for-each>
-	    </areas>
+	  </areas>
     </city>	
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5901700c0826f32c40cb2cce010bc1cf");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "14e63d973e14ac3c75135e7debbd1c9e");
 });
 %}
 
@@ -437,19 +437,19 @@ Content-Type: application/xslt+xml
     <city name="{$city}" area="{$area}">
       <areas>
       <xsl:for-each select="//city[@name='Berlin']//district">
-	      <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
+	    <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
         <xsl:variable name="district" select="@name"/>
         <xsl:variable name="sum" select="sum(.//quarter/@area)"/>
         <area district="{$district}" sum="{$sum}"/>
       </xsl:for-each>
-	    </areas>
+	  </areas>
     </city
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fad7eec40785a6a12af6b851065aab45");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8b38fc1bd964ed96818d1b7aef4aacf2");
 });
 %}
 
@@ -472,18 +472,18 @@ Content-Type: application/xslt+xml
     <city name="{$city}" area="{$area}">
       <areas>
       <xsl:for-each select="//city[@name='Berlin']//district">
-	      <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
+	    <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
         <xsl:variable name="district" select="@name"/>
         <xsl:variable name="sum" select="sum(.//quarter/@area)"/>
         <area district="{$district}" sum="{$sum}"/>
       </xsl:for-each>
-	    </areas>
+	  </areas>
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "441a516cff989c8b63294f7e99475be0");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2242a36e4685ff6f906670da05ae646f");
 });
 %}
 
@@ -506,19 +506,19 @@ Content-Type: application/xslt+xml
     <city name="{$city}" area="{$area}">
       <areas>
       <xsl:for-each select="//city[@name='Berlin']//district">
-	      <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
+	    <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
         <xsl:variable name="district" select="@name"/>
         <xsl:variable name="sum" select="sumx(.//quarter/@area)"/>
         <area district="{$district}" sum="{$sum}"/>
       </xsl:for-each>
-	    </areas>
+	  </areas>
     </city>	
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a23eb18ce25a9c8efbed39f8ce5d8b22");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f2e863cc550b8e23ee5cb225b0b74f73");
 });
 %}
 
@@ -541,19 +541,19 @@ Content-Type: application/xslt+xml
     <city name="{$city}" area="{$area}">
       <areas>
       <xsl:for-each select="//city[@name='Berlin']//district">
-	      <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
+	    <xsl:sort select="concat(string-length(round(sum(.//quarter/@area))), round(sum(.//quarter/@area)))" order="descending"/>
         <xsl:variable name="district" select="@name"/>
         <xsl:variable name="sum" select="sum(.//quarter/@area)"/>
         <area district="{$district}" sum="{$sum}"/>
       </xsl:for-each>
-	    </areas>
+	  </areas>
     </city>	
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a69292f3ffee4df902d6c2d289dd629a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2264540253e7965730125b1820e51864");
 });
 %}
 
@@ -696,7 +696,11 @@ client.test("unittest", function() {
 %}
 
 ###
-#//district[@name='Mitte']|//district[@name='Spandau']
+# XPath with serveral elements as target should work
+# Expectations:
+# - Content-Length: 40
+# - Content: Count: 2x
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
 POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
@@ -706,8 +710,40 @@ Content-Type: application/xslt+xml
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="xml"/>
   <xsl:template match="/">
-  ss
+    Count: <xsl:value-of select="count(/district)"/>x
   </xsl:template>
 </xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "599598401bba3b70faabe3ffa1bd1678");
+});
+%}
+
+###
+# XPath with serveral attributes as target should work
+# Expectations:
+# - Content-Length: 56
+# - Content: Names: 12x Areas: 96x
+# - URI: //district/@name|//quarter/@area
+POST {{service}}0x2f2f64697374726963742f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/">
+    Names: <xsl:value-of select="count(//name)"/>x
+    Areas: <xsl:value-of select="count(//area)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1b851f77c2ff677ea20d13939e589593");
+});
+%}
 
 ###
