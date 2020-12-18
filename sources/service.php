@@ -878,7 +878,8 @@ class Storage {
             $this->quit(404, "Resource Not Found");
 
         // POST always expects an valid XSLT template for transformation.
-        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
+        if (!isset($_SERVER["CONTENT_TYPE"])
+                || strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
             $this->quit(415, "Unsupported Media Type");
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
@@ -891,7 +892,9 @@ class Storage {
 
         // POST always expects an valid XSLT template for transformation.
         $style = new DOMDocument();
-        if (!$style->loadXML(file_get_contents("php://input"))
+        $input = file_get_contents("php://input");
+        if (empty($input)
+                || !$style->loadXML($input)
                 || Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
