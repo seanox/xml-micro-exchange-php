@@ -922,8 +922,11 @@ class Storage {
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
                 $this->quit(404, "Resource Not Found");
-            foreach ($targets as $target)
+            foreach ($targets as $target) {
+                if ($target instanceof DOMAttr)
+                    $target = $xml->createElement($target->name, $target->value);
                 $xml->appendChild($xml->importNode($target, true));
+            }
         }
 
         $output = $processor->transformToXML($xml);
