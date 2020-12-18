@@ -53,7 +53,7 @@ Storage: O________10________20________30________40________50________60___
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4232b00991c11ad996b9869f20baf91a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3a52e477d3699fb472b6f0029098b29f");
 });
 %}
 
@@ -66,7 +66,7 @@ Storage: O________10________20________30________40________50________60__A
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "941cd800e4f91bf1dec848f46f863515");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cf5df264987745dc37971191c2c1ec31");
 });
 %}
 
@@ -79,7 +79,7 @@ Storage: O________10________20________30________40________50________60__A
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d780d72b8b3693c8dd09a433956d22b2");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c695d24d3200fad1829e474690e8f02c");
 });
 %}
 
@@ -92,7 +92,7 @@ Storage: O________10________20________30________40________50________60__a
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "41e77662ca3677dccda25f1b370619bb");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4f55d028fab4247afa6802bb86d76739");
 });
 %}
 
@@ -105,7 +105,7 @@ Storage: O
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "48b9a7ee8bf1754006b7dc590765b052");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "765beb1a0981c59eb935e63e3de58e5c");
 });
 %}
 
@@ -148,7 +148,7 @@ Storage: {{storage_options_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "204a39f54117582b5c8a0ba2a031d518");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2bfbc1db57823e2697880391512a2e8c");
 });
 %}
 
@@ -163,7 +163,7 @@ Storage: {{storage_options_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "29c671e9d55921d879599c8029069a69");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "03213aa8acd5a480054f6aea317e8ac2");
 });
 %}
 
