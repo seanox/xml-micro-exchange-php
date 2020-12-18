@@ -96,7 +96,7 @@ Also the reponse  has additional headers.
         Storage-Expiration
       </td>
       <td>
-        Timestamp (RFC822)  when the storage will expire
+        Timestamp (RFC822) when the storage will expire
       </td>
     </tr>
     <tr>
@@ -130,7 +130,7 @@ Also the reponse  has additional headers.
         Error
       </td>
       <td>
-        Error number from the log file in connection with status 500
+        Error number from the log file in combination with status 500
       </td>
     </tr>
     <tr>
@@ -138,7 +138,7 @@ Also the reponse  has additional headers.
         Message
       </td>
       <td>
-        Detailed error message in connection with status 400 / 422
+        Detailed error message in combination with status 400 / 422
       </td>
     </tr>
     <tr>
