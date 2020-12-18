@@ -669,3 +669,45 @@ client.test("unittest", function() {
 %}
 
 ###
+# POST without Content-Type should be responded with status 415
+# Expectations:
+# - Status code 415 Unsupported Media Type
+POST {{service}} HTTP/1.0
+Storage: {{storage_post}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fd8cd4390dc043a55c88d711cd5bf30e");
+});
+%}
+
+###
+# POST without response body should be responded with status 422
+# Expectations:
+# - Status code 422 Unprocessable Entity
+POST {{service}} HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f9c5b800b51e1d0fc12e0f4b70eb0aff");
+});
+%}
+
+###
+#//district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/">
+  ss
+  </xsl:template>
+</xsl:stylesheet>
+
+###
