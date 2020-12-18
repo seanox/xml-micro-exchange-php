@@ -672,3 +672,62 @@ client.test("unittest", function() {
 %}
 
 ###
+# If attributes are queried and there is more than one match,
+# the attributes must be returned as a collection.
+# Expectations:
+# - Status code 400 Bad Request
+# - URI: //quarter/@name
+GET {{service}}0x2f2f717561727465722f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "966aee75a2bc03cc05fedc7347ef3af8");
+});
+%}
+
+###
+# If attributes are queried and there is more than one match,
+# the attributes must be returned as a collection.
+# This must also work with mixed attributes.
+# Expectations:
+# - Status code 400 Bad Request
+# - URI: //quarter/@name|//quarter/@area
+GET {{service}}0x2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4191fec12c24b980337d7f9232e446d7");
+});
+%}
+
+###
+# For single attributes only the value is returned.
+# Expectations:
+# - Status code 400 Bad Request
+# - URI: //district[1]//quarter[1]/@name
+GET {{service}}0x2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2143864a0fd7c4643d83fe0ebb65dbef");
+});
+%}
+
+###
+# Two single attributes are returned as a collection.
+# Expectations:
+# - Status code 400 Bad Request
+# - URI: //district[1]//quarter[1]/@name|//district[1]//quarter[1]/@area
+GET {{service}}0x2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d657c2f2f64697374726963745b315d2f2f717561727465725b315d2f4061726561 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b60a5b707be9ee341c383502c79d955e");
+});
+%}
+
+###
