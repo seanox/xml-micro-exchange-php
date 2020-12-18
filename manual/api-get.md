@@ -25,13 +25,13 @@ different Content-Type are used for the response.
 
 ## XPath axis
 
-Content-Type: `application/xslt+xml`
+Content-Type: `application/xslt+xml`  
 When the XPath axis addresses one target, the addressed target is the root
 element of the returned XML structure.  
 If the XPath addresses multiple targets, their XML structure is combined in the
 root element collection.
 
-Content-Type: `text/plain`
+Content-Type: `text/plain`  
 If the XPath addresses exactly one attribute, the value is returned as text.
 
 
