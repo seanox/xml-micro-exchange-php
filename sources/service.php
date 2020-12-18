@@ -550,7 +550,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      * Connection-Unique: UID
      *
      *     Response:
@@ -559,7 +560,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      * Connection-Unique: UID
      *
      *     Response codes / behavior:
@@ -616,7 +618,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -650,7 +653,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      * Connection-Unique: UID
      *
      *     Response:
@@ -659,7 +663,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      * Connection-Unique: UID
      *
      *     Response codes / behavior:
@@ -753,7 +758,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      * Content-Length: (bytes)
      *     Response-Body:
      * The result of the XPath request
@@ -851,7 +857,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      * Content-Length: (bytes)
      *     Response-Body:
      * The result of the transformation
@@ -1017,7 +1024,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -1456,7 +1464,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -1565,7 +1574,8 @@ class Storage {
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timeout/Timestamp (seconds/RFC822)
+     * Storage-Expiration: Timestamp (RFC822)
+     * Storage-Expiration-Time: Timeout (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -1769,9 +1779,10 @@ class Storage {
             $headers = array_merge($headers, [
                 "Storage" => $this->storage,
                 "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
-                "Storage-Space" => Storage::SPACE . "/" . $this->getSize(),
+                "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
                 "Storage-Last-Modified" => date(DateTime::RFC822),
-                "Storage-Expiration" => Storage::TIMEOUT . "/" . $this->getExpiration(DateTime::RFC822)
+                "Storage-Expiration" => $this->getExpiration(DateTime::RFC822),
+                "Storage-Expiration-Time" => (Storage::TIMEOUT *1000) . " ms"
             ]);
         }
 
