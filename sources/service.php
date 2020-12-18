@@ -811,8 +811,11 @@ class Storage {
             } else if ($result->length > 0) {
                 $collection = $xml->createElement("collection");
                 $xml->importNode($collection, true);
-                foreach ($result as $entry)
+                foreach ($result as $entry) {
+                    if ($entry instanceof DOMAttr)
+                        $entry = $xml->createElement($entry->name, $entry->value);
                     $collection->appendChild($xml->importNode($entry, true));
+                }
                 $xml->appendChild($collection);
                 $result = $xml->saveXML();
             } else $result = "";
