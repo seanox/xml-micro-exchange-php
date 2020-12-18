@@ -50,7 +50,7 @@ understand, implement and use.
 * [More Guests are Coming](#more-guests-are-coming)
 * [Small Talk](#small-talk)
 * [The Innkeeper](#the-innkeeper)
-* [The Eavesdropping Statistician](#the-eavesdropping-statistician)
+* [The Sniffer and Data Artist](#the-sniffer-and-data-artist)
 * [A Clean Sendoff](#a-clean-sendoff)
 * [Final End](#final-end)
 
@@ -77,8 +77,10 @@ For the XML-Micro-Exchange, this is the URL of the API and a storage
 identifier.
 
 __URL:__ [https://seanox.com/xmex!](https://seanox.com/xmex!)  
+The here listed datasource contains 65536 storages with max. 256 kByte per
+storage. The expiration occurs after 15 minutes of inactivity.  
 Do not panic when opening the URL in the browser, the service is online and the
-error status is normal for requests without storage identifier.
+error status is normal for requests without a storage identifier.
 
 The storage identifier is 1 - 64 characters long and consists only of numbers,
 upper/lower case letters and underscore. Any character string can be used.
@@ -141,9 +143,10 @@ Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
 Storage-Revision: 0
-Storage-Space: 262144/83
+Storage-Space: 262144/83 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Connection-Unique: ABI0ZX99X13M
 Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 Execution-Time: 6 ms
@@ -187,9 +190,10 @@ Access-Control-Allow-Origin: *
 Storage-Effects: KIO4IVSL12OS:0:A KIO4IV7C12OP:0:M KIO4IVSL12OS:1:A KIO4IVSL12OS:2:A
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
 Storage-Revision: 1
-Storage-Space: 262144/244
+Storage-Space: 262144/244 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Connection-Unique: ABI0ZX99X13M
 Execution-Time: 6 ms
 ```
@@ -241,9 +245,10 @@ Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
 Storage-Revision: 2
-Storage-Space: 262144/344
+Storage-Space: 262144/344 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Connection-Unique: ABI0ZX99X13M
 Execution-Time: 6 ms
 ```
@@ -317,7 +322,7 @@ Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 57
 
-<person name="Dan Star" email="dan.star@@example.local"/>
+<person name="Dan Star" email="dan.star@example.local"/>
 ```
 
 John notices something happening at the regulars' table.  
@@ -373,7 +378,7 @@ Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 88
 
-<message from="dan.star@@example.local">Hello, nice to meet you all. I am Dan.</message>
+<message from="dan.star@example.local">Hello, nice to meet you all. I am Dan.</message>
 ```
 
 ## Small Talk
@@ -382,9 +387,9 @@ Content-Lenght: 88
 PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 78
+Content-Lenght: 77
 
-<message from="dan.star@@example.local">
+<message from="dan.star@example.local">
     Where do you come from?</message>
 ```
 ```
@@ -418,34 +423,34 @@ Content-Lenght: 117
 PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 96
+Content-Lenght: 95
 
-<message from="dan.star@@example.local">
+<message from="dan.star@example.local">
     I work and live in Yonkers as a gardener.</message>
 ```
 ```
 PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 107
+Content-Lenght: 106
 
-<message from="dan.star@@example.local">
+<message from="dan.star@example.local">
     In this beautiful weather I arrived with my scooter.</message>
 ```
 ```
 PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 82
+Content-Lenght: 8
 
-<message from="dan.star@@example.local">
+<message from="dan.star@example.local">
     I like to look at the city.</message>
 ```
 
 ___A rule from the regulars' table: Maintain your conversation, but do not save
 more than 5 messages.___
 
-XML Micro-Exchange is a place to exchange information. Active participants
+XML-Micro-Exchange is a place to exchange information. Active participants
 should actively communicate here. However, it is not intended to be a classic
 data store for archiving. The participants should have the change to read and
 process the data in rest and to provide new data and no more.
@@ -471,9 +476,10 @@ Access-Control-Allow-Origin: *
 Storage-Effects: KISQNB6B14NT:0:D KISQNABR14NI:2:M KISQNB9814NU:0:D
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
 Storage-Revision: 15
-Storage-Space: 262144/1321
+Storage-Space: 262144/1321 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
-Storage-Expiration: 900/Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
 Execution-Time: 4 ms
 ```
 
@@ -493,7 +499,70 @@ the request is responded with status 404.
 TODO:
 
 
-## The Eavesdropping Statistician
+## The Sniffer and Data Artist
+
+XML-Micro-Exchange works stateless. Everyone who knows the address and storage
+identifier and, as in our example, the name of the root element can participate
+in the regulars' table.  
+At our regulars' table we are among ourselves, but in public and of course,
+unwanted guests can also participate and do so unnoticed.
+
+You can easily create your private area, but that should not be the topic here.
+More interesting is the data dealer and data juggler.
+
+We have already seen that data can be queried with GET in examples of XPath
+functions. But there is more possible. Let's take a look at the data dealer's
+fingers.
+
+GET can also be used to query complete XML fragments, which are then returned
+as a collection.
+
+```
+GET https://seanox.com/xmex!//message[@from='dan.star@example.local'] HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+```
+```xml
+<?xml version="1.0"?>
+<collection>
+  <message from="dan.star@example.local" ___uid="KIT8H5JC1D0D:0" ___rev="12">
+    I work and live in Yonkers as a gardener.
+  </message>
+  <message from="dan.star@example.local" ___uid="KIT8H5LQ1D0E:0" ___rev="13">
+    In this beautiful weather I arrived with my scooter.
+  </message>
+  <message from="dan.star@example.local" ___uid="KIT8H5OA1D0F:0" ___rev="14">
+    I like to look at the city.
+  </message>
+</collection>
+```
+
+Also, querying all email address from different attributes is easy.  
+If attributes are queried, matches of one attribute are returned as plain text
+and matches of multiple attrubutes are returned as XML collection.
+
+```
+GET https://seanox.com/xmex!//*/@email|//*/@from HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+```
+```xml
+<?xml version="1.0"?>
+<collection>
+  <email>john.doe@example.local</email>
+  <email>jane.doe@example.local</email>
+  <email>mike.ross@example.local</email>
+  <email>dan.star@example.local</email>
+  <from>jane.doe@example.local</from>
+  <from>mike.ross@example.local</from>
+  <from>dan.star@example.local</from>
+  <from>dan.star@example.local</from>
+  <from>dan.star@example.local</from>
+</collection>
+```
+
+Here we can use the XSL transformation.  
+We send a stylesheet to the API and it does the transformation.
 
 TODO:
 
@@ -505,7 +574,12 @@ TODO:
 
 ## Final End
 
-TODO:
+The API used in our example has maximum idle time of about 15 minutes.
+If no requests to the storage from the regulars' table are received for 15
+minutes, the regulars' table is discarded with all its data. Deleting overdue
+storages is very fast and is executed with each request.  
+Also, if the first request after the expiration time addresses the storage from
+the regulars' table, the existing one is deleted and a new one is created.
 
 
 
