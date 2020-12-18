@@ -36,9 +36,10 @@ The API uses the HTTP with additional request headers.
   </tbody>
 </table>
 
-Also the Reponse header has additional headers.
+Also the reponse  has additional headers.
 
 <table>
+  <thead>
     <tr>
       <th>
         Response Header
@@ -47,6 +48,8 @@ Also the Reponse header has additional headers.
         Description
       </th>
     </tr>
+  </thead>
+  <tbody>
     <tr>
       <td>
         Connection-Unique
@@ -204,6 +207,7 @@ Also the Reponse header has additional headers.
         Cumulated hash value over all other trace hash values for the unit tests
       </td>
     </tr>
+  </tbody>
 </table>
 
 ## Table Of Contents 
