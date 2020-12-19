@@ -731,3 +731,17 @@ client.test("unittest", function() {
 %}
 
 ###
+# The mix of element and attributes are returned as a collection.
+# Expectations:
+# - Status code 400 Bad Request
+# - URI: //district[1]|//district[1]/@name
+GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cc22578f815253194c3c556ec7c1e5c9");
+});
+%}
+
+###
