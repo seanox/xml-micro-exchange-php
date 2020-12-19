@@ -710,13 +710,13 @@ Content-Type: application/xslt+xml
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="xml"/>
   <xsl:template match="/">
-    Count: <xsl:value-of select="count(/district)"/>x
+    Count: <xsl:value-of select="count(//district)"/>x
   </xsl:template>
 </xsl:stylesheet>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "599598401bba3b70faabe3ffa1bd1678");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "20525e5c8692d6adda295029058ade8d");
 });
 %}
 

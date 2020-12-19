@@ -26,7 +26,7 @@ const fs = require("fs");
             return file.match(/\.http$/);
         });
         if (!testFiles
-            || !testFiles.length) {
+                || !testFiles.length) {
             console.log("\tno test files found");
             return;
         }
