@@ -26,7 +26,7 @@ The entirety, so the service itself, is the datasource.
 Physically this is the data directory.
 
 ## Storage
-The data areas managed by the XML Micro-Exchange as a data service are called
+The data areas managed by the XML-Micro-Exchange as a data service are called
 storage areas. A storage area corresponds to an XML file in the data directory.
 
 ## Storage Identifier

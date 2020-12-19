@@ -3,7 +3,7 @@
 
 # Development
 
-The following is used to develop the XML Micro-Exchange:
+The following is used to develop the XML-Micro-Exchange:
 
 - [Windows 10 Pro](https://www.microsoft.com/de-de/software-download/windows10) Operating system
 - [PHP 7.4.x](https://www.php.net/downloads) Runtime

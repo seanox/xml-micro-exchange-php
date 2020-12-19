@@ -4,7 +4,7 @@
 # Error Handling
 
 The error return is not always so easy with REST services.  
-Also with XML Micro-Exchange, the recommendation to use server status 400, 422
+Also with XML-Micro-Exchange, the recommendation to use server status 400, 422
 as well as 500 is often not helpful for the client or developer.
 
 In the case of status 400 and 422, XML-Micro-Exchange uses the additional
