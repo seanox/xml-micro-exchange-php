@@ -223,9 +223,9 @@ So that all notice him, he puts his name in the guest list.
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 56
+Content-Lenght: 55
 
-<person name="John Doe" email="john.doe@example.local"/>
+<person name="John Doe" mail="john.doe@example.local"/>
 ```
 
 John could make sure and check beforehand if there are people with the same
@@ -304,17 +304,9 @@ And they also put their names in the guest list.
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 56
+Content-Lenght: 55
 
-<person name="Jane Doe" email="jane.doe@example.local"/>
-```
-```
-PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
-Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
-Content-Lenght: 58
-
-<person name="Mike Ross" email="mike.ross@example.local"/>
+<person name="Jane Doe" mail="jane.doe@example.local"/>
 ```
 ```
 PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
@@ -322,7 +314,15 @@ Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 57
 
-<person name="Dan Star" email="dan.star@example.local"/>
+<person name="Mike Ross" mail="mike.ross@example.local"/>
+```
+```
+PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 56
+
+<person name="Dan Star" mail="dan.star@example.local"/>
 ```
 
 John notices something happening at the regulars' table.  
@@ -447,8 +447,8 @@ Content-Lenght: 8
     I like to look at the city.</message>
 ```
 
-___A rule from the regulars' table: Maintain your conversation, but do not save
-more than 5 messages.___
+___A rule from the regulars' table: Maintain your conversation, but do not
+store more than 5 messages.___
 
 XML-Micro-Exchange is a place to exchange information. Active participants
 should actively communicate here. However, it is not intended to be a classic
@@ -537,22 +537,22 @@ Content-Type: application/xslt+xml
 </collection>
 ```
 
-Also, querying all email address from different attributes is easy.  
+Also, querying all mail addresses from different attributes is easy.  
 If attributes are queried, matches of one attribute are returned as plain text
 and matches of multiple attrubutes are returned as XML collection.
 
 ```
-GET https://seanox.com/xmex!//*/@email|//*/@from HTTP/1.0
+GET https://seanox.com/xmex!//*/@mail|//*/@from HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 ```
 ```xml
 <?xml version="1.0"?>
 <collection>
-  <email>john.doe@example.local</email>
-  <email>jane.doe@example.local</email>
-  <email>mike.ross@example.local</email>
-  <email>dan.star@example.local</email>
+  <mail>john.doe@example.local</mail>
+  <mail>jane.doe@example.local</mail>
+  <mail>mike.ross@example.local</mail>
+  <mail>dan.star@example.local</mail>
   <from>jane.doe@example.local</from>
   <from>mike.ross@example.local</from>
   <from>dan.star@example.local</from>
@@ -563,6 +563,74 @@ Content-Type: application/xslt+xml
 
 Here we can use the XSL transformation.  
 We send a stylesheet to the API and it does the transformation.
+
+```
+POST https://seanox.com/xmex! HTTP/1.0
+Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
+Content-Type: application/xslt+xml
+Content-Lenght: 726
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="text"/>
+  <xsl:template match="/">
+    <xsl:for-each select="//persons[1]/person">
+Mame: <xsl:value-of select="@name"/>
+Mail: <xsl:value-of select="@mail"/>
+Messages:
+      <xsl:variable name="mail" select="@mail"/>
+      <xsl:choose>
+        <xsl:when test="count(//message[@from=$mail]) &gt; 0">
+          <xsl:for-each select="//message[@from=$mail]">
+            <xsl:value-of select="."/>
+          </xsl:for-each>
+    ----
+        </xsl:when>
+        <xsl:otherwise>
+    No messages
+    ----
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:template>
+</xsl:stylesheet>
+```
+
+With XSLT, the response is completely dynamic.  
+Also the output type can be specified with <xsl:output method/>.
+
+```
+Mame: John Doe
+Mail: john.doe@example.local
+Messages:
+      
+    No messages
+    ----
+        
+Mame: Jane Doe
+Mail: jane.doe@example.local
+Messages:
+      
+    I live in Long Island and have an antique store.
+    ----
+        
+Mame: Mike Ross
+Mail: mike.ross@example.local
+Messages:
+      
+    I live in Queens, work for a shipping company on a cargo ship.
+    ----
+        
+Mame: Dan Star
+Mail: dan.star@example.local
+Messages:
+      
+    I work and live in Yonkers as a gardener.
+    In this beautiful weather I arrived with my scooter.
+    I like to look at the city.
+    ----
+```
 
 TODO:
 

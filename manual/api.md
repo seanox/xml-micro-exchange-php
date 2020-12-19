@@ -3,7 +3,17 @@
 
 # API
 
-The API uses the HTTP with additional request headers.
+The API uses the HTTP.  
+The URI typically contains a noticeable separator to divide it into context path and XPath.  
+For the API only the XPath is relevant.
+
+```
+https://seanox.com/xmex!xpath(-function)
+<--------------------->|<-------------->
+     Context Path            XPath
+```
+
+The request supports the following additional headers:
 
 <table>
   <thead>
@@ -36,7 +46,7 @@ The API uses the HTTP with additional request headers.
   </tbody>
 </table>
 
-Also the reponse  has additional headers.
+Also the reponse has additional headers:
 
 <table>
   <thead>
