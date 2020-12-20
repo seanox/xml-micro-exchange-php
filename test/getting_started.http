@@ -1,0 +1,327 @@
+# The following test sequence tests the sequence of examples in
+# getting-started.md.
+
+###
+CONNECT {{service}} HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0169ece03d009a5cc4ae9648d5651eb7");
+});
+%}
+
+###
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0fe4413b2d00de48d69c7678f921a250");
+});
+%}
+
+###
+PUT {{service}}/table::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<guests>
+  <persons/>
+  <conversation/>
+</guests>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "69b36a84c38771f0bf31dee1a70b4b33");
+});
+%}
+
+###
+DELETE {{service}}/table/guests%5Bposition()%3E1%5D HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d88a7b07966499d4755c3da9b9bbc554");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/persons::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<person name="John Doe" mail="john.doe@example.local"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d571bb1602bc4add7e788302ee6dbad6");
+});
+%}
+
+###
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e26d03a513da23543fd96ef83d750bc7");
+});
+%}
+
+###
+PUT {{service}}/table::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+Content-Lenght: 49
+
+<guests>
+  <persons/>
+  <conversation/>
+</guests>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0aa5d15e7c75234561b1d209365de0fe");
+});
+%}
+
+###
+DELETE {{service}}/table/guests%5Bposition()%3E1%5D HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e2eb50d832e47809ece12ea7943836d9");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/persons::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<person name="Jane Doe" mail="jane.doe@example.local"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "40d8fdf912899a57205efcdfc02d120d");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/persons::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<person name="Mike Ross" mail="mike.ross@example.local"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "169d37a727a74eab10d42b050aa7db44");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/persons::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<person name="Dan Star" mail="dan.star@example.local"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "218fcc1e7cc2927ea5bd2399a24c94fe");
+});
+%}
+
+###
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "04112987b9851fe609b5f9f1c52cea41");
+});
+%}
+
+###
+GET  {{service}}count(/table/guests%5B1%5D/persons/person)%3E1 HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a3ef92162ec68aa63a3a8972440cd823");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/conversation%5B1%5D::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<message from="dan.star@example.local">
+    Where do you come from?</message>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "135a0dc8ed3f02861bdae0abfbd94eaa");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/conversation%5B1%5D::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<message from="john.doe@example.local">
+    I'm from Hempstead and have a small bookstore.</message>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "36092cadcc253d7fc1f4ea0dcd7674dd");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/conversation%5B1%5D::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<message from="jane.doe@example.local">
+    I live in Long Island and have an antique store.</message>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cf022db9510287d95c662b92b96d5eed");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/conversation%5B1%5D::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<message from="mike.ross@example.local">
+    I live in Queens, work for a shipping company on a cargo ship.</message>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "372b3568fa944e98289ed1a1afc979d6");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/conversation%5B1%5D::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<message from="dan.star@example.local">
+    I work and live in Yonkers as a gardener.</message>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0651639ef0857bc613e5d5a9db203eab");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/conversation%5B1%5D::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<message from="dan.star@example.local">
+    In this beautiful weather I arrived with my scooter.</message>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "28b38dff07424fbad6297356f2d270cb");
+});
+%}
+
+###
+PUT {{service}}/table/guests%5B1%5D/conversation%5B1%5D::last HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<message from="dan.star@example.local">
+    I like to look at the city.</message>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bd98da74888ea2075f06298b248f29fb");
+});
+%}
+
+###
+# - URI: //conversation%5B1%5D/message[position()<=count(//conversation%5B1%5D/message)-5]
+DELETE {{service}}0x2f2f636f6e766572736174696f6e5b315d2f6d6573736167655b706f736974696f6e28293c3d636f756e74282f2f636f6e766572736174696f6e5b315d2f6d657373616765292d355d HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "596d109049fc703a16cd93abd0232d25");
+});
+%}
+
+###
+# - URI: //message[@from='dan.star@example.local']
+GET {{service}}0x2f2f6d6573736167655b4066726f6d3d2764616e2e73746172406578616d706c652e6c6f63616c275d HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8e55095904e2b3750ebfd5d080083e32");
+});
+%}
+
+###
+# - URI: //*/@mail|//*/@from
+GET {{service}}0x2f2f2a2f406d61696c7c2f2f2a2f4066726f6d HTTP/1.0
+Storage: {{storage_getting_started}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "df7e1235627d4dbffc9c6582145b0fd2");
+});
+%}
+
+###
+POST {{service}} HTTP/1.0
+Storage: {{storage_getting_started}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="text"/>
+  <xsl:template match="/">
+    <xsl:for-each select="//persons[1]/person">
+Mame: <xsl:value-of select="@name"/>
+Mail: <xsl:value-of select="@mail"/>
+Messages:
+      <xsl:variable name="mail" select="@mail"/>
+      <xsl:choose>
+        <xsl:when test="count(//message[@from=$mail]) &gt; 0">
+          <xsl:for-each select="//message[@from=$mail]">
+            <xsl:value-of select="."/>
+          </xsl:for-each>
+    ----
+        </xsl:when>
+        <xsl:otherwise>
+    No messages
+    ----
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d3e0607531f23cb07622e3cad7239bb5");
+});
+%}
+
+###
