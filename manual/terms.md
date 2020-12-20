@@ -92,10 +92,11 @@ If elements are created, modified or deleted by a request, the created or
 affected unique identifiers are sent to the client in the response header
 `Storage-Effects`.
 
-The UID uses an alphanumeric format based on radix 36 which, when converted into
-a number, gives the timestamps of the creation in milliseconds since 01/01/2000.  
-The UID is thus also sortable and provides information about the order in which
-elements are created.  
+The UID is based on the milliseconds and the local port at the time of the
+request (`millisecond x1000 +port`), which is converted to a string
+using radix 36, assuming that a port cannot be used for another request at the
+same time. Thus, the UID is also sortable and provides information about the
+order in which elements are created.
 
 In the `Storage-Effects` header the UID are extended by an additional suffix,
 which tells what happened to the element. Supported are `:A` for added, `:M`

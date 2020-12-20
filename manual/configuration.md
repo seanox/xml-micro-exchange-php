@@ -29,20 +29,12 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
 
 ## Apache HTTPD
 
-Direct for a physical or virtual host:
-
-```
-#httpd-ssl.conf
-RewriteEngine on
-RewriteRule ^/xmex!(.*)$ service.php
-```
-
-Or in the .htaccess file:
-
 ```
 #.htaccess
 RewriteEngine on
-RewriteRule (.*) service.php
+RewriteRule (^xmex!.*) service.php [L]
+RewriteRule service.php - [L]
+RewriteRule (.*) - [R=404,L]
 ```
 
 Root can also be used.  
