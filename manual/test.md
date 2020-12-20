@@ -28,6 +28,7 @@ Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: 123
+Storage-Space: 262144/1363 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration-Time: 900000 ms

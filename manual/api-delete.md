@@ -58,7 +58,8 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
 ##### Example
 
 ```
-TODO:
+DELETE /books/book[1] HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
 ```
 
 
@@ -79,7 +80,18 @@ Storage-Expiration-Time: Timeout (milliseconds)
 ### Example
 
 ```
-TODO:
+HTTP/1.1 204 No Content
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Server: Apache/2.4.43 (Unix)
+Access-Control-Allow-Origin: *
+Storage-Effects: KHDCPS001E7C:9:D KHDCPS001DDS:0:M
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage-Revision: 123
+Storage-Space: 262144/1363 bytes
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
+Execution-Time: 7 ms
 ```
 
 

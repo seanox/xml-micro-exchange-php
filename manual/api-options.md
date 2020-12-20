@@ -81,8 +81,8 @@ Access-Control-Allow-Origin: *
 Storage-Effects: KHDCPS0013C2:0 KHDCPS0013C2:13 KHDCPS0013C2:26
 Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-Storage-Revision: 1
-Storage-Space: 262144/3109 bytes
+Storage-Revision: 123
+Storage-Space: 262144/1363 bytes
 Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
 Storage-Expiration-Time: 900000 ms
