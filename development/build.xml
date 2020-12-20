@@ -6,6 +6,8 @@
     <echo>                                                    </echo>
     <echo>   release    builds the final scripts and creates  </echo>
     <echo>              the release for the distribution.     </echo>
+    <echo>                                                    </echo>
+    <echo>   changes    synchronizes README.md with CHANGES   </echo>
   </target>
   
   <property name="workspace" value="${basedir}"/>
@@ -69,6 +71,7 @@
       <file file="${workspace}/CHANGES.tmp"/>
     </loadresource>
     <delete file="${workspace}/CHANGES.tmp"/>
+    <echo>${changes}</echo>
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(# Changes \(Change Log\)\s+).*?(\[Read more\])" flags="g" byline="false"
         replace="\1${changes}${line.separator}${line.separator}\2"/>
@@ -80,7 +83,7 @@
         replace="${now.year}"/>  
   </target>  
   
-  <target name="release">
+  <target name="release" depends="changes">
     <release-locate/>
     <delete dir="${workspace.releases}" excludes="seanox-xmex-*.zip"/>
     <copy file="${workspace.sources}/.htaccess" todir="${workspace.releases}" overwrite="true"/>
@@ -92,15 +95,31 @@
     <replaceregexp file="${workspace.releases}/service-dev.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
     <copy file="${workspace}/LICENSE" todir="${workspace.releases}" overwrite="true"/>
     <copy file="${workspace.manual}/README.md" todir="${workspace.releases}" overwrite="true"/>
+    <touch datetime="${release.date}" pattern="yyyyMMdd">
+      <fileset dir="${workspace.releases}">
+        <include name=".htaccess"/>
+        <include name="service.php"/>
+        <include name="service-dev.php"/>
+        <include name="LICENSE"/>
+      </fileset>
+    </touch>
     <zip destfile="${workspace.releases}/seanox-xmex-${release.version}.zip">
       <fileset dir="${workspace.releases}">
         <include name=".htaccess"/>
         <include name="service.php"/>
         <include name="service-dev.php"/>
         <include name="LICENSE"/> 
-        <include name="README.md"/> 
-      </fileset> 
+      </fileset>
     </zip>
+    <touch datetime="${release.date}" pattern="yyyyMMdd">
+      <fileset dir="${workspace.releases}" includes="seanox-xmex-${release.version}.zip"/>
+    </touch>
     <delete dir="${workspace.releases}" excludes="seanox-xmex-*.zip"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(Seanox\s+XML-Micro-Exchange\s+)\d+[\.\d]+" flags="g" byline="true"
+        replace="\1${release.version}"/>
+    <replaceregexp file="${workspace}/README.md"
+        match="(seanox-xmex-)\d+[\.\d]+(\.zip)" flags="g" byline="true"
+        replace="\1${release.version}\2"/>
   </target>
 </project>
