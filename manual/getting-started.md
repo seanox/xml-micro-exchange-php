@@ -187,7 +187,7 @@ Content-Lenght: 49
 HTTP/1.0 204 No Content
 Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
-Storage-Effects: KIO4IVSL12OS:0:A KIO4IV7C12OP:0:M KIO4IVSL12OS:1:A KIO4IVSL12OS:2:A
+Storage-Effects: KHDCPS0012OS:0:A KHDCPS0012OP:0:M KHDCPS0012OS:1:A KHDCPS0012OS:2:A
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
 Storage-Revision: 1
 Storage-Space: 262144/244 bytes
@@ -473,7 +473,7 @@ Here the effect on the storage is visible in the Storage-Effects header. This he
 HTTP/1.0 204 No Content
 Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
-Storage-Effects: KISQNB6B14NT:0:D KISQNABR14NI:2:M KISQNB9814NU:0:D
+Storage-Effects: KHDCPS0014NT:0:D KHDCPS0014NI:2:M KHDCPS0014NU:0:D
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
 Storage-Revision: 15
 Storage-Space: 262144/1321 bytes
@@ -631,8 +631,6 @@ Messages:
     I like to look at the city.
     ----
 ```
-
-TODO:
 
 
 ## A Clean Sendoff

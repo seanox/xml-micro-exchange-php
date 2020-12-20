@@ -44,8 +44,8 @@ XSLT stylesheet
 ### Example
 
 ```
-POST /xmex/ HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+POST /xmex!/ HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
 Content-Type: application/xslt+xml
 Content-Length: 212
 

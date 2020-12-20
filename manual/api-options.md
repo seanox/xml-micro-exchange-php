@@ -3,15 +3,20 @@
 
 # OPTIONS
 
-OPTIONS is used to request the functions to an XPath, which is responded with
-the Allow-header.  
-This method distinguishes between XPath axis and XPath function and uses
-different Allow headers. Also the existence of the target on an XPath axis has
-an influence on the response. The method will not use status 404 in relation to
-non-existing targets, but will offer the methods `CONNECT`, `OPTIONS`, `PUT`
-via Allow-Header.  
+OPTIONS is used to query the allowed HTTP methods for an XPath, which is
+responded with the Allow-header. This method distinguishes between XPath axis
+and XPath function and uses different Allow headers. Also the existence of the
+target on an XPath axis has an influence on the response. The method will not
+use status 404 in relation to non-existing targets, but will offer the methods
+`CONNECT`, `OPTIONS`, `PUT` via Allow-Header.  
+
+In the case of an XPath axis, the UIDs of the targets are returned in the
+Storage-Effects header. Unlike modifier methods like `PUT`, `PATCH` and 
+`DELETE`, the effect suffix (`:A`/`:M`/`:D`) is omitted here.  
+
 If the XPath is a function, it is executed and thus validated, but without
 returning the result.  
+
 The XPath processing is strict and does not accept unnecessary spaces.  
 Faulty XPath will cause the status 400.
 
@@ -48,7 +53,10 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
 
 ### Example
 
-TODO:
+```
+OPTIONS /xmex!/books/book HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
+```
 
 
 ## Response
@@ -66,7 +74,20 @@ Storage-Expiration-Time: Timeout (milliseconds)
 
 ### Example
 
-TODO:
+```
+HTTP/1.0 204 No Content
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage-Effects: KHDCPS0013C2:0 KHDCPS0013C2:13 KHDCPS0013C2:26
+Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage-Revision: 1
+Storage-Space: 262144/3109 bytes
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
+Execution-Time: 4 ms
+```
 
 
 ## Response codes / behavior
@@ -108,7 +129,7 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
 ``` 
 OPTIONS / HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ  books
 ```
 
 

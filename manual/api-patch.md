@@ -92,24 +92,24 @@ Value as XPath function
 ##### Example
 
 ```
-PATCH /xmex/books/attribute::attrA HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+PATCH /xmex!/books/attribute::attrA HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
 Content-Type: text/plain
 Content-Length: 5
 
 Value
 ```
 ```
-PATCH /xmex/books/@attrA HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+PATCH /xmex!/books/@attrA HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
 Content-Type: text/xpath
 Content-Length: 25
 
 concat(name(/*), "-Test")
 ```
 ```
-PATCH /xmex/books HTTP/1.0
-Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+PATCH /xmex!/books HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
 Content-Type: application/xslt+xml
 Content-Length: 70
 
@@ -137,7 +137,7 @@ Storage-Expiration-Time: Timeout (milliseconds)
 ```
 HTTP/1.0 204 No Content
 Date: Wed, 11 Nov 2020 12:00:00 GMT
-Storage-Effects: KHDHLTQW18U4:0 KHDHLQJU18U2:0 KHDHLTQW18U4:1 KHDHLTQW18U4:2
+Storage-Effects: KHDCPS0018U4:0 KHDCPS0018U2:0 KHDCPS0018U4:1 KHDCPS0018U4:2
 Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: 1
