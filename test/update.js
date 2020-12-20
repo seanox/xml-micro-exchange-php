@@ -3,11 +3,20 @@ const fs = require("fs");
 
 (() => {
     const arguments = process.argv;
-    var trace = arguments && arguments.length && arguments.length > 2 ? fs.readFileSync(arguments[2], "utf-8") : "";
+    var trace = arguments && arguments.length && arguments.length > 2 ? arguments[2] : "";
     if (!trace) {
         console.log("usage: " + path.basename(__filename) + " <trace> <target>");
         return;
     }
+    if (!fs.existsSync(trace)) {
+        console.log("\ttrace not exists");
+        return;
+    }
+    if (!fs.statSync(trace).isFile()) {
+        console.log("\ttrace is not a file");
+        return;
+    }
+    trace = fs.readFileSync(trace, "utf-8");
 
     var testFiles;
     if (arguments.length > 3) {

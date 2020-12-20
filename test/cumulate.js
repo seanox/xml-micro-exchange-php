@@ -15,6 +15,8 @@ const fs = require("fs");
     if (fs.existsSync("cumulate.http"))
         fs.unlinkSync("cumulate.http");
     testFiles.forEach((file) => {
+        if (file == "cumulate.http")
+            return;
         console.log("cumulate " + file);
         fs.appendFileSync("cumulate.http", "\r\n" + fs.readFileSync(file, "utf-8"), "utf8");
     });
