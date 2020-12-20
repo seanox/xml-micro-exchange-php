@@ -111,7 +111,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-TODO:
+[Seanox XML-Micro-Exchange 1.0.0](https://github.com/seanox/xml-micro-exchange/raw/master/releases/seanox-xmex-1.0.0.zip)  
 
 
 # Free XML-Micro-Exchange 
@@ -141,7 +141,10 @@ responded with status 400.__
 
 
 # Changes (Change Log)
-TODO:
+## 1.0.0 20201220 (summary of the current version)  
+NT: Release is available  
+
+[Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange/master/CHANGES)
 
 
 # Contact
