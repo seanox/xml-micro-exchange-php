@@ -66,6 +66,108 @@ Something like Apache HTTPD or Seanox Devwex.
 Alternatively, the script can be called directly and passed to XPath as a query
 string.
 
+## Parameter
+
+Overview of the configurable parameters / constants:
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        Parameter
+      </th>
+      <th>
+        Default
+      </th>
+      <th>
+        Description
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>Storage::DIRECTORY</code>
+      </td>
+      <td>
+        <code>./data</code>
+      </td>
+      <td>
+        Directory of the data storage, which is configured with the required
+        permissions by the script at runtime.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Storage::QUANTITY</code>
+      </td>
+      <td>
+        <code>65535</code>
+      </td>
+      <td>
+        Maximum number of files in data storage.<br/>
+        Exceeding the limit causes the status 507 - Insufficient Storage.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Storage::SPACE</code>
+      </td>
+      <td>
+        <code>256 *1024</code>
+      </td>
+      <td>
+        Maximum data size of files in data storage in bytes.<br/>
+        The value also limits the size of the requests(-body).
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Storage::TIMEOUT</code>
+      </td>
+      <td>
+        <code>15 *60</code>
+      </td>
+      <td>
+        Maximum idle time of the files in seconds.<br/>
+        If the inactivity exceeds this time for a Storage , it expires.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Storage::CORS</code>
+      </td>
+      <td>
+        <code>["Allow-Origin" =&gt; "*"]</code>
+      </td>
+      <td>
+        Optional CORS response headers as associative array.<br/>
+        e.g. Allow-Origin, Allow-Credentials, Allow-Methods, Allow-Headers,
+        Max-Age, Expose-Headers<br/> 
+        The prefix Access-Control is added automatically.
+        e.g. Allow-Origin -&rarr; Access-Control-Allow-Origin
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Storage::PATTERN_HTTP_REQUEST_URI</code>
+      </td>
+      <td>
+        <code>/^(.*?)[!#\$\*:\?@\|~]+(.*)$/i</code>
+      </td>
+      <td>
+        Pattern for separating URI-Path and XPath.<br/>
+        If the pattern is empty, null or false, the request URI without context
+        path will be used. This is helpful when the service is used as a domain.<br/>
+        <br/>
+        Group 0. Full match<br/>
+        Group 1. URI-Path<br/>
+        Group 2. XPath<br/>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 
 - - -
