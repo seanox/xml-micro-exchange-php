@@ -41,7 +41,7 @@
  * Physically this is the data directory.
  * 
  *         Storage
- * The data areas managed by the XML Micro-Exchange as a data service are
+ * The data areas managed by the XML-Micro-Exchange as a data service are
  * called storage areas. A storage area corresponds to an XML file in the data
  * directory.
  * 
@@ -370,8 +370,10 @@ class Storage {
         $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);
 
         Storage::cleanUp();
-        if (!file_exists(Storage::DIRECTORY))
-            mkdir(Storage::DIRECTORY, true);
+        if (!file_exists(Storage::DIRECTORY)) {
+             mkdir(Storage::DIRECTORY, true);
+             chmod(Storage::DIRECTORY, 0755);
+        }
         $storage = new Storage($storage, $root, $xpath);
 
         if ($storage->exists()) {
@@ -595,13 +597,16 @@ class Storage {
     }
 
     /**
-     * OPTIONS is used to request the functions to an XPath, which is responded
-     * with the Allow header.
-     * This method distinguishes between XPath axis and XPath function and uses
-     * different Allow headers. Also the existence of the target on an XPath
-     * axis has an influence on the response. The method will not use status
-     * 404 in relation to non-existing targets, but will offer the methods
-     * CONNECT, OPTIONS, PUT via Allow-Header.
+     * OPTIONS is used to query the allowed HTTP methods for an XPath, which is
+     * responded with the Allow-header. This method distinguishes between XPath
+     * axis and XPath function and uses different Allow headers. Also the
+     * existence of the target on an XPath axis has an influence on the
+     * response. The method will not use status 404 in relation to non-existing
+     * targets, but will offer the methods CONNECT, OPTIONS, PUT via
+     * Allow-Header.
+     * In the case of an XPath axis, the UIDs of the targets are returned in
+     * the Storage-Effects header. Unlike modifier methods like PUT, PATCH and
+     * DELETE, the effect suffix (:A/:M/:D) is omitted here.
      * If the XPath is a function, it is executed and thus validated, but
      * without returning the result.
      * The XPath processing is strict and does not accept unnecessary spaces.
@@ -697,7 +702,6 @@ class Storage {
         $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
-            $allow = "OPTIONS, GET, POST";
             $result = (new DOMXpath($this->xml))->evaluate($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath function (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -922,10 +926,20 @@ class Storage {
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
                 $this->quit(404, "Resource Not Found");
-            foreach ($targets as $target) {
+            if ($targets->length == 1) {
+                $target = $targets[0];
                 if ($target instanceof DOMAttr)
                     $target = $xml->createElement($target->name, $target->value);
                 $xml->appendChild($xml->importNode($target, true));
+            } else {
+                $collection = $xml->createElement("collection");
+                $xml->importNode($collection, true);
+                foreach ($targets as $target) {
+                    if ($target instanceof DOMAttr)
+                        $target = $xml->createElement($target->name, $target->value);
+                    $collection->appendChild($xml->importNode($target, true));
+                }
+                $xml->appendChild($collection);
             }
         }
 
