@@ -122,7 +122,7 @@ responded with status 400.__
 
 
 # Manual
-# [Table Of Contents](https://github.com/seanox/xml-micro-exchange/blob/master/manual/manual#manual)
+* [Table Of Contents](https://github.com/seanox/xml-micro-exchange/blob/master/manual/manual#manual)
 * [Motivation](https://github.com/seanox/xml-micro-exchange/blob/master/manual/motivation.md)
 * [Installation](https://github.com/seanox/xml-micro-exchange/blob/master/manual/installation.md)
 * [Configuration](https://github.com/seanox/xml-micro-exchange/blob/master/manual/configuration.md)
