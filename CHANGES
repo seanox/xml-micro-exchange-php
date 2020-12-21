@@ -1,2 +1,12 @@
+1.1.0 2021xxxx
+  BF: Service: Optimization of CONNECT
+      Status 507 (Insufficient Storage) now only occurs when a new storage is
+      to be created, but not when connecting to an existing one.
+  CR: Service: Added condition header
+      Each request can be combined with the header condition. An XPath function
+      expression that explicitly returns a true is expected, otherwise the
+      request is quituted with status 412 (Precondition Failed) and aborted.
+      It is useful e.g. for conditional PUT/PATCH/DELETE requests.
+
 1.0.0 20201220
   NT: Release is available

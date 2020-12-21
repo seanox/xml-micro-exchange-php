@@ -155,6 +155,12 @@
  * e.g. /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
+ *       Condition
+ * Each request can be combined with the header condition. An XPath function
+ * expression that explicitly returns a true is expected, otherwise the request
+ * is quituted with status 412 (Precondition Failed) and aborted.
+ * It is useful e.g. for conditional PUT/PATCH/DELETE requests.
+ *
  *     TRANSACTION / SIMULTANEOUS ACCESS
  * XML-Micro-Exchange supports simultaneous access.
  * Read accesses are executed simultaneously.  
@@ -180,12 +186,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.0.0 20201220
+ *  Service 1.1.0 20201221
  *  Copyright (C) 2020 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.0.0 20201220
+ *  @version 1.1.0 20201221
  */
 class Storage {
 
@@ -590,14 +596,15 @@ class Storage {
         if (!empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
-        $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
-        if (iterator_count($iterator) >= Storage::QUANTITY)
-            $this->quit(507, "Insufficient Storage");
+        $this->checkCondition();
 
         $response = [201, "Created"];
-        if (!$this->exists())
+        if (!$this->exists()) {
+            $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
+            if (iterator_count($iterator) >= Storage::QUANTITY)
+                $this->quit(507, "Insufficient Storage");
             $this->open(true);
-        else $response = [202, "Accepted"];
+        } else $response = [202, "Accepted"];
 
         $this->materialize();
         $this->quit($response[0], $response[1], ["Connection-Unique" => $this->unique]);
@@ -703,6 +710,8 @@ class Storage {
         if (empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
+        $this->checkCondition();
+
         libxml_use_internal_errors(true);
         libxml_clear_errors();
 
@@ -794,6 +803,8 @@ class Storage {
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
+
+        $this->checkCondition();
 
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -904,6 +915,8 @@ class Storage {
             $message = "Invalid XPath (Functions are not supported)";
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
+
+        $this->checkCondition();
 
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -1092,6 +1105,8 @@ class Storage {
             $message = "Invalid XPath (Functions are not supported)";
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
+
+        $this->checkCondition();
 
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -1539,6 +1554,8 @@ class Storage {
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
 
+        $this->checkCondition();
+
         libxml_use_internal_errors(true);
         libxml_clear_errors();
 
@@ -1626,6 +1643,8 @@ class Storage {
             $message = "Invalid XPath (Functions are not supported)";
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
+
+        $this->checkCondition();
 
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -1734,6 +1753,43 @@ class Storage {
 
         $this->materialize();
         $this->quit(204, "No Content");
+    }
+
+    /**
+     * Checks if the request uses a condition header and checks the XPath
+     * function expression, which must explicitly return true, otherwise the
+     * request is quitted with status 412 (Precondition Failed) and aborted.
+     * Without condition header nothing happens.
+     * It is useful e.g. for conditional PUT/PATCH/DELETE requests.
+     */
+    function checkCondition() {
+
+        if (!isset($_SERVER["HTTP_CONDITION"]))
+            return;
+        $condition = trim($_SERVER["HTTP_CONDITION"]);
+        if (empty($condition))
+            $this->quit(400, "Bad Request", ["Message" => "Invalid condition"]);
+
+        // Without available storage, the condition is in every case false.
+        if (!$this->exists()
+                || !$this->xml)
+             $this->quit(412, "Precondition Failed");
+
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();
+
+        if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $condition))
+            $this->quit(400, "Bad Request", ["Message" => "Condition: XPath function is required"]);
+
+        $result = (new DOMXpath($this->xml))->evaluate($condition);
+        if (Storage::fetchLastXmlErrorMessage()) {
+            $message = "Invalid XPath function (" . Storage::fetchLastXmlErrorMessage() . ")";
+            $this->quit(400, "Bad Request", ["Message" => "Condition: " . $message]);
+        }
+        if (is_bool($result)
+                && $result === true)
+            return;
+        $this->quit(412, "Precondition Failed");
     }
 
     /**
