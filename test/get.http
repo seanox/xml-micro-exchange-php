@@ -733,7 +733,7 @@ client.test("unittest", function() {
 ###
 # The mix of element and attributes are returned as a collection.
 # Expectations:
-# - Status code 400 Bad Request
+# - Status code 200 Success
 # - URI: //district[1]|//district[1]/@name
 GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
 Storage: {{storage_get}}
@@ -741,6 +741,78 @@ Storage: {{storage_get}}
 > {%
 client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cc22578f815253194c3c556ec7c1e5c9");
+});
+%}
+
+###
+# The mix of element and attributes are returned as a collection.
+# XML output, the accept header: application/json has an effect.
+# Expectations:
+# - Status code 200 Success
+## - Content-Type: application/json
+# - Content-Length: 58393
+GET {{service}}/statistic HTTP/1.0
+Storage: {{storage_get}}
+Accept: application/json, */*
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5118e0c04dd1ba953b5c882ceedbf3ad");
+});
+%}
+
+###
+# The mix of element and attributes are returned as a collection.
+# XML output, the accept header: application/json has an effect.
+# Expectations:
+# - Status code 200 Success
+# - Content-Type: application/json
+# - Content-Length: 2989
+# - URI: //district[1]|//district[1]/@name
+GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+Accept: application/json, */*
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2498affbbc7a45a5a0c4454446b0225d");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Text output, the Accept header: application/json has no effect.
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 2
+# - Content-Type: text/plain
+# - Response-Body: -2
+GET {{service}}1-3 HTTP/1.0
+Storage: {{storage_get}}
+Accept: application/json, */*
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8d35287e1806d6838513a71a89695f27");
+});
+%}
+
+###
+# XPath axis for a attribute should work
+# Text output, the Accept header: application/json has no effect.
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 6
+# - Content-Type: text/plain
+# - Value: Berlin
+# - URI: //city[1]/@name
+GET {{service}}0x2f2f636974795b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+Accept: application/json, */*
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "904d5b2d12d734d84c8aed2c7e752de3");
 });
 %}
 
