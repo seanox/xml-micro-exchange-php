@@ -2,11 +2,16 @@
   BF: Service: Optimization of CONNECT
       Status 507 (Insufficient Storage) now only occurs when a new storage is
       to be created, but not when connecting to an existing one.
-  CR: Service: Added condition header
+  CR: Service: Added support for condition header
       Each request can be combined with the header condition. An XPath function
       expression that explicitly returns a true is expected, otherwise the
       request is quituted with status 412 (Precondition Failed) and aborted.
       It is useful e.g. for conditional PUT/PATCH/DELETE requests.
+  CR: Service GET/POST: Added support for accept header application/json
+      The header enforces the transformation of XML output as JSON.
+      If the return value is not application/xslt+xml, the header has no effect
+      on the output. The client is informed via the Content-Type whether the
+      transformation was used.
 
 1.0.0 20201220
   NT: Release is available
