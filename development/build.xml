@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <project name="xml-micro-exchange" default="usage" basedir="..">
   <target name="usage">
     <echo>                                                    </echo>
