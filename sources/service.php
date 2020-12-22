@@ -186,12 +186,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20201221
+ *  Service 1.1.0 20201222
  *  Copyright (C) 2020 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20201221
+ *  @version 1.1.0 20201222
  */
 class Storage {
 
@@ -302,6 +302,7 @@ class Storage {
     const CONTENT_TYPE_TEXT = "text/plain";
     const CONTENT_TYPE_XPATH = "text/xpath";
     const CONTENT_TYPE_XML = "application/xslt+xml";
+    const CONTENT_TYPE_JSON = "application/json";
 
     /**
      * Constructor creates a new Storage object.
@@ -834,7 +835,11 @@ class Storage {
                     $result = $result[0]->value;
                 } else {
                     $xml->appendChild($xml->importNode($result[0], true));
-                    $result = $xml->saveXML();
+                    if (isset($_SERVER["HTTP_ACCEPT"])
+                          &&  preg_match("/^(.*,){0,1}\s*application\/json\s*(;.*){0,1}(,.*){0,1}$/i", $_SERVER["HTTP_ACCEPT"])) {
+                        $media = Storage::CONTENT_TYPE_JSON;
+                        $result = json_encode(simplexml_import_dom($xml), JSON_PRETTY_PRINT);
+                    } else $result = $xml->saveXML();
                 }
             } else if ($result->length > 0) {
                 $collection = $xml->createElement("collection");
@@ -845,7 +850,11 @@ class Storage {
                     $collection->appendChild($xml->importNode($entry, true));
                 }
                 $xml->appendChild($collection);
-                $result = $xml->saveXML();
+                if (isset($_SERVER["HTTP_ACCEPT"])
+                      &&  preg_match("/^(.*,){0,1}\s*application\/json\s*(;.*){0,1}(,.*){0,1}$/i", $_SERVER["HTTP_ACCEPT"])) {
+                    $media = Storage::CONTENT_TYPE_JSON;
+                    $result = json_encode(simplexml_import_dom($xml), JSON_PRETTY_PRINT);
+                } else $result = $xml->saveXML();
             } else $result = "";
         } else if (is_bool($result)) {
             $result = $result ? "true" : "false";
@@ -974,10 +983,18 @@ class Storage {
 
         $media = (new DOMXpath($style))->query("//*[local-name()='output']/@method");
         if (!empty($media)
-                && $media->length > 0
-                && strcasecmp($media[0]->nodeValue, "text") === 0)
-            $media = Storage::CONTENT_TYPE_TEXT;
-        else $media = Storage::CONTENT_TYPE_XML;
+                && $media->length > 0) {
+            if (strcasecmp($media[0]->nodeValue, "text") === 0) {
+                $media = Storage::CONTENT_TYPE_TEXT;
+            } else if (strcasecmp($media[0]->nodeValue, "xml") === 0) {
+                $media = Storage::CONTENT_TYPE_XML;
+                if (isset($_SERVER["HTTP_ACCEPT"])
+                      &&  preg_match("/^(.*,){0,1}\s*application\/json\s*(;.*){0,1}(,.*){0,1}$/i", $_SERVER["HTTP_ACCEPT"])) {
+                    $media = Storage::CONTENT_TYPE_JSON;
+                    $output = json_encode(simplexml_load_string($output), JSON_PRETTY_PRINT);
+                }
+            } else $media = Storage::CONTENT_TYPE_XML;
+        } else $media = Storage::CONTENT_TYPE_XML;
 
         $this->quit(200, "Success", ["Content-Type" => $media], $output);
     }
@@ -2054,10 +2071,10 @@ class Storage {
         // The UID is variable and must be normalized so that the hash can be
         // compared later. Therefore the uniques of the UIDs are collected in
         // an array. The index in the array is then the new unique.
-        if (preg_match_all("/\b___uid=\"[A-Z\d\:]+\"/i", $hash, $matches, PREG_PATTERN_ORDER )) {
+        if (preg_match_all("/\b___uid(?:(?:=)|(?:\"\s*:\s+))\"[A-Z\d\:]+\"/i", $hash, $matches, PREG_PATTERN_ORDER )) {
             $uniques = [];
             foreach ($matches[0] as $unique) {
-                if (preg_match("/\b(___uid=\")([A-Z\d]+)(:[A-Z\d]+\")/i", $unique, $match)) {
+                if (preg_match("/\b(___uid(?:(?:=)|(?:\"\s*:\s+))\")([A-Z\d]+)(:[A-Z\d]+\")/i", $unique, $match)) {
                     if (!in_array($match[2], $uniques))
                         $uniques[] = $match[2];
                     $unique = array_search($match[2], $uniques);
