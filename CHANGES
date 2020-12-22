@@ -7,7 +7,7 @@
       expression that explicitly returns a true is expected, otherwise the
       request is quituted with status 412 (Precondition Failed) and aborted.
       It is useful e.g. for conditional PUT/PATCH/DELETE requests.
-  CR: Service GET/POST: Added support for accept header application/json
+  CR: Service GET/POST: Added support for accept header: application/json
       The header enforces the transformation of XML output as JSON.
       If the return value is not application/xslt+xml, the header has no effect
       on the output. The client is informed via the Content-Type whether the
