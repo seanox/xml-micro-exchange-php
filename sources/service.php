@@ -186,12 +186,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20201222
+ *  Service 1.1.0 20201223
  *  Copyright (C) 2020 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20201222
+ *  @version 1.1.0 20201223
  */
 class Storage {
 
@@ -212,12 +212,14 @@ class Storage {
     
     /**
      * Optional CORS response headers as associative array.
-     *     e.g. Allow-Origin, Allow-Credentials, Allow-Methods, Allow-Headers,
-     *     Max-Age, Expose-Headers 
-     * The prefix Access-Control is added automatically.
-     *     e.g. Allow-Origin -> Access-Control-Allow-Origin
+     * For the preflight OPTIONS the following headers are added automatically:
+     *     Access-Control-Allow-Methods, Access-Control-Allow-Headers
      */
-    const CORS = ["Allow-Origin" => "*"];
+    const CORS = [
+        "Access-Control-Allow-Origin" => "*",
+        "Access-Control-Allow-Credentials" => "true",
+        "Access-Control-Max-Age" => "86400"
+    ];
 
     /** Current Storage instance */
     private $storage;
@@ -1862,7 +1864,15 @@ class Storage {
 
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
-                header("Access-Control-$key: $value");
+                header("$key: $value");
+
+        // Access-Control headers are received during preflight OPTIONS request
+        if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
+            if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_METHOD"]))
+                header("Access-Control-Allow-Methods: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");
+            if (isset($_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]))
+                header("Access-Control-Allow-Headers: {$_SERVER["HTTP_ACCESS_CONTROL_REQUEST_HEADERS"]}");
+        }
 
         if (!$headers)
             $headers = [];
@@ -2225,6 +2235,12 @@ if (isset($_SERVER["PHP_SELF"])
         && (!isset($_SERVER["REDIRECT_URL"])
                 || empty($_SERVER["REDIRECT_URL"])))
     (new Storage)->quit(404, "Resource Not Found");
+
+// Access-Control headers are received during preflight OPTIONS request
+if ($_SERVER["REQUEST_METHOD"] == "OPTIONS"
+        && isset($_SERVER["HTTP_ORIGIN"])
+        && !isset($_SERVER["HTTP_STORAGE"]))
+    (new Storage)->quit(200, "Success");
 
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))
