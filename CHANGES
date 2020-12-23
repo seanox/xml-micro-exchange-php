@@ -6,6 +6,8 @@
       Correction for a correct preflight OPTIONS response.
       Change to the full notation of the Access-Control headers.
       Omission of the automatic prefix.
+  BF: Build: Correction of release
+      Release file (zip) was not overwritten if already exists.
   CR: Service: Added support for condition header
       Each request can be combined with the header condition. An XPath function
       expression that explicitly returns a true is expected, otherwise the
