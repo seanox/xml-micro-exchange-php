@@ -26,6 +26,22 @@ client.test("unittest", function() {
 %}
 
 ###
+# CORS preflight OPTIONS
+# Expectations:
+# - Status code 200 Success
+# - Access-Control-Allow-Origin: *
+# - Access-Control-Allow-Credentials: true
+# - Access-Control-Max-Age: 86400
+OPTIONS {{service}} HTTP/1.0
+Origin: {{origin}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "64e3ceb00232cca9112320265ddf8563");
+});
+%}
+
+###
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created

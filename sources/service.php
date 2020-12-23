@@ -1883,14 +1883,16 @@ class Storage {
             if (($data !== "" && $data !== null)
                     || $status == 200)
                 $headers = array_merge($headers, ["Content-Length" => strlen($data)]);
-            $headers = array_merge($headers, [
-                "Storage" => $this->storage,
-                "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
-                "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
-                "Storage-Last-Modified" => date(DateTime::RFC822),
-                "Storage-Expiration" => $this->getExpiration(DateTime::RFC822),
-                "Storage-Expiration-Time" => (Storage::TIMEOUT *1000) . " ms"
-            ]);
+            if ($this->storage
+                    && $this->xml)
+                $headers = array_merge($headers, [
+                    "Storage" => $this->storage,
+                    "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
+                    "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
+                    "Storage-Last-Modified" => date(DateTime::RFC822),
+                    "Storage-Expiration" => $this->getExpiration(DateTime::RFC822),
+                    "Storage-Expiration-Time" => (Storage::TIMEOUT *1000) . " ms"
+                ]);
         }
 
         // The response from the Storage-Effects header can be very extensive.

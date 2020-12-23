@@ -3,8 +3,8 @@
       Status 507 (Insufficient Storage) now only occurs when a new storage is
       to be created, but not when connecting to an existing one.
   BF: Service: Optimization of CORS
-      Correction for a correct preflight OPTIONS request.
-      Change to the full notation of the Access-Control header.
+      Correction for a correct preflight OPTIONS response.
+      Change to the full notation of the Access-Control headers.
       Omission of the automatic prefix.
   CR: Service: Added support for condition header
       Each request can be combined with the header condition. An XPath function
