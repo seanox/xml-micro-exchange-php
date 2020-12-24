@@ -170,10 +170,13 @@ created in the meantime.
 XML-Micro-Exchange supports simultaneous accesses, but no locking mechanism.  
 The solution and also the reason why there is no locking mechanism can be found
 in the XPath functions.  
-We can initialize the regulars' table relative.  
+We can optionally initialize the regulars' table, only if the elements to be
+created do not yet exist. If the elements already exist, the request will be
+responded with status 404, because the target, which means a table without
+guests does not exist.
 
 ```
-PUT https://seanox.com/xmex!/table::last HTTP/1.0
+PUT https://seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 49
@@ -202,25 +205,13 @@ Each request that causes changes in the storage is responded to with an
 overview of the effects in the response header `Storage-Effects` -- more about
 this later.
 
-___A rule from the regulars' table: Always use only the first element of
-elements of the sections.___
-So we can completely put the scheme at the end of the table. Even though the
-elements may exist multiple times, all participants will only use the first
-one. Through the XPath we can delete all superfluous elements in a second
-request, because we know there will be only two.  
-
-```
-DELETE https://seanox.com/xmex!/table/guests[position()>1] HTTP/1.0
-Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-```
-
 Now John has arranged the regulars' table.
 
 John is now waiting for more guests and the innkeeper.  
 So that all notice him, he puts his name in the guest list.
 
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 55
@@ -283,7 +274,7 @@ OPTIONS https://seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 ```
-PUT https://seanox.com/xmex!/table::last HTTP/1.0
+PUT https://seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 49
@@ -293,15 +284,11 @@ Content-Lenght: 49
   <conversation/>
 </guests>
 ```
-```
-DELETE https://seanox.com/xmex!/table/guests[position()>1] HTTP/1.0
-Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-```
 
 And they also put their names in the guest list.
 
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 55
@@ -309,7 +296,7 @@ Content-Lenght: 55
 <person name="Jane Doe" mail="jane.doe@example.local"/>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 57
@@ -317,7 +304,7 @@ Content-Lenght: 57
 <person name="Mike Ross" mail="mike.ross@example.local"/>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/persons::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 56
@@ -331,7 +318,7 @@ the revision changed. It is time to look at the guest list and so he notices
 the new guests and greets everyone.
 
 ```
-GET https://seanox.com/xmex!count(/table/guests[1]/persons/person)>1 HTTP/1.0
+GET https://seanox.com/xmex!count(/table/guests/persons/person)>1 HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
@@ -342,7 +329,7 @@ A Content-Type is not required for the request. Return values of an XPath
 function are always of type `text/plain`.
 
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 88
@@ -353,11 +340,11 @@ Content-Lenght: 88
 The other guests also realize that they are in companionship and greet the round and introduce themselves.
 
 ```
-GET https://seanox.com/xmex!count(/table/guests[1]/persons/person)>1 HTTP/1.0
+GET https://seanox.com/xmex!count(/table/guests/persons/person)>1 HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 88
@@ -365,7 +352,7 @@ Content-Lenght: 88
 <message from="jane.doe@example.local">Hello, nice to meet you all. I am Jane.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 89
@@ -373,7 +360,7 @@ Content-Lenght: 89
 <message from="mike.ross@example.local">Hello, nice to meet you all. I am Mike.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 88
@@ -384,7 +371,7 @@ Content-Lenght: 88
 ## Small Talk
 
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 77
@@ -393,7 +380,7 @@ Content-Lenght: 77
     Where do you come from?</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 100
@@ -402,7 +389,7 @@ Content-Lenght: 100
     I'm from Hempstead and have a small bookstore.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 102
@@ -411,7 +398,7 @@ Content-Lenght: 102
     I live in Long Island and have an antique store.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 117
@@ -420,7 +407,7 @@ Content-Lenght: 117
     I live in Queens, work for a shipping company on a cargo ship.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 95
@@ -429,7 +416,7 @@ Content-Lenght: 95
     I work and live in Yonkers as a gardener.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 106
@@ -438,7 +425,7 @@ Content-Lenght: 106
     In this beautiful weather I arrived with my scooter.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests[1]/conversation[1]::last HTTP/1.0
+PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Lenght: 8
@@ -460,14 +447,16 @@ Even this flood of data can be well managed and cleaned with XPath functions
 and this without transactions.
 
 ```
-DELETE https://seanox.com/xmex!//conversation[1]/message[position()<=count(//conversation[1]/message)-5] HTTP/1.0
+DELETE https://seanox.com/xmex!//conversation/message[position()<=count(//conversation/message)-5] HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
 This request deletes all messages, except the max. last five.
 
 Let's look at the response.
-Here the effect on the storage is visible in the Storage-Effects header. This header contains the UIDs of the elements that are directly affected by the request. We get back the UIDs of all deleted and modified elements.
+Here the effect on the storage is visible in the Storage-Effects header. This
+header contains the UIDs of the elements that are directly affected by the
+request. We get back the UIDs of all deleted and modified elements.
 
 ```
 HTTP/1.0 204 No Content
@@ -489,9 +478,9 @@ The 404 status refers to storage and XPath (target).
 Storage and XPath can be compared with HOST and URI, if one cannot be found,
 the request is responded with status 404.
 
-In our case, if the request is repeated and the XPath axis cannot address any elements to be deleted,
-for example because there are less than 5 messages in the conversation,
-the request is responded with status 404.
+In our case, if the request is repeated and the XPath axis cannot address any
+elements to be deleted, for example because there are less than 5 messages in
+the conversation, the request is responded with status 404.
 
 
 ## The Innkeeper
@@ -575,7 +564,7 @@ Content-Lenght: 726
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="text"/>
   <xsl:template match="/">
-    <xsl:for-each select="//persons[1]/person">
+    <xsl:for-each select="//persons/person">
 Mame: <xsl:value-of select="@name"/>
 Mail: <xsl:value-of select="@mail"/>
 Messages:
