@@ -18,6 +18,7 @@
       If the return value is not application/xslt+xml, the header has no effect
       on the output. The client is informed via the Content-Type whether the
       transformation was used.
+  CR: Test: Added Snake as proof of concept for a multiplayer game
 
 1.0.0 20201220
   NT: Release is available

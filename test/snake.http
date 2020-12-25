@@ -1,0 +1,388 @@
+###
+# initDatasource
+# Initialization from the first player
+# Expectations:
+# - Status code 201 Resource Created
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage_snake}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "49189e22ed611371a4c9a4ec790ec53b");
+});
+%}
+
+###
+# initStorage
+# Initialization from the first player
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 10x UID-A 1x UID-M
+PUT {{service}}/snake%5Bnot(players)%5D%5Bnot(board)%5D::last HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<players timeout="5000">
+  <a color="#000000" touch=""/>
+  <b color="#0000FF" touch=""/>
+  <c color="#00FF00" touch=""/>
+  <d color="#00FFFF" touch=""/>
+  <e color="#FF0000" touch=""/>
+  <f color="#FF00FF" touch=""/>
+  <g color="#FFFF00" touch=""/>
+  <h color="#FFFFFF" touch=""/>
+</players>
+<board rows="31" cols="51"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7e5cfbd00fe46c3cf0376fe073928dbc");
+});
+%}
+
+###
+# initDatasource
+# Initialization from another player
+# Expectations:
+# - Status code 202 Accepted
+OPTIONS {{service}} HTTP/1.0
+Storage: {{storage_snake}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fe3994bcfd868614ecf2871f579cb233");
+});
+%}
+
+###
+# initStorage
+# Initialization from another player
+# Expectations:
+# - Status code 404 Resource Not Found
+PUT {{service}}/snake%5Bnot(players)%5D%5Bnot(board)%5D::last HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<players timeout="5000">
+  <a color="#000000" touch=""/>
+  <b color="#0000FF" touch=""/>
+  <c color="#00FF00" touch=""/>
+  <d color="#00FFFF" touch=""/>
+  <e color="#FF0000" touch=""/>
+  <f color="#FF00FF" touch=""/>
+  <g color="#FFFF00" touch=""/>
+  <h color="#FFFFFF" touch=""/>
+</players>
+<board rows="31" cols="51"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5b2189b9c180f89d85d119b7f9db1868");
+});
+%}
+
+###
+# readPlayers
+# Expectations:
+# - Status code 200 Success
+# - Content-Type: application/json
+# - Content-Length: 1523
+GET {{service}}/snake/players HTTP/1.0
+Storage: {{storage_snake}}
+Accept: */*, application/json
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c8977578b5148f4a7ad777bb326418e3");
+});
+%}
+
+###
+# readBoard
+# Expectations:
+# - Status code 200 Success
+# - Content-Type: application/json
+# - Content-Length: 132
+GET {{service}}/snake/board HTTP/1.0
+Storage: {{storage_snake}}
+Accept: */*, application/json
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fdd78ff84ebd0d935d49174e5fcd4a15");
+});
+%}
+
+###
+# initTouchUpdate
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects; 1x UID-M
+# - URI: //a/@touch
+PATCH {{service}}0x2f2f612f40746f756368 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+100
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5afc32b7c867c35cdf3cad5454e2029f");
+});
+%}
+
+###
+# initTouchUpdate
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects; 1x UID-M
+# - URI: //b/@touch
+PATCH {{service}}0x2f2f622f40746f756368 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+200
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f9e87cc87361977cf6daff2d3f2f914c");
+});
+%}
+
+###
+# initTouchUpdate
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects; 1x UID-M
+# - URI: //c/@touch
+PATCH {{service}}0x2f2f632f40746f756368 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+300
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "62699098468c8442b51a61efd1ffb2b3");
+});
+%}
+
+###
+# initTouchUpdate
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects; 1x UID-M
+# - URI: //d/@touch
+PATCH {{service}}0x2f2f642f40746f756368 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+400
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5ae3d96b5b631bd9c7344250ac938fa4");
+});
+%}
+
+###
+# initTouchUpdate
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects; 1x UID-M
+# - URI: //a/@touch
+PATCH {{service}}0x2f2f612f40746f756368 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+500
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e9085b0a5a178cac4b5266c68ea0032c");
+});
+%}
+
+###
+# initKeyboardControl
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 3x UID-A 1x UID-M
+# - URI: //players[not(//field[@id=1])]//a
+PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d315d295d2f2f61 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<field id="11" player="a"/><field id="12" player="a"/><field id="13" player="a"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b4f0a666bf887cfd419decfe7d639e42");
+});
+%}
+
+###
+# initKeyboardControl
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 3x UID-A 1x UID-M
+# - URI: //players[not(//field[@id=1])]//b
+PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d315d295d2f2f62 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<field id="21" player="b"/><field id="22" player="b"/><field id="23" player="b"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e1f2cd87945d9f861b0a21c3f64582ce");
+});
+%}
+
+###
+# initScreenUpdate
+# Expectations:
+# - Status code 200 Success
+# - Content-Type: application/json
+# - Content-Length: 1205
+# - URI: //players//field
+GET {{service}}0x2f2f706c61796572732f2f6669656c64 HTTP/1.0
+Storage: {{storage_snake}}
+Accept: */*, application/json
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "81f1d956887a6a83925ebb933500699c");
+});
+%}
+
+###
+# initPlayersCleanUp
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 6x UID-M
+# - URI: //players/*[@touch<400]|//players/*[@touch='']
+PATCH {{service}}0x2f2f706c61796572732f2a5b40746f7563683c3430305d7c2f2f706c61796572732f2a5b40746f7563683d27275d HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+X
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8752f72aa05209af969a81a9e82baa10");
+});
+%}
+
+###
+# initPlayersCleanUp
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 2x UID-M
+# - URI: //players/*[@touch<400]/@touch
+PATCH {{service}}0x2f2f706c61796572732f2a5b40746f7563683c3430305d2f40746f756368 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+X
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "109735318deabfa185c04198534ca980");
+});
+%}
+
+###
+# join
+# Get the next free player through set touch
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID-M
+# - URI: ///players/*[@touch=''][1]/@touch
+PATCH {{service}}0x2f2f706c61796572732f2a5b40746f7563683d27275d5b315d2f40746f756368 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: text/plain
+
+700
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "da95d0a47ed5f99905d495a3d3eab19c");
+});
+%}
+
+###
+# join
+# H wants to put on the start position, but only if free, but it is occupied
+# Expectations:
+# - Status code 404 Resource Not Found
+# - URI: /snake[not(//field/@id=11)]//h
+PATCH  {{service}}0x2f736e616b655b6e6f74282f2f6669656c642f4069643d3131295d2f2f68 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<field id="11" player="h"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b82b9ef3f0537ab53ad9d84c4621a886");
+});
+%}
+
+###
+# initKeyboardControl
+# A Moves one to the right
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 3x UID-A 1x UID-M
+# - URI: //players[not(//field[@id=14])]//a
+PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d31345d295d2f2f61 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<field id="12" player="a"/><field id="13" player="a"/><field id="14" player="a"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b12cf83c07856e53db0fd0513871bb34");
+});
+%}
+
+###
+# join
+# H wants to put on the start position, but only if free, and it is free, because A has moved
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Effects: 1x UID-A 1x UID-M
+# - URI: /snake[not(//field/@id=11)]//h
+PATCH  {{service}}0x2f736e616b655b6e6f74282f2f6669656c642f4069643d3131295d2f2f68 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<field id="11" player="h"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b87dd7e9f8f8efec51b8be4857f8fbfa");
+});
+%}
+
+###
+# initKeyboardControl
+# B moves one up and collides
+# Expectations:
+# - Status code 404 Resource Not Found
+# - URI: //players[not(//field[@id=14])]//b
+PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d31345d295d2f2f62 HTTP/1.0
+Storage: {{storage_snake}}
+Content-Type: application/xslt+xml
+
+<field id="22" player="b"/><field id="23" player="b"/><field id="14" player="b"/>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "641f7e19a7f9d6c1b879e44ddd59f7c4");
+});
+%}
+
+###
