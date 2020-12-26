@@ -128,7 +128,7 @@ __Important note about our hoster (strato.de), they have some restrictions:__
   Therefore please use such [URIs encoded](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api.md#api),
   in hexadecimal or Base64.
 - DDoS protection  
-  MMany requests in one second from the same client are interpreted as an
+  Many requests in one second from the same client are interpreted as an
   attack and blocked after a short time with status 503 -- there is no solution.  
   I'm searching for a new hoster, but it's not easy, many have the same
   restrictions.
