@@ -33,7 +33,7 @@ The request supports the following additional headers:
   <thead>
     <tr>
       <th>
-        Response Header
+        Request Header
       </th>
       <th>
         Description
