@@ -47,13 +47,13 @@
 
           SnakeService = {
 
-            //DATASOURCE_URL: "https://seanox.com/xmex!",
+             DATASOURCE_URL: "https://seanox.com/xmex!",
             //DATASOURCE_URL: "http://127.0.0.1/xmex!",
             //DATASOURCE_URL: "http://127.0.0.1:8080/xmex!",
             //DATASOURCE_URL: "http://192.168.10.10/xmex!",
             //DATASOURCE_URL: "http://192.168.10.10:8080/xmex!",
 
-              DATASOURCE_URL: "http://127.0.0.1/xmex!",
+             // DATASOURCE_URL: "http://127.0.0.1/xmex!",
               DATASOURCE_STORAGE : "Example_of_Snake snake",
               BOARD_ROWS: 31,
               BOARD_COLS: 41,
@@ -330,36 +330,36 @@
                           return;
                       }
 
-                   if (request.status != 204)
-                       throw {message: "Service join failed", request: request};
+                      if (request.status != 204)
+                          throw {message: "Service join failed", request: request};
 
-                   var effect = request.getResponseHeader("Storage-Effects").replaceAll(/:M$/ig, "");
-                   var player = SnakeService.players.list[effect];
-                   SnakeService.showMessage("You joined as player " + player.alias.toUpperCase()
-                           + " <span class=\"player " + player.alias + "\"></span>", true);
-                   SnakeService.player = player;
+                      var effect = request.getResponseHeader("Storage-Effects").replaceAll(/:M$/ig, "");
+                      var player = SnakeService.players.list[effect];
+                      SnakeService.showMessage("You joined as player " + player.alias.toUpperCase()
+                              + " <span class=\"player " + player.alias + "\"></span>", true);
+                      SnakeService.player = player;
 
-                   SnakeService.showMessage("Waiting for the free start position (center of the field)", true);
-                   var start = () => {
-                       var center = Math.ceil(SnakeService.board.rows *SnakeService.board.cols /2);
-                       var patch = "<field id=\"" + center + "\" player=\"" + SnakeService.player.alias + "\"/>";
-                       var request = new XMLHttpRequest();
-                       request.open("PATCH", SnakeService.DATASOURCE_URL + "/snake[not(//field/@id='" + center + "')]//" + SnakeService.player.alias, false);
-                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
-                       request.setRequestHeader("Content-Type", "application/xslt+xml");
-                       request.send(patch);
-                       if (request.status == 404) {
-                           window.setTimeout(start, SnakeService.WAIT);
-                           return;
-                       }
-                       if (request.status != 204)
-                           throw {message: "Service player start failed", request: request};
-                       SnakeService.showMessage("Position is free, you can start", true);
-                       SnakeService.points = [center];
-                       SnakeService.initKeyboardControl();
-                       SnakeService.initTouchUpdate();
-                   };
-                   start();
+                      SnakeService.showMessage("Waiting for the free start position (center of the field)", true);
+                      var start = () => {
+                          var center = Math.ceil(SnakeService.board.rows *SnakeService.board.cols /2);
+                          var patch = "<field id=\"" + center + "\" player=\"" + SnakeService.player.alias + "\"/>";
+                          var request = new XMLHttpRequest();
+                          request.open("PATCH", SnakeService.DATASOURCE_URL + "/snake[not(//field/@id='" + center + "')]//" + SnakeService.player.alias, false);
+                          request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
+                          request.setRequestHeader("Content-Type", "application/xslt+xml");
+                          request.send(patch);
+                          if (request.status == 404) {
+                              window.setTimeout(start, SnakeService.WAIT);
+                              return;
+                          }
+                          if (request.status != 204)
+                              throw {message: "Service player start failed", request: request};
+                          SnakeService.showMessage("Position is free, you can start", true);
+                          SnakeService.points = [center];
+                          SnakeService.initKeyboardControl();
+                          SnakeService.initTouchUpdate();
+                      };
+                      start();
                   };
                   join(timeout);
               },
