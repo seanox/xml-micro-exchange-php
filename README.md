@@ -123,9 +123,19 @@ __Please do not get confused, the API is online.
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
 responded with status 400.__
 
-__Important note about our hoster, which merges multiple slashes in the URI.__  
-__Therefore please use such [URIs encoded](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api.md#api),__
-__in hexadecimal or Base64.__
+__Important note about our hoster (strato.de), they have some restrictions:__
+- multiple slashes in the URI are combined  
+  Therefore please use such [URIs encoded](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api.md#api),
+  in hexadecimal or Base64.
+- DDoS protection  
+  MMany requests in one second from the same client are interpreted as an
+  attack and blocked after a short time with status 503.  
+  There is no solution.  
+  I'm searching for a new hoster, but it's not easy, many have the same
+  restrictions.
+
+Because I pay the hosting costs privately, I unfortunately can't offer more
+than a playground - sorry.
 
 
 # Manual
