@@ -53,7 +53,18 @@ Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
 
 ### Example
 
-TODO:
+```
+GET /xmex!/books/attribute::attrA HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
+```
+```
+GET /xmex!/books/@attrA HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
+```
+```
+GET /xmex!count(/books/book) HTTP/1.0
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ books
+```
 
 
 ## Response
@@ -73,7 +84,39 @@ The result of the XPath request
 
 ### Example
 
-TODO:
+```
+HTTP/1.0 200 Success
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage-Revision: 123
+Storage-Space: 262144/1363 bytes
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
+Content-Length: 26
+Content-Type: application/xslt+xml
+Execution-Time: 4 ms
+
+<?xml version="1.0"?>
+...
+```
+```
+HTTP/1.0 200 Success
+Date: Wed, 11 Nov 2020 12:00:00 GMT
+Access-Control-Allow-Origin: *
+Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Storage-Revision: 123
+Storage-Space: 262144/1363 bytes
+Storage-Last-Modified: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration: Wed, 11 Nov 20 12:00:00 +0000
+Storage-Expiration-Time: 900000 ms
+Content-Length: 26
+Content-Type: text/plain
+Execution-Time: 4 ms
+
+...
+```
 
 
 ## Response codes / behavior:

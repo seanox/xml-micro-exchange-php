@@ -22,9 +22,10 @@ The focus should be on a public, volatile and short-term data exchange for
 __Just exchange data without a own server landscape.__  
 __Just exchange data without knowing and managing all clients.__
 
-XML-Micro-Exchange is a volatile RESTful micro datasource.  
-It is designed for easy communication and data exchange of web-applications and
-for IoT.  
+XML-Micro-Exchange is an volatile NoSQL stateless micro datasource for the
+Internet. It is designed for easy communication and data exchange of
+web-applications and for IoT or for other Internet-based modules and
+components.  
 The XML based datasource is volatile and lives through continuous use and
 expires through inactivity. They are designed for active and near real-time data
 exchange but not as a real-time capable long-term storage.  
@@ -47,7 +48,6 @@ __All meet without obligation.__
 
 
 # Features
-TODO:
 
 ## RESTful
 The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT, PATCH,
@@ -56,7 +56,9 @@ The CONNECT method is not a standard and the function can be used
 alternatively via OPTIONS.  
 
 ## XPath
-TODO:
+XPath axes and functions are used for access, navigation and addressing of
+targets in the data source and it is an integral part of the URI with dynamic
+and functional effects.
 
 ## Multible axes and targets
 An XPath axis can address several elements and attributes simultaneously, which
