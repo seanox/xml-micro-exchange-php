@@ -122,7 +122,8 @@ Requests without storage identifier (see [manual](manual/README.md#manual)) are
 responded with status 400.__
 
 __Important note about our hoster, which merges multiple slashes in the URI.__  
-__Therefore please use such URIs encoded, in hexadecimal or Base64.__
+__Therefore please use such [URIs encoded](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api.md#api),__
+__in hexadecimal or Base64.__
 
 
 # Manual
