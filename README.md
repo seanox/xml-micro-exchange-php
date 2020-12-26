@@ -111,14 +111,18 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.0.0](https://github.com/seanox/xml-micro-exchange/raw/master/releases/seanox-xmex-1.0.0.zip)  
+[Seanox XML-Micro-Exchange 1.1.0](https://github.com/seanox/xml-micro-exchange/raw/master/releases/seanox-xmex-1.1.0.zip)  
 
 
 # Free XML-Micro-Exchange 
-[https://seanox.com/xmex!](https://seanox.com/xmex!) 65536 Storages x 256 kB  
+[https://seanox.com/xmex!](https://seanox.com/xmex!)  
+65536 Storages x 256 kB  
 __Please do not get confused, the API is online.  
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
 responded with status 400.__
+
+__Important note about our hoster, which merges multiple slashes in the URI.__  
+__Therefore please use such URIs encoded, in hexadecimal or Base64.__
 
 
 # Manual
