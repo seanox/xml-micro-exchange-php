@@ -45,13 +45,22 @@
           // Test links: http://127.0.0.1/projects/xml-micro-exchange/test/snake.html
           //             http://192.168.10.10/projects/xml-micro-exchange/test/snake.html
 
+          // The Apache web servers at Strato filter and simplify multiple
+          // slashes in URI, so they are hex-encoded.
+          String.prototype.encodeHex = function() {
+              var result = "0x";
+              for (var loop = 0; loop < this.length; loop++)
+                  result += this.charCodeAt(loop).toString(16);
+              return result;
+          }
+
           SnakeService = {
 
-            //DATASOURCE_URL: "https://seanox.com/xmex!",
-            //DATASOURCE_URL: "http://127.0.0.1/xmex!",
-            //DATASOURCE_URL: "http://127.0.0.1:8080/xmex!",
-            //DATASOURCE_URL: "http://192.168.10.10/xmex!",
-            //DATASOURCE_URL: "http://192.168.10.10:8080/xmex!",
+           // DATASOURCE_URL: "https://seanox.com/xmex!",
+           // DATASOURCE_URL: "http://127.0.0.1/xmex!",
+           // DATASOURCE_URL: "http://127.0.0.1:8080/xmex!",
+           // DATASOURCE_URL: "http://192.168.10.10/xmex!",
+           // DATASOURCE_URL: "http://192.168.10.10:8080/xmex!",
 
               DATASOURCE_URL: "http://127.0.0.1/xmex!",
               DATASOURCE_STORAGE : "Example_of_Snake snake",
@@ -132,7 +141,7 @@
                       if (!SnakeService.player)
                           return;
                       var request = new XMLHttpRequest();
-                      request.open("PATCH", SnakeService.DATASOURCE_URL + "//" + SnakeService.player.alias + "/@touch", true);
+                      request.open("PATCH", SnakeService.DATASOURCE_URL + ("//" + SnakeService.player.alias + "/@touch").encodeHex(), true);
                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                       request.setRequestHeader("Content-Type", "text/plain");
                       request.send(SnakeService.getTime());
@@ -194,7 +203,7 @@
                           update += "<field id=\"" + SnakeService.points[loop] + "\" player=\"" + SnakeService.player.alias + "\"/>";
 
                       var request = new XMLHttpRequest();
-                      request.open("PATCH", SnakeService.DATASOURCE_URL + "//players[not(//field[@id=" + SnakeService.points[0] + "])]//" + SnakeService.player.alias, false);
+                      request.open("PATCH", SnakeService.DATASOURCE_URL + ("//players[not(//field[@id=" + SnakeService.points[0] + "])]//" + SnakeService.player.alias).encodeHex(), false);
                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                       request.setRequestHeader("Content-Type", "application/xslt+xml");
                       request.send(update);
@@ -205,7 +214,7 @@
                           SnakeService.ticks = 0;
 
                           update = "<field id=\"" + last + "\" player=\"" + SnakeService.player.alias + "\"/>";
-                          request.open("PATCH", SnakeService.DATASOURCE_URL + "//players//" + SnakeService.player.alias, false);
+                          request.open("PATCH", SnakeService.DATASOURCE_URL + ("//players//" + SnakeService.player.alias).encodeHex(), false);
                           request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                           request.setRequestHeader("Content-Type", "application/xslt+xml");
                           request.send(update);
@@ -223,7 +232,7 @@
                   window.setInterval(() => {
                       var request = new XMLHttpRequest();
                       request.overrideMimeType("application/json");
-                      request.open("GET", SnakeService.DATASOURCE_URL + "//players//field", false);
+                      request.open("GET", SnakeService.DATASOURCE_URL + ("//players//field").encodeHex(), false);
                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                       request.setRequestHeader("Accept", "*/*, application/json");
                       request.send();
@@ -258,13 +267,13 @@
                   window.setInterval(() => {
                       var timeout = SnakeService.getTime() -SnakeService.PLAYERS_TIMEOUT;
                       var request = new XMLHttpRequest();
-                      request.open("PATCH", SnakeService.DATASOURCE_URL + "//players/*[@touch<" + timeout + "]|//players/*[@touch='']", true);
+                      request.open("PATCH", SnakeService.DATASOURCE_URL + ("//players/*[@touch<" + timeout + "]|//players/*[@touch='']").encodeHex(), true);
                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                       request.setRequestHeader("Content-Type", "text/plain");
                       request.send("");
 
                       var request = new XMLHttpRequest();
-                      request.open("PATCH", SnakeService.DATASOURCE_URL + "//players/*[@touch<" + timeout + "]/@touch", true);
+                      request.open("PATCH", SnakeService.DATASOURCE_URL + ("//players/*[@touch<" + timeout + "]/@touch").encodeHex(), true);
                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                       request.setRequestHeader("Content-Type", "text/plain");
                       request.send("");
@@ -321,7 +330,7 @@
                       if (new Date().getTime() > timeout)
                           throw "No free player place found."
                       var request = new XMLHttpRequest();
-                      request.open("PATCH", SnakeService.DATASOURCE_URL + "//players/*[@touch=''][1]/@touch", false);
+                      request.open("PATCH", SnakeService.DATASOURCE_URL + ("//players/*[@touch=''][1]/@touch").encodeHex(), false);
                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                       request.setRequestHeader("Content-Type", "text/plain");
                       request.send(SnakeService.getTime());
@@ -344,7 +353,7 @@
                           var center = Math.ceil(SnakeService.board.rows *SnakeService.board.cols /2);
                           var patch = "<field id=\"" + center + "\" player=\"" + SnakeService.player.alias + "\"/>";
                           var request = new XMLHttpRequest();
-                          request.open("PATCH", SnakeService.DATASOURCE_URL + "/snake[not(//field/@id='" + center + "')]//" + SnakeService.player.alias, false);
+                          request.open("PATCH", SnakeService.DATASOURCE_URL + ("/snake[not(//field/@id='" + center + "')]//" + SnakeService.player.alias).encodeHex(), false);
                           request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                           request.setRequestHeader("Content-Type", "application/xslt+xml");
                           request.send(patch);
