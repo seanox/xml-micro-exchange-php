@@ -294,7 +294,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Effects: 1x UID-M
-# - URI: ///players/*[@touch=''][1]/@touch
+# - URI: //players/*[@touch=''][1]/@touch
 PATCH {{service}}0x2f2f706c61796572732f2a5b40746f7563683d27275d5b315d2f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
