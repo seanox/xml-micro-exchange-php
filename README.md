@@ -129,8 +129,7 @@ __Important note about our hoster (strato.de), they have some restrictions:__
   in hexadecimal or Base64.
 - DDoS protection  
   MMany requests in one second from the same client are interpreted as an
-  attack and blocked after a short time with status 503.  
-  There is no solution.  
+  attack and blocked after a short time with status 503 -- there is no solution.  
   I'm searching for a new hoster, but it's not easy, many have the same
   restrictions.
 
