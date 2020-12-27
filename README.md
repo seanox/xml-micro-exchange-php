@@ -123,7 +123,7 @@ __Please do not get confused, the API is online.
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
 responded with status 400.__
 
-__Important note about our hoster (strato.de), they have some restrictions:__
+__Important note about our hoster, they have some restrictions:__
 - multiple slashes in the URI are combined  
   Therefore please use such [URIs encoded](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api.md#api),
   in hexadecimal or Base64.
