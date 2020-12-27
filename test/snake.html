@@ -232,9 +232,8 @@
                   window.setInterval(() => {
                       var request = new XMLHttpRequest();
                       request.overrideMimeType("application/json");
-                      request.open("GET", SnakeService.DATASOURCE_URL + ("//players//field").encodeHex(), false);
+                      request.open("GET", SnakeService.DATASOURCE_URL + ("//players//field!json").encodeHex(), false);
                       request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
-                      request.setRequestHeader("Accept", "*/*, application/json");
                       request.send();
                       if (request.status != 200)
                           return;
@@ -285,9 +284,8 @@
                   SnakeService.showMessage("Reading player data", true);
                   var request = new XMLHttpRequest();
                   request.overrideMimeType("application/json");
-                  request.open("GET", SnakeService.DATASOURCE_URL + "/snake/players", false);
+                  request.open("GET", SnakeService.DATASOURCE_URL + "/snake/players!json", false);
                   request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
-                  request.setRequestHeader("Accept", "*/*, application/json");
                   request.send();
                   if (request.status != 200)
                       throw {message: "Service players initialization failed", request: request};
@@ -313,9 +311,8 @@
                   SnakeService.showMessage("Reading board data", true);
                   var request = new XMLHttpRequest();
                   request.overrideMimeType("application/json");
-                  request.open("GET", SnakeService.DATASOURCE_URL + "/snake/board", false);
+                  request.open("GET", SnakeService.DATASOURCE_URL + "/snake/board!json", false);
                   request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
-                  request.setRequestHeader("Accept", "*/*, application/json");
                   request.send();
                   if (request.status != 200)
                       throw {message: "Service board initialization failed", request: request};

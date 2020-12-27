@@ -8,6 +8,10 @@
       Omission of the automatic prefix.
   BF: Build: Correction of release
       Release file (zip) was not overwritten if already exists.
+  CR: Service: Added directives for XPath
+      Directives are added at the end of the XPath separated by exclamation marks (!).
+  CR: Service: Added the directive JSON
+      This directive transforms the output to JSON.
   CR: Service GET/POST: Added support for accept header: application/json
       The header enforces the transformation of XML output as JSON.
       If the return value is not application/xslt+xml, the header has no effect

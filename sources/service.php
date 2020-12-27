@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20201226
+ *  Service 1.1.0 20201227
  *  Copyright (C) 2020 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20201226
+ *  @version 1.1.0 20201227
  */
 class Storage {
 
@@ -234,6 +234,9 @@ class Storage {
     /** Current XPath */
     private $xpath;
 
+    /** Current XPath options (array lowercase) */
+    private $options;
+
     /** Revision of the storage */
     private $revision;
     
@@ -269,6 +272,14 @@ class Storage {
      *     Group 2. Name of the root element (optional)
      */    
     const PATTERN_HEADER_STORAGE = "/^(\w{1,64})(?:\s+(\w+)){0,1}$/";
+
+    /**
+     * Pattern to determine options (optional directives) at the end of XPath
+     *     Group 0. Full match
+     *     Group 1. XPath
+     *     Group 2. options (optional)
+     */
+    const PATTERN_XPATH_OPTIONS = "/^(.*?)((?:!+\w+){0,})$/";
 
     /**
      * Pattern to determine the structure of XPath axis expressions for attributes
@@ -312,10 +323,17 @@ class Storage {
         // The storage identifier is case-sensitive.
         // To ensure that this also works with Windows, Base64 encoding is used.
 
+        $options = [];
+        if (preg_match(Storage::PATTERN_XPATH_OPTIONS, $xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
+            $xpath = $matches[1];
+            $options = array_merge(array_filter(explode("!", strtolower($matches[2]))));
+        }
+
         $this->storage  = $storage;
         $this->root     = $root ? $root : "data";
         $this->store    = Storage::DIRECTORY . "/" . base64_encode($this->storage);
         $this->xpath    = $xpath;
+        $this->options  = $options;
         $this->change   = false;
         $this->unique   = Storage::uniqueId();  
         $this->serial   = 0;
@@ -826,8 +844,7 @@ class Storage {
                     $result = $result[0]->value;
                 } else {
                     $xml->appendChild($xml->importNode($result[0], true));
-                    if (isset($_SERVER["HTTP_ACCEPT"])
-                          &&  preg_match("/^(.*,){0,1}\s*application\/json\s*(;.*){0,1}(,.*){0,1}$/i", $_SERVER["HTTP_ACCEPT"])) {
+                    if (in_array("json", $this->options)) {
                         $media = Storage::CONTENT_TYPE_JSON;
                         $result = json_encode(simplexml_import_dom($xml), JSON_PRETTY_PRINT);
                     } else $result = $xml->saveXML();
@@ -841,8 +858,7 @@ class Storage {
                     $collection->appendChild($xml->importNode($entry, true));
                 }
                 $xml->appendChild($collection);
-                if (isset($_SERVER["HTTP_ACCEPT"])
-                      &&  preg_match("/^(.*,){0,1}\s*application\/json\s*(;.*){0,1}(,.*){0,1}$/i", $_SERVER["HTTP_ACCEPT"])) {
+                if (in_array("json", $this->options)) {
                     $media = Storage::CONTENT_TYPE_JSON;
                     $result = json_encode(simplexml_import_dom($xml), JSON_PRETTY_PRINT);
                 } else $result = $xml->saveXML();
@@ -977,8 +993,7 @@ class Storage {
                 $media = Storage::CONTENT_TYPE_TEXT;
             } else if (strcasecmp($media[0]->nodeValue, "xml") === 0) {
                 $media = Storage::CONTENT_TYPE_XML;
-                if (isset($_SERVER["HTTP_ACCEPT"])
-                      &&  preg_match("/^(.*,){0,1}\s*application\/json\s*(;.*){0,1}(,.*){0,1}$/i", $_SERVER["HTTP_ACCEPT"])) {
+                if (in_array("json", $this->options)) {
                     $media = Storage::CONTENT_TYPE_JSON;
                     $output = json_encode(simplexml_load_string($output), JSON_PRETTY_PRINT);
                 }
@@ -1982,7 +1997,7 @@ class Storage {
             $headers[] = "Content-Type: " . preg_replace("/^(.*?)(\;.*){0,1}$/", "$1", $header->value);
         asort($headers);
 
-        $headers = array_merge($headers, []);
+        $headers = array_merge($headers);
 
         // Storage-Effects are never the same with UIDs.
         // Therefore, the UIDs are normalized and the header is simplified to
