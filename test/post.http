@@ -748,17 +748,16 @@ client.test("unittest", function() {
 
 ###
 # Valid XSLT without XPath and with output
-# XML output, the accept header: application/json has an effect.
+# Text/JSON output, the JSON directive in the URI has an effect.
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 1358
 # - Content-Type: application/json
 # - Only an extract of the data selected by XPath.
-# - URI: //district[@name='Lichtenberg']
-POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d HTTP/1.0
+# - URI: //district[@name='Lichtenberg']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Accept: application/json, */*
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -779,23 +778,22 @@ Accept: application/json, */*
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a7c1bc06b7f3569c37aafcf63f0f2dc3");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "89b39bc634a559d896f6a933d8ff6183");
 });
 %}
 
 ###
 # Valid XSLT without XPath and with output
-# Text output, the Accept header: application/json has no effect.
+# Text output, the JSON directive in the URI has no effect.
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 287
+# - Content-Length: 285
 # - Content-Type: text/plain
 # - Only an extract of the data selected by XPath.
-# - URI: //district[@name='Lichtenberg']
-POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d HTTP/1.0
+# - URI: //district[@name='Lichtenberg']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
-Accept: application/json, */*
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -814,7 +812,7 @@ Quarters of district: <xsl:value-of select="/district/@name"/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4d1a96a36e9020b0e2ac36510bf2d4f6");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b5ff60aa14cbcbe049c6abf47c815670");
 });
 %}
 

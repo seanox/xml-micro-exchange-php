@@ -746,73 +746,69 @@ client.test("unittest", function() {
 
 ###
 # The mix of element and attributes are returned as a collection.
-# XML output, the accept header: application/json has an effect.
+# Text/JSON output, the JSON directive in the URI has an effect.
 # Expectations:
 # - Status code 200 Success
-## - Content-Type: application/json
+# - Content-Type: application/json
 # - Content-Length: 58393
-GET {{service}}/statistic HTTP/1.0
+GET {{service}}/statistic!JSON HTTP/1.0
 Storage: {{storage_get}}
-Accept: application/json, */*
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5118e0c04dd1ba953b5c882ceedbf3ad");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7d1448748d97326d37b194c3fd2571eb");
 });
 %}
 
 ###
 # The mix of element and attributes are returned as a collection.
-# XML output, the accept header: application/json has an effect.
+# Text output, the JSON directive in the URI has no effect.
 # Expectations:
 # - Status code 200 Success
-# - Content-Type: application/json
+# - Content-Type: text/plain
 # - Content-Length: 2989
-# - URI: //district[1]|//district[1]/@name
-GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
+# - URI: //district[1]|//district[1]/@name!JSon
+GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e HTTP/1.0
 Storage: {{storage_get}}
-Accept: application/json, */*
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2498affbbc7a45a5a0c4454446b0225d");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "72dbe55c74a1c8d3f351c7720ec1d5ae");
 });
 %}
 
 ###
 # XPath expression for direct processing
-# Text output, the Accept header: application/json has no effect.
+# Text output, the JSON directive in the URI has no effect.
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 2
 # - Content-Type: text/plain
 # - Response-Body: -2
-GET {{service}}1-3 HTTP/1.0
+GET {{service}}1-3!jsON HTTP/1.0
 Storage: {{storage_get}}
-Accept: application/json, */*
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8d35287e1806d6838513a71a89695f27");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "af7b09a3ed63c1f5a5039d5075bc1512");
 });
 %}
 
 ###
 # XPath axis for a attribute should work
-# Text output, the Accept header: application/json has no effect.
+# Text output, the JSON directive in the URI has no effect.
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 6
 # - Content-Type: text/plain
 # - Value: Berlin
-# - URI: //city[1]/@name
-GET {{service}}0x2f2f636974795b315d2f406e616d65 HTTP/1.0
+# - URI: //city[1]/@name!jSOn
+GET {{service}}0x2f2f636974795b315d2f406e616d65216a534f6e HTTP/1.0
 Storage: {{storage_get}}
-Accept: application/json, */*
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "904d5b2d12d734d84c8aed2c7e752de3");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a9409072622e3e19ea65f538c8e046ba");
 });
 %}
 
