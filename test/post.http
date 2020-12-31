@@ -562,7 +562,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 0
-# - Content-Type: application/xslt+xml
+# - Without Content-Type
 POST {{service}} HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
@@ -576,7 +576,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "012bbf2ef00832e318ac1b809c613d54");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e3ea465d1279b2431bddfcbccc368d13");
 });
 %}
 
@@ -585,7 +585,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 0
-# - Content-Type: application/xslt+xml
+# - Without Content-Type
 POST {{service}}/statistic/cities/city HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
@@ -599,7 +599,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f15b098aec72729d8a028b942cd96d69");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7323edff9b0af6acbb8ce1b8fbe0bbd3");
 });
 %}
 
@@ -751,7 +751,7 @@ client.test("unittest", function() {
 # Text/JSON output, the JSON directive in the URI has an effect.
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 1358
+# - Content-Length: 476
 # - Content-Type: application/json
 # - Only an extract of the data selected by XPath.
 # - URI: //district[@name='Lichtenberg']!json
@@ -768,7 +768,7 @@ Content-Type: application/xslt+xml
     <district name="{$district}">
 	  <quarters>
 	  <xsl:for-each select="//quarter">
-	  <xsl:variable name="quarter" select="@name"/>
+	    <xsl:variable name="quarter" select="@name"/>
 	    <quarter name="{$quarter}"/>
 	  </xsl:for-each>
       </quarters>
@@ -778,17 +778,17 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "89b39bc634a559d896f6a933d8ff6183");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "372b9f40735ee0a3b1f4af9329b77174");
 });
 %}
 
 ###
 # Valid XSLT without XPath and with output
-# Text output, the JSON directive in the URI has no effect.
+# Text/JSON output, the JSON directive in the URI has an effect.
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 285
-# - Content-Type: text/plain
+# - Content-Length: 358
+# - Content-Type: application/json
 # - Only an extract of the data selected by XPath.
 # - URI: //district[@name='Lichtenberg']!json
 POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e HTTP/1.0
@@ -812,7 +812,329 @@ Quarters of district: <xsl:value-of select="/district/@name"/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b5ff60aa14cbcbe049c6abf47c815670");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5aeaf850ffce46a5009e94b0d0fea0d5");
+});
+%}
+
+###
+# Template without output method used the default xml
+# The result is not a valid XML-file
+# Expectations:
+# - Content-Length: 40
+# - Content: Count: 2x
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/">
+    Count: <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d250d5e27a8f90fe2ddd90fdde26d0c4");
+});
+%}
+
+###
+# Template with xml output method
+# The result is not a valid XML-file
+# Expectations:
+# - Content-Length: 40
+# - Content: Count: 2x
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/">
+    Count: <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "20525e5c8692d6adda295029058ade8d");
+});
+%}
+
+###
+# Template with text output method
+# Expectations:
+# - Content-Length: 5
+# - Content-type: text/plain
+# - Content: 2x
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="text"/>
+  <xsl:template match="/">
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "32e61257a8bda6b6bc4c3accc705d3fa");
+});
+%}
+
+###
+# Template with html output method
+# Expectations:
+# - Content-Length: 18
+# - Content-type: text/html;
+# - Content: <img src="">2x
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="html"/>
+  <xsl:template match="/">
+    <img src=""/>
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "749fc97b489909ca8539a9769023acd7");
+});
+%}
+
+###
+# Template with invalid output method
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (invalid value for method: xhtml)
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xhtml"/>
+  <xsl:template match="/">
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6978a9c0cb9685ff5569ff4a4a4540b0");
+});
+%}
+
+###
+# Template with invalid output method
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (invalid value for method: unknown)
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="unknown"/>
+  <xsl:template match="/">
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cc2262d2b80c24c7e2fffe44371edc6d");
+});
+%}
+
+###
+# Template without output method used the default xml
+# Text/JSON output, the JSON directive in the URI has an effect.
+# The result is not a valid XML-file
+# The intermediate transformation to XML, as a precursor to the transformation
+# to JSON, will create an empty document, and JSON will also create false
+# Expectations:
+# - Content-Length: 5
+# - Content-Type: application/json
+# - Content: false
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:template match="/">
+    Count: <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "516d5f3306eb994d027e6e1bd084bd78");
+});
+%}
+
+###
+# Template with xml output method
+# Text/JSON output, the JSON directive in the URI has an effect.
+# The result is not a valid XML-file
+# The intermediate transformation to XML, as a precursor to the transformation
+# to JSON, will create an empty document, and JSON will also create false
+# Expectations:
+# - Content-Length: 5
+# - Content-Type: application/json
+# - Content: false
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/">
+    Count: <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5d5190b73f497286d266d669855b1247");
+});
+%}
+
+###
+# Template with text output method
+# Text/JSON output, the JSON directive in the URI has an effect.
+# The output of the transformation is a text enclosed in a JSON structure
+# Expectations:
+# - Content-Length: 8
+# - Content-Type: application/json
+# - Content: "2x\n  "
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="text"/>
+  <xsl:template match="/">
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "999026335a66fb90cf24c8c8d6748e12");
+});
+%}
+
+###
+# Template with html output method
+# Text/HTML output, the JSON directive in the URI has no effect.
+# The explicit output of HTML cannot be transformed into JSON.
+# Expectations:
+# - Content-Length: 18
+# - Content-type: text/html;
+# - Content: <img src="">2x
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="html"/>
+  <xsl:template match="/">
+    <img src=""/>
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "261066daac7b6e7f1722ed30f5d427c9");
+});
+%}
+
+###
+# Template with invalid output method
+# the JSON directive in the URI has no effect.
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (invalid value for method: xhtml)
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xhtml"/>
+  <xsl:template match="/">
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "082bc338bb6991d6e75a84adea51176c");
+});
+%}
+
+###
+# Template with invalid output method
+# the JSON directive in the URI has no effect.
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (invalid value for method: unknown)
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
+POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="unknown"/>
+  <xsl:template match="/">
+    <xsl:value-of select="count(//district)"/>x
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a6a29a6b277a485590fe91ca8edca345");
 });
 %}
 

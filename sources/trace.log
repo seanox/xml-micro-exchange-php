@@ -1299,34 +1299,34 @@ a08c679883039bb179d7bddf99c0d94f
 	36962e76dfd480e42c9c946a6d2d6d7b Trace-XPath-Hash
 	//city[1]/attribute::wrong
 	a08c679883039bb179d7bddf99c0d94f Trace-Composite-Hash
-27984e29ba1b0991b20f5c3c5a4a4894
+acac428d20b69aca248585bea88657d9
 	Request Method:GET XPath://city[1]/attribute::empty Length:0
 	Response Status:200 Length:0
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	7a87d14a9c8e22b830efe0beaefb4404 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!0x2F2F636974795b315d2f6174747269627574653a3a656d707479","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	ed7a8c9c42f6a25f95f5e9ff6057815f Trace-Response-Header-Hash
-	["Content-Length: 0","Content-Type: text\/plain","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
+	389c4e71ca8df6c5b9bbfbe329888710 Trace-Response-Header-Hash
+	["Content-Length: 0","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	df38dee756ae5867328af0c2abd16ccc Trace-XPath-Hash
 	//city[1]/attribute::empty
-	27984e29ba1b0991b20f5c3c5a4a4894 Trace-Composite-Hash
-95b6759bd7919cd57ef521c070326b0c
+	acac428d20b69aca248585bea88657d9 Trace-Composite-Hash
+da424e435a164eba91cca67aea58d936
 	Request Method:GET XPath:concat('','') Length:0
 	Response Status:200 Length:0
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	f0f90221f4b29df1d059ebd2361d2c58 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!concat('','')","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	ed7a8c9c42f6a25f95f5e9ff6057815f Trace-Response-Header-Hash
-	["Content-Length: 0","Content-Type: text\/plain","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
+	389c4e71ca8df6c5b9bbfbe329888710 Trace-Response-Header-Hash
+	["Content-Length: 0","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	a9dbae5232f96d3475ca3d75c9a0af0b Trace-XPath-Hash
 	concat('','')
-	95b6759bd7919cd57ef521c070326b0c Trace-Composite-Hash
+	da424e435a164eba91cca67aea58d936 Trace-Composite-Hash
 c7f7aadefa8789931907b1095aa87f66
 	Request Method:GET XPath:1+2 Length:1
 	Response Status:200 Length:1
@@ -1565,62 +1565,62 @@ cc22578f815253194c3c556ec7c1e5c9
 	65a80855b75d79c1cd78b042925eb519 Trace-XPath-Hash
 	//district[1]|//district[1]/@name
 	cc22578f815253194c3c556ec7c1e5c9 Trace-Composite-Hash
-7d1448748d97326d37b194c3fd2571eb
-	Request Method:GET XPath:/statistic Length:58393
-	Response Status:200 Length:58393
+2b458d761627e365148f08de96402426
+	Request Method:GET XPath:/statistic Length:15276
+	Response Status:200 Length:15276
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	16b4a897c996da721ef272ea0a2ca5c6 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!\/statistic!JSON","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	6188c227bb5e7bb8c0280c75578d816f Trace-Response-Header-Hash
-	["Content-Length: 58393","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
-	f90bc37048a121ccc4eedd1bf0e3e5f7 Trace-Response-Body-Hash
+	d063fc75bc8e8e88e509af4b53e7a02c Trace-Response-Header-Hash
+	["Content-Length: 15276","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
+	eec5fa32a15bae79126a203842a639d7 Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	265ddae867853702b84fc58caac55287 Trace-XPath-Hash
 	/statistic
-	7d1448748d97326d37b194c3fd2571eb Trace-Composite-Hash
-72dbe55c74a1c8d3f351c7720ec1d5ae
-	Request Method:GET XPath://district[1]|//district[1]/@name Length:2989
-	Response Status:200 Length:2989
+	2b458d761627e365148f08de96402426 Trace-Composite-Hash
+f2ad4d05b7cffd42e3039f6103a3f3a7
+	Request Method:GET XPath://district[1]|//district[1]/@name Length:1170
+	Response Status:200 Length:1170
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	32f1200097ca43fb4cdd6ac4c50e92a2 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	ddf6ca3a51f73f24678065f81f666e7f Trace-Response-Header-Hash
-	["Content-Length: 2989","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
-	cf45d4b405b40df9b833592bfaaf0113 Trace-Response-Body-Hash
+	6b44eac74ff15573e1c290cb6cdb4b2f Trace-Response-Header-Hash
+	["Content-Length: 1170","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
+	373364b807eb463a4cec6fbc61759154 Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	65a80855b75d79c1cd78b042925eb519 Trace-XPath-Hash
 	//district[1]|//district[1]/@name
-	72dbe55c74a1c8d3f351c7720ec1d5ae Trace-Composite-Hash
-af7b09a3ed63c1f5a5039d5075bc1512
+	f2ad4d05b7cffd42e3039f6103a3f3a7 Trace-Composite-Hash
+fef06bd19144ed2c663a826181c3eb01
 	Request Method:GET XPath:1-3 Length:2
 	Response Status:200 Length:2
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	7a9caac1b48b32b6ab31bb99e098cde3 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!1-3!jsON","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	59b4ee6f1354ea17e5440b847d2f5537 Trace-Response-Header-Hash
-	["Content-Length: 2","Content-Type: text\/plain","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
+	9f4e498688ee9b22f359db6ae55ac35c Trace-Response-Header-Hash
+	["Content-Length: 2","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
 	5d7b9adcbe1c629ec722529dd12e5129 Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	13cee27a2bd93915479f049378cffdd3 Trace-XPath-Hash
 	1-3
-	af7b09a3ed63c1f5a5039d5075bc1512 Trace-Composite-Hash
-a9409072622e3e19ea65f538c8e046ba
-	Request Method:GET XPath://city[1]/@name Length:6
-	Response Status:200 Length:6
+	fef06bd19144ed2c663a826181c3eb01 Trace-Composite-Hash
+260c6cd00bc44003fc32d78b235f770a
+	Request Method:GET XPath://city[1]/@name Length:8
+	Response Status:200 Length:8
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	2a04b6b9697898eaba16a07d2b3ebfbd Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!0x2f2f636974795b315d2f406e616d65216a534f6e","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	8add1de7b52d71ee065f79061c6c5c54 Trace-Response-Header-Hash
-	["Content-Length: 6","Content-Type: text\/plain","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
-	ee1611b61f5688e70c12b40684dbb395 Trace-Response-Body-Hash
+	7b1a1940b638702da9866d942c6fd1e8 Trace-Response-Header-Hash
+	["Content-Length: 8","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14393 bytes","Storage: UnitTest_Storage_G0",200]
+	ac1abdd93f41796f80077aabfe074245 Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	bccad15de8e2089b14c4edacef19c3b2 Trace-XPath-Hash
 	//city[1]/@name
-	a9409072622e3e19ea65f538c8e046ba Trace-Composite-Hash
+	260c6cd00bc44003fc32d78b235f770a Trace-Composite-Hash
 0169ece03d009a5cc4ae9648d5651eb7
 	Request Method:CONNECT XPath: Length:0
 	Response Status:201 Length:0
@@ -3419,33 +3419,33 @@ f2e863cc550b8e23ee5cb225b0b74f73
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	2264540253e7965730125b1820e51864 Trace-Composite-Hash
-012bbf2ef00832e318ac1b809c613d54
+e3ea465d1279b2431bddfcbccc368d13
 	Request Method:POST XPath: Length:0
 	Response Status:200 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	c7787b67c7b64013c043486503af357f Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"180","Content-Type":"APPLICATION\/XSLT+XML"}
 	c38f44002f52604b327a3d281cde8128 Trace-Request-Body-Hash
-	26e1c82ddd760ebc82fd4be62de7f26d Trace-Response-Header-Hash
-	["Content-Length: 0","Content-Type: application\/xslt+xml","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	61401b40ff822221945538065a89e496 Trace-Response-Header-Hash
+	["Content-Length: 0","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	012bbf2ef00832e318ac1b809c613d54 Trace-Composite-Hash
-f15b098aec72729d8a028b942cd96d69
+	e3ea465d1279b2431bddfcbccc368d13 Trace-Composite-Hash
+7323edff9b0af6acbb8ce1b8fbe0bbd3
 	Request Method:POST XPath:/statistic/cities/city Length:0
 	Response Status:200 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	cfd81bb11951c8cbe626f8a68f84a96d Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!\/statistic\/cities\/city","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"180","Content-Type":"APPLICATION\/XSLT+XML"}
 	c38f44002f52604b327a3d281cde8128 Trace-Request-Body-Hash
-	26e1c82ddd760ebc82fd4be62de7f26d Trace-Response-Header-Hash
-	["Content-Length: 0","Content-Type: application\/xslt+xml","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	61401b40ff822221945538065a89e496 Trace-Response-Header-Hash
+	["Content-Length: 0","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	7f0c52f364768140058dbe71f8d40a23 Trace-XPath-Hash
 	/statistic/cities/city
-	f15b098aec72729d8a028b942cd96d69 Trace-Composite-Hash
+	7323edff9b0af6acbb8ce1b8fbe0bbd3 Trace-Composite-Hash
 6020b2336bb87900a95a9fcb5039a7df
 	Request Method:POST XPath:/statistic/cities/unknow Length:0
 	Response Status:404 Length:0
@@ -3542,34 +3542,202 @@ f9c5b800b51e1d0fc12e0f4b70eb0aff
 	cbe4cbfe3c96ae4f0e5791b7a8ec890f Trace-XPath-Hash
 	//district/@name|//quarter/@area
 	1b851f77c2ff677ea20d13939e589593 Trace-Composite-Hash
-89b39bc634a559d896f6a933d8ff6183
-	Request Method:POST XPath://district[@name='Lichtenberg'] Length:1358
-	Response Status:200 Length:1358
+372b9f40735ee0a3b1f4af9329b77174
+	Request Method:POST XPath://district[@name='Lichtenberg'] Length:476
+	Response Status:200 Length:476
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
-	2e466078ee5097acff0e74dd67478514 Trace-Request-Header-Hash
-	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"476","Content-Type":"APPLICATION\/XSLT+XML"}
-	835e395663af4b6c5e4253b9497742fb Trace-Request-Body-Hash
-	0dc3a8d64522cddcb8eccd814f26c10e Trace-Response-Header-Hash
-	["Content-Length: 1358","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
-	5b3eefab07ce46558419c424e2ba1798 Trace-Response-Body-Hash
+	54dddcbdb5512b55bd1dd7ac6e57da66 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"478","Content-Type":"APPLICATION\/XSLT+XML"}
+	4e2956ecd1e8f304809b3e63944b8dae Trace-Request-Body-Hash
+	282138f5f7b7d4947b7a66d3e976d66b Trace-Response-Header-Hash
+	["Content-Length: 476","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	6c4e34fc0dd1879273ca4afeccfeefd4 Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	710f6fea52105e582046aab7fcf73e2e Trace-XPath-Hash
 	//district[@name='Lichtenberg']
-	89b39bc634a559d896f6a933d8ff6183 Trace-Composite-Hash
-b5ff60aa14cbcbe049c6abf47c815670
-	Request Method:POST XPath://district[@name='Lichtenberg'] Length:285
-	Response Status:200 Length:285
+	372b9f40735ee0a3b1f4af9329b77174 Trace-Composite-Hash
+5aeaf850ffce46a5009e94b0d0fea0d5
+	Request Method:POST XPath://district[@name='Lichtenberg'] Length:358
+	Response Status:200 Length:358
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	2cb2b8b52f978baa34a1142bd442aa50 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"472","Content-Type":"APPLICATION\/XSLT+XML"}
 	4823e7df7fe6380db209c644dce24726 Trace-Request-Body-Hash
-	f900259548c4daab0f792454b33e4b25 Trace-Response-Header-Hash
-	["Content-Length: 285","Content-Type: text\/plain","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
-	86eedcd91842444339a2d1f22240ded8 Trace-Response-Body-Hash
+	fe07a7340b4f86d5e387adcf103e868e Trace-Response-Header-Hash
+	["Content-Length: 358","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	9fb998e83cdc4c02aba936274e834973 Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	710f6fea52105e582046aab7fcf73e2e Trace-XPath-Hash
 	//district[@name='Lichtenberg']
-	b5ff60aa14cbcbe049c6abf47c815670 Trace-Composite-Hash
+	5aeaf850ffce46a5009e94b0d0fea0d5 Trace-Composite-Hash
+d250d5e27a8f90fe2ddd90fdde26d0c4
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:40
+	Response Status:200 Length:40
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	719301dfdd1abb2d59fe20b95965c1eb Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"223","Content-Type":"APPLICATION\/XSLT+XML"}
+	2780e33a3f97328e03bd91e97c3df1df Trace-Request-Body-Hash
+	ba51decfa3147ad0df954ca523877e30 Trace-Response-Header-Hash
+	["Content-Length: 40","Content-Type: application\/xslt+xml","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	c397de8cd20d568308ce5fbab770bf11 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	d250d5e27a8f90fe2ddd90fdde26d0c4 Trace-Composite-Hash
+20525e5c8692d6adda295029058ade8d
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:40
+	Response Status:200 Length:40
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	35a96d705ba9e441acad8332ee5a463f Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"252","Content-Type":"APPLICATION\/XSLT+XML"}
+	4ff04d32632df660f3e1bbbca945b4de Trace-Request-Body-Hash
+	ba51decfa3147ad0df954ca523877e30 Trace-Response-Header-Hash
+	["Content-Length: 40","Content-Type: application\/xslt+xml","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	c397de8cd20d568308ce5fbab770bf11 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	20525e5c8692d6adda295029058ade8d Trace-Composite-Hash
+32e61257a8bda6b6bc4c3accc705d3fa
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:5
+	Response Status:200 Length:5
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	8e0bd4ddc95b5ca42a1f12a4f14bfdbd Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"246","Content-Type":"APPLICATION\/XSLT+XML"}
+	4efbee31a42ceca306e264b49ce7163a Trace-Request-Body-Hash
+	c534107825e095c2d7eadd43b87aea01 Trace-Response-Header-Hash
+	["Content-Length: 5","Content-Type: text\/plain","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	bdce1418ed5c7c078f3eb98c2e2e5990 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	32e61257a8bda6b6bc4c3accc705d3fa Trace-Composite-Hash
+749fc97b489909ca8539a9769023acd7
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:18
+	Response Status:200 Length:18
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	4a4285ee97d463c3c67328facf74cea1 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"264","Content-Type":"APPLICATION\/XSLT+XML"}
+	47daec4f92aa598147db4fae170fbe83 Trace-Request-Body-Hash
+	820b3f78c9718fd0fe43b6461bae0a57 Trace-Response-Header-Hash
+	["Content-Length: 18","Content-Type: text\/html","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	13bc10bc7e23a360137a3e44f5a78534 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	749fc97b489909ca8539a9769023acd7 Trace-Composite-Hash
+6978a9c0cb9685ff5569ff4a4a4540b0
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
+	Response Status:400 Length:0
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	3983522db94a83538de72af63cf66531 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"247","Content-Type":"APPLICATION\/XSLT+XML"}
+	75f663b8ed83119f89d2fe590af6e05a Trace-Request-Body-Hash
+	db4d1999f05efdaa5208f18b4c4b56bf Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: xhtml)","Message",400]
+	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	6978a9c0cb9685ff5569ff4a4a4540b0 Trace-Composite-Hash
+cc2262d2b80c24c7e2fffe44371edc6d
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
+	Response Status:400 Length:0
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	26d2e185c74ab26e6045f5b74c8ba2c9 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"249","Content-Type":"APPLICATION\/XSLT+XML"}
+	ccfc092fbecc3553200528f7f8c98893 Trace-Request-Body-Hash
+	08f77cc5fc972a56243feb1d74483cc2 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: unknown)","Message",400]
+	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	cc2262d2b80c24c7e2fffe44371edc6d Trace-Composite-Hash
+516d5f3306eb994d027e6e1bd084bd78
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:5
+	Response Status:200 Length:5
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	aa8df9d0861e4cde704a58d31d7e61d0 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"223","Content-Type":"APPLICATION\/XSLT+XML"}
+	2780e33a3f97328e03bd91e97c3df1df Trace-Request-Body-Hash
+	af5a4e6a9efd1f41fa95ebe6d8bcde2d Trace-Response-Header-Hash
+	["Content-Length: 5","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	68934a3e9455fa72420237eb05902327 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	516d5f3306eb994d027e6e1bd084bd78 Trace-Composite-Hash
+5d5190b73f497286d266d669855b1247
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:5
+	Response Status:200 Length:5
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	bef695d1e3e7bb4de91ca1323dfd3922 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"252","Content-Type":"APPLICATION\/XSLT+XML"}
+	4ff04d32632df660f3e1bbbca945b4de Trace-Request-Body-Hash
+	af5a4e6a9efd1f41fa95ebe6d8bcde2d Trace-Response-Header-Hash
+	["Content-Length: 5","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	68934a3e9455fa72420237eb05902327 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	5d5190b73f497286d266d669855b1247 Trace-Composite-Hash
+999026335a66fb90cf24c8c8d6748e12
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:8
+	Response Status:200 Length:8
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	6e8bf000055cba76b4b3f419556c2503 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"246","Content-Type":"APPLICATION\/XSLT+XML"}
+	4efbee31a42ceca306e264b49ce7163a Trace-Request-Body-Hash
+	6fc4dfc516df12099edf07187328ef95 Trace-Response-Header-Hash
+	["Content-Length: 8","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	850de051ff4b660d991a48ccbc7d8701 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	999026335a66fb90cf24c8c8d6748e12 Trace-Composite-Hash
+261066daac7b6e7f1722ed30f5d427c9
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:18
+	Response Status:200 Length:18
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	68810f4bda94b92a3d89d13598cf2891 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"264","Content-Type":"APPLICATION\/XSLT+XML"}
+	47daec4f92aa598147db4fae170fbe83 Trace-Request-Body-Hash
+	820b3f78c9718fd0fe43b6461bae0a57 Trace-Response-Header-Hash
+	["Content-Length: 18","Content-Type: text\/html","Storage-Revision: 1","Storage-Space: 262144\/14384 bytes","Storage: UnitTest_Storage_P0",200]
+	13bc10bc7e23a360137a3e44f5a78534 Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	261066daac7b6e7f1722ed30f5d427c9 Trace-Composite-Hash
+082bc338bb6991d6e75a84adea51176c
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
+	Response Status:400 Length:0
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	6e4f6cecbd56db09a0d50c6496c010d0 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"247","Content-Type":"APPLICATION\/XSLT+XML"}
+	75f663b8ed83119f89d2fe590af6e05a Trace-Request-Body-Hash
+	db4d1999f05efdaa5208f18b4c4b56bf Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: xhtml)","Message",400]
+	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	082bc338bb6991d6e75a84adea51176c Trace-Composite-Hash
+a6a29a6b277a485590fe91ca8edca345
+	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
+	Response Status:400 Length:0
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	f194b9deb845bea28485da7810916527 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"249","Content-Type":"APPLICATION\/XSLT+XML"}
+	ccfc092fbecc3553200528f7f8c98893 Trace-Request-Body-Hash
+	08f77cc5fc972a56243feb1d74483cc2 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: unknown)","Message",400]
+	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
+	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
+	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
+	//district[@name='Mitte']|//district[@name='Spandau']
+	a6a29a6b277a485590fe91ca8edca345 Trace-Composite-Hash
 d7d8fa2feab1cd439b0fe917912c5be7
 	Request Method:PUT XPath:/books/attribute::attrA Length:0
 	Response Status:404 Length:0
@@ -4959,34 +5127,34 @@ fe3994bcfd868614ecf2871f579cb233
 	d77ed8c79a404895a50b7ec90647b8f1 Trace-XPath-Hash
 	/snake[not(players)][not(board)]::last
 	5b2189b9c180f89d85d119b7f9db1868 Trace-Composite-Hash
-0587b71b8262598ec110ce3ba29aca07
-	Request Method:GET XPath:/snake/players Length:1523
-	Response Status:200 Length:1523
+c85d00ab152840facbaca9fb3f3fb6eb
+	Request Method:GET XPath:/snake/players Length:793
+	Response Status:200 Length:793
 	Storage Identifier: Example_of_Snake Revision:1 Space:760
 	4b5ccdbf84935ca95b746c9d90785c32 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!\/snake\/players!json","Storage":"Example_of_Snake snake","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	c6c524f82390809a5cb2afd04baa1a85 Trace-Response-Header-Hash
-	["Content-Length: 1523","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/760 bytes","Storage: Example_of_Snake",200]
-	2b7e409a1cc349faf61b16cab149a758 Trace-Response-Body-Hash
+	8d7bc7ff4de67fb2b36b0bacef89f359 Trace-Response-Header-Hash
+	["Content-Length: 793","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/760 bytes","Storage: Example_of_Snake",200]
+	435ccfdc4714bc8ebf42aa25bf4db4d0 Trace-Response-Body-Hash
 	680af8f60b9099d9742866eeb165a75e Trace-Storage-Hash
 	a7d24b20ba45ef806e2225456d3f9fdc Trace-XPath-Hash
 	/snake/players
-	0587b71b8262598ec110ce3ba29aca07 Trace-Composite-Hash
-5791b53a1f811b820826be65f39cf1d0
-	Request Method:GET XPath:/snake/board Length:132
-	Response Status:200 Length:132
+	c85d00ab152840facbaca9fb3f3fb6eb Trace-Composite-Hash
+5c42a60ab28bd6fcd30e0cd0db9af91c
+	Request Method:GET XPath:/snake/board Length:80
+	Response Status:200 Length:80
 	Storage Identifier: Example_of_Snake Revision:1 Space:760
 	f4740e4e524c89f01cc60d871d9da413 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!\/snake\/board!json","Storage":"Example_of_Snake snake","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	69215a7c0619c49ab927047aea9d8f22 Trace-Response-Header-Hash
-	["Content-Length: 132","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/760 bytes","Storage: Example_of_Snake",200]
-	30c452d75f453f11b535695026484a73 Trace-Response-Body-Hash
+	1ea988aa2ccf771853a3638eff5e3060 Trace-Response-Header-Hash
+	["Content-Length: 80","Content-Type: application\/json","Storage-Revision: 1","Storage-Space: 262144\/760 bytes","Storage: Example_of_Snake",200]
+	e352cca3e1e111d68a7e8426038dc563 Trace-Response-Body-Hash
 	680af8f60b9099d9742866eeb165a75e Trace-Storage-Hash
 	21575e213831ad907972e1b521263d86 Trace-XPath-Hash
 	/snake/board
-	5791b53a1f811b820826be65f39cf1d0 Trace-Composite-Hash
+	5c42a60ab28bd6fcd30e0cd0db9af91c Trace-Composite-Hash
 5afc32b7c867c35cdf3cad5454e2029f
 	Request Method:PATCH XPath://a/@touch Length:0
 	Response Status:204 Length:0
@@ -5085,20 +5253,20 @@ e1f2cd87945d9f861b0a21c3f64582ce
 	bafaaa0790d7ab4ce4f538636e684106 Trace-XPath-Hash
 	//players[not(//field[@id=1])]//b
 	e1f2cd87945d9f861b0a21c3f64582ce Trace-Composite-Hash
-c83a0f196973441ca4f32a4e9eb47621
-	Request Method:GET XPath://players//field Length:1205
-	Response Status:200 Length:1205
+c952459aee952ae8840dff23267933e2
+	Request Method:GET XPath://players//field Length:491
+	Response Status:200 Length:491
 	Storage Identifier: Example_of_Snake Revision:8 Space:1150
 	f090b57646992287c570e0e3ed780e63 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!0x2f2f706c61796572732f2f6669656c64216a736f6e","Storage":"Example_of_Snake snake","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	f7164f020ec2e21a9dfc956ce0495852 Trace-Response-Header-Hash
-	["Content-Length: 1205","Content-Type: application\/json","Storage-Revision: 8","Storage-Space: 262144\/1150 bytes","Storage: Example_of_Snake",200]
-	97f99c7797c3dc177b899ad0a1c8f106 Trace-Response-Body-Hash
+	a1df3293096b489d41e2011691e6a381 Trace-Response-Header-Hash
+	["Content-Length: 491","Content-Type: application\/json","Storage-Revision: 8","Storage-Space: 262144\/1150 bytes","Storage: Example_of_Snake",200]
+	b9cd60bde45e020c3ebd6f978d6fb7d3 Trace-Response-Body-Hash
 	3b278dd7c0ea79884b50191de5d350de Trace-Storage-Hash
 	18fdb9d81a99aef7acf4a062460ab6d5 Trace-XPath-Hash
 	//players//field
-	c83a0f196973441ca4f32a4e9eb47621 Trace-Composite-Hash
+	c952459aee952ae8840dff23267933e2 Trace-Composite-Hash
 4bfbc69643b1605b1d756641d56ddebf
 	Request Method:PATCH XPath://players/*[@touch<400]|//players/*[@touch=''] Length:0
 	Response Status:204 Length:0

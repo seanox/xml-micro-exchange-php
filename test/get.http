@@ -459,14 +459,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 0
-# - Content-Type: text/plain
+# - Without Content-Type
 # - URI: //city[1]/attribute::empty
 GET {{service}}0x2F2F636974795b315d2f6174747269627574653a3a656d707479 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "27984e29ba1b0991b20f5c3c5a4a4894");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "acac428d20b69aca248585bea88657d9");
 });
 %}
 
@@ -475,13 +475,13 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 0
-# - Content-Type: text/plain
+# - Without Content-Type
 GET {{service}}concat('','') HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "95b6759bd7919cd57ef521c070326b0c");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "da424e435a164eba91cca67aea58d936");
 });
 %}
 
@@ -750,65 +750,65 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Type: application/json
-# - Content-Length: 58393
+# - Content-Length: 15276
 GET {{service}}/statistic!JSON HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7d1448748d97326d37b194c3fd2571eb");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2b458d761627e365148f08de96402426");
 });
 %}
 
 ###
 # The mix of element and attributes are returned as a collection.
-# Text output, the JSON directive in the URI has no effect.
+# Text/JSON output, the JSON directive in the URI has an effect.
 # Expectations:
 # - Status code 200 Success
-# - Content-Type: text/plain
-# - Content-Length: 2989
+# - Content-Type: application/json
+# - Content-Length: 1170
 # - URI: //district[1]|//district[1]/@name!JSon
 GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "72dbe55c74a1c8d3f351c7720ec1d5ae");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f2ad4d05b7cffd42e3039f6103a3f3a7");
 });
 %}
 
 ###
 # XPath expression for direct processing
-# Text output, the JSON directive in the URI has no effect.
+# Text/JSON output, the JSON directive in the URI has an effect.
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 2
-# - Content-Type: text/plain
+# - Content-Type: application/json
 # - Response-Body: -2
 GET {{service}}1-3!jsON HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "af7b09a3ed63c1f5a5039d5075bc1512");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fef06bd19144ed2c663a826181c3eb01");
 });
 %}
 
 ###
 # XPath axis for a attribute should work
-# Text output, the JSON directive in the URI has no effect.
+# Text/JSON output, the JSON directive in the URI has an effect.
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 6
-# - Content-Type: text/plain
-# - Value: Berlin
+# - Content-Length: 8
+# - Content-Type: application/json
+# - Value: "Berlin"
 # - URI: //city[1]/@name!jSOn
 GET {{service}}0x2f2f636974795b315d2f406e616d65216a534f6e HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a9409072622e3e19ea65f538c8e046ba");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "260c6cd00bc44003fc32d78b235f770a");
 });
 %}
 

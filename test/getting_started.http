@@ -64,7 +64,6 @@ client.test("unittest", function() {
 PUT {{service}}/table%5Bnot(guests)%5D::last HTTP/1.0
 Storage: {{storage_getting_started}}
 Content-Type: application/xslt+xml
-Content-Lenght: 49
 
 <guests>
   <persons/>

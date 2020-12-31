@@ -86,13 +86,13 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Type: application/json
-# - Content-Length: 1523
+# - Content-Length: 793
 GET {{service}}/snake/players!json HTTP/1.0
 Storage: {{storage_snake}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0587b71b8262598ec110ce3ba29aca07");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c85d00ab152840facbaca9fb3f3fb6eb");
 });
 %}
 
@@ -101,13 +101,13 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Type: application/json
-# - Content-Length: 132
+# - Content-Length: 80
 GET {{service}}/snake/board!json HTTP/1.0
 Storage: {{storage_snake}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5791b53a1f811b820826be65f39cf1d0");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5c42a60ab28bd6fcd30e0cd0db9af91c");
 });
 %}
 
@@ -242,14 +242,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Type: application/json
-# - Content-Length: 1205
+# - Content-Length: 491
 # - URI: //players//field!json
 GET {{service}}0x2f2f706c61796572732f2f6669656c64216a736f6e HTTP/1.0
 Storage: {{storage_snake}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c83a0f196973441ca4f32a4e9eb47621");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c952459aee952ae8840dff23267933e2");
 });
 %}
 
