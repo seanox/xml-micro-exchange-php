@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20201227
+ *  Service 1.1.0 20201231
  *  Copyright (C) 2020 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20201227
+ *  @version 1.1.0 20201231
  */
 class Storage {
 
@@ -307,10 +307,11 @@ class Storage {
     const PATTERN_XPATH_FUNCTION = "/^[\(\s]*[^\/\.\s\(].*$/";
 
     /** Constants of used content types */
-    const CONTENT_TYPE_TEXT = "text/plain";
+    const CONTENT_TYPE_TEXT  = "text/plain";
     const CONTENT_TYPE_XPATH = "text/xpath";
-    const CONTENT_TYPE_XML = "application/xslt+xml";
-    const CONTENT_TYPE_JSON = "application/json";
+    const CONTENT_TYPE_HTML  = "text/html";
+    const CONTENT_TYPE_XML   = "application/xslt+xml";
+    const CONTENT_TYPE_JSON  = "application/json";
 
     /**
      * Constructor creates a new Storage object.
@@ -819,8 +820,6 @@ class Storage {
         libxml_use_internal_errors(true);
         libxml_clear_errors();
 
-        $media = Storage::CONTENT_TYPE_TEXT;
-
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath))
             $result = (new DOMXpath($this->xml))->evaluate($this->xpath);
         else $result = (new DOMXpath($this->xml))->query($this->xpath);
@@ -834,22 +833,18 @@ class Storage {
                 &&  (!$result || empty($result) || $result->length <= 0)) {
             $this->quit(404, "Resource Not Found");
         } else if ($result instanceof DOMNodeList) {
-            $media = Storage::CONTENT_TYPE_XML;
-            $xml = new DOMDocument();
             if ($result->length == 1) {
                 if ($result[0] instanceof DOMDocument)
                     $result = [$result[0]->firstChild];
-                if (($result[0] instanceof DOMAttr)) {
-                    $media = Storage::CONTENT_TYPE_TEXT;
+                if ($result[0] instanceof DOMAttr) {
                     $result = $result[0]->value;
                 } else {
+                    $xml = new DOMDocument();
                     $xml->appendChild($xml->importNode($result[0], true));
-                    if (in_array("json", $this->options)) {
-                        $media = Storage::CONTENT_TYPE_JSON;
-                        $result = json_encode(simplexml_import_dom($xml), JSON_PRETTY_PRINT);
-                    } else $result = $xml->saveXML();
+                    $result = $xml;
                 }
             } else if ($result->length > 0) {
+                $xml = new DOMDocument();
                 $collection = $xml->createElement("collection");
                 $xml->importNode($collection, true);
                 foreach ($result as $entry) {
@@ -858,16 +853,13 @@ class Storage {
                     $collection->appendChild($xml->importNode($entry, true));
                 }
                 $xml->appendChild($collection);
-                if (in_array("json", $this->options)) {
-                    $media = Storage::CONTENT_TYPE_JSON;
-                    $result = json_encode(simplexml_import_dom($xml), JSON_PRETTY_PRINT);
-                } else $result = $xml->saveXML();
+                $result = $xml;
             } else $result = "";
         } else if (is_bool($result)) {
             $result = $result ? "true" : "false";
         }
 
-        $this->quit(200, "Success", ["Content-Type" => $media], $result);
+        $this->quit(200, "Success", null, $result);
     }
 
     /**
@@ -986,21 +978,17 @@ class Storage {
             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
-        $media = (new DOMXpath($style))->query("//*[local-name()='output']/@method");
-        if (!empty($media)
-                && $media->length > 0) {
-            if (strcasecmp($media[0]->nodeValue, "text") === 0) {
-                $media = Storage::CONTENT_TYPE_TEXT;
-            } else if (strcasecmp($media[0]->nodeValue, "xml") === 0) {
-                $media = Storage::CONTENT_TYPE_XML;
-                if (in_array("json", $this->options)) {
-                    $media = Storage::CONTENT_TYPE_JSON;
-                    $output = json_encode(simplexml_load_string($output), JSON_PRETTY_PRINT);
-                }
-            } else $media = Storage::CONTENT_TYPE_XML;
-        } else $media = Storage::CONTENT_TYPE_XML;
-
-        $this->quit(200, "Success", ["Content-Type" => $media], $output);
+        $header = null;
+        $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
+        if (!empty($output))
+            if (strcasecmp($method, "xml") === 0
+                    || empty($method))
+                if (in_array("json", $this->options))
+                    $output = simplexml_load_string($output);
+                else $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
+            else if (strcasecmp($method, "html") === 0)
+                $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
+        $this->quit(200, "Success", $header, $output);
     }
 
     /**
@@ -1812,12 +1800,7 @@ class Storage {
         header("Content-Length:");
 
         // Not relevant headers are removed.
-        $filter = ["X-Powered-By"];
-        if (($status < 200 && $status >= 300)
-                || $data === "" || $data === null) {
-            $filter[] = "Content-Type";
-            $filter[] = "Content-Length";
-        }
+        $filter = ["X-Powered-By", "Content-Type", "Content-Length"];
         foreach ($filter as $header)
             $fetchHeader($header, true);
 
@@ -1839,9 +1822,6 @@ class Storage {
         // For status class 2xx the storage headers are added.
         // The revision is read from the current storage because it can change.
         if ($status >= 200 && $status < 300) {
-            if (($data !== "" && $data !== null)
-                    || $status == 200)
-                $headers = array_merge($headers, ["Content-Length" => strlen($data)]);
             if ($this->storage
                     && $this->xml)
                 $headers = array_merge($headers, [
@@ -1924,11 +1904,40 @@ class Storage {
             header("Storage-Effects: " . $serials);
 
         foreach ($headers as $key => $value) {
+            if (strcasecmp($key, "Content-Length") === 0)
+                continue;
             $value = trim(preg_replace("/[\r\n]+/", " ", $value));
             if (strlen(trim($value)) > 0)
                 header("$key: $value");
             else header_remove($key);
         }
+
+        $media = $fetchHeader("Content-Type", true);
+        if ($status == 200
+                && $data !== ""
+                && $data !== null) {
+            if (!$media) {
+                if (in_array("json", $this->options)) {
+                    $media = Storage::CONTENT_TYPE_JSON;
+                    if ($data instanceof DOMDocument
+                            || $data instanceof SimpleXMLElement)
+                        $data = simplexml_import_dom($data);
+                    $data = json_encode($data);
+                } else {
+                    if ($data instanceof DOMDocument
+                            || $data instanceof SimpleXMLElement) {
+                        $media = Storage::CONTENT_TYPE_XML;
+                        $data = $data->saveXML();
+                    } else $media = Storage::CONTENT_TYPE_TEXT;
+                }
+            } else $media = $media->value;
+            header("Content-Type: $media");
+        }
+
+        if ($status >= 200 && $status < 300)
+            if (($data !== "" && $data !== null)
+                    || $status == 200)
+                header("Content-Length: " . strlen($data));
 
         // When responding to an error, the default Allow header is added.
         // But only if no Allow header was passed.
@@ -2042,10 +2051,10 @@ class Storage {
         // The UID is variable and must be normalized so that the hash can be
         // compared later. Therefore the uniques of the UIDs are collected in
         // an array. The index in the array is then the new unique.
-        if (preg_match_all("/\b___uid(?:(?:=)|(?:\"\s*:\s+))\"[A-Z\d\:]+\"/i", $hash, $matches, PREG_PATTERN_ORDER )) {
+        if (preg_match_all("/\b___uid(?:(?:=)|(?:\"\s*:\s*))\"[A-Z\d\:]+\"/i", $hash, $matches, PREG_PATTERN_ORDER )) {
             $uniques = [];
             foreach ($matches[0] as $unique) {
-                if (preg_match("/\b(___uid(?:(?:=)|(?:\"\s*:\s+))\")([A-Z\d]+)(:[A-Z\d]+\")/i", $unique, $match)) {
+                if (preg_match("/\b(___uid(?:(?:=)|(?:\"\s*:\s*))\")([A-Z\d]+)(:[A-Z\d]+\")/i", $unique, $match)) {
                     if (!in_array($match[2], $uniques))
                         $uniques[] = $match[2];
                     $unique = array_search($match[2], $uniques);

@@ -13,10 +13,10 @@
   CR: Service: Added the directive JSON
       This directive transforms the output to JSON.
   CR: Service GET/POST: Added support for accept header: application/json
-      The header enforces the transformation of XML output as JSON.
-      If the return value is not application/xslt+xml, the header has no effect
-      on the output. The client is informed via the Content-Type whether the
-      transformation was used.
+      The header enforces the transformation of XML and text output as JSON.
+      If the return value is not application/xslt+xml or text/plain, the header
+      has no effect on the output. The client is informed via the Content-Type
+      whether the transformation was used.
   CR: Test: Added Snake as proof of concept for a multiplayer game
 
 1.0.0 20201220
