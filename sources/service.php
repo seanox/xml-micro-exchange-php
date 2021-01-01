@@ -5,7 +5,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * XMEX XML-Micro-Exchange
- * Copyright (C) 2020 Seanox Software Solutions
+ * Copyright (C) 2021 Seanox Software Solutions
  *  
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20201231
- *  Copyright (C) 2020 Seanox Software Solutions
+ *  Service 1.1.0 20210101
+ *  Copyright (C) 2021 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20201231
+ *  @version 1.1.0 20210101
  */
 class Storage {
 
@@ -315,9 +315,9 @@ class Storage {
 
     /**
      * Constructor creates a new Storage object.
-     * @param string @storage
-     * @param string @root
-     * @param string @xpath
+     * @param string $storage
+     * @param string $root
+     * @param string $xpath
      */
     function __construct($storage = null, $root = null, $xpath = null) {
 
@@ -444,7 +444,7 @@ class Storage {
 
         if (filesize($this->store) <= 0) {
             fwrite($this->share,
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" .
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
             "<" . $this->root . " ___rev=\"0\" ___uid=\"" . $this->getSerial() . "\"/>");
             rewind($this->share);
         }
@@ -521,21 +521,9 @@ class Storage {
     }
 
     /**
-     * Calculates the expiration date of the storage and optionally formats it.
-     * @param  string $format
-     * @return string expiration date of the storage, optionally formatted
-     */
-    private function getExpiration($format = null) {
-
-        $date = new DateTime();
-        $date->add(new DateInterval("PT" . Storage::TIMEOUT . "S"));
-        return $format ? $date->format($format) : $date->getTimestamp();
-    }
-
-    /**
      * Updates recursive the revision for an element and all parent elements.
-     * param DOMElement $node
-     * param string     revision
+     * @param DOMElement $node
+     * @param string     $revision
      */
     private static function updateNodeRevision($node, $revision) {
 
@@ -1823,15 +1811,20 @@ class Storage {
         // The revision is read from the current storage because it can change.
         if ($status >= 200 && $status < 300) {
             if ($this->storage
-                    && $this->xml)
+                    && $this->xml) {
+                $expiration = new DateTime();
+                $expiration->add(new DateInterval("PT" . Storage::TIMEOUT . "S"));
+                $expiration = $expiration->format("D, d M Y H:i:s e");
+
                 $headers = array_merge($headers, [
                     "Storage" => $this->storage,
                     "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
                     "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
-                    "Storage-Last-Modified" => date(DateTime::RFC822),
-                    "Storage-Expiration" => $this->getExpiration(DateTime::RFC822),
+                    "Storage-Last-Modified" => date("D, d M Y H:i:s e"),
+                    "Storage-Expiration" => $expiration,
                     "Storage-Expiration-Time" => (Storage::TIMEOUT *1000) . " ms"
                 ]);
+            }
         }
 
         // The response from the Storage-Effects header can be very extensive.
@@ -2193,6 +2186,7 @@ class Storage {
     }
 }
 
+date_default_timezone_set ("GMT");
 set_error_handler("Storage::onError");
 set_exception_handler("Storage::onException");
 
@@ -2206,8 +2200,11 @@ if (isset($_SERVER["PHP_SELF"])
                 || empty($_SERVER["REDIRECT_URL"])))
     (new Storage)->quit(404, "Resource Not Found");
 
+// Request method is determined
+$method = strtoupper($_SERVER["REQUEST_METHOD"]);
+
 // Access-Control headers are received during preflight OPTIONS request
-if ($_SERVER["REQUEST_METHOD"] == "OPTIONS"
+if ($method === "OPTIONS"
         && isset($_SERVER["HTTP_ORIGIN"])
         && !isset($_SERVER["HTTP_STORAGE"]))
     (new Storage)->quit(200, "Success");
@@ -2246,13 +2243,13 @@ else $xpath = urldecode($xpath);
 // data for the transformation and works also without.
 // In the other cases an empty XPath is replaced by the root slash.
 if (empty($xpath)
-        && !in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["CONNECT", "OPTIONS", "POST"]))
+        && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";        
-$exclusive = in_array(strtoupper($_SERVER["REQUEST_METHOD"]), ["DELETE", "PATCH", "PUT", "POST"]);     
+$exclusive = in_array($method, ["DELETE", "PATCH", "PUT", "POST"]);
 $storage = Storage::share($storage, $xpath, $exclusive);
 
 try {
-    switch (strtoupper($_SERVER["REQUEST_METHOD"])) {
+    switch ($method) {
         case "CONNECT":
             $storage->doConnect();
         case "OPTIONS":
