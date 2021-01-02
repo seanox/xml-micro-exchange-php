@@ -1762,6 +1762,13 @@ class Storage {
      */
     function quit($status, $message, $headers = null, $data = null) {
 
+        if (headers_sent()) {
+            // The response are already complete.
+            // The storage can be closed and the requests can be terminated.
+            $this->close();
+            exit;
+        }
+
         // This is implemented for scanning and modification of headers.
         // To remove, the headers are set before, so that standard headers like
         // Content-Type are also removed correctly.
@@ -1809,22 +1816,20 @@ class Storage {
 
         // For status class 2xx the storage headers are added.
         // The revision is read from the current storage because it can change.
-        if ($status >= 200 && $status < 300) {
-            if ($this->storage
-                    && $this->xml) {
-                $expiration = new DateTime();
-                $expiration->add(new DateInterval("PT" . Storage::TIMEOUT . "S"));
-                $expiration = $expiration->format("D, d M Y H:i:s e");
-
-                $headers = array_merge($headers, [
-                    "Storage" => $this->storage,
-                    "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
-                    "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
-                    "Storage-Last-Modified" => date("D, d M Y H:i:s e"),
-                    "Storage-Expiration" => $expiration,
-                    "Storage-Expiration-Time" => (Storage::TIMEOUT *1000) . " ms"
-                ]);
-            }
+        if ($status >= 200 && $status < 300
+                && $this->storage
+                && $this->xml) {
+            $expiration = new DateTime();
+            $expiration->add(new DateInterval("PT" . Storage::TIMEOUT . "S"));
+            $expiration = $expiration->format("D, d M Y H:i:s T");
+            $headers = array_merge($headers, [
+                "Storage" => $this->storage,
+                "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
+                "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
+                "Storage-Last-Modified" => date("D, d M Y H:i:s T"),
+                "Storage-Expiration" => $expiration,
+                "Storage-Expiration-Time" => (Storage::TIMEOUT *1000) . " ms"
+            ]);
         }
 
         // The response from the Storage-Effects header can be very extensive.
@@ -1944,6 +1949,13 @@ class Storage {
 
         {{{
 
+        // Trace is primarily intended to simplify the validation of requests,
+        // their impact on storage and responses during testing.
+        // Based on hash values the correct function can be checked.
+        // In the released versions the implementation is completely removed.
+        // Therefore the code may use computing time or the implementation may
+        // not be perfect.
+
         $fetchRequestHeader = function(...$names) {
             foreach ($names as $name)
                 if (isset($_SERVER[$name])
@@ -1951,13 +1963,6 @@ class Storage {
                   return $_SERVER[$name];
             return "";
         };
-
-        // Trace is primarily intended to simplify the validation of requests,
-        // their impact on storage and responses during testing.
-        // Based on hash values the correct function can be checked.
-        // In the released versions the implementation is completely removed.
-        // Therefore the code may use computing time or the implementation may
-        // not be perfect.
 
         // Request-Header-Hash
         $uri = $_SERVER["REQUEST_URI"];
@@ -2024,12 +2029,10 @@ class Storage {
             $headers[] = "Storage-Effects: " . implode("\t", array_values($effects));
         }
 
+        // The following header can be very unique and is simplified to check
+        // presence only.
         if ($fetchHeader("Connection-Unique"))
             $headers[] = "Connection-Unique";
-        if ($fetchHeader("Error"))
-            $headers[] = "Error";
-        if ($fetchHeader("Message"))
-            $headers[] = "Message";
 
         // Status Message should not be used because different hashes may be
         // calculated for tests on different web servers.
@@ -2161,7 +2164,6 @@ class Storage {
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
             (new Storage)->quit(422, "Unprocessable Entity", ["Message" => $message]);
-            exit;
         }
 
         $unique = "#" . Storage::uniqueId();
@@ -2170,9 +2172,7 @@ class Storage {
             $message = "$error:" . $message;
         $time = time();
         file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message" . PHP_EOL, FILE_APPEND | LOCK_EX);
-        if (!headers_sent())
-            (new Storage)->quit(500, "Internal Server Error", ["Error" => $unique]);
-        exit;
+        (new Storage)->quit(500, "Internal Server Error", ["Error" => $unique]);
     }
 
     /**
