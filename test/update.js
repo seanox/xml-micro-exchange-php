@@ -47,7 +47,7 @@ const fs = require("fs");
     trace = trace.replace(/([\r\n])[\r\n]+([\r\n])/gm, "$1$2");
     trace = trace.split(/[\r\n]+/);
 
-    var pattern = /(\("Trace-Composite-Hash"\)\s*===\s*")([a-f0-9]*)(")/g;
+    var pattern = /^(\s{4,}.*\("Trace-Composite-Hash"\)\s*===\s*")([a-f0-9]*)(")/mg;
     testFiles.forEach((file) => {
         console.log("update of " + file);
         var content = fs.readFileSync(file, "utf-8");
