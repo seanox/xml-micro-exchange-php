@@ -32,7 +32,8 @@ const fs = require("fs");
     } else {
         testFiles = fs.readdirSync(".");
         testFiles = testFiles.filter((file) => {
-            return file.match(/\.http$/);
+            return !file.match(/^cumulate.http$/)
+                && file.match(/\.http$/);
         });
         if (!testFiles
                 || !testFiles.length) {

@@ -1,39 +1,39 @@
-a8df4adcd255df6314166b922e431ccb
+0714011e6fff4b0b3d85a5e8016d85d9
 	Request Method:CONNECT XPath: Length:0
 	Response Status:400 Length:0
 	e2d29e0a4aa6439bea0878ccd351908e Trace-Request-Header-Hash
 	{"Method":"CONNECT","URI":"\/xmex!","Storage":"","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	a8df4adcd255df6314166b922e431ccb Trace-Composite-Hash
-a8df4adcd255df6314166b922e431ccb
+	0714011e6fff4b0b3d85a5e8016d85d9 Trace-Composite-Hash
+0714011e6fff4b0b3d85a5e8016d85d9
 	Request Method:CONNECT XPath: Length:0
 	Response Status:400 Length:0
 	e2d29e0a4aa6439bea0878ccd351908e Trace-Request-Header-Hash
 	{"Method":"CONNECT","URI":"\/xmex!","Storage":"","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	a8df4adcd255df6314166b922e431ccb Trace-Composite-Hash
-3be8c8592f41c531ba4cb44cc37ffe21
+	0714011e6fff4b0b3d85a5e8016d85d9 Trace-Composite-Hash
+92505de3f216c490e0ab188a7b9a3119
 	Request Method:CONNECT XPath: Length:0
 	Response Status:400 Length:0
 	ca6c88a7208930bc4ec3b0622a080332 Trace-Request-Header-Hash
 	{"Method":"CONNECT","URI":"\/xmex!","Storage":"C________10________20________30________40________50________60____","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	3be8c8592f41c531ba4cb44cc37ffe21 Trace-Composite-Hash
+	92505de3f216c490e0ab188a7b9a3119 Trace-Composite-Hash
 e80249b10b9f5a2a9e895793906be159
 	Request Method:CONNECT XPath: Length:0
 	Response Status:201 Length:0
@@ -99,30 +99,30 @@ c88119c3582741b4a60a1475943cd408
 	46dd726cc0fa872c201b281f65796be3 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	9d078dc96781798911e1aa96728cd822 Trace-Composite-Hash
-5a492eb218bdfe58f6b865ebc97ca2e3
+557a9539281bbad9479650c35e949ded
 	Request Method:CONNECT XPath: Length:0
 	Response Status:400 Length:0
 	25945a303dab307a0d8ebcbf9f04aa89 Trace-Request-Header-Hash
 	{"Method":"CONNECT","URI":"\/xmex!","Storage":"?","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	5a492eb218bdfe58f6b865ebc97ca2e3 Trace-Composite-Hash
-6acf462d86898b81fde6504333125e79
+	557a9539281bbad9479650c35e949ded Trace-Composite-Hash
+a0811cafaad069955e2ff19bf37e415d
 	Request Method:CONNECT XPath: Length:0
 	Response Status:400 Length:0
 	15d5d1f1ef65df2952ba790a2d62742e Trace-Request-Header-Hash
 	{"Method":"CONNECT","URI":"\/xmex!","Storage":"UnitTest_Storage-C0","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	6acf462d86898b81fde6504333125e79 Trace-Composite-Hash
+	a0811cafaad069955e2ff19bf37e415d Trace-Composite-Hash
 9bafcae4fde17be9596544a110d2b6c5
 	Request Method:CONNECT XPath: Length:0
 	Response Status:201 Length:0
@@ -162,18 +162,18 @@ b2498c4b1e6e8e7c45ac6fd2a69a3005
 	e2f01e6ff92bfe16ffe89cfd770631a8 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	8a216e276a45ea9e9b771c66d06798e4 Trace-Composite-Hash
-8c9ebab0755662e6c2b0bdb62484eced
+5d8f1d70be51d2831143e386e22f61c3
 	Request Method:CONNECT XPath: Length:0
 	Response Status:400 Length:0
 	d657517de5e0d1da4e69450a40a332d1 Trace-Request-Header-Hash
 	{"Method":"CONNECT","URI":"\/xmex!","Storage":"UnitTest_Storage_C0 books x","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	8c9ebab0755662e6c2b0bdb62484eced Trace-Composite-Hash
+	5d8f1d70be51d2831143e386e22f61c3 Trace-Composite-Hash
 995c59e4c2e65b76c188fc3f6c78dad2
 	Request Method:CONNECT XPath: Length:0
 	Response Status:404 Length:0
@@ -269,20 +269,20 @@ b2498c4b1e6e8e7c45ac6fd2a69a3005
 	eec58a71c4cb197a3bda2fe0830f1b26 Trace-XPath-Hash
 	/books/book[1]/@not_exists
 	5631a972a5eae164d4647996faabd4ad Trace-Composite-Hash
-55ee79557510a5fc881eb1632627490e
+463ae1eb819a899f7ff7ce08ca71b839
 	Request Method:DELETE XPath:name(.) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_DA Revision:2 Space:2629
 	16ee40d5f8fc79607bec7d501f1a3be6 Trace-Request-Header-Hash
 	{"Method":"DELETE","URI":"\/xmex!name(.)","Storage":"UnitTest_Storage_DA books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	0fc559920334b89fa3178199198beb90 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Functions are not supported)","Message",400]
+	a7377c981d1ec08e74d3710c368f6d54 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Functions are not supported)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	054af98198438a1e8d4ee2852ce26984 Trace-Storage-Hash
 	3e97c642af0d59074a0df636167a815e Trace-XPath-Hash
 	name(.)
-	55ee79557510a5fc881eb1632627490e Trace-Composite-Hash
+	463ae1eb819a899f7ff7ce08ca71b839 Trace-Composite-Hash
 10da3704e5bcb99caa7f71266fa92b82
 	Request Method:DELETE XPath:/books/book[1]/attribute::a Length:0
 	Response Status:204 Length:0
@@ -519,20 +519,20 @@ c2085b63db7ab039804decd7b3526927
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
 	9796af3de0570acbb2d5405b3d8e30f7 Trace-Composite-Hash
-410f63ff818967cbbdfea0ae34a4dd4a
+43594378109dcdaf531c90cf6ea7e49d
 	Request Method:DELETE XPath:(/books/book[1])/chapter[1]/text[1]x Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_DE Revision:1 Space:2621
 	d92bb0ae080f81d39bced7afac030917 Trace-Request-Header-Hash
 	{"Method":"DELETE","URI":"\/xmex!(\/books\/book[1])\/chapter[1]\/text[1]x","Storage":"UnitTest_Storage_DE books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	c8e4aa93e97f77ec03c3542780d73ec5 Trace-Storage-Hash
 	c1019f14ac732ca46516e727d6c24aa2 Trace-XPath-Hash
 	(/books/book[1])/chapter[1]/text[1]x
-	410f63ff818967cbbdfea0ae34a4dd4a Trace-Composite-Hash
+	43594378109dcdaf531c90cf6ea7e49d Trace-Composite-Hash
 18c21b66dd3135e6d5e143303e4fe0a1
 	Request Method:DELETE XPath:/books/book[1] Length:0
 	Response Status:204 Length:0
@@ -589,20 +589,20 @@ a1a36c74faab888c017a603dee7b622e
 	398961b7308d4487a861bc87f6f5964d Trace-XPath-Hash
 	/books/..
 	7606ae68dcb7000183ee3832c874a659 Trace-Composite-Hash
-bbacf8cbe52ce541e32e2ef07322852f
+ecbb5d086b7cf640b472a711e16d5374
 	Request Method:DELETE XPath:name(.) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_DE Revision:3 Space:1363
 	3c6981b8912747e8fb1e4763385849e6 Trace-Request-Header-Hash
 	{"Method":"DELETE","URI":"\/xmex!name(.)","Storage":"UnitTest_Storage_DE books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	0fc559920334b89fa3178199198beb90 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Functions are not supported)","Message",400]
+	a7377c981d1ec08e74d3710c368f6d54 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Functions are not supported)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	66a0f048fcb413c7934428db663fbd2f Trace-Storage-Hash
 	3e97c642af0d59074a0df636167a815e Trace-XPath-Hash
 	name(.)
-	bbacf8cbe52ce541e32e2ef07322852f Trace-Composite-Hash
+	ecbb5d086b7cf640b472a711e16d5374 Trace-Composite-Hash
 9bde3a2d2949b638f42de7a8fa8faa9e
 	Request Method:DELETE XPath:/books Length:0
 	Response Status:204 Length:0
@@ -783,20 +783,20 @@ aff99851427928771746486c5c1b2e6c
 	809833d6fad9a56c1ad3a980e1256857 Trace-XPath-Hash
 	(/books/book)/chapter::lasT
 	3ac070632e2b339e26b7c86761f589c9 Trace-Composite-Hash
-9f19d2c07977f63b292fa48d2d954691
+e92272b7d2fda024c3c798a14a978f78
 	Request Method:DELETE XPath:(/books/book)/chapter::wrong Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_DP Revision:5 Space:5879
 	0501da712485bded3521a5796dde9bd8 Trace-Request-Header-Hash
 	{"Method":"DELETE","URI":"\/xmex!(\/books\/book)\/chapter::wrong","Storage":"UnitTest_Storage_DP books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	adeb98a72c9ebb8197a6ca7fbe248ce4 Trace-Storage-Hash
 	a196974e2a25cdc07001b39892db4304 Trace-XPath-Hash
 	(/books/book)/chapter::wrong
-	9f19d2c07977f63b292fa48d2d954691 Trace-Composite-Hash
+	e92272b7d2fda024c3c798a14a978f78 Trace-Composite-Hash
 7872aaf99b5e4f1e3fb217a5185be2d0
 	Request Method:PUT XPath:/books Length:0
 	Response Status:204 Length:0
@@ -839,20 +839,20 @@ ec2d259c425feea9543da73b536417e5
 	15207ad777ee00383b06155f410e6f44 Trace-XPath-Hash
 	//text[@title='Text FA']::after
 	ec2d259c425feea9543da73b536417e5 Trace-Composite-Hash
-5559de226c828cb68b3aeb06b027a81d
+5e4be4f2a67ee16804a63494eebfee68
 	Request Method:DELETE XPath:name(.) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_DP Revision:8 Space:1912
 	7d9159bcee5bd8b64805d3d67a006297 Trace-Request-Header-Hash
 	{"Method":"DELETE","URI":"\/xmex!name(.)","Storage":"UnitTest_Storage_DP books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	0fc559920334b89fa3178199198beb90 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Functions are not supported)","Message",400]
+	a7377c981d1ec08e74d3710c368f6d54 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Functions are not supported)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	6cb6af64fa086152501f299375cbc441 Trace-Storage-Hash
 	3e97c642af0d59074a0df636167a815e Trace-XPath-Hash
 	name(.)
-	5559de226c828cb68b3aeb06b027a81d Trace-Composite-Hash
+	5e4be4f2a67ee16804a63494eebfee68 Trace-Composite-Hash
 1aa377657433bcba11cfa1d976ef8c3e
 	Request Method:DELETE XPath://text[@title='Text F1']::before Length:0
 	Response Status:204 Length:0
@@ -1131,20 +1131,20 @@ a4d751649c599984288c95f0a5c368da
 	be89dcae34fa132a632cb942e7192a6f Trace-XPath-Hash
 	(/statistic//districts)/district
 	5d61eb527f26c9da764f4a4bd1ef9cfc Trace-Composite-Hash
-c550f012e932f8852669dff952d283a0
+a192a8c1e852824af962bf81f707b874
 	Request Method:GET XPath:(/wrong//districts/) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	59c7f6614e757023669b058aec5ea9bf Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!0x282f77726f6e672f2f6469737472696374732f29","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	b2d34f347e973e8447560a50f87d9584 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Invalid expression)","Message",400]
+	6f33ea5fc539a42d402c4481a67a1be2 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	a85bb2f326432ab906a02d1ac6a853c0 Trace-XPath-Hash
 	(/wrong//districts/)
-	c550f012e932f8852669dff952d283a0 Trace-Composite-Hash
+	a192a8c1e852824af962bf81f707b874 Trace-Composite-Hash
 dc8b4da86e16161cfedb80835049d937
 	Request Method:GET XPath:/unknown/unknown Length:0
 	Response Status:404 Length:0
@@ -1187,20 +1187,20 @@ dc8b4da86e16161cfedb80835049d937
 	82f817ef75cee3b846e159c4b20e1721 Trace-XPath-Hash
 	name(/statistic)
 	092212519656efd860f306f313b90668 Trace-Composite-Hash
-b5857c98365976e72c421e58bfe8a04e
+0a93400c9eb5c3cdc529e986cc3ee1f9
 	Request Method:GET XPath:wrong(/statistic//districts) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	dcf13cc2fba759b57cf6905ce47277ff Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!0x77726f6e67282f7374617469737469632f2f64697374726963747329","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	4e4c202b94697636c75643e400e68b97 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Unregistered function)","Message",400]
+	566c73503cc475e5f1a9f4b05438cbe2 Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Unregistered function)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	b517fdc4a0fd65e9e613039d3574bdca Trace-XPath-Hash
 	wrong(/statistic//districts)
-	b5857c98365976e72c421e58bfe8a04e Trace-Composite-Hash
+	0a93400c9eb5c3cdc529e986cc3ee1f9 Trace-Composite-Hash
 5c1209378e3823886c3e9b12d786d535
 	Request Method:GET XPath:count(/statistic//districts)<0 Length:5
 	Response Status:200 Length:5
@@ -1481,20 +1481,20 @@ a006a2233dd4bf5920729ad51265cefa
 	fe9c65fe917112a60eeaf04671e66618 Trace-XPath-Hash
 	'null'
 	a006a2233dd4bf5920729ad51265cefa Trace-Composite-Hash
-962540bcdab2d6f86937c1942a788fe3
+f626edfe8fdb993e690b87d63213a9b0
 	Request Method:GET XPath:/books/book[1]x Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
 	3fa4a6eaf5252faefd9c5c59b2f8ea19 Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!\/books\/book[1]x","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	b2d34f347e973e8447560a50f87d9584 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Invalid expression)","Message",400]
+	6f33ea5fc539a42d402c4481a67a1be2 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	efc3b834df5ea09204367aa86a40f3b8 Trace-Storage-Hash
 	18caa75c1a2dd669c2f10f253780d221 Trace-XPath-Hash
 	/books/book[1]x
-	962540bcdab2d6f86937c1942a788fe3 Trace-Composite-Hash
+	f626edfe8fdb993e690b87d63213a9b0 Trace-Composite-Hash
 17b8700ba96229c804de3eda52c42829
 	Request Method:GET XPath://quarter/@name Length:2385
 	Response Status:200 Length:2385
@@ -2003,20 +2003,20 @@ f1931f40551e20f28cf299c81037fd4d
 	6666cd76f96956469e7be39d750cc7d9 Trace-XPath-Hash
 	/
 	2decbc503604b1d2192fca54da54c93d Trace-Composite-Hash
-d71f23ddf17c46f70914072bad2b2f64
+d3b3797d397f8337a5daf33de7835f9e
 	Request Method:OPTIONS XPath:// Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_O0 Revision:1 Space:3109
 	e3c488d7b4a7e567792ba467b99b1cf4 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!0x2f2f","Storage":"UnitTest_Storage_O0 books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	f53ed26b71c5733152d50ccb5ba099ec Trace-Storage-Hash
 	7bc0ee636b3b83484fc3b9348863bd22 Trace-XPath-Hash
 	//
-	d71f23ddf17c46f70914072bad2b2f64 Trace-Composite-Hash
+	d3b3797d397f8337a5daf33de7835f9e Trace-Composite-Hash
 7b3e7c9c8a52877a33c4be6c87ba140e
 	Request Method:OPTIONS XPath:/books Length:0
 	Response Status:204 Length:0
@@ -2101,20 +2101,20 @@ eabab99fd0dbb9533c58ba8ca9ea4d59
 	589214be73292b9a9e3990e38eaf4a8d Trace-XPath-Hash
 	name(/books)
 	7c7efa8f1abf83c9fc1f5ea2f9f5e13e Trace-Composite-Hash
-d06246a71f0a9b22eb7c587afedd3a51
+7c17e2a05e3d7c434b5a0c9d0238e880
 	Request Method:OPTIONS XPath:wrong(/books) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_O0 Revision:1 Space:3109
 	bb16b254aafd49dba7c66cfe727122ee Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!wrong(\/books)","Storage":"UnitTest_Storage_O0 books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	4e4c202b94697636c75643e400e68b97 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Unregistered function)","Message",400]
+	566c73503cc475e5f1a9f4b05438cbe2 Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Unregistered function)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	f53ed26b71c5733152d50ccb5ba099ec Trace-Storage-Hash
 	7bd01b62541d52f824c0c6b86b820ed6 Trace-XPath-Hash
 	wrong(/books)
-	d06246a71f0a9b22eb7c587afedd3a51 Trace-Composite-Hash
+	7c17e2a05e3d7c434b5a0c9d0238e880 Trace-Composite-Hash
 e9a69af5e0b0ec7b29e6fcc0ba798978
 	Request Method:OPTIONS XPath:/books/book[1]/@title Length:0
 	Response Status:204 Length:0
@@ -2143,56 +2143,56 @@ ac5fced9e7b6b9e69beacad6d7f31f16
 	ae6059246995ecd31352ea1c56c09f1a Trace-XPath-Hash
 	/books/book[1]/@titlex
 	ac5fced9e7b6b9e69beacad6d7f31f16 Trace-Composite-Hash
-10b4e32e74f36f55fee4e7678edfd237
+a036fde1dbfb38c0f2c432986e59ecad
 	Request Method:OPTIONS XPath:/books/book[1]x Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_O0 Revision:1 Space:3109
 	ccc902b771ba0a9dbc06dbae07501622 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!\/books\/book[1]x","Storage":"UnitTest_Storage_O0 books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	f53ed26b71c5733152d50ccb5ba099ec Trace-Storage-Hash
 	18caa75c1a2dd669c2f10f253780d221 Trace-XPath-Hash
 	/books/book[1]x
-	10b4e32e74f36f55fee4e7678edfd237 Trace-Composite-Hash
-4282e1ce32e924654d9c8e974826630d
+	a036fde1dbfb38c0f2c432986e59ecad Trace-Composite-Hash
+cbb9d89ade52a1a5e3390f8914078a7c
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:400 Length:0
 	042a937804086137023ff5c700c52519 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!","Storage":"","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	4282e1ce32e924654d9c8e974826630d Trace-Composite-Hash
-4282e1ce32e924654d9c8e974826630d
+	cbb9d89ade52a1a5e3390f8914078a7c Trace-Composite-Hash
+cbb9d89ade52a1a5e3390f8914078a7c
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:400 Length:0
 	042a937804086137023ff5c700c52519 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!","Storage":"","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	4282e1ce32e924654d9c8e974826630d Trace-Composite-Hash
-f79158ddc7f9059943ccadb85ab25ea6
+	cbb9d89ade52a1a5e3390f8914078a7c Trace-Composite-Hash
+1970e53e5a377ca3149601911058148b
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:400 Length:0
 	ee69354b0a852dcd03743b3f81ece068 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!","Storage":"O________10________20________30________40________50________60____","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	f79158ddc7f9059943ccadb85ab25ea6 Trace-Composite-Hash
+	1970e53e5a377ca3149601911058148b Trace-Composite-Hash
 3a52e477d3699fb472b6f0029098b29f
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:201 Length:0
@@ -2258,30 +2258,30 @@ c695d24d3200fad1829e474690e8f02c
 	46dd726cc0fa872c201b281f65796be3 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	765beb1a0981c59eb935e63e3de58e5c Trace-Composite-Hash
-5213d19557d723e7e8846fcef21a1045
+c94c83302927b9dbfa96bfba1e04f662
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:400 Length:0
 	76be1d76ca8459eab9eb5c4b8a8849f7 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!","Storage":"?","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	5213d19557d723e7e8846fcef21a1045 Trace-Composite-Hash
-7d3b388e9bafabc0c24f6ef4622b01ed
+	c94c83302927b9dbfa96bfba1e04f662 Trace-Composite-Hash
+366cbdb6248753ce94405ec28078ee9d
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:400 Length:0
 	f0d6a20de5d52616c13da050e45235b7 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!","Storage":"UnitTest_Storage-OC","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	7d3b388e9bafabc0c24f6ef4622b01ed Trace-Composite-Hash
+	366cbdb6248753ce94405ec28078ee9d Trace-Composite-Hash
 2bfbc1db57823e2697880391512a2e8c
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:201 Length:0
@@ -2321,18 +2321,18 @@ c695d24d3200fad1829e474690e8f02c
 	e2f01e6ff92bfe16ffe89cfd770631a8 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	0da3a038b539e74456df1b42592b73e2 Trace-Composite-Hash
-8b10f85ced2199133d63daf8f4d2ca30
+30418410e7c9465fff84e4e2c2359b87
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:400 Length:0
 	60693996de55d96ea4dbc7b2a48476a4 Trace-Request-Header-Hash
 	{"Method":"OPTIONS","URI":"\/xmex!","Storage":"UnitTest_Storage_OC books x","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	eebf2e5fc1082727ae51b7e25e46d036 Trace-Response-Header-Hash
-	["Message: Invalid storage identifier","Message",400]
+	dbe753d3aa1542246d45c49c780a9a40 Trace-Response-Header-Hash
+	["Message: Invalid storage identifier",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	8b10f85ced2199133d63daf8f4d2ca30 Trace-Composite-Hash
+	30418410e7c9465fff84e4e2c2359b87 Trace-Composite-Hash
 4f62d1e932ce9241524fba4eedff8c1f
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:404 Length:0
@@ -2442,20 +2442,20 @@ e30f21dbd32e115ffb6f26994b79ed51
 	939c4695313c5430be8edb9f834f226d Trace-XPath-Hash
 	/books/attribute::attrA
 	8bd7ddb711fb297b5b8fda2d0f04ef1c Trace-Composite-Hash
-cb01c672d6bc560d4964f41021111e87
+3ada0c8c0987de807c25c5b017b011db
 	Request Method:PATCH XPath:/books/attribute::attrA Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_UA Revision:4 Space:102
 	b2dd68453ca5a8f75f5e6f8d63cfa716 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books\/attribute::attrA","Storage":"UnitTest_Storage_UA books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1bc14c022d435505a531c29b225265c3 Trace-Request-Body-Hash
-	b503f33b049991945898e484d71ee304 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Invalid expression)","Message",422]
+	0ba4eaa2b0076d99f9c6f85d76b934fe Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Invalid expression)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	2e027b6e6ba50203505a841fd082e379 Trace-Storage-Hash
 	939c4695313c5430be8edb9f834f226d Trace-XPath-Hash
 	/books/attribute::attrA
-	cb01c672d6bc560d4964f41021111e87 Trace-Composite-Hash
+	3ada0c8c0987de807c25c5b017b011db Trace-Composite-Hash
 97dce91c77dfcd3a361c5bf3dd2113f1
 	Request Method:PATCH XPath:/books/attribute::attrA Length:0
 	Response Status:204 Length:0
@@ -2596,34 +2596,34 @@ f44afe3f9ae8f26e77dbc9301bba58fe
 	250df6eba0d0677be01d7351ce4ac694 Trace-XPath-Hash
 	/books/@attrE
 	f44afe3f9ae8f26e77dbc9301bba58fe Trace-Composite-Hash
-3a81705a803651cfd70d0ac78a6d0c4c
+94b223ade8e1be38f2e5244dfcb5ac3d
 	Request Method:PATCH XPath:/books/@attrB Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_UA Revision:7 Space:139
 	f6fdd370b634e3544c430d0deb470f8f Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books\/@attrB","Storage":"UnitTest_Storage_UA books","Content-Length":"12","Content-Type":"TEXT\/XPATH"}
 	96ce033aedb11790a7b97aa65b9013c9 Trace-Request-Body-Hash
-	80f80e795e4c7a7fa25d45567d5d97ff Trace-Response-Header-Hash
-	["Message: Invalid XPath (Axes are not supported)","Message",422]
+	9b7fafb15fa4b2c8346af32ab5164452 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Axes are not supported)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	c4633908812fae8804cbd9d2bc1d8d99 Trace-Storage-Hash
 	8407824a41dd8a4b080edc16238b7b35 Trace-XPath-Hash
 	/books/@attrB
-	3a81705a803651cfd70d0ac78a6d0c4c Trace-Composite-Hash
-e280d71c0eec23a683d084570b21af8c
+	94b223ade8e1be38f2e5244dfcb5ac3d Trace-Composite-Hash
+7bc17e99081bcbf6236dc3dced750bcd
 	Request Method:PATCH XPath:/books/@attrB Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_UA Revision:7 Space:139
 	05ff44ef6521ab3a1feba6da3a1032b2 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books\/@attrB","Storage":"UnitTest_Storage_UA books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1c9aa69a02e388d260e0dc1583a63a08 Trace-Request-Body-Hash
-	6a0b4e970919d4c2b808f8b05f49f372 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Unregistered function)","Message",422]
+	6bcd01dcd4c7fbb1ab9791807d4ccaea Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Unregistered function)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	c4633908812fae8804cbd9d2bc1d8d99 Trace-Storage-Hash
 	8407824a41dd8a4b080edc16238b7b35 Trace-XPath-Hash
 	/books/@attrB
-	e280d71c0eec23a683d084570b21af8c Trace-Composite-Hash
+	7bc17e99081bcbf6236dc3dced750bcd Trace-Composite-Hash
 5d3c3355098b9ee8533ef347a1d9cee9
 	Request Method:PATCH XPath://books/../@___xxx Length:0
 	Response Status:404 Length:0
@@ -2832,104 +2832,104 @@ e452dd83ab36efef68df8fa3f4ec403a
 	6b6dd5003a24763882ccc511ea5ae804 Trace-XPath-Hash
 	/books/book[1]
 	e452dd83ab36efef68df8fa3f4ec403a Trace-Composite-Hash
-eff9feb6da62f3ee26b8931cd6a31fae
+1f4ba99c53b2e4e39bda44ff48c1ca9c
 	Request Method:PATCH XPath:/books/book[1]::before Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_UE Revision:5 Space:670
 	41c2deca6b2cab244718e8cf052106b5 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books\/book[1]::before","Storage":"UnitTest_Storage_UE books","Content-Length":"6","Content-Type":"APPLICATION\/XSLT+XML"}
 	333e9b59f97bbd496ec91d671bcbf437 Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	86a241a747444ffa7f372e2d394f1d06 Trace-Storage-Hash
 	b6fd8fc53764c3100dff39af694564d1 Trace-XPath-Hash
 	/books/book[1]::before
-	eff9feb6da62f3ee26b8931cd6a31fae Trace-Composite-Hash
-51e846cda92a8a587beaeed39883ac66
+	1f4ba99c53b2e4e39bda44ff48c1ca9c Trace-Composite-Hash
+14f438496a9b95f2177623520bf7b947
 	Request Method:PATCH XPath:/books/book[1]::after Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_UE Revision:5 Space:670
 	352892917c8ab4c28f6b1143e86a4507 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books\/book[1]::after","Storage":"UnitTest_Storage_UE books","Content-Length":"6","Content-Type":"APPLICATION\/XSLT+XML"}
 	333e9b59f97bbd496ec91d671bcbf437 Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	86a241a747444ffa7f372e2d394f1d06 Trace-Storage-Hash
 	b9e6666134597cf35b202935acf3a776 Trace-XPath-Hash
 	/books/book[1]::after
-	51e846cda92a8a587beaeed39883ac66 Trace-Composite-Hash
-59f285f3de701ea50cdc55a164501a92
+	14f438496a9b95f2177623520bf7b947 Trace-Composite-Hash
+75a70a2f007bd0aca377649c69d97a45
 	Request Method:PATCH XPath:/books::first Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_UE Revision:5 Space:670
 	7cdc72c3fa088388542146fea60a3058 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books::first","Storage":"UnitTest_Storage_UE books","Content-Length":"6","Content-Type":"APPLICATION\/XSLT+XML"}
 	333e9b59f97bbd496ec91d671bcbf437 Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	86a241a747444ffa7f372e2d394f1d06 Trace-Storage-Hash
 	6479056a8e6eb0f50a578ff755ab6780 Trace-XPath-Hash
 	/books::first
-	59f285f3de701ea50cdc55a164501a92 Trace-Composite-Hash
-ffff5e727a509935290a8144cdf9c3ec
+	75a70a2f007bd0aca377649c69d97a45 Trace-Composite-Hash
+f5311ca108999ec1e018417d15e1aaf3
 	Request Method:PATCH XPath:/books::last Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_UE Revision:5 Space:670
 	826a0751a0cd708af01359099229fa1a Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books::last","Storage":"UnitTest_Storage_UE books","Content-Length":"6","Content-Type":"APPLICATION\/XSLT+XML"}
 	333e9b59f97bbd496ec91d671bcbf437 Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	86a241a747444ffa7f372e2d394f1d06 Trace-Storage-Hash
 	5a8705dac028291ba31fd05be74fd020 Trace-XPath-Hash
 	/books::last
-	ffff5e727a509935290a8144cdf9c3ec Trace-Composite-Hash
-3d0b007abd5bdd2ad89afb6b16f1e340
+	f5311ca108999ec1e018417d15e1aaf3 Trace-Composite-Hash
+52fab959a4fb97e189277839603cafc3
 	Request Method:PATCH XPath:/books::wrong Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_UE Revision:5 Space:670
 	fef98008b105a97c7b94a1f9858ec2f5 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books::wrong","Storage":"UnitTest_Storage_UE books","Content-Length":"6","Content-Type":"APPLICATION\/XSLT+XML"}
 	333e9b59f97bbd496ec91d671bcbf437 Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	86a241a747444ffa7f372e2d394f1d06 Trace-Storage-Hash
 	f11dfb84d6eca0c097f0989a6914faea Trace-XPath-Hash
 	/books::wrong
-	3d0b007abd5bdd2ad89afb6b16f1e340 Trace-Composite-Hash
-086f8820edf2e471d20631c440131cdd
+	52fab959a4fb97e189277839603cafc3 Trace-Composite-Hash
+550776ba29c55aa800401aab5a30d056
 	Request Method:PATCH XPath:name(.) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_UE Revision:5 Space:670
 	d2410de2acc0ac841cbc50903bd109c8 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!0x6e616d65282e29","Storage":"UnitTest_Storage_UE books","Content-Length":"6","Content-Type":"APPLICATION\/XSLT+XML"}
 	333e9b59f97bbd496ec91d671bcbf437 Trace-Request-Body-Hash
-	0fc559920334b89fa3178199198beb90 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Functions are not supported)","Message",400]
+	a7377c981d1ec08e74d3710c368f6d54 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Functions are not supported)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	86a241a747444ffa7f372e2d394f1d06 Trace-Storage-Hash
 	3e97c642af0d59074a0df636167a815e Trace-XPath-Hash
 	name(.)
-	086f8820edf2e471d20631c440131cdd Trace-Composite-Hash
-cd66c77089748731baafed1de03653bd
+	550776ba29c55aa800401aab5a30d056 Trace-Composite-Hash
+3fcd08db6e94aef1606ed4be703793cc
 	Request Method:PATCH XPath:/books/book[1]x Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_UE Revision:5 Space:670
 	fad4f535918243910e84b380daa24997 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books\/book[1]x","Storage":"UnitTest_Storage_UE books","Content-Length":"6","Content-Type":"APPLICATION\/XSLT+XML"}
 	333e9b59f97bbd496ec91d671bcbf437 Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	86a241a747444ffa7f372e2d394f1d06 Trace-Storage-Hash
 	18caa75c1a2dd669c2f10f253780d221 Trace-XPath-Hash
 	/books/book[1]x
-	cd66c77089748731baafed1de03653bd Trace-Composite-Hash
+	3fcd08db6e94aef1606ed4be703793cc Trace-Composite-Hash
 5819994c4221e0046d16bb2265794b54
 	Request Method:PUT XPath:/books Length:0
 	Response Status:204 Length:0
@@ -3110,62 +3110,62 @@ ed3a0d6fedaeae13135b3c4529f1ad1e
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
 	41e4ade30743824af1ddf99ed3b9c53d Trace-Composite-Hash
-49c31c682fbdaea8b165dae31fbea0ec
+40f2bd096e53fd1893bff62f3d179653
 	Request Method:PATCH XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_UT Revision:6 Space:95
 	306e27563f49a86623b5e96d74295343 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_UT books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1bc14c022d435505a531c29b225265c3 Trace-Request-Body-Hash
-	b503f33b049991945898e484d71ee304 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Invalid expression)","Message",422]
+	0ba4eaa2b0076d99f9c6f85d76b934fe Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Invalid expression)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	49c31c682fbdaea8b165dae31fbea0ec Trace-Composite-Hash
-96a11b1d1473ff1db7f2ae45a4ae83aa
+	40f2bd096e53fd1893bff62f3d179653 Trace-Composite-Hash
+3647a32a44512e52fafd80b26a978d5d
 	Request Method:PATCH XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_UT Revision:6 Space:95
 	306e27563f49a86623b5e96d74295343 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_UT books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1c9aa69a02e388d260e0dc1583a63a08 Trace-Request-Body-Hash
-	6a0b4e970919d4c2b808f8b05f49f372 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Unregistered function)","Message",422]
+	6bcd01dcd4c7fbb1ab9791807d4ccaea Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Unregistered function)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	96a11b1d1473ff1db7f2ae45a4ae83aa Trace-Composite-Hash
-ee4c679f1f8b9fc274a25c95858de143
+	3647a32a44512e52fafd80b26a978d5d Trace-Composite-Hash
+45e164a8df6fd5f91398fd5bf88a40cb
 	Request Method:PATCH XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_UT Revision:6 Space:95
 	b76ffe43d0a08c4ff796927695ac2745 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_UT books","Content-Length":"12","Content-Type":"TEXT\/XPATH"}
 	96ce033aedb11790a7b97aa65b9013c9 Trace-Request-Body-Hash
-	80f80e795e4c7a7fa25d45567d5d97ff Trace-Response-Header-Hash
-	["Message: Invalid XPath (Axes are not supported)","Message",422]
+	9b7fafb15fa4b2c8346af32ab5164452 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Axes are not supported)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	ee4c679f1f8b9fc274a25c95858de143 Trace-Composite-Hash
-d05657400dd30fea2a05734e059af96b
+	45e164a8df6fd5f91398fd5bf88a40cb Trace-Composite-Hash
+514e66285c927eeb06d3498ea77ef6f0
 	Request Method:PATCH XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_UT Revision:6 Space:95
 	ff34dbf8952c6bf67ed52223a70c0a09 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_UT books","Content-Length":"1","Content-Type":"TEXT\/XPATH"}
 	5058f1af8388633f609cadb75a75dc9d Trace-Request-Body-Hash
-	80f80e795e4c7a7fa25d45567d5d97ff Trace-Response-Header-Hash
-	["Message: Invalid XPath (Axes are not supported)","Message",422]
+	9b7fafb15fa4b2c8346af32ab5164452 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Axes are not supported)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	d05657400dd30fea2a05734e059af96b Trace-Composite-Hash
+	514e66285c927eeb06d3498ea77ef6f0 Trace-Composite-Hash
 6f6a6782680156efbccca092651eac61
 	Request Method:PATCH XPath:/*/.. Length:0
 	Response Status:204 Length:0
@@ -3343,82 +3343,82 @@ a2de0329bcb910edd87741f25430013a
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	a2de0329bcb910edd87741f25430013a Trace-Composite-Hash
-50298bd8780b5ccc5ac7711aedcda12b
+907b7bfb35b0e5462e055bc7351a6abf
 	Request Method:POST XPath: Length:0
 	Response Status:422 Length:0
 	fdcd02342e514cc425e1474b3d512625 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"821","Content-Type":"APPLICATION\/XSLT+XML"}
 	a34aeac16f3df76653547d641ff26866 Trace-Request-Body-Hash
-	1dfea892b7b0be3922e491f58349a979 Trace-Response-Header-Hash
-	["Message: Invalid XSLT stylesheet (xsltParseStylesheetTop: unknown templatex element)","Message",422]
+	73bc643f8a20c512c84fc5d4cd18b83f Trace-Response-Header-Hash
+	["Message: Invalid XSLT stylesheet (xsltParseStylesheetTop: unknown templatex element)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	50298bd8780b5ccc5ac7711aedcda12b Trace-Composite-Hash
-14e63d973e14ac3c75135e7debbd1c9e
+	907b7bfb35b0e5462e055bc7351a6abf Trace-Composite-Hash
+f546bfe0ef832cf7779c58142f83431a
 	Request Method:POST XPath: Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	530cb3574b968cb2e49c4e4dbc1ae0f6 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"820","Content-Type":"APPLICATION\/XSLT+XML"}
 	f265250b56691d4bea04118f4b01e494 Trace-Request-Body-Hash
-	bc1b1a3a0c5fdc58ffa98b4400bccabe Trace-Response-Header-Hash
-	["Message: Invalid XSLT stylesheet (Opening and ending tag mismatch: templatex line 5 and template)","Message",422]
+	542f44ac96ea1dcb70a72765681664ca Trace-Response-Header-Hash
+	["Message: Invalid XSLT stylesheet (Opening and ending tag mismatch: templatex line 5 and template)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	14e63d973e14ac3c75135e7debbd1c9e Trace-Composite-Hash
-8b38fc1bd964ed96818d1b7aef4aacf2
+	f546bfe0ef832cf7779c58142f83431a Trace-Composite-Hash
+97aa4b61d929c46085d9cbefa465bdca
 	Request Method:POST XPath: Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	05f9abf6ef907ac9ed73d28d1eda69fa Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"818","Content-Type":"APPLICATION\/XSLT+XML"}
 	d4dee385d7e6463681099d5c340b21e8 Trace-Request-Body-Hash
-	8adb428e1e0efbeb98d1fee797f642a0 Trace-Response-Header-Hash
-	["Message: Invalid XSLT stylesheet (Opening and ending tag mismatch: templatex line 8 and template)","Message",422]
+	fe73730a1bc519df88796a8ad48bc7bd Trace-Response-Header-Hash
+	["Message: Invalid XSLT stylesheet (Opening and ending tag mismatch: templatex line 8 and template)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	8b38fc1bd964ed96818d1b7aef4aacf2 Trace-Composite-Hash
-2242a36e4685ff6f906670da05ae646f
+	97aa4b61d929c46085d9cbefa465bdca Trace-Composite-Hash
+13b6897ec3f07062f3859cbadac72df1
 	Request Method:POST XPath: Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	5ae71234cde3e49c5f39d8945a3dd215 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"807","Content-Type":"APPLICATION\/XSLT+XML"}
 	7f6de5a305e764a9f4de8ba67bdcd724 Trace-Request-Body-Hash
-	f91fe1c2e872418a7244a3328c73690d Trace-Response-Header-Hash
-	["Message: Invalid XSLT stylesheet (EndTag: '<\/' not found)","Message",422]
+	f1b05e554af892f05c8689ef8bc9788a Trace-Response-Header-Hash
+	["Message: Invalid XSLT stylesheet (EndTag: '<\/' not found)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	2242a36e4685ff6f906670da05ae646f Trace-Composite-Hash
-f2e863cc550b8e23ee5cb225b0b74f73
+	13b6897ec3f07062f3859cbadac72df1 Trace-Composite-Hash
+f52dd39794ad7ab6b7bccd4d1f93881c
 	Request Method:POST XPath: Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	fdcd02342e514cc425e1474b3d512625 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"821","Content-Type":"APPLICATION\/XSLT+XML"}
 	c9ebcba73907849c46ca21cc683e310f Trace-Request-Body-Hash
-	df65ee004510460ecdb17d891dd9a94e Trace-Response-Header-Hash
-	["Message: Invalid XSLT stylesheet (Failed to evaluate the expression of variable 'area')","Message",422]
+	062762ad2aa5b1c8ee8cef207fb28ab3 Trace-Response-Header-Hash
+	["Message: Invalid XSLT stylesheet (Failed to evaluate the expression of variable 'area')",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	f2e863cc550b8e23ee5cb225b0b74f73 Trace-Composite-Hash
-2264540253e7965730125b1820e51864
+	f52dd39794ad7ab6b7bccd4d1f93881c Trace-Composite-Hash
+3e097d8621e81b9840bb00c5e75f5c22
 	Request Method:POST XPath: Length:0
 	Response Status:422 Length:0
 	05f9abf6ef907ac9ed73d28d1eda69fa Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"818","Content-Type":"APPLICATION\/XSLT+XML"}
 	13ecaa67673650ec94685b02521d38ff Trace-Request-Body-Hash
-	593980c80d0f835610b543c4032f1d5f Trace-Response-Header-Hash
-	["Message: Invalid XSLT stylesheet (XSLT-variable: Failed to compile the XPath expression '\/\/city[@name='Berlin'\/@name')","Message",422]
+	d77de6884b0b169282ce5d84a8274115 Trace-Response-Header-Hash
+	["Message: Invalid XSLT stylesheet (XSLT-variable: Failed to compile the XPath expression '\/\/city[@name='Berlin'\/@name')",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	2264540253e7965730125b1820e51864 Trace-Composite-Hash
+	3e097d8621e81b9840bb00c5e75f5c22 Trace-Composite-Hash
 e3ea465d1279b2431bddfcbccc368d13
 	Request Method:POST XPath: Length:0
 	Response Status:200 Length:0
@@ -3460,34 +3460,34 @@ e3ea465d1279b2431bddfcbccc368d13
 	ff2f4a565da78a8ab7c946cc98f997b6 Trace-XPath-Hash
 	/statistic/cities/unknow
 	6020b2336bb87900a95a9fcb5039a7df Trace-Composite-Hash
-39765878d443f5b57fe7640c91eafffa
+de62a495a3d0b0fb0432524de937b7ae
 	Request Method:POST XPath:name(/statistic) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	d16439227dbf6800fc570c2a7e15d36a Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!name(\/statistic)","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"180","Content-Type":"APPLICATION\/XSLT+XML"}
 	c38f44002f52604b327a3d281cde8128 Trace-Request-Body-Hash
-	0fc559920334b89fa3178199198beb90 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Functions are not supported)","Message",400]
+	a7377c981d1ec08e74d3710c368f6d54 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Functions are not supported)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	82f817ef75cee3b846e159c4b20e1721 Trace-XPath-Hash
 	name(/statistic)
-	39765878d443f5b57fe7640c91eafffa Trace-Composite-Hash
-1959d950fd7b5e488ab5408e1e353924
+	de62a495a3d0b0fb0432524de937b7ae Trace-Composite-Hash
+33e960d34d8dc2ee7a8632a2fc341940
 	Request Method:POST XPath:/books/book[1]x Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	ec27e238b7df4edd4cf99c263d8803c7 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!\/books\/book[1]x","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"180","Content-Type":"APPLICATION\/XSLT+XML"}
 	c38f44002f52604b327a3d281cde8128 Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	18caa75c1a2dd669c2f10f253780d221 Trace-XPath-Hash
 	/books/book[1]x
-	1959d950fd7b5e488ab5408e1e353924 Trace-Composite-Hash
+	33e960d34d8dc2ee7a8632a2fc341940 Trace-Composite-Hash
 fd8cd4390dc043a55c88d711cd5bf30e
 	Request Method:POST XPath: Length:0
 	Response Status:415 Length:0
@@ -3501,19 +3501,19 @@ fd8cd4390dc043a55c88d711cd5bf30e
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	fd8cd4390dc043a55c88d711cd5bf30e Trace-Composite-Hash
-f9c5b800b51e1d0fc12e0f4b70eb0aff
+2b805239d4eb6b7c1c0d27e5ca6167fd
 	Request Method:POST XPath: Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	e5df5d34a5394cbafaf046188f1d5d28 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"","Content-Type":"APPLICATION\/XSLT+XML"}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	3ab151f9165b8a269bd3874599464416 Trace-Response-Header-Hash
-	["Message: Invalid XSLT stylesheet","Message",422]
+	29369d1c40797f4c4ae59bae84e03521 Trace-Response-Header-Hash
+	["Message: Invalid XSLT stylesheet",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	f9c5b800b51e1d0fc12e0f4b70eb0aff Trace-Composite-Hash
+	2b805239d4eb6b7c1c0d27e5ca6167fd Trace-Composite-Hash
 20525e5c8692d6adda295029058ade8d
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:40
 	Response Status:200 Length:40
@@ -3626,34 +3626,34 @@ d250d5e27a8f90fe2ddd90fdde26d0c4
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
 	749fc97b489909ca8539a9769023acd7 Trace-Composite-Hash
-6978a9c0cb9685ff5569ff4a4a4540b0
+dfacb9c568754e5cc4c38cb845491837
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	3983522db94a83538de72af63cf66531 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"247","Content-Type":"APPLICATION\/XSLT+XML"}
 	75f663b8ed83119f89d2fe590af6e05a Trace-Request-Body-Hash
-	db4d1999f05efdaa5208f18b4c4b56bf Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (invalid value for method: xhtml)","Message",400]
+	3b983457be50734f527f43950022106f Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: xhtml)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	6978a9c0cb9685ff5569ff4a4a4540b0 Trace-Composite-Hash
-cc2262d2b80c24c7e2fffe44371edc6d
+	dfacb9c568754e5cc4c38cb845491837 Trace-Composite-Hash
+aff00b539121f6a15108bb60e56d3825
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	26d2e185c74ab26e6045f5b74c8ba2c9 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"249","Content-Type":"APPLICATION\/XSLT+XML"}
 	ccfc092fbecc3553200528f7f8c98893 Trace-Request-Body-Hash
-	08f77cc5fc972a56243feb1d74483cc2 Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (invalid value for method: unknown)","Message",400]
+	dbe69f58b011b68fd311a2d4e3cad096 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: unknown)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	cc2262d2b80c24c7e2fffe44371edc6d Trace-Composite-Hash
+	aff00b539121f6a15108bb60e56d3825 Trace-Composite-Hash
 516d5f3306eb994d027e6e1bd084bd78
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:5
 	Response Status:200 Length:5
@@ -3710,34 +3710,34 @@ cc2262d2b80c24c7e2fffe44371edc6d
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
 	261066daac7b6e7f1722ed30f5d427c9 Trace-Composite-Hash
-082bc338bb6991d6e75a84adea51176c
+64d64f8222bd69aa1d4bae11886bd90f
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	6e4f6cecbd56db09a0d50c6496c010d0 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"247","Content-Type":"APPLICATION\/XSLT+XML"}
 	75f663b8ed83119f89d2fe590af6e05a Trace-Request-Body-Hash
-	db4d1999f05efdaa5208f18b4c4b56bf Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (invalid value for method: xhtml)","Message",400]
+	3b983457be50734f527f43950022106f Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: xhtml)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	082bc338bb6991d6e75a84adea51176c Trace-Composite-Hash
-a6a29a6b277a485590fe91ca8edca345
+	64d64f8222bd69aa1d4bae11886bd90f Trace-Composite-Hash
+7074952caeffe79de74ca95a8c810e51
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	f194b9deb845bea28485da7810916527 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"\/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"249","Content-Type":"APPLICATION\/XSLT+XML"}
 	ccfc092fbecc3553200528f7f8c98893 Trace-Request-Body-Hash
-	08f77cc5fc972a56243feb1d74483cc2 Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (invalid value for method: unknown)","Message",400]
+	dbe69f58b011b68fd311a2d4e3cad096 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (invalid value for method: unknown)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	28d5dc7565be4dc0303e88fb371dc8b9 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	a6a29a6b277a485590fe91ca8edca345 Trace-Composite-Hash
+	7074952caeffe79de74ca95a8c810e51 Trace-Composite-Hash
 d7d8fa2feab1cd439b0fe917912c5be7
 	Request Method:PUT XPath:/books/attribute::attrA Length:0
 	Response Status:404 Length:0
@@ -3806,20 +3806,20 @@ ed3ea6ea5a6f52e39dea2d883fa38dbc
 	939c4695313c5430be8edb9f834f226d Trace-XPath-Hash
 	/books/attribute::attrA
 	8f672cd1b3ada7e62c3fde3ff1db5fbb Trace-Composite-Hash
-76b2584e99444862b859ea9bc9ed40e0
+a5624f9557b2d1c56e2b25111482546b
 	Request Method:PUT XPath:/books/attribute::attrA Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_PA Revision:3 Space:102
 	feecd84a9038c265cdc320a384d841b7 Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books\/attribute::attrA","Storage":"UnitTest_Storage_PA books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1bc14c022d435505a531c29b225265c3 Trace-Request-Body-Hash
-	b503f33b049991945898e484d71ee304 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Invalid expression)","Message",422]
+	0ba4eaa2b0076d99f9c6f85d76b934fe Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Invalid expression)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	f6269ab3cdb1cea47a8fea853ec1115f Trace-Storage-Hash
 	939c4695313c5430be8edb9f834f226d Trace-XPath-Hash
 	/books/attribute::attrA
-	76b2584e99444862b859ea9bc9ed40e0 Trace-Composite-Hash
+	a5624f9557b2d1c56e2b25111482546b Trace-Composite-Hash
 0220e4b64fdb1d9abb46b4ee56faca3a
 	Request Method:PUT XPath:/books/attribute::attrA Length:0
 	Response Status:204 Length:0
@@ -3946,34 +3946,34 @@ a8c7750db2d8094a949b40d85db9a2a0
 	250df6eba0d0677be01d7351ce4ac694 Trace-XPath-Hash
 	/books/@attrE
 	5f8753bd85beebf75acc0c3016e5de8c Trace-Composite-Hash
-1ad90e597fcabc81c5bef0f2c6a64043
+5eb48694c063b09917bd0d13c425290e
 	Request Method:PUT XPath:/books/@attrE Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_PA Revision:6 Space:149
 	a5ce95efba2b2d679df9c02bea2c6f38 Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books\/@attrE","Storage":"UnitTest_Storage_PA books","Content-Length":"12","Content-Type":"TEXT\/XPATH"}
 	96ce033aedb11790a7b97aa65b9013c9 Trace-Request-Body-Hash
-	80f80e795e4c7a7fa25d45567d5d97ff Trace-Response-Header-Hash
-	["Message: Invalid XPath (Axes are not supported)","Message",422]
+	9b7fafb15fa4b2c8346af32ab5164452 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Axes are not supported)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	6a4f2460b8f0d71d84032515e6f09ed0 Trace-Storage-Hash
 	250df6eba0d0677be01d7351ce4ac694 Trace-XPath-Hash
 	/books/@attrE
-	1ad90e597fcabc81c5bef0f2c6a64043 Trace-Composite-Hash
-2bea5ae46d6f0eae9366bca1813cd9e3
+	5eb48694c063b09917bd0d13c425290e Trace-Composite-Hash
+9fa6308d2563dee30da611218d4b6e6f
 	Request Method:PUT XPath:/books/@attrE Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_PA Revision:6 Space:149
 	fbc4f0e9e0f52330e77c3f9b2496f958 Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books\/@attrE","Storage":"UnitTest_Storage_PA books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1c9aa69a02e388d260e0dc1583a63a08 Trace-Request-Body-Hash
-	6a0b4e970919d4c2b808f8b05f49f372 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Unregistered function)","Message",422]
+	6bcd01dcd4c7fbb1ab9791807d4ccaea Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Unregistered function)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	6a4f2460b8f0d71d84032515e6f09ed0 Trace-Storage-Hash
 	250df6eba0d0677be01d7351ce4ac694 Trace-XPath-Hash
 	/books/@attrE
-	2bea5ae46d6f0eae9366bca1813cd9e3 Trace-Composite-Hash
+	9fa6308d2563dee30da611218d4b6e6f Trace-Composite-Hash
 3970174955f788c4da5bc5a078048e6d
 	Request Method:PUT XPath://books/../@___xxx Length:0
 	Response Status:204 Length:0
@@ -4112,20 +4112,20 @@ f58f4f130f0fb7d409041d1870070a87
 	dd6f29c1cfcb906d7dba18d2a0a42366 Trace-XPath-Hash
 	(/books/book)/chapter
 	f58f4f130f0fb7d409041d1870070a87 Trace-Composite-Hash
-08f8f60ac9f450448f8132d9b362c8ad
+b537848e293aa80bba74d7843f87f53c
 	Request Method:PUT XPath:name(.) Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_PE Revision:4 Space:729
 	9b0dbf00c85f20ad6e012a11aa477201 Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!0x6e616d65282e29","Storage":"UnitTest_Storage_PE books","Content-Length":"7","Content-Type":"APPLICATION\/XSLT+XML"}
 	f1430934c390c118ed2f148e1d44d36c Trace-Request-Body-Hash
-	0fc559920334b89fa3178199198beb90 Trace-Response-Header-Hash
-	["Message: Invalid XPath (Functions are not supported)","Message",400]
+	a7377c981d1ec08e74d3710c368f6d54 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Functions are not supported)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	306b79d01be449d93573f475e1b8e302 Trace-Storage-Hash
 	3e97c642af0d59074a0df636167a815e Trace-XPath-Hash
 	name(.)
-	08f8f60ac9f450448f8132d9b362c8ad Trace-Composite-Hash
+	b537848e293aa80bba74d7843f87f53c Trace-Composite-Hash
 d837e9409033fa35a37f5511e4c4db70
 	Request Method:PUT XPath:/books/.. Length:0
 	Response Status:204 Length:0
@@ -4362,20 +4362,20 @@ c0e10900e4eb278a9607198efeef63d4
 	aebc541ee41992391918d0575d289d5e Trace-XPath-Hash
 	(/books)//last::before
 	c0e10900e4eb278a9607198efeef63d4 Trace-Composite-Hash
-a3c33c4df4923d1647a938b93f4ba996
+6ad6932d34868c7a426596e443c88e43
 	Request Method:PUT XPath:/books::wrong Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_PP Revision:6 Space:1099
 	7d033e8601a4a7d136a428f22a6e392b Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books::wrong","Storage":"UnitTest_Storage_PP books","Content-Length":"62","Content-Type":"APPLICATION\/XSLT+XML"}
 	7dc0fc6564d7101d1b89078f931bc5cf Trace-Request-Body-Hash
-	cef981f069028411a612136723c2621d Trace-Response-Header-Hash
-	["Message: Invalid XPath axis (Invalid expression)","Message",400]
+	1f808eac9a8fac92c2c8c78c93828133 Trace-Response-Header-Hash
+	["Message: Invalid XPath axis (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	d6db041d9ae6fdec8201de763f7c69e5 Trace-Storage-Hash
 	f11dfb84d6eca0c097f0989a6914faea Trace-XPath-Hash
 	/books::wrong
-	a3c33c4df4923d1647a938b93f4ba996 Trace-Composite-Hash
+	6ad6932d34868c7a426596e443c88e43 Trace-Composite-Hash
 e6f220ef88f11fba4cc870528cc95e94
 	Request Method:PUT XPath:/books::before Length:0
 	Response Status:204 Length:0
@@ -4654,62 +4654,62 @@ d2437e55f0e59579257a5366c0155caf
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
 	6530cdbe8ecdf000f5cce598fe482230 Trace-Composite-Hash
-a7a5547101f3d6c5eb0ab7313d3c55cf
+d4b2cd49834bfc8ef03b2a6fe07e7d32
 	Request Method:PUT XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_PT Revision:6 Space:95
 	b1716cc27554549181697a90ea18462f Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_PT books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1bc14c022d435505a531c29b225265c3 Trace-Request-Body-Hash
-	b503f33b049991945898e484d71ee304 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Invalid expression)","Message",422]
+	0ba4eaa2b0076d99f9c6f85d76b934fe Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Invalid expression)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	a7a5547101f3d6c5eb0ab7313d3c55cf Trace-Composite-Hash
-5b24ef502055c2f51accb55c55f02a1e
+	d4b2cd49834bfc8ef03b2a6fe07e7d32 Trace-Composite-Hash
+07b065f4ca130a85696473df16dd770b
 	Request Method:PUT XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_PT Revision:6 Space:95
 	b1716cc27554549181697a90ea18462f Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_PT books","Content-Length":"8","Content-Type":"TEXT\/XPATH"}
 	1c9aa69a02e388d260e0dc1583a63a08 Trace-Request-Body-Hash
-	6a0b4e970919d4c2b808f8b05f49f372 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Unregistered function)","Message",422]
+	6bcd01dcd4c7fbb1ab9791807d4ccaea Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Unregistered function)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	5b24ef502055c2f51accb55c55f02a1e Trace-Composite-Hash
-15e268baedf97219077006cd8faae49e
+	07b065f4ca130a85696473df16dd770b Trace-Composite-Hash
+4c7e05b03a584aeaae3ef69bbc0b5d30
 	Request Method:PUT XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_PT Revision:6 Space:95
 	3eefcf4a0509ac8944943e10a617d79b Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_PT books","Content-Length":"12","Content-Type":"TEXT\/XPATH"}
 	96ce033aedb11790a7b97aa65b9013c9 Trace-Request-Body-Hash
-	80f80e795e4c7a7fa25d45567d5d97ff Trace-Response-Header-Hash
-	["Message: Invalid XPath (Axes are not supported)","Message",422]
+	9b7fafb15fa4b2c8346af32ab5164452 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Axes are not supported)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	15e268baedf97219077006cd8faae49e Trace-Composite-Hash
-a92b8966b160851149e599ffcdc98614
+	4c7e05b03a584aeaae3ef69bbc0b5d30 Trace-Composite-Hash
+f5832605e03f2a7626d5df301364120c
 	Request Method:PUT XPath:/books Length:0
 	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_PT Revision:6 Space:95
 	6084bb7094314b08499ab68b2c0d4f3a Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"\/xmex!\/books","Storage":"UnitTest_Storage_PT books","Content-Length":"1","Content-Type":"TEXT\/XPATH"}
 	5058f1af8388633f609cadb75a75dc9d Trace-Request-Body-Hash
-	80f80e795e4c7a7fa25d45567d5d97ff Trace-Response-Header-Hash
-	["Message: Invalid XPath (Axes are not supported)","Message",422]
+	9b7fafb15fa4b2c8346af32ab5164452 Trace-Response-Header-Hash
+	["Message: Invalid XPath (Axes are not supported)",422]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	91380d5a096e4eb2f14d8f8dd9831f05 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	a92b8966b160851149e599ffcdc98614 Trace-Composite-Hash
+	f5832605e03f2a7626d5df301364120c Trace-Composite-Hash
 98aedadb0670a0dda2313443db342e22
 	Request Method:PUT XPath:/*/.. Length:0
 	Response Status:204 Length:0
@@ -5059,20 +5059,20 @@ b463e2dca4ef648ac4ec4b9f97312663
 	9ab125d17a6c10d7c032ce328f0528b4 Trace-XPath-Hash
 	//book[last()]/chapter[last()]
 	b463e2dca4ef648ac4ec4b9f97312663 Trace-Composite-Hash
-d5b4aa91ef8ac37b3cb37da2ebd2d624
+fdac7ebfcf760bb16dbeba26c2941992
 	Request Method:GET XPath:0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X Length:0
 	Response Status:400 Length:0
 	Storage Identifier: UnitTest_Storage_R0 Revision:15 Space:613
 	403f5164e878e20c7fed57045c550fbf Trace-Request-Header-Hash
 	{"Method":"GET","URI":"\/xmex!0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X","Storage":"UnitTest_Storage_R0 books","Content-Length":"","Content-Type":""}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	16fd8ac5fe1bbb6d17191e7347b6de18 Trace-Response-Header-Hash
-	["Message: Invalid XPath function (Invalid expression)","Message",400]
+	aeea339edfe254d4fb9929e7db15f341 Trace-Response-Header-Hash
+	["Message: Invalid XPath function (Invalid expression)",400]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	0d47de1d0e3624eeb479fe3e8054e3df Trace-Storage-Hash
 	51c77e8a83a04b9466847bce1636bf67 Trace-XPath-Hash
 	0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X
-	d5b4aa91ef8ac37b3cb37da2ebd2d624 Trace-Composite-Hash
+	fdac7ebfcf760bb16dbeba26c2941992 Trace-Composite-Hash
 49189e22ed611371a4c9a4ec790ec53b
 	Request Method:OPTIONS XPath: Length:0
 	Response Status:201 Length:0

@@ -265,7 +265,7 @@ Accept-Effects: ALL
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9f19d2c07977f63b292fa48d2d954691");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e92272b7d2fda024c3c798a14a978f78");
 });
 %}
 
@@ -395,7 +395,7 @@ Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5559de226c828cb68b3aeb06b027a81d");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5e4be4f2a67ee16804a63494eebfee68");
 });
 %}
 
