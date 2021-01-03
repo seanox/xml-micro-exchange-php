@@ -2083,8 +2083,9 @@ class Storage {
             }
             $hash = $xml->saveXml();
         }
-        $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
-        $hash = preg_replace("/\t/", " ", $hash);
+        $hash = preg_replace("/\s+/", " ", $hash);
+        $hash = preg_replace("/\s+(?=[<>])/", "", $hash);
+        $hash = trim($hash);
         header("Trace-Storage-Hash: " . hash("md5", $hash));
         $trace = array_merge($trace, [hash("md5", $hash) . " Trace-Storage-Hash"]);
 
