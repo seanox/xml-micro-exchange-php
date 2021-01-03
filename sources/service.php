@@ -2029,8 +2029,7 @@ class Storage {
             $headers[] = "Storage-Effects: " . implode("\t", array_values($effects));
         }
 
-        // The following header can be very unique and is simplified to check
-        // presence only.
+        // Connection-Unique header is unique and only checked for presence.
         if ($fetchHeader("Connection-Unique"))
             $headers[] = "Connection-Unique";
 
@@ -2087,7 +2086,6 @@ class Storage {
         header("Trace-Storage-Hash: " . hash("md5", $hash));
         $trace = array_merge($trace, [hash("md5", $hash) . " Trace-Storage-Hash"]);
 
-        $hash = $this->xpath;
         header("Trace-XPath-Hash: " . hash("md5", $this->xpath));
         $trace = array_merge($trace, [hash("md5", $this->xpath) . " Trace-XPath-Hash", $this->xpath]);
 
@@ -2107,9 +2105,9 @@ class Storage {
 
         $trace = "\t" . implode(PHP_EOL . "\t", $trace) . PHP_EOL;
         if ($this->xml && $this->xml->firstChild)
-            $trace = "\tStorage Identifier: ". $this->storage . " Revision:" . $this->xml->firstChild->getAttribute("___rev") . " Space:". $this->getSize() . PHP_EOL . $trace;
+            $trace = "\tStorage Identifier: " . $this->storage . " Revision:" . $this->xml->firstChild->getAttribute("___rev") . " Space:" . $this->getSize() . PHP_EOL . $trace;
         $trace = "\tResponse Status:" . $status . " Length:" . strlen($data) . PHP_EOL . $trace;
-        $trace = "\tRequest Method:" . strtoupper($_SERVER["REQUEST_METHOD"]) . " XPath:" . $this->xpath . " Length:" . strlen($data) . PHP_EOL . $trace;
+        $trace = "\tRequest Method:" . strtoupper($_SERVER["REQUEST_METHOD"]) . " XPath:" . $this->xpath . " Length:" . strlen(file_get_contents("php://input")) . PHP_EOL . $trace;
         $trace = hash("md5", implode(" ", $hash)) . PHP_EOL . $trace;
 
         if (file_exists("trace.log")
