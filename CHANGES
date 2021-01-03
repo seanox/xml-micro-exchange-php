@@ -10,6 +10,7 @@
       Release file (zip) was not overwritten if already exists.
   BF: Service: Uniform use of the GMT time zone
       changes: Storage-Last-Modified / Storage-Expiration
+  BF: Service: Correction in the creation of trace and trace hashes
   CR: Service: Added directives for XPath
       Directives are added at the end of the XPath separated by exclamation marks (!).
   CR: Service: Added the directive JSON
