@@ -2036,7 +2036,7 @@ class Storage {
         // Status Message should not be used because different hashes may be
         // calculated for tests on different web servers.
         $headers[] = $status;
-        asort($headers);
+        asort($headers, SORT_STRING);
         $headers = array_merge($headers);
         header("Trace-Response-Header-Hash: " . hash("md5", implode("\n", $headers)));
         $trace = array_merge($trace, [hash("md5", implode("\n", $headers)) . " Trace-Response-Header-Hash", json_encode($headers)]);
