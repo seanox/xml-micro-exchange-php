@@ -1920,7 +1920,7 @@ class Storage {
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement)
                         $data = simplexml_import_dom($data);
-                    $data = json_encode($data);
+                    $data = json_encode($data, JSON_UNESCAPED_SLASHES);
                 } else {
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement) {
@@ -1975,7 +1975,7 @@ class Storage {
             "Storage" => $fetchRequestHeader("HTTP_STORAGE"),
             "Content-Length" => strtoupper($fetchRequestHeader("HTTP_CONTENT_LENGTH", "CONTENT_LENGTH")),
             "Content-Type" => strtoupper($fetchRequestHeader("HTTP_CONTENT_TYPE", "CONTENT_TYPE"))
-        ]);
+        ], JSON_UNESCAPED_SLASHES);
         header("Trace-Request-Header-Hash: " . hash("md5", $hash));
         $trace = [hash("md5", $hash) . " Trace-Request-Header-Hash", $hash];
 
@@ -2039,7 +2039,7 @@ class Storage {
         asort($headers, SORT_STRING);
         $headers = array_merge($headers);
         header("Trace-Response-Header-Hash: " . hash("md5", implode("\n", $headers)));
-        $trace = array_merge($trace, [hash("md5", implode("\n", $headers)) . " Trace-Response-Header-Hash", json_encode($headers)]);
+        $trace = array_merge($trace, [hash("md5", implode("\n", $headers)) . " Trace-Response-Header-Hash", json_encode($headers, JSON_UNESCAPED_SLASHES)]);
 
         // Response-Body-Hash
         $hash = $data;
