@@ -29,7 +29,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "326e832a1873e81be34d3dbcd73e0516");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6793254a10382a0c5a83bca95e69940d");
 });
 %}
 
@@ -96,7 +96,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3958361b0f8ab47e11109e74525a2565");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7b502ca3a1392449b5c3dc197e4e96fb");
 });
 %}
 
@@ -113,7 +113,7 @@ xa
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "46c15989810375f761a282086e934887");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "97e1a3167770c28c543bea940d6fa3cb");
 });
 %}
 
@@ -170,7 +170,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "10da3704e5bcb99caa7f71266fa92b82");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2d293fb6a7ebad889d1fc01f547a79c9");
 });
 %}
 
@@ -199,7 +199,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "98b0144308f21999a199c96ceb0bce36");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2f7622cdd28a2ed63238662f35358d27");
 });
 %}
 
@@ -247,7 +247,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "68e042c12a73c6b36866271de8fdc6b4");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d9c6b1617e63c341387f932347d08774");
 });
 %}
 
@@ -299,7 +299,7 @@ Storage: {{storage_delete_attribute}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0a55534526be4b5d917744a581c34535");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "01382035fd22eaf48d7c82a438474f7a");
 });
 %}
 

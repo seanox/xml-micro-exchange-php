@@ -27,7 +27,7 @@ Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e95cd60efd7f12ebd37d3536260c7019");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f67e50979a1cb40a91ae5ffd3b405dc1");
 });
 %}
 
@@ -193,7 +193,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e33fdbf9d26303b923ac4c973db07ab8");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6894de901f6f6d73e2008b46ca4f1c6f");
 });
 %}
 

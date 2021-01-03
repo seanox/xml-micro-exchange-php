@@ -40,7 +40,7 @@ Storage: {{storage_post}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "14fc73894d010593cd58d9f48897c411");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "36d66a69e06c44e5c8f480dfab4294c3");
 });
 %}
 
@@ -206,7 +206,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1bcf2103e3ea3c7799a2a7415bd17f11");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "54d94796610a4a12956259bd4aa002ef");
 });
 %}
 
