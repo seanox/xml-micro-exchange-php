@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20210101
+ *  Service 1.1.0 20210103
  *  Copyright (C) 2021 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20210101
+ *  @version 1.1.0 20210103
  */
 class Storage {
 
@@ -2036,6 +2036,8 @@ class Storage {
         // Status Message should not be used because different hashes may be
         // calculated for tests on different web servers.
         $headers[] = $status;
+        asort($headers);
+        $headers = array_merge($headers);
         header("Trace-Response-Header-Hash: " . hash("md5", implode("\n", $headers)));
         $trace = array_merge($trace, [hash("md5", implode("\n", $headers)) . " Trace-Response-Header-Hash", json_encode($headers)]);
 
