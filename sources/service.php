@@ -1340,6 +1340,9 @@ class Storage {
                 if ($target->nodeType != XML_ELEMENT_NODE)
                     continue;
 
+                if (!empty($pseudo))
+                    $pseudo = strtolower($pseudo);
+
                 // Pseudo elements can be used to put in an XML
                 // substructure relative to the selected element.
                 if (empty($pseudo)) {
@@ -1352,11 +1355,11 @@ class Storage {
                     foreach ($xml->documentElement->childNodes as $insert)
                         $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));
                     $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
-                } else if (strcasecmp($pseudo, "before") === 0) {
+                } else if (strcmp($pseudo, "before") === 0) {
                     if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
                         foreach ($xml->documentElement->childNodes as $insert)
                             $target->parentNode->insertBefore($this->xml->importNode($insert, true), $target);
-                } else if (strcasecmp($pseudo, "after") === 0) {
+                } else if (strcmp($pseudo, "after") === 0) {
                     if ($target->parentNode->nodeType == XML_ELEMENT_NODE) {
                         $nodes = [];
                         foreach($xml->documentElement->childNodes as $node)
@@ -1366,11 +1369,11 @@ class Storage {
                                 $target->parentNode->insertBefore($this->xml->importNode($insert, true), $target->nextSibling);
                             else $target->parentNode->appendChild($this->xml->importNode($insert, true));
                     }
-                } else if (strcasecmp($pseudo, "first") === 0) {
+                } else if (strcmp($pseudo, "first") === 0) {
                     $inserts = $xml->documentElement->childNodes;
                     for ($index = $inserts->length -1; $index >= 0; $index--)
                         $target->insertBefore($this->xml->importNode($inserts->item($index), true), $target->firstChild);
-                } else if (strcasecmp($pseudo, "last") === 0) {
+                } else if (strcmp($pseudo, "last") === 0) {
                     foreach ($xml->documentElement->childNodes as $insert)
                         $target->appendChild($this->xml->importNode($insert, true));
                 } else $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
@@ -2016,7 +2019,7 @@ class Storage {
                 asort($effects[$serial]);
                 $effects[$serial] = implode(":", $effects[$serial]);
             }
-            $headers[] = "Storage-Effects: " . implode("\t", array_values($effects));
+            $headers[] = "Storage-Effects: #" . implode(" #", array_values($effects));
         }
 
         // Connection-Unique header is unique and only checked for presence.

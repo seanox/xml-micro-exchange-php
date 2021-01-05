@@ -193,7 +193,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b1f1a159533194e2a787d44d221f700b");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "38f6197b6eaed7a395aa2199dfbbeea4");
 });
 %}
 

@@ -51,7 +51,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1ce63e0c9a9e72977dbbddb67285450d");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "deb3f25ff750aae707c7e0da72c59dc4");
 });
 %}
 
@@ -81,7 +81,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ec9dcba45d18674be8972fc71d61542d");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b0a50663550cab6e3b3c01f626c1c8fa");
 });
 %}
 
@@ -111,7 +111,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9bed9fb47688492d3aaa141b443d7cdb");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "676c05c5bc4c4b156f968975c359a9b6");
 });
 %}
 
@@ -131,7 +131,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d6b85d7e58445aef21042ec1db384319");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1fc9a34e3c2b04f90aee79dc316e6bee");
 });
 %}
 
@@ -288,7 +288,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1d3c9d71f79d0c6f372e66c46759e173");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ae8c051f213507958e5a05f6740f776d");
 });
 %}
 
@@ -317,7 +317,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0797df65c07b5de23fefed3222d70c70");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ffa88a6160a7769523ea9c2829a48f95");
 });
 %}
 
@@ -338,7 +338,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e9c0a7e3ac5b3eeb507c5d5ba97f5b67");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "15ea5c83200a426f4d95919309dfa068");
 });
 %}
 
@@ -371,7 +371,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2b6ad4029219dbe22ddf5ac6e4ec4004");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "29b3badb0b2163276ac3866a9a4eb3e9");
 });
 %}
 
@@ -390,7 +390,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ad3adbb0778bc14c4658f6c13a8cc80f");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "31a0d279075e74b50cf2fbe38a5dd707");
 });
 %}
 
