@@ -3082,20 +3082,20 @@ d8e8b300686d7b8421ec1d1e2ea39aae
 	e3edd39f5aa672903e415d016c6af0cd Trace-XPath-Hash
 	(/books/book)/comment
 	5558646ba96fae6d2ebb97b700d9de02 Trace-Composite-Hash
-4ad1b9989862cd4e4dd2084983e894ba
+33823d344396e57493efa9f22ae02a62
 	Request Method:PATCH XPath:/books Length:37
 	Response Status:204 Length:0
-	Storage Identifier: UnitTest_Storage_UT Revision:5 Space:132
+	Storage Identifier: UnitTest_Storage_UT Revision:5 Space:141
 	e28ec3329ce6d8f08cce26b38a22ea0c Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"/xmex!/books","Storage":"UnitTest_Storage_UT books","Content-Length":"37","Content-Type":"TEXT/PLAIN"}
 	91c95f22c1d5a4ddfda3913e07905712 Trace-Request-Body-Hash
-	f250dfb3961be179cad733c663fa4dd7 Trace-Response-Header-Hash
-	[204,"Storage-Effects: 0","Storage-Revision: 5","Storage-Space: 262144/132 bytes","Storage: UnitTest_Storage_UT"]
+	3489d3bc112428dd8e0afcd73c290298 Trace-Response-Header-Hash
+	[204,"Storage-Effects: 0","Storage-Revision: 5","Storage-Space: 262144/141 bytes","Storage: UnitTest_Storage_UT"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
-	d8eee5575edcd400b3773931d68d0afe Trace-Storage-Hash
+	47f46179a98a4f7bc5f6301086c9bda3 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	4ad1b9989862cd4e4dd2084983e894ba Trace-Composite-Hash
+	33823d344396e57493efa9f22ae02a62 Trace-Composite-Hash
 9166e7657516d1d6f57c78383e926260
 	Request Method:PATCH XPath:/books Length:8
 	Response Status:204 Length:0
@@ -4626,20 +4626,20 @@ edb21f7f01c8ae513f79265368c4dec1
 	e3edd39f5aa672903e415d016c6af0cd Trace-XPath-Hash
 	(/books/book)/comment
 	edb21f7f01c8ae513f79265368c4dec1 Trace-Composite-Hash
-51898e1a82415f372a8bc050c880b40f
+6539d5eefdf44f30ccbeb5bdf8e16c2d
 	Request Method:PUT XPath:/books Length:37
 	Response Status:204 Length:0
-	Storage Identifier: UnitTest_Storage_PT Revision:5 Space:132
+	Storage Identifier: UnitTest_Storage_PT Revision:5 Space:141
 	3d3b5d9790eccadbc0f99559119433d7 Trace-Request-Header-Hash
 	{"Method":"PUT","URI":"/xmex!/books","Storage":"UnitTest_Storage_PT books","Content-Length":"37","Content-Type":"TEXT/PLAIN"}
 	91c95f22c1d5a4ddfda3913e07905712 Trace-Request-Body-Hash
-	2c4ca06f8267cabaf01773dbcc519b8f Trace-Response-Header-Hash
-	[204,"Storage-Effects: 0","Storage-Revision: 5","Storage-Space: 262144/132 bytes","Storage: UnitTest_Storage_PT"]
+	b4c5f77a12dca1c88f0e9acedfc6991a Trace-Response-Header-Hash
+	[204,"Storage-Effects: 0","Storage-Revision: 5","Storage-Space: 262144/141 bytes","Storage: UnitTest_Storage_PT"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
-	d8eee5575edcd400b3773931d68d0afe Trace-Storage-Hash
+	47f46179a98a4f7bc5f6301086c9bda3 Trace-Storage-Hash
 	a0721c16c96f044d5d405fef10a701de Trace-XPath-Hash
 	/books
-	51898e1a82415f372a8bc050c880b40f Trace-Composite-Hash
+	6539d5eefdf44f30ccbeb5bdf8e16c2d Trace-Composite-Hash
 3ece4ee220f9f80728401bba59caa7b2
 	Request Method:PUT XPath:/books Length:8
 	Response Status:204 Length:0
@@ -5267,20 +5267,20 @@ f6d8cc11e455c4561dd0fb6c881a97fe
 	18fdb9d81a99aef7acf4a062460ab6d5 Trace-XPath-Hash
 	//players//field
 	f6d8cc11e455c4561dd0fb6c881a97fe Trace-Composite-Hash
-419fc2be630b8057b35049888cbeffb8
+dad37c3088270d993a50621ba04c2d23
 	Request Method:PATCH XPath://players/*[@touch<400]|//players/*[@touch=''] Length:0
 	Response Status:204 Length:0
-	Storage Identifier: Example_of_Snake Revision:9 Space:961
+	Storage Identifier: Example_of_Snake Revision:9 Space:979
 	0ed34293c171d06cc6951d29d010a085 Trace-Request-Header-Hash
 	{"Method":"PATCH","URI":"/xmex!0x2f2f706c61796572732f2a5b40746f7563683c3430305d7c2f2f706c61796572732f2a5b40746f7563683d27275d","Storage":"Example_of_Snake snake","Content-Length":"","Content-Type":"TEXT/PLAIN"}
 	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
-	1488896a2fcbe77359ef5d0f5a36b2b6 Trace-Response-Header-Hash
-	[204,"Storage-Effects: 2:3:5:6:7:8","Storage-Revision: 9","Storage-Space: 262144/961 bytes","Storage: Example_of_Snake"]
+	cc2fa30952178d899a5f331f6cf8f34f Trace-Response-Header-Hash
+	[204,"Storage-Effects: 2:3:5:6:7:8","Storage-Revision: 9","Storage-Space: 262144/979 bytes","Storage: Example_of_Snake"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	29cc32ab9f68343006df0544cd951048 Trace-Storage-Hash
 	7aa76b3963a2a20846849323d3a43752 Trace-XPath-Hash
 	//players/*[@touch<400]|//players/*[@touch='']
-	419fc2be630b8057b35049888cbeffb8 Trace-Composite-Hash
+	dad37c3088270d993a50621ba04c2d23 Trace-Composite-Hash
 1f987f73f8b0df3637841fef1b585409
 	Request Method:PATCH XPath://players/*[@touch<400]/@touch Length:0
 	Response Status:204 Length:0

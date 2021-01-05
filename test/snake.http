@@ -265,7 +265,7 @@ Content-Type: text/plain
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "419fc2be630b8057b35049888cbeffb8");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "dad37c3088270d993a50621ba04c2d23");
 });
 %}
 

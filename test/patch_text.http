@@ -144,7 +144,7 @@ Content-Type: text/plain
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4ad1b9989862cd4e4dd2084983e894ba");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "33823d344396e57493efa9f22ae02a62");
 });
 %}
 

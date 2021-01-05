@@ -143,7 +143,7 @@ Content-Type: text/plain
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "51898e1a82415f372a8bc050c880b40f");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6539d5eefdf44f30ccbeb5bdf8e16c2d");
 });
 %}
 
