@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20210103
+ *  Service 1.1.0 20210105
  *  Copyright (C) 2021 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20210103
+ *  @version 1.1.0 20210105
  */
 class Storage {
 
@@ -411,7 +411,7 @@ class Storage {
             // Safe is safe, if not the default 'data' is used,
             // the name of the root element must be known.
             // Otherwise the request is quit with status 404 and terminated.
-            if (($root ? $root : "data") != $storage->xml->firstChild->nodeName)
+            if (($root ? $root : "data") != $storage->xml->documentElement->nodeName)
                 $storage->quit(404, "Resource Not Found");
         }
         return $storage;
@@ -454,7 +454,7 @@ class Storage {
         rewind($this->share);
         $this->xml = new DOMDocument();
         $this->xml->loadXML(fread($this->share, $size));
-        $this->revision = $this->xml->firstChild->getAttribute("___rev");
+        $this->revision = $this->xml->documentElement->getAttribute("___rev");
     }
 
     /**
@@ -471,7 +471,7 @@ class Storage {
 
         if ($this->share == null)
             return;
-        if ($this->revision == $this->xml->firstChild->getAttribute("___rev"))
+        if ($this->revision == $this->xml->documentElement->getAttribute("___rev"))
             return;
 
         $output = $this->xml->saveXML();
@@ -1324,7 +1324,7 @@ class Storage {
         }
 
         $serials = [];
-        if ($xml->firstChild->hasChildNodes()) {
+        if ($xml->documentElement->hasChildNodes()) {
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -1351,17 +1351,17 @@ class Storage {
                     foreach ($childs as $child)
                         $serials[] = $child->getAttribute("___uid") . ":D";
                     $replace = $target->cloneNode(false);
-                    foreach ($xml->firstChild->childNodes as $insert)
+                    foreach ($xml->documentElement->childNodes as $insert)
                         $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));
                     $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
                 } else if (strcasecmp($pseudo, "before") === 0) {
                     if ($target->parentNode->nodeType == XML_ELEMENT_NODE)
-                        foreach ($xml->firstChild->childNodes as $insert)
+                        foreach ($xml->documentElement->childNodes as $insert)
                             $target->parentNode->insertBefore($this->xml->importNode($insert, true), $target);
                 } else if (strcasecmp($pseudo, "after") === 0) {
                     if ($target->parentNode->nodeType == XML_ELEMENT_NODE) {
                         $nodes = [];
-                        foreach($xml->firstChild->childNodes as $node)
+                        foreach($xml->documentElement->childNodes as $node)
                             array_unshift($nodes, $node);
                         foreach ($nodes as $insert)
                             if ($target->nextSibling)
@@ -1369,11 +1369,11 @@ class Storage {
                             else $target->parentNode->appendChild($this->xml->importNode($insert, true));
                     }
                 } else if (strcasecmp($pseudo, "first") === 0) {
-                    $inserts = $xml->firstChild->childNodes;
+                    $inserts = $xml->documentElement->childNodes;
                     for ($index = $inserts->length -1; $index >= 0; $index--)
                         $target->insertBefore($this->xml->importNode($inserts->item($index), true), $target->firstChild);
                 } else if (strcasecmp($pseudo, "last") === 0) {
-                    foreach ($xml->firstChild->childNodes as $insert)
+                    foreach ($xml->documentElement->childNodes as $insert)
                         $target->appendChild($this->xml->importNode($insert, true));
                 } else $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
             }
@@ -1816,7 +1816,7 @@ class Storage {
             $expiration = $expiration->format("D, d M Y H:i:s T");
             $headers = array_merge($headers, [
                 "Storage" => $this->storage,
-                "Storage-Revision" => $this->xml->firstChild->getAttribute("___rev"),
+                "Storage-Revision" => $this->xml->documentElement->getAttribute("___rev"),
                 "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
                 "Storage-Last-Modified" => date("D, d M Y H:i:s T"),
                 "Storage-Expiration" => $expiration,
@@ -2099,8 +2099,8 @@ class Storage {
         });
 
         $trace = "\t" . implode(PHP_EOL . "\t", $trace) . PHP_EOL;
-        if ($this->xml && $this->xml->firstChild)
-            $trace = "\tStorage Identifier: " . $this->storage . " Revision:" . $this->xml->firstChild->getAttribute("___rev") . " Space:" . $this->getSize() . PHP_EOL . $trace;
+        if ($this->xml && $this->xml->documentElement)
+            $trace = "\tStorage Identifier: " . $this->storage . " Revision:" . $this->xml->documentElement->getAttribute("___rev") . " Space:" . $this->getSize() . PHP_EOL . $trace;
         $trace = "\tResponse Status:" . $status . " Length:" . strlen($data) . PHP_EOL . $trace;
         $trace = "\tRequest Method:" . strtoupper($_SERVER["REQUEST_METHOD"]) . " XPath:" . $this->xpath . " Length:" . strlen(file_get_contents("php://input")) . PHP_EOL . $trace;
         $trace = hash("md5", implode(" ", $hash)) . PHP_EOL . $trace;
