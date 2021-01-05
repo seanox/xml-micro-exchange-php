@@ -1264,9 +1264,8 @@ class Storage {
                 if ($target->nodeType != XML_ELEMENT_NODE)
                     continue;
                 $serials[] = $target->getAttribute("___uid") . ":M";
-                $replace = $this->xml->createElement($target->nodeName, $input);
-                foreach ($target->attributes as $attribute)
-                    $replace->setAttribute($attribute->nodeName, $attribute->nodeValue);
+                $replace = $target->cloneNode(false);
+                $replace->appendChild($this->xml->createTextNode($input));
                 $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
                 // The revision is updated at the parent nodes, so you can
                 // later determine which nodes have changed and with which
@@ -1288,7 +1287,6 @@ class Storage {
 
         // Only an XML structure can be inserted, nothing else is supported.
         // So only the Content-Type application/xslt+xml can be used.
-
         if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
             $this->quit(415, "Unsupported Media Type");
 
