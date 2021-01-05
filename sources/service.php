@@ -1163,9 +1163,7 @@ class Storage {
 
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
-                $message = "Invalid XPath axis";
-                if (Storage::fetchLastXmlErrorMessage())
-                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
@@ -1252,9 +1250,7 @@ class Storage {
             $serials = [];
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
-                $message = "Invalid XPath axis";
-                if (Storage::fetchLastXmlErrorMessage())
-                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
@@ -1331,9 +1327,7 @@ class Storage {
         if ($xml->firstChild->hasChildNodes()) {
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
-                $message = "Invalid XPath axis";
-                if (Storage::fetchLastXmlErrorMessage())
-                    $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+                $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
@@ -1654,9 +1648,7 @@ class Storage {
 
         $targets = (new DOMXpath($this->xml))->query($xpath);
         if (Storage::fetchLastXmlErrorMessage()) {
-            $message = "Invalid XPath axis";
-            if (Storage::fetchLastXmlErrorMessage())
-                $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
+            $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
 
