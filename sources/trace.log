@@ -1621,6 +1621,34 @@ f546bedc06831e5a23fbc09c996d04b9
 	bccad15de8e2089b14c4edacef19c3b2 Trace-XPath-Hash
 	//city[1]/@name
 	f546bedc06831e5a23fbc09c996d04b9 Trace-Composite-Hash
+d409809ad3c474ca5d74aa03177d515e
+	Request Method:GET XPath://quarter[@name='Rahnsdorf'] Length:0
+	Response Status:200 Length:137
+	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
+	8df36d7030da2fc4d933e350c4f593ad Trace-Request-Header-Hash
+	{"Method":"GET","URI":"/xmex!0x2f2f717561727465725b406e616d653d275261686e73646f7266275d","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
+	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
+	d59f670d91218bf8d2bccad12e58b008 Trace-Response-Header-Hash
+	[200,"Content-Length: 137","Content-Type: application/xslt+xml","Storage-Revision: 1","Storage-Space: 262144/14393 bytes","Storage: UnitTest_Storage_G0"]
+	9b60159113559544ea153171a5b369c0 Trace-Response-Body-Hash
+	f3c729098521c4ed19d997d97feff72e Trace-Storage-Hash
+	a6f5b7a7c922d217147a138502b681b7 Trace-XPath-Hash
+	//quarter[@name='Rahnsdorf']
+	d409809ad3c474ca5d74aa03177d515e Trace-Composite-Hash
+afc41d9e49bf384782a0f674379882f0
+	Request Method:GET XPath://quarter[@name='Rahnsdorf'] Length:0
+	Response Status:200 Length:133
+	Storage Identifier: UnitTest_Storage_G0 Revision:1 Space:14393
+	70c7e82d8a52eded41e352f05f004cc8 Trace-Request-Header-Hash
+	{"Method":"GET","URI":"/xmex!0x2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e","Storage":"UnitTest_Storage_G0 statistic","Content-Length":"","Content-Type":""}
+	d41d8cd98f00b204e9800998ecf8427e Trace-Request-Body-Hash
+	4bfc360f8c631a2a6594538acac0000d Trace-Response-Header-Hash
+	[200,"Content-Length: 133","Content-Type: application/json","Storage-Revision: 1","Storage-Space: 262144/14393 bytes","Storage: UnitTest_Storage_G0"]
+	78807423f68327b566aa943c49d55bb2 Trace-Response-Body-Hash
+	f3c729098521c4ed19d997d97feff72e Trace-Storage-Hash
+	a6f5b7a7c922d217147a138502b681b7 Trace-XPath-Hash
+	//quarter[@name='Rahnsdorf']
+	afc41d9e49bf384782a0f674379882f0 Trace-Composite-Hash
 d6866e62b88cc1fda1914c687771c212
 	Request Method:CONNECT XPath: Length:0
 	Response Status:201 Length:0

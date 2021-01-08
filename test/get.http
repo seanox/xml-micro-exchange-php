@@ -813,3 +813,35 @@ client.test("unittest", function() {
 %}
 
 ###
+# Query of a data record as JSON
+# Expectations:
+# - Status code 200 Success
+# - Content-Type: application/xslt+xml
+# - Content-Length: 137
+# - URI: //quarter[@name='Rahnsdorf']
+GET {{service}}0x2f2f717561727465725b406e616d653d275261686e73646f7266275d HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d409809ad3c474ca5d74aa03177d515e");
+});
+%}
+
+###
+# Query of a data record as JSON
+# Expectations:
+# - Status code 200 Success
+# - Content-Type: application/json
+# - Content-Length: 133
+# - URI: //quarter[@name='Rahnsdorf']!json
+GET {{service}}0x2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "afc41d9e49bf384782a0f674379882f0");
+});
+%}
+
+###
