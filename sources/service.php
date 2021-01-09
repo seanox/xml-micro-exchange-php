@@ -2027,8 +2027,8 @@ class Storage {
                 asort($effects[$serial]);
                 $effects[$serial] = implode(":", $effects[$serial]);
             }
-            $headers[] = "Storage-Effects: " . $counter[0] . "xA/" . $counter[1] . "xM/" . $counter[2] . "xD/" . $counter[2] . "xN"
-                    . " #" . implode(" #", array_values($effects));
+            $headers[] = "Storage-Effects: " . $counter[0] . "xA/" . $counter[1] . "xM/" . $counter[2] . "xD/" . $counter[3] . "xN"
+                . " #" . implode(" #", array_values($effects));
         }
 
         // Connection-Unique header is unique and only checked for presence.

@@ -240,7 +240,7 @@ Storage: {{storage_getting_started}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "607065493aba269873e0d3d962808ee8");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ee45c9aceaeae61580c05b0baa79a1d5");
 });
 %}
 
