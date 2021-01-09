@@ -335,8 +335,7 @@ class Storage {
         $this->store    = Storage::DIRECTORY . "/" . base64_encode($this->storage);
         $this->xpath    = $xpath;
         $this->options  = $options;
-        $this->change   = false;
-        $this->unique   = Storage::uniqueId();  
+        $this->unique   = Storage::uniqueId();
         $this->serial   = 0;
         $this->revision = 0; 
     }
@@ -823,7 +822,7 @@ class Storage {
         } else if ($result instanceof DOMNodeList) {
             if ($result->length == 1) {
                 if ($result[0] instanceof DOMDocument)
-                    $result = [$result[0]->firstChild];
+                    $result = [$result[0]->documentElement];
                 if ($result[0] instanceof DOMAttr) {
                     $result = $result[0]->value;
                 } else {
@@ -2007,19 +2006,29 @@ class Storage {
         $header = $fetchHeader("Storage-Effects");
         if (!empty($header)
                 && !empty($header->value)) {
+            $counter = [0, 0, 0, 0];
             $effects = [];
             foreach (preg_split("/\s+/", $header->value) as $uid) {
                 $uid = preg_split("/:/", $uid);
                 if (!array_key_exists($uid[0], $effects))
                     $effects[$uid[0]] = [];
                 $effects[$uid[0]][] = $uid[1];
+                if (count($uid) < 3)
+                    $counter[3]++;
+                else if (strcasecmp($uid[2], "A") === 0)
+                    $counter[0]++;
+                else if (strcasecmp($uid[2], "M") === 0)
+                    $counter[1]++;
+                else if (strcasecmp($uid[2], "D") === 0)
+                    $counter[2]++;
             }
             ksort($effects);
             foreach($effects as $serial => $index) {
                 asort($effects[$serial]);
                 $effects[$serial] = implode(":", $effects[$serial]);
             }
-            $headers[] = "Storage-Effects: #" . implode(" #", array_values($effects));
+            $headers[] = "Storage-Effects: " . $counter[0] . "xA/" . $counter[1] . "xM/" . $counter[2] . "xD/" . $counter[2] . "xN"
+                    . " #" . implode(" #", array_values($effects));
         }
 
         // Connection-Unique header is unique and only checked for presence.
