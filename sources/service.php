@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20210105
+ *  Service 1.1.0 20210111
  *  Copyright (C) 2021 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20210105
+ *  @version 1.1.0 20210111
  */
 class Storage {
 
@@ -294,7 +294,7 @@ class Storage {
      *     Group 0. Full match
      *     Group 1. XPath axis
      *     Group 2. Attribute
-     */    
+     */
     const PATTERN_XPATH_PSEUDO = "/^(.*?)(?:::(before|after|first|last)){0,1}$/i";
 
     /**
@@ -2116,6 +2116,7 @@ class Storage {
         $trace = hash("md5", implode(" ", $hash)) . PHP_EOL . $trace;
 
         if (file_exists("trace.log")
+                && filesize("trace.log") > 0
                 && (time() -filemtime("trace.log")) > 1)
             file_put_contents("trace.log", PHP_EOL, FILE_APPEND | LOCK_EX);
         file_put_contents("trace.log", $trace, FILE_APPEND | LOCK_EX);
