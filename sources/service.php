@@ -2249,7 +2249,7 @@ else $xpath = urldecode($xpath);
 if (empty($xpath)
         && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";        
-$exclusive = in_array($method, ["DELETE", "PATCH", "PUT", "POST"]);
+$exclusive = in_array($method, ["DELETE", "PATCH", "PUT"]);
 $storage = Storage::share($storage, $xpath, $exclusive);
 
 try {
