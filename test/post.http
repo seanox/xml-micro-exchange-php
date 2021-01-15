@@ -817,6 +817,96 @@ client.test("unittest", function() {
 %}
 
 ###
+# Valid XSLT without XPath and with output
+# Text output, mix of plain an tags with attributes
+# Tags and attributes are not included in the output
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 373
+# - Content-Type: text/plain
+# - Only an extract of the data selected by XPath.
+# - URI: //district[@name='Lichtenberg']
+POST {{service}}0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="text"/>
+  <xsl:template match="/">
+Quarters of district: <xsl:value-of select="/district/@name"/>
+----
+<xsl:for-each select="//quarter">
+<xsl:variable name="area" select="concat(format-number(@area, '0.00'), ' km²')"/>
+<xsl:variable name="name" select="@name"/>
+<quarter area="1-{$area}-1" name="2-{$name}-2">
+3-<xsl:value-of select="$area"/>-3 4-<xsl:value-of select="$name"/>-4
+</quarter>
+</xsl:for-each>
+----
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0a404c7d075d0174d9358ef686749bbf");
+});
+%}
+
+###
+# Output of a node
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 91
+# - Content-Type: application/xslt+xml
+# - Only few empty lines
+POST {{service}} HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="xml"/>
+  <xsl:template match="/">
+    <xsl:value-of select="//district[@name='Mitte']"/>
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "591198fe862d03b7e2c6332dba688dee");
+});
+%}
+
+###
+# Output of a node
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 31
+# - Content-Type: text/plain
+# - Only xml declaration and few empty lines
+POST {{service}} HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <xsl:output method="text"/>
+  <xsl:template match="/">
+    <xsl:value-of select="//district[@name='Mitte']"/>
+  </xsl:template>
+</xsl:stylesheet>
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6675e2d72f5088deea5792a9cd27f8bd");
+});
+%}
+
+###
 # Template without output method used the default xml
 # The result is not a valid XML-file
 # Expectations:

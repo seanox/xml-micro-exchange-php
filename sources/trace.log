@@ -3598,6 +3598,46 @@ d6319e3fbc0b227c9717b840560db593
 	710f6fea52105e582046aab7fcf73e2e Trace-XPath-Hash
 	//district[@name='Lichtenberg']
 	d6319e3fbc0b227c9717b840560db593 Trace-Composite-Hash
+0a404c7d075d0174d9358ef686749bbf
+	Request Method:POST XPath://district[@name='Lichtenberg'] Length:576
+	Response Status:200 Length:373
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	2c6f8558e1873a42afc712ce98d8e5a4 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"/xmex!0x2f2f64697374726963745b406e616d653d274c69636874656e62657267275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"576","Content-Type":"APPLICATION/XSLT+XML"}
+	99a9312a2f18af65b1e6d813fbc1ed78 Trace-Request-Body-Hash
+	d0fb17903c279e16c4bfe643c25cda5d Trace-Response-Header-Hash
+	[200,"Content-Length: 373","Content-Type: text/plain","Storage-Revision: 1","Storage-Space: 262144/14384 bytes","Storage: UnitTest_Storage_P0"]
+	a6ad15723121040a9b87270ff8194a0f Trace-Response-Body-Hash
+	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
+	710f6fea52105e582046aab7fcf73e2e Trace-XPath-Hash
+	//district[@name='Lichtenberg']
+	0a404c7d075d0174d9358ef686749bbf Trace-Composite-Hash
+591198fe862d03b7e2c6332dba688dee
+	Request Method:POST XPath: Length:252
+	Response Status:200 Length:114
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	3c12857a02e20275db48378e46024b36 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"252","Content-Type":"APPLICATION/XSLT+XML"}
+	aaaeea722a0257a3143308e16090d2e9 Trace-Request-Body-Hash
+	e975cacb2575b0671def12450c6d6378 Trace-Response-Header-Hash
+	[200,"Content-Length: 114","Content-Type: application/xslt+xml","Storage-Revision: 1","Storage-Space: 262144/14384 bytes","Storage: UnitTest_Storage_P0"]
+	85361c703a55b4288d985513ab71013e Trace-Response-Body-Hash
+	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
+	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
+	591198fe862d03b7e2c6332dba688dee Trace-Composite-Hash
+6675e2d72f5088deea5792a9cd27f8bd
+	Request Method:POST XPath: Length:253
+	Response Status:200 Length:91
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	30286349ea6966cb937d34fda532e259 Trace-Request-Header-Hash
+	{"Method":"POST","URI":"/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"253","Content-Type":"APPLICATION/XSLT+XML"}
+	92f42dc66b0938a8348dbdacc88be084 Trace-Request-Body-Hash
+	d92ed3e2dc3f23dcc3071ef49dda60f0 Trace-Response-Header-Hash
+	[200,"Content-Length: 91","Content-Type: text/plain","Storage-Revision: 1","Storage-Space: 262144/14384 bytes","Storage: UnitTest_Storage_P0"]
+	bc9a2ecf0fbd1127b44a3b8b83569f1b Trace-Response-Body-Hash
+	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
+	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
+	6675e2d72f5088deea5792a9cd27f8bd Trace-Composite-Hash
 2ea01df3f15e05dab79952537b2f8b0c
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:223
 	Response Status:200 Length:40
