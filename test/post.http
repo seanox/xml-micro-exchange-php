@@ -216,6 +216,7 @@ client.test("unittest", function() {
 # - Status code 200 Success
 # - Content-Length: 640
 # - Content-Type: application/xslt+xml
+# - Content: UTF-8 encodes
 POST {{service}} HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
@@ -1227,5 +1228,26 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d722ce463849106c568fc2338bd6f1e5");
 });
 %}
+
+###
+# Test of correct Content-Lengt for unicode
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 63
+# - Content-Type: text/plain
+# - Only an extract of the data selected by XPath.
+# - URI: //quarter[@area=9.33]
+POST {{service}}0x2f2f717561727465725b40617265613d392e33335d HTTP/1.0
+Storage: {{storage_post}}
+Content-Type: application/xslt+xml
+
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:output
+    method="text"/><xsl:template
+    match="/"><xsl:value-of
+    select="*/@name"/><xsl:value-of
+    select="*/@name"/><xsl:value-of
+    select="*/@name"/></xsl:template></xsl:stylesheet>
 
 ###
