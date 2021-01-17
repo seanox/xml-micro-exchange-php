@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20210111
+ *  Service 1.1.0 20210117
  *  Copyright (C) 2021 Seanox Software Solutions
  *  All rights reserved.
  *
  *  @author  Seanox Software Solutions
- *  @version 1.1.0 20210111
+ *  @version 1.1.0 20210117
  */
 class Storage {
 
@@ -928,6 +928,10 @@ class Storage {
 
         $processor = new XSLTProcessor();
         $processor->importStyleSheet($style);
+        if (Storage::fetchLastXmlErrorMessage()) {
+             $message = "Invalid XSLT stylesheet (" . Storage::fetchLastXmlErrorMessage() . ")";
+             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+        }
 
         $xml = $this->xml;
         if (!empty($this->xpath)) {
