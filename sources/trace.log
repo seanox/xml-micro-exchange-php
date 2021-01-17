@@ -3371,18 +3371,19 @@ e8119ad6c2490c838d30467004f71eab
 	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	e8119ad6c2490c838d30467004f71eab Trace-Composite-Hash
-24cf518781a176c6eace644f30e5035b
+7476feb2371f751119da0da3a8bc200a
 	Request Method:POST XPath: Length:821
 	Response Status:422 Length:0
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	43ce28db28e40961d0049f5e61b29f1b Trace-Request-Header-Hash
 	{"Method":"POST","URI":"/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"821","Content-Type":"APPLICATION/XSLT+XML"}
 	a34aeac16f3df76653547d641ff26866 Trace-Request-Body-Hash
 	5032f417c7980383cd6bbd3cb90890f7 Trace-Response-Header-Hash
 	[422,"Message: Invalid XSLT stylesheet (xsltParseStylesheetTop: unknown templatex element)"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
-	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
+	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	24cf518781a176c6eace644f30e5035b Trace-Composite-Hash
+	7476feb2371f751119da0da3a8bc200a Trace-Composite-Hash
 2b904a8af7df4750db75d35b7b2d9540
 	Request Method:POST XPath: Length:820
 	Response Status:422 Length:0
@@ -3435,18 +3436,19 @@ d9252666ef77fca1a32946e49ef2bbd0
 	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
 	d9252666ef77fca1a32946e49ef2bbd0 Trace-Composite-Hash
-46e6c30957666e403b1131e1f3daf402
+92d0419946543d9f1ee1060810203d31
 	Request Method:POST XPath: Length:818
 	Response Status:422 Length:0
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	bac1e94245cafcf201f1e639c04925be Trace-Request-Header-Hash
 	{"Method":"POST","URI":"/xmex!","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"818","Content-Type":"APPLICATION/XSLT+XML"}
 	13ecaa67673650ec94685b02521d38ff Trace-Request-Body-Hash
 	b4d6e26ec6aa1785d85550cb75e4b17c Trace-Response-Header-Hash
 	[422,"Message: Invalid XSLT stylesheet (XSLT-variable: Failed to compile the XPath expression '//city[@name='Berlin'/@name')"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
-	d41d8cd98f00b204e9800998ecf8427e Trace-Storage-Hash
+	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	46e6c30957666e403b1131e1f3daf402 Trace-Composite-Hash
+	92d0419946543d9f1ee1060810203d31 Trace-Composite-Hash
 df7b1a748261ebad2c6d3189ee1fee01
 	Request Method:POST XPath: Length:180
 	Response Status:200 Length:0
@@ -3694,34 +3696,34 @@ ce0e4a7536aab0387bd3c1753efd9058
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
 	ce0e4a7536aab0387bd3c1753efd9058 Trace-Composite-Hash
-d310bb4787dfc6dcf78f7a40e55f6439
+ad18f28236a8220c57e9b5d78d88d5d7
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:247
-	Response Status:400 Length:0
+	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	0881dfe4785d923e1ca631e8ab7797d6 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"247","Content-Type":"APPLICATION/XSLT+XML"}
 	75f663b8ed83119f89d2fe590af6e05a Trace-Request-Body-Hash
-	a9891d49a16bd859b65638e717ca9d74 Trace-Response-Header-Hash
-	[400,"Message: Invalid XPath axis (invalid value for method: xhtml)"]
+	78d51a582929db596c80ef3f80c9c7f5 Trace-Response-Header-Hash
+	[422,"Message: Invalid XSLT stylesheet (invalid value for method: xhtml)"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	d310bb4787dfc6dcf78f7a40e55f6439 Trace-Composite-Hash
-37a5940d6688c2ac80db11033b570070
+	ad18f28236a8220c57e9b5d78d88d5d7 Trace-Composite-Hash
+54896983f1b8d0f6a0517826eff2e7be
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:249
-	Response Status:400 Length:0
+	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	c5ba30e701713da75fc66de7c063a766 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"249","Content-Type":"APPLICATION/XSLT+XML"}
 	ccfc092fbecc3553200528f7f8c98893 Trace-Request-Body-Hash
-	d34c94752203a44df655f44957c870be Trace-Response-Header-Hash
-	[400,"Message: Invalid XPath axis (invalid value for method: unknown)"]
+	9849c9f3cba3dfa672752cea7fff47c7 Trace-Response-Header-Hash
+	[422,"Message: Invalid XSLT stylesheet (invalid value for method: unknown)"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	37a5940d6688c2ac80db11033b570070 Trace-Composite-Hash
+	54896983f1b8d0f6a0517826eff2e7be Trace-Composite-Hash
 0131c6334002dae51b327295620515e1
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:223
 	Response Status:200 Length:5
@@ -3778,34 +3780,48 @@ bdfe3d3c0721e8a7c67690fdea67e194
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
 	0688c46d7eab053ac5bd17ef553d33f4 Trace-Composite-Hash
-7b5e99b29f6384247bfa161207a15bf7
+8750a216c1b16111a6461994f5329c73
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:247
-	Response Status:400 Length:0
+	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	c14569f4a5a4f057ca9383b64e404c50 Trace-Request-Header-Hash
 	{"Method":"POST","URI":"/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"247","Content-Type":"APPLICATION/XSLT+XML"}
 	75f663b8ed83119f89d2fe590af6e05a Trace-Request-Body-Hash
-	a9891d49a16bd859b65638e717ca9d74 Trace-Response-Header-Hash
-	[400,"Message: Invalid XPath axis (invalid value for method: xhtml)"]
+	78d51a582929db596c80ef3f80c9c7f5 Trace-Response-Header-Hash
+	[422,"Message: Invalid XSLT stylesheet (invalid value for method: xhtml)"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	7b5e99b29f6384247bfa161207a15bf7 Trace-Composite-Hash
-d722ce463849106c568fc2338bd6f1e5
+	8750a216c1b16111a6461994f5329c73 Trace-Composite-Hash
+7051df617104937e898175df3517931d
 	Request Method:POST XPath://district[@name='Mitte']|//district[@name='Spandau'] Length:249
-	Response Status:400 Length:0
+	Response Status:422 Length:0
 	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
 	2a951f1be80a77aaa2770b4a75f52a4b Trace-Request-Header-Hash
 	{"Method":"POST","URI":"/xmex!0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"249","Content-Type":"APPLICATION/XSLT+XML"}
 	ccfc092fbecc3553200528f7f8c98893 Trace-Request-Body-Hash
-	d34c94752203a44df655f44957c870be Trace-Response-Header-Hash
-	[400,"Message: Invalid XPath axis (invalid value for method: unknown)"]
+	9849c9f3cba3dfa672752cea7fff47c7 Trace-Response-Header-Hash
+	[422,"Message: Invalid XSLT stylesheet (invalid value for method: unknown)"]
 	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
 	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
 	a6204bf3dd855a61bf0c1247a94c455b Trace-XPath-Hash
 	//district[@name='Mitte']|//district[@name='Spandau']
-	d722ce463849106c568fc2338bd6f1e5 Trace-Composite-Hash
+	7051df617104937e898175df3517931d Trace-Composite-Hash
+9dd586e2f9418c8f6b616dcee5324982
+	Request Method:POST XPath://quarter[@area=9.33] Length:304
+	Response Status:200 Length:63
+	Storage Identifier: UnitTest_Storage_P0 Revision:1 Space:14384
+	a43fc2c3fef49996be7b05e4b5855a2d Trace-Request-Header-Hash
+	{"Method":"POST","URI":"/xmex!0x2f2f717561727465725b40617265613d392e33335d","Storage":"UnitTest_Storage_P0 statistic","Content-Length":"304","Content-Type":"APPLICATION/XSLT+XML"}
+	eb907186bb7b6aed203555dfa4bdff1a Trace-Request-Body-Hash
+	771ded3009cdc6de1575b097acf0871a Trace-Response-Header-Hash
+	[200,"Content-Length: 63","Content-Type: text/plain","Storage-Revision: 1","Storage-Space: 262144/14384 bytes","Storage: UnitTest_Storage_P0"]
+	1c966b05178cca0a4850c6901923c7bf Trace-Response-Body-Hash
+	cbeb500f0a261a0ae4df39b193878226 Trace-Storage-Hash
+	e6c07e131baf0c76e49468f23d274333 Trace-XPath-Hash
+	//quarter[@area=9.33]
+	9dd586e2f9418c8f6b616dcee5324982 Trace-Composite-Hash
 f822c688ec948015206e7d8b552f1ebd
 	Request Method:PUT XPath:/books/attribute::attrA Length:4
 	Response Status:404 Length:0

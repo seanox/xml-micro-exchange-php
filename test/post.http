@@ -380,7 +380,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "24cf518781a176c6eace644f30e5035b");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7476feb2371f751119da0da3a8bc200a");
 });
 %}
 
@@ -554,7 +554,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "46e6c30957666e403b1131e1f3daf402");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "92d0419946543d9f1ee1060810203d31");
 });
 %}
 
@@ -861,7 +861,7 @@ client.test("unittest", function() {
 # - Status code 200 Success
 # - Content-Length: 91
 # - Content-Type: application/xslt+xml
-# - Only few empty lines
+# - Only xml declaration and few empty lines
 POST {{service}} HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
@@ -885,9 +885,9 @@ client.test("unittest", function() {
 # Output of a node
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 31
+# - Content-Length: 91
 # - Content-Type: text/plain
-# - Only xml declaration and few empty lines
+# - Only few empty lines
 POST {{service}} HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
@@ -1014,8 +1014,8 @@ client.test("unittest", function() {
 ###
 # Template with invalid output method
 # Expectations:
-# - Status code 400 Bad Request
-# - Message: Invalid XPath axis (invalid value for method: xhtml)
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XSLT stylesheet (invalid value for method: xhtml)
 # - URI: //district[@name='Mitte']|//district[@name='Spandau']
 POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
@@ -1032,15 +1032,15 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d310bb4787dfc6dcf78f7a40e55f6439");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ad18f28236a8220c57e9b5d78d88d5d7");
 });
 %}
 
 ###
 # Template with invalid output method
 # Expectations:
-# - Status code 400 Bad Request
-# - Message: Invalid XPath axis (invalid value for method: unknown)
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XSLT stylesheet (invalid value for method: unknown)
 # - URI: //district[@name='Mitte']|//district[@name='Spandau']
 POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
@@ -1057,7 +1057,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "37a5940d6688c2ac80db11033b570070");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "54896983f1b8d0f6a0517826eff2e7be");
 });
 %}
 
@@ -1181,8 +1181,8 @@ client.test("unittest", function() {
 # Template with invalid output method
 # the JSON directive in the URI has no effect.
 # Expectations:
-# - Status code 400 Bad Request
-# - Message: Invalid XPath axis (invalid value for method: xhtml)
+# - Status code 422 Bad Request
+# - Message: Invalid XSLT stylesheet (invalid value for method: xhtml)
 # - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
 POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
 Storage: {{storage_post}}
@@ -1199,7 +1199,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7b5e99b29f6384247bfa161207a15bf7");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8750a216c1b16111a6461994f5329c73");
 });
 %}
 
@@ -1207,8 +1207,8 @@ client.test("unittest", function() {
 # Template with invalid output method
 # the JSON directive in the URI has no effect.
 # Expectations:
-# - Status code 400 Bad Request
-# - Message: Invalid XPath axis (invalid value for method: unknown)
+# - Status code 422 Unprocessable Entity
+# - Message: Invalid XSLT stylesheet (invalid value for method: unknown)
 # - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
 POST {{service}}0x2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
 Storage: {{storage_post}}
@@ -1225,7 +1225,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d722ce463849106c568fc2338bd6f1e5");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7051df617104937e898175df3517931d");
 });
 %}
 
