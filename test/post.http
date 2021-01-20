@@ -1250,4 +1250,10 @@ Content-Type: application/xslt+xml
     select="*/@name"/><xsl:value-of
     select="*/@name"/></xsl:template></xsl:stylesheet>
 
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9dd586e2f9418c8f6b616dcee5324982");
+});
+%}
+
 ###
