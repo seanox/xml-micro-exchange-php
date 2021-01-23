@@ -430,7 +430,7 @@ client.test("unittest", function() {
 # With ALL (case insensitive), ALL wins (AMD)
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 18 UID-AMD
+# - Storage-Effects: 17 UID-AMD
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: deleteD alL
@@ -460,7 +460,7 @@ client.test("unittest", function() {
 # With ALL + NONE (case insensitive), ALL wins (AMD)
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: 18 UID-AMD
+# - Storage-Effects: 17 UID-AMD
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_request}}
 Accept-Effects: deleteD alL nonE
@@ -520,6 +520,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 85
+# - Content: ...Text D3
 # - URI: //book[last()]/chapter[last()]
 GET {{service}}0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d HTTP/1.0
 Storage: {{storage_request}}
@@ -534,6 +535,7 @@ client.test("unittest", function() {
 # A wrong hex encoding of XPath should be interpreted as unknown target.
 # Expectations:
 # - Status code 400 Bad Request
+# - Message: Invalid XPath function (Invalid expression)
 # - URI: //book[last()]/chapter[last()]
 GET {{service}}0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X HTTP/1.0
 Storage: {{storage_request}}
