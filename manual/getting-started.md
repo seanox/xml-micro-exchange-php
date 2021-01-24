@@ -179,7 +179,7 @@ guests does not exist.
 PUT https://seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 49
+Content-Length: 49
 
 <guests>
   <persons/>
@@ -214,7 +214,7 @@ So that all notice him, he puts his name in the guest list.
 PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 55
+Content-Length: 55
 
 <person name="John Doe" mail="john.doe@example.local"/>
 ```
@@ -277,7 +277,7 @@ Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 PUT https://seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 49
+Content-Length: 49
 
 <guests>
   <persons/>
@@ -291,7 +291,7 @@ And they also put their names in the guest list.
 PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 55
+Content-Length: 55
 
 <person name="Jane Doe" mail="jane.doe@example.local"/>
 ```
@@ -299,7 +299,7 @@ Content-Lenght: 55
 PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 57
+Content-Length: 57
 
 <person name="Mike Ross" mail="mike.ross@example.local"/>
 ```
@@ -307,7 +307,7 @@ Content-Lenght: 57
 PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 56
+Content-Length: 56
 
 <person name="Dan Star" mail="dan.star@example.local"/>
 ```
@@ -332,7 +332,7 @@ function are always of type `text/plain`.
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 88
+Content-Length: 88
 
 <message from="john.doe@example.local">Hello, nice to meet you all. I am John.</message>
 ```
@@ -347,7 +347,7 @@ Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 88
+Content-Length: 88
 
 <message from="jane.doe@example.local">Hello, nice to meet you all. I am Jane.</message>
 ```
@@ -355,7 +355,7 @@ Content-Lenght: 88
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 89
+Content-Length: 89
 
 <message from="mike.ross@example.local">Hello, nice to meet you all. I am Mike.</message>
 ```
@@ -363,7 +363,7 @@ Content-Lenght: 89
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 88
+Content-Length: 88
 
 <message from="dan.star@example.local">Hello, nice to meet you all. I am Dan.</message>
 ```
@@ -374,7 +374,7 @@ Content-Lenght: 88
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 77
+Content-Length: 77
 
 <message from="dan.star@example.local">
     Where do you come from?</message>
@@ -383,7 +383,7 @@ Content-Lenght: 77
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 100
+Content-Length: 100
 
 <message from="john.doe@example.local">
     I'm from Hempstead and have a small bookstore.</message>
@@ -392,7 +392,7 @@ Content-Lenght: 100
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 102
+Content-Length: 102
 
 <message from="jane.doe@example.local">
     I live in Long Island and have an antique store.</message>
@@ -401,7 +401,7 @@ Content-Lenght: 102
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 117
+Content-Length: 117
 
 <message from="mike.ross@example.local">
     I live in Queens, work for a shipping company on a cargo ship.</message>
@@ -410,7 +410,7 @@ Content-Lenght: 117
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 95
+Content-Length: 95
 
 <message from="dan.star@example.local">
     I work and live in Yonkers as a gardener.</message>
@@ -419,7 +419,7 @@ Content-Lenght: 95
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 106
+Content-Length: 106
 
 <message from="dan.star@example.local">
     In this beautiful weather I arrived with my scooter.</message>
@@ -428,7 +428,7 @@ Content-Lenght: 106
 PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 8
+Content-Length: 8
 
 <message from="dan.star@example.local">
     I like to look at the city.</message>
@@ -557,7 +557,7 @@ We send a stylesheet to the API and it does the transformation.
 POST https://seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
-Content-Lenght: 726
+Content-Length: 726
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"

@@ -167,8 +167,8 @@ NT: Release is available
 
 
 # Contact
-[Issues](https://github.com/seanox/xml-online-storage/issues)  
-[Requests](https://github.com/seanox/xml-online-storage/pulls)  
+[Issues](https://github.com/seanox/xml-micro-exchange/issues)  
+[Requests](https://github.com/seanox/xml-micro-exchange/pulls)  
 [Mail](http://seanox.de/contact)  
 
 

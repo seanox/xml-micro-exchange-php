@@ -69,6 +69,22 @@ be used.
 node update.js ../sources/trace.log
 ```
 
+Optionally, the call can be extended with a targeted HTTP file. In this case
+only the hash values in this file will be updated. The file
+`./sources/trace.log` may then also contain only the test results for the
+target file.
+
+```
+node update.js ../sources/trace.log options.http
+```
+
+The script `./test/cumulate.js` can be used to combine all tests into one
+scenario `./test/cumulate.http`. Which simplifies the complete test.
+
+```
+node cumulate.js
+```
+
 
 
 - - -
