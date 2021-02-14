@@ -116,10 +116,10 @@
     </touch>
     <delete dir="${workspace.releases}" excludes="seanox-xmex-*.zip"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(Seanox\s+XML-Micro-Exchange\s+)\d+[\.\d]+" flags="g" byline="true"
+        match="(Seanox\s+XML-Micro-Exchange\s+)\d+[\.\d]+" flags="g" byline="false"
         replace="\1${release.version}"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(seanox-xmex-)\d+[\.\d]+(\.zip)" flags="g" byline="true"
+        match="(seanox-xmex-)\d+[\.\d]+(\.zip)" flags="g" byline="false"
         replace="\1${release.version}\2"/>
   </target>
 </project>
