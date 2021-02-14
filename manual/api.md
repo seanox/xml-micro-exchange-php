@@ -233,7 +233,7 @@ Also the reponse has additional headers:
   </tbody>
 </table>
 
-## Table Of Contents 
+## Contents Overview
 
 * [CONNECT](api-connect.md)
   * [Request](api-connect.md#request)

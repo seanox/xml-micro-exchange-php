@@ -107,16 +107,21 @@ The value also limits the size of the requests(-body).
 
 Default: `15 *60`  
 Maximum idle time of the files in seconds.  
-If the inactivity exceeds this time for a Storage , it expires.
+If the inactivity exceeds this time for a Storage, it expires.
 
 
 ### Storage::CORS
 
-Default: `["Allow-Origin" => "*"]`  
+Default: `[`  
+`"Access-Control-Allow-Origin" => "*",`  
+`"Access-Control-Allow-Credentials" => "true",`  
+`"Access-Control-Max-Age" => "86400",`
+`"Access-Control-Expose-Headers" => "*"`  
+`]`  
+
 Optional CORS response headers as associative array.  
-`Allow-Origin`, `Allow-Credentials`, `Allow-Methods`, `Allow-Headers`,
-`Max-Age` and/or `Expose-Headers`. The prefix Access-Control is added
-automatically (e.g. `Allow-Origin` becomes `Access-Control-Allow-Origin`).
+For the preflight OPTIONS the following headers are added automatically:  
+`Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`
 
 
 ### Storage::PATTERN_HTTP_REQUEST_URI
