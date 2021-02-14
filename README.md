@@ -94,7 +94,7 @@ Folgenden Seanox Software Solutions oder kurz Seanox genannt.
  
 Diese Software unterliegt der Version 2 der Apache License.
 
-Copyright (C) 2020 Seanox Software Solutions
+Copyright (C) 2021 Seanox Software Solutions
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -160,8 +160,17 @@ than a playground - sorry.
 
 
 # Changes (Change Log)
-## 1.0.0 20201220 (summary of the current version)  
-NT: Release is available  
+## 1.1.0 20210225 (summary of the current version)  
+BF: Service: Optimization of CONNECT  
+BF: Service: Optimization of CORS  
+BF: Build: Correction of release  
+BF: Service: Uniform use of the GMT time zone  
+BF: Service: Correction in the creation of trace and trace hashes  
+BF: Service: Correction of POST for use of status 422 by errors in the stylesheets instead of status 400  
+CR: Service: Added directives for XPath  
+CR: Service: Added the directive JSON  
+CR: Service GET/POST: Added support for accept header: application/json  
+CR: Test: Added Snake as proof of concept for a multiplayer game  
 
 [Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange/master/CHANGES)
 

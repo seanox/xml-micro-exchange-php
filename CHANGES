@@ -1,4 +1,4 @@
-1.1.0 2021xxxx
+1.1.0 20210225
   BF: Service: Optimization of CONNECT
       Status 507 (Insufficient Storage) now only occurs when a new storage is
       to be created, but not when connecting to an existing one.
