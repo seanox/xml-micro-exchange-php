@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- *  Service 1.1.0 20210117
- *  Copyright (C) 2021 Seanox Software Solutions
- *  All rights reserved.
+ * Service 1.1.0 20210117
+ * Copyright (C) 2021 Seanox Software Solutions
+ * All rights reserved.
  *
- *  @author  Seanox Software Solutions
- *  @version 1.1.0 20210117
+ * @author  Seanox Software Solutions
+ * @version 1.1.0 20210117
  */
 class Storage {
 
@@ -1112,7 +1112,7 @@ class Storage {
         // PUT requests can address attributes and elements via XPath.
         // Multi-axis XPaths allow multiple targets.
         // The method only supports these two possibilities, other requests are
-        // responsed with an error, because this situation cannot occur because
+        // responded with an error, because this situation cannot occur because
         // the XPath is recognized as XPath for an attribute and otherwise an
         // element is assumed.
         // In this case it can only happen that the XPath does not address a
@@ -1977,7 +1977,7 @@ class Storage {
 
         // Request-Body-Hash
         $hash = file_get_contents("php://input");
-        $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
+        $hash = preg_replace("/((\r\n)|(\n\r)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
         header("Trace-Request-Body-Hash: " . hash("md5", $hash));
         $trace = array_merge($trace, [hash("md5", $hash) . " Trace-Request-Body-Hash"]);
@@ -2005,7 +2005,7 @@ class Storage {
         // Storage-Effects are never the same with UIDs.
         // Therefore, the UIDs are normalized and the header is simplified to
         // make it comparable. To do this, it is only determined how many
-        // unique's there are, in which order they are arranged and which
+        // uniques there are, in which order they are arranged and which
         // serials each unique has.
         $header = $fetchHeader("Storage-Effects");
         if (!empty($header)
@@ -2049,7 +2049,7 @@ class Storage {
 
         // Response-Body-Hash
         $hash = $data;
-        $hash = preg_replace("/((\r\n)|(\r\n)|\r)+/", "\n", $hash);
+        $hash = preg_replace("/((\r\n)|(\n\r)|\r)+/", "\n", $hash);
         $hash = preg_replace("/\t/", " ", $hash);
         // The UID is variable and must be normalized so that the hash can be
         // compared later. Therefore the uniques of the UIDs are collected in
@@ -2156,10 +2156,11 @@ class Storage {
      * General error handling.
      * Writes a formatted log file in the working directory and quits the
      * request with an error status.
-     * @param string $error
-     * @param string $message
-     * @param string $file
-     * @param array  $vars
+     * @param string  $error
+     * @param string  $message
+     * @param string  $file
+     * @param integer $line
+     * @param array   $vars
      */
     static function onError($error, $message, $file, $line, $vars = array()) {
 
