@@ -1,4 +1,11 @@
-# How to create a release?
+# Development
+
+
+## Contents Overview
+* [How to create a release?](#how-to-create-a-release)
+
+
+## How to create a release?
 - Delete `./source/data`
 - Emtpty `./sources/trace.log`
 - Execute `./test/cumulate.js`  
