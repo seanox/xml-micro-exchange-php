@@ -118,24 +118,17 @@ specific language governing permissions and limitations under the License.
 
 
 # Free XML-Micro-Exchange 
-[https://seanox.com/xmex!](https://seanox.com/xmex!)  
-65536 Storages x 256 kB  
+[https://8e51923.online-server.cloud/xmex!](https://8e51923.online-server.cloud/xmex!)  
+65536 Storages x 64 kB  
 __Please do not get confused, the API is online.  
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
 responded with status 400.__
 
-__Important note about our hoster, they have some restrictions:__
-- multiple slashes in the URI are combined  
-  Therefore please use such [URIs encoded](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api.md#api),
-  in hexadecimal or Base64.
-- DDoS protection  
-  Many requests in one second from the same client are interpreted as an
-  attack and blocked after a short time with status 503 -- there is no solution.  
-  I'm searching for a new hoster, but it's not easy, many have the same
-  restrictions.
-
-Because I pay the hosting costs privately, I unfortunately can't offer more
-than a playground - sorry.
+It's just a small playground on a small server in a big data center.  
+__Sponsors are always welcome.__
+The project needs a good and simple domain and if possible more power.  
+It costs about 7,50 Euro per month for 65535 x 1024 kB with double CPU cores
+and double memory.
 
 
 # Manual
