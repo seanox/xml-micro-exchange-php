@@ -75,6 +75,9 @@ notation represents an axis, otherwise the XPath is interpreted as an XPath
 function and responded with the result as text. 
 Thus XPath provides a dynamic syntax for queries.
 
+## JSON Support
+All requests can be responded by the service in JSON format.
+
 ## Data Transformation
 The POST method supports data transformation via XSLT.  
 Similar to GET, data can be queried and then transformed with an XSLT template
