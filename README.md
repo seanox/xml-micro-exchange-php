@@ -121,7 +121,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Free XML-Micro-Exchange
-[https://xmex-seanox.com/xmex!](https://xmex-seanox.com/xmex!)  
+[https://xmex.seanox.com/xmex!](https://xmex.seanox.com/xmex!)  
 65536 Storages x 64 kB  
 __Please do not get confused, the API is online.  
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
