@@ -75,6 +75,9 @@ notation represents an axis, otherwise the XPath is interpreted as an XPath
 function and responded with the result as text. 
 Thus XPath provides a dynamic syntax for queries.
 
+## JSON Support
+All requests can be responded by the service in JSON format.
+
 ## Data Transformation
 The POST method supports data transformation via XSLT.  
 Similar to GET, data can be queried and then transformed with an XSLT template
@@ -117,18 +120,17 @@ specific language governing permissions and limitations under the License.
 [Seanox XML-Micro-Exchange 1.1.0](https://github.com/seanox/xml-micro-exchange/raw/master/releases/seanox-xmex-1.1.0.zip)  
 
 
-# Free XML-Micro-Exchange 
-[https://8e51923.online-server.cloud/xmex!](https://8e51923.online-server.cloud/xmex!)  
+# Free XML-Micro-Exchange
+[https://xmex.seanox.com/xmex!](https://xmex.seanox.com/xmex!)  
 65536 Storages x 64 kB  
 __Please do not get confused, the API is online.  
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
 responded with status 400.__  
 
-The address is not pretty, but steady -- it's a matter of cost.  
-It is a small server (1 Core, 512 MB, 10 GB SSD) in a big datacenter -- but apparently enough.    
+It is a small server (1 Core, 512 MB, 10 GB SSD) in a big datacenter -- but apparently enough.  
 __Sponsors are always welcome.__  
-The project needs a good and simple domain and if possible more power.  
-It costs about 7,50 Euro per month for 65535 x 1024 kB with double CPU cores
+The project needs ~~a good and simple domain~~ and if possible more power.  
+It costs about 5 Euro per month for 65536 x 1024 kB with double CPU cores
 and double memory.
 
 
