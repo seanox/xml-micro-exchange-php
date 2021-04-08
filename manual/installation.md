@@ -21,6 +21,8 @@ By default the data-directory is created in the working directory by the
 script. The required permissions are set automatically.  
 The file name of the service.php or service-dev.php can be changed as desired.
 
+__For PHP, the extensions xmlrpc and xsl must be enabled.__
+
 
 
 - - -
