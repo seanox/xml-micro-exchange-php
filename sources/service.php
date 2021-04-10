@@ -178,7 +178,7 @@
  * can be regarded as secret.
  * For further security the approach of Basic Authentication, Digest Access
  * Authentication and/or Server/Client certificates is followed, which is
- * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
+ * configured outside of the XMEX (XML-Micro-Exchange) at the web server.
  *
  * Service 1.3.0 20210410
  * Copyright (C) 2021 Seanox Software Solutions
@@ -605,7 +605,7 @@ class Storage {
             $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
             if (iterator_count($iterator) >= Storage::QUANTITY)
                 $this->quit(507, "Insufficient Storage");
-            $this->open(true);
+            $this->open();
         } else $response = [204, "No Content"];
 
         $this->materialize();
@@ -716,9 +716,8 @@ class Storage {
         libxml_clear_errors();
 
         $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
-
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
-            $result = (new DOMXpath($this->xml))->evaluate($this->xpath);
+            (new DOMXpath($this->xml))->evaluate($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath function (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
@@ -730,7 +729,7 @@ class Storage {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if ($targets && !empty($targets) && $targets->length > 0) {
+            if (!empty($targets) && $targets->length > 0) {
                 $serials = [];
                 foreach ($targets as $target) {
                     if ($target instanceof DOMAttr)
@@ -741,7 +740,6 @@ class Storage {
                 if (!empty($serials))
                     header("Storage-Effects: " . join(" ", $serials));
                 $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
-
             } else $allow = "CONNECT, OPTIONS, PUT";
         }
 
@@ -1134,7 +1132,7 @@ class Storage {
 
             $input = file_get_contents("php://input");
 
-            // The Content-Type text/xpath is a special of the XMXE Storage.
+            // The Content-Type text/xpath is a special of the XMEX Storage.
             // It expects a plain text which is an XPath function.
             // The XPath function is first once applied to the current XML
             // document from the storage and the result is put like the
@@ -1225,7 +1223,7 @@ class Storage {
 
             $input = file_get_contents("php://input");
 
-            // The Content-Type text/xpath is a special of the XMXE Storage.
+            // The Content-Type text/xpath is a special of the XMEX Storage.
             // It expects a plain text which is an XPath function.
             // The XPath function is first once applied to the current XML
             // document from the storage and the result is put like the
@@ -1985,7 +1983,7 @@ class Storage {
         // Optional meta info like charset or encoding in the Content-Type are removed
         $header = $fetchHeader("Content-Type", false);
         if ($header)
-            $headers[] = "Content-Type: " . preg_replace("/^(.*?)(\;.*){0,1}$/", "$1", $header->value);
+            $headers[] = "Content-Type: " . preg_replace("/^(.*?)(\;.*)?$/", "$1", $header->value);
         asort($headers);
 
         $headers = array_merge($headers);
@@ -2148,9 +2146,8 @@ class Storage {
      * @param string  $message
      * @param string  $file
      * @param integer $line
-     * @param array   $vars
      */
-    static function onError($error, $message, $file, $line, $vars = array()) {
+    static function onError($error, $message, $file, $line) {
 
         // Special case XSLTProcessor errors
         // These cannot be caught any other way. Therefore the error header
@@ -2192,7 +2189,7 @@ set_exception_handler("Storage::onException");
 // is responded with status 404.
 $script = basename(__FILE__);
 if (isset($_SERVER["PHP_SELF"])
-        && preg_match("/\/" . str_replace(".", "\\.", $script) . "([\/\?].*){0,1}$/", $_SERVER["PHP_SELF"])
+        && preg_match("/\/" . str_replace(".", "\\.", $script) . "([\/\?].*)?$/", $_SERVER["PHP_SELF"])
         && (!isset($_SERVER["REDIRECT_URL"])
                 || empty($_SERVER["REDIRECT_URL"])))
     (new Storage)->quit(404, "Resource Not Found");
