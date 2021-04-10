@@ -56,14 +56,11 @@
 
           SnakeService = {
 
-           // DATASOURCE_URL: "https://seanox.com/xmex!",
+           // DATASOURCE_URL: "https://xmex.seanox.com/xmex!",
            // DATASOURCE_URL: "http://127.0.0.1/xmex!",
-           // DATASOURCE_URL: "http://127.0.0.1:8080/xmex!",
-           // DATASOURCE_URL: "http://192.168.10.10/xmex!",
-           // DATASOURCE_URL: "http://192.168.10.10:8080/xmex!",
 
               DATASOURCE_URL: "http://127.0.0.1/xmex!",
-              DATASOURCE_STORAGE : "Example_of_Snake snake",
+              DATASOURCE_STORAGE: "Example_of_Snake snake",
               BOARD_ROWS: 31,
               BOARD_COLS: 41,
               PLAYERS_TIMEOUT: 5000,
@@ -85,7 +82,7 @@
                   request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                   request.send();
                   if (request.status !== 201
-                          && request.status !== 202)
+                          && request.status !== 204)
                       throw {message: "Datasource not available", request: request};
               },
 
