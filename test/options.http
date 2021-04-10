@@ -57,13 +57,13 @@ client.test("unittest", function() {
 ###
 # Initial request to establish an existing storage
 # Expectations:
-# - Status code 202 Accepted
+# - Status code 204 No Content
 OPTIONS {{service}} HTTP/1.0
 Storage: {{storage_options}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "be8fa511fe1640d9dfb582e2227218f6");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b250e24bca5c1c72fb5534a09f07068e");
 });
 %}
 

@@ -6,79 +6,79 @@
  *
  * XMEX XML-Micro-Exchange
  * Copyright (C) 2021 Seanox Software Solutions
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *  
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  *     DESCRIPTION
- * 
+ *
  * XML-Micro-Exchange is a volatile RESTful micro datasource.
  * It is designed for easy communication and data exchange of web-applications
- * and for IoT.  
+ * and for IoT.
  * The XML based datasource is volatile and lives through continuous use and
  * expires through inactivity. They are designed for active and near real-time
  * data exchange but not as a real-time capable long-term storage.
  * Compared to a JSON storage, this datasource supports more dynamics, partial
- * data access, data transformation, and volatile short-term storage. 
- * 
+ * data access, data transformation, and volatile short-term storage.
+ *
  *     TERMS / WORDING
- * 
+ *
  *         XMEX / XML-Micro-Exchange
  * Name of the project and the corresponding abbreviation
- * 
+ *
  *         Datasource
  * XML-Micro-Exchange is a data service that manages different data areas.
  * The entirety, so the service itself, is the datasource.
  * Physically this is the data directory.
- * 
+ *
  *         Storage
  * The data areas managed by the XML-Micro-Exchange as a data service are
  * called storage areas. A storage area corresponds to an XML file in the data
  * directory.
- * 
+ *
  *         Storage Identifier
  * Each storage has an identifier, the Storage Identifier.
  * The Storage Identifier is used as the filename of the corresponding XML file
  * and must be specified with each request so that the datasource uses the
  * correct storage.
- * 
+ *
  *         Element(s)
  * The content of the XML file of a storage provide the data as object or tree
- * structure. The data entries are called elements. 
+ * structure. The data entries are called elements.
  * Elements can enclose other elements.
- * 
+ *
  *         Attribute(s)
  * Elements can also contain direct values in the form of attributes.
- * 
+ *
  *         XPath
  * XPath is a notation for accessing and navigating the XML data structure.
  * An XPath can be an axis or a function.
- * 
+ *
  *         XPath Axis
  * XPath axes address or select elements or attributes.
  * The axes can have a multidimensional effect.
- * 
+ *
  *         XPath Axis Pseudo Elements
  * For PUT requests it is helpful to specify a relative navigation to an XPath
  * axis. For example first, last, before, after. This extension of the notation
  * is supported for PUT requests and is added to an XPath axis separated by two
  * colons at the end (e.g. /root/element::end - means put in element as last).
- * 
+ *
  *         XPath Function
  * The XPath notation also supports functions that can be used in combination
  * with axes and standalone for dynamic data requests. In combination with
  * XPath axes, the addressing and selection of elements and attributes can be
  * made dynamic.
- * 
+ *
  *        Revision
  * Every change in a storage is expressed as a revision.
  * This should make it easier for the client to determine whether data has
@@ -86,21 +86,21 @@
  * The revision is a counter of changes per request, without any claim of
  * version management of past revisions.
  * It starts with initial revision 0 when a storage is created on the first
- * call. The first change already uses revision 1. 
- * 
+ * call. The first change already uses revision 1.
+ *
  * Each element uses a revision in the read-only attribute ___rev, which, as
  * with all parent revision attributes, is automatically incremented when it
  * changes.
  * A change can affect the element itself or the change to its children.
  * Because the revision is passed up, the root element automatically always
  * uses the current revision.
- * 
+ *
  * Changes are: PUT, PATCH, DELETE
- * 
+ *
  * Write accesses to attribute ___rev are accepted with status 204, will have
  * no effect from then on and are therefore not listed in the response header
- * Storage-Effects. 
- * 
+ * Storage-Effects.
+ *
  *       UID
  * Each element uses a unique identifier in the form of the read-only attribute
  * ___uid. The unique identifier is automatically created when an element is
@@ -108,13 +108,13 @@
  * If elements are created or modified by a request, the created or affected
  * unique identifiers are sent to the client in the response header
  * Storage-Effects.
- * 
+ *
  * The UID uses an alphanumeric format based on radix 36 which, when converted
  * into a number, gives the timestamps of the creation in milliseconds since
  * 01/01/2000.
  * The UID is thus also sortable and provides information about the order in
  * which elements are created.
- * 
+ *
  * Write accesses to attribute ___uid are accepted with status 204, will have
  * no effect from then on and are therefore not listed in the response header
  * Storage-Effects.
@@ -157,9 +157,9 @@
  *
  *     TRANSACTION / SIMULTANEOUS ACCESS
  * XML-Micro-Exchange supports simultaneous access.
- * Read accesses are executed simultaneously.  
+ * Read accesses are executed simultaneously.
  * Write accesses creates a lock and avoids dirty reading.
- * 
+ *
  *     ERROR HANDLING
  * Errors are communicated via the server status 500 and the header 'Error'.
  * The header 'Error' contains only an error number, for security reasons no
@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMDS (XML-Micro-Datasource) at the web server.
  *
- * Service 1.1.0 20210117
+ * Service 1.3.0 20210410
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.1.0 20210117
+ * @version 1.3.0 20210410
  */
 class Storage {
 
@@ -195,7 +195,7 @@ class Storage {
     /** Maximum number of files in data storage */
     const QUANTITY = 65535;
 
-    /** 
+    /**
      * Maximum data size of files in data storage in bytes.
      * The value also limits the size of the requests(-body).
      */
@@ -203,7 +203,7 @@ class Storage {
 
     /** Maximum idle time of the files in seconds */
     const TIMEOUT = 15 *60;
-    
+
     /**
      * Optional CORS response headers as associative array.
      * For the preflight OPTIONS the following headers are added automatically:
@@ -239,7 +239,7 @@ class Storage {
 
     /** Revision of the storage */
     private $revision;
-    
+
     /** Serial related to the request */
     private $serial;
 
@@ -252,7 +252,7 @@ class Storage {
      *     Group 1. Method
      *     Group 2. URI
      *     Group 3. Protocol
-     */    
+     */
     const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
 
     /**
@@ -270,7 +270,7 @@ class Storage {
      *     Group 0. Full match
      *     Group 1. Storage
      *     Group 2. Name of the root element (optional)
-     */    
+     */
     const PATTERN_HEADER_STORAGE = "/^(\w{1,64})(?:\s+(\w+)){0,1}$/";
 
     /**
@@ -286,7 +286,7 @@ class Storage {
      *     Group 0. Full match
      *     Group 1. XPath axis
      *     Group 2. Attribute
-     */    
+     */
     const PATTERN_XPATH_ATTRIBUTE = "/((?:^\/+)|(?:^.*?))\/{0,}(?<=\/)(?:@|attribute::)(\w+)$/i";
 
     /**
@@ -337,7 +337,7 @@ class Storage {
         $this->options  = $options;
         $this->unique   = Storage::uniqueId();
         $this->serial   = 0;
-        $this->revision = 0; 
+        $this->revision = 0;
     }
 
     /**
@@ -345,7 +345,7 @@ class Storage {
      * @return string unique ID related to the request
      */
     private static function uniqueId() {
-        
+
         // The method is based on time, network port and the assumption that a
         // port is not used more than once at the same time. On fast platforms,
         // however, the time factor is uncertain because the time from calling
@@ -365,7 +365,7 @@ class Storage {
         if (!is_dir(Storage::DIRECTORY))
             return;
         if ($handle = opendir(Storage::DIRECTORY)) {
-            $timeout = time() -Storage::TIMEOUT; 
+            $timeout = time() -Storage::TIMEOUT;
             while (($entry = readdir($handle)) !== false) {
                 if ($entry == "."
                         || $entry == "..")
@@ -375,7 +375,7 @@ class Storage {
                     continue;
                 if (file_exists($entry))
                     @unlink($entry);
-            }        
+            }
             closedir($handle);
         }
     }
@@ -574,7 +574,7 @@ class Storage {
      * Connection-Unique: UID
      *
      *     Response:
-     * HTTP/1.0 202 Accepted
+     * HTTP/1.0 204 No Content
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
@@ -586,8 +586,8 @@ class Storage {
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
      * - Response can be status 201 if the storage was newly created
-     *         HTTP/1.0 202 Accepted
-     * - Response can be status 202 if the storage already exists#
+     *         HTTP/1.0 204 No Content
+     * - Response can be status 204 if the storage already exists#
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
@@ -606,10 +606,10 @@ class Storage {
             if (iterator_count($iterator) >= Storage::QUANTITY)
                 $this->quit(507, "Insufficient Storage");
             $this->open(true);
-        } else $response = [202, "Accepted"];
+        } else $response = [204, "No Content"];
 
         $this->materialize();
-        $this->quit($response[0], $response[1], ["Connection-Unique" => $this->unique]);
+        $this->quit($response[0], $response[1], ["Connection-Unique" => $this->unique, "Allow" => "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE"]);
     }
 
     /**
@@ -633,7 +633,7 @@ class Storage {
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
      *
      *     Response:
-     * HTTP/1.0 204 Success
+     * HTTP/1.0 204 No Content
      * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
@@ -679,7 +679,7 @@ class Storage {
      * Connection-Unique: UID
      *
      *     Response:
-     * HTTP/1.0 202 Accepted
+     * HTTP/1.0 No Content
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
@@ -691,8 +691,8 @@ class Storage {
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
      * - Response can be status 201 if the storage was newly created
-     *         HTTP/1.0 202 Accepted
-     * - Response can be status 202 if the storage already exists#
+     *         HTTP/1.0 204 No Content
+     * - Response can be status 204 if the storage already exists#
      *         HTTP/1.0 507 Insufficient Storage
      * - Response can be status 507 if the storage is full
      */
@@ -792,7 +792,6 @@ class Storage {
      * - XPath is missing or malformed
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
-     * - XPath axis finds no target
      */
     function doGet() {
 
@@ -889,7 +888,6 @@ class Storage {
      * - XSLT Stylesheet is erroneous
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
-     * - XPath axis finds no target
      *         HTTP/1.0 415 Unsupported Media Type
      * - Attribute request without Content-Type text/plain
      *         HTTP/1.0 422 Unprocessable Entity
@@ -1933,14 +1931,6 @@ class Storage {
                     || $status == 200)
                 header("Content-Length: " . strlen($data));
 
-        // When responding to an error, the default Allow header is added.
-        // But only if no Allow header was passed.
-        // So the header does not always have to be added manually.
-        $headers = array_change_key_case($headers, CASE_LOWER);
-        if (in_array($status, [201, 202, 405])
-                && !array_key_exists("allow", $headers))
-            header("Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE");
-
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
         {{{
@@ -2253,7 +2243,7 @@ else $xpath = urldecode($xpath);
 // In the other cases an empty XPath is replaced by the root slash.
 if (empty($xpath)
         && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
-    $xpath = "/";        
+    $xpath = "/";
 $exclusive = in_array($method, ["DELETE", "PATCH", "PUT"]);
 $storage = Storage::share($storage, $xpath, $exclusive);
 
@@ -2274,7 +2264,7 @@ try {
         case "DELETE":
             $storage->doDelete();
         default:
-            $storage->quit(405, "Method Not Allowed");
+            $storage->quit(405, "Method Not Allowed", ["Allow" => "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE"]);
     }
 } finally {
     $storage->close();
