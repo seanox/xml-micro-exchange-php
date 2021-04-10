@@ -585,7 +585,7 @@ Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "324470e909be843331ee15fd26c3498a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9d23af22a8ceafe487498bcf88fec65f");
 });
 %}
 
@@ -598,7 +598,7 @@ Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8606dd1a95e8abe30487ec541727de86");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "86e5ec66cbbc1e1c0695d14cb4708c45");
 });
 %}
 

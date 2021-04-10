@@ -817,7 +817,7 @@ class Storage {
             $this->quit(400, "Bad Request", ["Message" => $message]);
         } else if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)
                 &&  (!$result || empty($result) || $result->length <= 0)) {
-            $this->quit(404, "Resource Not Found");
+            $this->quit(204, "No Content");
         } else if ($result instanceof DOMNodeList) {
             if ($result->length == 1) {
                 if ($result[0] instanceof DOMDocument)
@@ -940,7 +940,7 @@ class Storage {
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
-                $this->quit(404, "Resource Not Found");
+                $this->quit(204, "No Content");
             if ($targets->length == 1) {
                 $target = $targets[0];
                 if ($target instanceof DOMAttr)
@@ -1015,14 +1015,14 @@ class Storage {
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
      *
-     * In general, if no target can be reached via XPath, status 404 will
-     * occur. In all other cases the PUT method informs the client about
-     * changes with status 204 and the response headers Storage-Effects and
-     * Storage-Revision. The header Storage-Effects contains a list of the UIDs
-     * that were directly affected by the change and also contains the UIDs of
-     * newly created elements. If no changes were made because the XPath cannot
-     * find a writable target, the header Storage-Effects can be omitted
-     * completely in the response.
+     * In general, PUT requests are responded to with status 204. Status 404 is
+     * used only with relation to the storage. In all other cases the PUT
+     * method informs the client about changes also with status 204 and the
+     * response headers Storage-Effects and Storage-Revision. The header
+     * Storage-Effects contains a list of the UIDs that were directly affected
+     * by the change and also contains the UIDs of newly created elements. If
+     * no changes were made because the XPath cannot find a writable target,
+     * the header Storage-Effects can be omitted completely in the response.
      *
      * Syntactic and semantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1071,7 +1071,6 @@ class Storage {
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
-     * - XPath axis finds no target
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
      *         HTTP/1.0 415 Unsupported Media Type
@@ -1168,7 +1167,7 @@ class Storage {
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
-                $this->quit(404, "Resource Not Found");
+                $this->quit(204, "No Content");
 
             // The attributes ___rev and ___uid are essential for the internal
             // organization and management of the data and cannot be changed.
@@ -1255,7 +1254,7 @@ class Storage {
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
-                $this->quit(404, "Resource Not Found");
+                $this->quit(204, "No Content");
 
             foreach ($targets as $target) {
                 // Overwriting of the root element is not possible, as it
@@ -1330,7 +1329,7 @@ class Storage {
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             if (!$targets || empty($targets) || $targets->length <= 0)
-                $this->quit(404, "Resource Not Found");
+                $this->quit(204, "No Content");
 
             foreach ($targets as $target) {
 
@@ -1451,13 +1450,14 @@ class Storage {
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
      *
-     * In general, if no target can be reached via XPath, status 404 will
-     * occur. In all other cases the PATCH method informs the client about
-     * changes with status 204 and the response headers Storage-Effects and
-     * Storage-Revision. The header Storage-Effects contains a list of the UIDs
-     * that were directly affected by the change elements. If no changes were
-     * made because the XPath cannot find a writable target, the header
-     * Storage-Effects can be omitted completely in the response.
+     * In general, PATCH requests are responded to with status 204. Status 404
+     * is used only with relation to the storage. In all other cases the PATCH
+     * method informs the client about changes with status 204 and the response
+     * headers Storage-Effects and Storage-Revision. The header Storage-Effects
+     * contains a list of the UIDs that were directly affected by the change
+     * elements. If no changes were made because the XPath cannot find a
+     * writable target, the header Storage-Effects can be omitted completely in
+     * the response.
      *
      * Syntactic and semantics errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1506,7 +1506,6 @@ class Storage {
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
-     * - XPath axis finds no target
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
      *         HTTP/1.0 415 Unsupported Media Type
@@ -1554,7 +1553,7 @@ class Storage {
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
         if (!$targets || empty($targets) || $targets->length <= 0)
-            $this->quit(404, "Resource Not Found");
+            $this->quit(204, "No Content");
 
         // The response to the request is delegated to PUT.
         // The function call is executed and the request is terminated.
@@ -1580,15 +1579,15 @@ class Storage {
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
      *
-     * In general, if no target can be reached via XPath, status 404 will
-     * occur. In all other cases the DELETE method informs the client about
-     * changes with status 204 and the response headers Storage-Effects and
-     * Storage-Revision. The header Storage-Effects contains a list of the UIDs
-     * that were directly affected by the change and also contains the UIDs of
-     * newly created elements (e.g. when the root element is deleted, a new one
-     * is automatically created). If no changes were made because the XPath
-     * cannot find a writable target, the header Storage-Effects can be omitted
-     * completely in the response.
+     * In general, DELETE requests are responded to with status 204. Status 404
+     * is used only with relation to the storage. In all other cases the DELETE
+     * method informs the client about changes with status 204 and the response
+     * headers Storage-Effects and Storage-Revision. The header Storage-Effects
+     * contains a list of the UIDs that were directly affected by the change
+     * and also contains the UIDs of newly created elements (e.g. when the root
+     * element is deleted, a new one is automatically created). If no changes
+     * were made because the XPath cannot find a writable target, the header
+     * Storage-Effects can be omitted completely in the response.
      *
      * Syntactic and semantic errors in the request and/or XPath can cause
      * error status 400.
@@ -1616,7 +1615,6 @@ class Storage {
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
-     * - XPath axis finds no target
      */
     function doDelete() {
 
@@ -1655,7 +1653,7 @@ class Storage {
         }
 
         if (!$targets || empty($targets) || $targets->length <= 0)
-            $this->quit(404, "Resource Not Found");
+            $this->quit(204, "No Content");
 
         // Pseudo elements can be used to delete in an XML substructure
         // relative to the selected element.

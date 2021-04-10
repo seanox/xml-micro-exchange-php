@@ -270,7 +270,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "288309f2971b8115e109e0456de357b8");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "251d37277073b6211419d84fa36079cb");
 });
 %}
 
@@ -288,7 +288,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e966e17b7ba329a31904a61e881f2e7a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e9cca62ad190cc701760e69b733af112");
 });
 %}
 
