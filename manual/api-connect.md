@@ -33,7 +33,7 @@ client e.g. in XML as attributes to locate his data faster.
   * [Example](#example-1)
 * [Response codes / behavior](#response-codes--behavior)  
   * [HTTP/1.0 201 Resource Created](#http10-201-resource-created)
-  * [HTTP/1.0 202 Accepted](#http10-202-accepted)
+  * [HTTP/1.0 204 No Content](#http10-204-no-content)
   * [HTTP/1.0 400 Bad Request](#http10-400-bad-request)
   * [HTTP/1.0 507 Insufficient Storage](#http10-507-insufficient-storage)
 
@@ -81,7 +81,7 @@ Storage-Expiration-Time: Timeout (milliseconds)
 Connection-Unique: UID
 ```
 ``` 
-HTTP/1.0 202 Accepted
+HTTP/1.0 204 No Content
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
 Storage-Revision: Revision (number)
 Storage-Space: Total/Used (bytes)
@@ -110,7 +110,7 @@ Response if the storage was newly created.
 Also recognizable by the initial revision 0 in the Storage-Revision header.
 
 ```
-HTTP/1.0 202 Accepted
+HTTP/1.0 204 No Content
 Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -132,8 +132,8 @@ the initial version without changes.
 ### HTTP/1.0 201 Resource Created
 - Response can be status 201 if the storage was newly created
 
-### HTTP/1.0 202 Accepted
-- Response can be status 202 if the storage already exists
+### HTTP/1.0 204 No Content
+- Response can be status 204 if the storage already exists
 
 ### HTTP/1.0 400 Bad Request
 - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected

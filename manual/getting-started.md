@@ -121,7 +121,7 @@ Here it is important to know that the example in the use the full URL instead
 of the usual URI.
 
 ```
-CONNECT https://seanox.com/xmex! HTTP/1.0
+CONNECT https://xmex.seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
@@ -129,7 +129,7 @@ Because CONNECT is not a standard HTTP method, the OPTIONS method can also be
 used.
 
 ```
-OPTIONS https://seanox.com/xmex! HTTP/1.0
+OPTIONS https://xmex.seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
@@ -138,7 +138,7 @@ In both cases, the request is responded to with the response header
 to use connection- or session-specific keys in the storage.
 
 ```
-HTTP/1.0 202 Accepted / 201 Resource Created
+HTTP/1.0 204 No Content / 201 Resource Created
 Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
@@ -176,7 +176,7 @@ responded with status 404, because the target, which means a table without
 guests does not exist.
 
 ```
-PUT https://seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 49
@@ -211,7 +211,7 @@ John is now waiting for more guests and the innkeeper.
 So that all notice him, he puts his name in the guest list.
 
 ```
-PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 55
@@ -227,11 +227,11 @@ While John waits, he uses polling and sends repeated requests to keep the
 storage with the data and to get the revision from the storage.
 
 ```
-OPTIONS https://seanox.com/xmex! HTTP/1.0
+OPTIONS https://xmex.seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 ```
-HTTP/1.0 202 Accepted
+HTTP/1.0 204 No Content
 Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
@@ -266,15 +266,15 @@ They are also all familiar with the rituals and rules of the regulars' table
 and the pub and thus do the same as John.
 
 They join the regulars' table with CONNECT or OPTIONS and are informed by the
-server status 202 that the regulars' table already exists. Because they do not
+server status 204 that the regulars' table already exists. Because they do not
 know the state of the regulars' table, they arrange it in the same way as John.
 
 ```
-OPTIONS https://seanox.com/xmex! HTTP/1.0
+OPTIONS https://xmex.seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 ```
-PUT https://seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 49
@@ -288,7 +288,7 @@ Content-Length: 49
 And they also put their names in the guest list.
 
 ```
-PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 55
@@ -296,7 +296,7 @@ Content-Length: 55
 <person name="Jane Doe" mail="jane.doe@example.local"/>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 57
@@ -304,7 +304,7 @@ Content-Length: 57
 <person name="Mike Ross" mail="mike.ross@example.local"/>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/persons::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 56
@@ -318,7 +318,7 @@ the revision changed. It is time to look at the guest list and so he notices
 the new guests and greets everyone.
 
 ```
-GET https://seanox.com/xmex!count(/table/guests/persons/person)>1 HTTP/1.0
+GET https://xmex.seanox.com/xmex!count(/table/guests/persons/person)>1 HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
@@ -329,7 +329,7 @@ A Content-Type is not required for the request. Return values of an XPath
 function are always of type `text/plain`.
 
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 88
@@ -340,11 +340,11 @@ Content-Length: 88
 The other guests also realize that they are in companionship and greet the round and introduce themselves.
 
 ```
-GET https://seanox.com/xmex!count(/table/guests/persons/person)>1 HTTP/1.0
+GET https://xmex.seanox.com/xmex!count(/table/guests/persons/person)>1 HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 88
@@ -352,7 +352,7 @@ Content-Length: 88
 <message from="jane.doe@example.local">Hello, nice to meet you all. I am Jane.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 89
@@ -360,7 +360,7 @@ Content-Length: 89
 <message from="mike.ross@example.local">Hello, nice to meet you all. I am Mike.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 88
@@ -371,7 +371,7 @@ Content-Length: 88
 ## Small Talk
 
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 77
@@ -380,7 +380,7 @@ Content-Length: 77
     Where do you come from?</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 100
@@ -389,7 +389,7 @@ Content-Length: 100
     I'm from Hempstead and have a small bookstore.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 102
@@ -398,7 +398,7 @@ Content-Length: 102
     I live in Long Island and have an antique store.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 117
@@ -407,7 +407,7 @@ Content-Length: 117
     I live in Queens, work for a shipping company on a cargo ship.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 95
@@ -416,7 +416,7 @@ Content-Length: 95
     I work and live in Yonkers as a gardener.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 106
@@ -425,7 +425,7 @@ Content-Length: 106
     In this beautiful weather I arrived with my scooter.</message>
 ```
 ```
-PUT https://seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
+PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 8
@@ -447,7 +447,7 @@ Even this flood of data can be well managed and cleaned with XPath functions
 and this without transactions.
 
 ```
-DELETE https://seanox.com/xmex!//conversation/message[position()<=count(//conversation/message)-5] HTTP/1.0
+DELETE https://xmex.seanox.com/xmex!//conversation/message[position()<=count(//conversation/message)-5] HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
@@ -507,7 +507,7 @@ GET can also be used to query complete XML fragments, which are then returned
 as a collection.
 
 ```
-GET https://seanox.com/xmex!//message[@from='dan.star@example.local'] HTTP/1.0
+GET https://xmex.seanox.com/xmex!//message[@from='dan.star@example.local'] HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 ```
@@ -531,7 +531,7 @@ If attributes are queried, matches of one attribute are returned as plain text
 and matches of multiple attrubutes are returned as XML collection.
 
 ```
-GET https://seanox.com/xmex!//*/@mail|//*/@from HTTP/1.0
+GET https://xmex.seanox.com/xmex!//*/@mail|//*/@from HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 ```
@@ -554,7 +554,7 @@ Here we can use the XSL transformation.
 We send a stylesheet to the API and it does the transformation.
 
 ```
-POST https://seanox.com/xmex! HTTP/1.0
+POST https://xmex.seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 Content-Type: application/xslt+xml
 Content-Length: 726
