@@ -113,7 +113,7 @@ specific language governing permissions and limitations under the License.
 
 
 # System Requirement
-- PHP 7.x or higher (+xmlrpc, +xsl)
+- PHP 7.x or higher (+xsl)
 
 
 # Downloads
