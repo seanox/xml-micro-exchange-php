@@ -5,7 +5,7 @@
       Status 404 is now only used in relation to storage.
       Addressed targets (axes) use status 204 in combination with the response header Storage-Effects.
 
-1.2.0 2020xxxx
+1.2.0 2021xxxx
   NT: Version was skipped
       For compatibility with the JavaScript implementation
 
