@@ -35,6 +35,7 @@ client e.g. in XML as attributes to locate his data faster.
   * [HTTP/1.0 201 Resource Created](#http10-201-resource-created)
   * [HTTP/1.0 204 No Content](#http10-204-no-content)
   * [HTTP/1.0 400 Bad Request](#http10-400-bad-request)
+  * [HTTP/1.0 500 Internal Server Error](#http10-500-internal-server-error)
   * [HTTP/1.0 507 Insufficient Storage](#http10-507-insufficient-storage)
 
 
@@ -139,6 +140,9 @@ the initial version without changes.
 - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
 - XPath is missing or malformed
 - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
+
+### HTTP/1.0 500 Internal Server Error
+- An unexpected error has occurred.
 
 ### HTTP/1.0 507 Insufficient Storage
 - Response can be status 507 if the storage is full

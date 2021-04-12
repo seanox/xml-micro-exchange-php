@@ -4,7 +4,8 @@
 # Test
 
 For testing, the HTTP client of
-[JetBrains WebStorm](https://www.jetbrains.com/webstorm/) is used.  
+[JetBrains WebStorm](https://www.jetbrains.com/webstorm/) or
+[JetBrains IntelliJ IDEA](https://www.jetbrains.com/idea/) is used.  
 read more: https://www.jetbrains.com/help/webstorm/testing-restful-web-services.html
 
 The tests are collected in scenarios.  
@@ -61,7 +62,7 @@ For this purpose, the file `./sources/trace.log` is created in test mode, this
 can then be compared in more detail with versions before and after a change.
 This file then also provides the new hash values that are put into the unit
 tests with the `./test/update.js` script.  
-The script uses [node.js](https://nodejs.org) as runtime environment and
+The script uses [Node.js](https://nodejs.org) as runtime environment and
 expects as argument the path to a trace file from which the hash values should
 be used.
 

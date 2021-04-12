@@ -13,6 +13,7 @@ The following is used to develop the XML-Micro-Exchange:
 - [JetBrains HTTP Client](https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html) Testing
 - [Git 2.29.x](https://git-scm.com/downloads) SCM
 - [Apache Ant 1.10.x](https://ant.apache.org/) Build
+- [Node.js 14.x](https://nodejs.org) Test
 
 The specifications are not binding, but should only give an orientation and help
 in understanding.
