@@ -20,8 +20,7 @@ CONNECT is not an HTTP standard. For this purpose OPTIONS without XPath, but
 with context path if necessary, is used. In this case OPTIONS will hand over
 the work to CONNECT.
 
-The response for a CONNECT always contains a Connection-Unique header.  
-The Unique is unique in the Datasource and in the Storage and can be used by the
+The response for a CONNECT always contains a Connection-Unique header. The Unique is unique in the Datasource and in the Storage and can be used by the
 client e.g. in XML as attributes to locate his data faster.
 
 
