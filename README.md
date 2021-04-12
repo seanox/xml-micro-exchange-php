@@ -14,11 +14,10 @@
 
 # Description
 The origin of the project is the desire for an easily accessible place for data
-exchange on the Internet.  
-Inspired by JSON-Storages the idea of a feature-rich equivalent based on XML,
-XPath and XSLT was born.  
-The focus should be on a public, volatile and short-term data exchange for
-(static) web-applications and IoT.
+exchange on the Internet. Inspired by JSON-Storages the idea of a feature-rich
+equivalent based on XML, XPath and XSLT was born. The focus should be on a
+public, volatile and short-term data exchange for (static) web-applications and
+IoT.
 
 __Just exchange data without an own server landscape.__  
 __Just exchange data without knowing and managing all clients.__
@@ -26,12 +25,11 @@ __Just exchange data without knowing and managing all clients.__
 XML-Micro-Exchange is a volatile NoSQL stateless micro datasource for the
 Internet. It is designed for easy communication and data exchange of
 web-applications and for IoT or for other Internet-based modules and
-components.  
-The XML based datasource is volatile and lives through continuous use and
-expires through inactivity. They are designed for active and near real-time data
-exchange but not as a real-time capable long-term storage.  
-Compared to a JSON storage, this datasource supports more dynamics, partial data
-access, data transformation, and volatile short-term storage. 
+components. The XML based datasource is volatile and lives through continuous
+use and expires through inactivity. They are designed for active and near
+real-time data exchange but not as a real-time capable long-term storage.
+Compared to a JSON storage, this datasource supports more dynamics, partial
+data access, data transformation, and volatile short-term storage. 
 
 __Why all this?__
 
@@ -52,8 +50,7 @@ __All meet without obligation.__
 
 ## RESTful
 The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT, PATCH,
-DELETE.  
-The CONNECT method is not a standard and the function can be used
+DELETE. The CONNECT method is not a standard and the function can be used
 alternatively via OPTIONS.  
 
 ## XPath
@@ -72,21 +69,20 @@ functions that allow dynamic values.
 ## Data Query
 Data can be queried in the form of XML structure or substructure if the XPath
 notation represents an axis, otherwise the XPath is interpreted as an XPath
-function and responded with the result as text. 
-Thus XPath provides a dynamic syntax for queries.
+function and responded with the result as text. Thus XPath provides a dynamic
+syntax for queries.
+
+## Data Transformation
+The POST method supports data transformation via XSLT. Similar to GET, data can
+be queried and then transformed with an XSLT template transmitted via POST.
 
 ## JSON Support
 All requests can be responded by the service in JSON format.
 
-## Data Transformation
-The POST method supports data transformation via XSLT.  
-Similar to GET, data can be queried and then transformed with an XSLT template
-transmitted via POST.
-
 ## Security
 This aspect was deliberately considered and implemented here only in a very
-rudimentary form. Only the storage(-key) with a length of 1 - 64 characters can
-be regarded as secret.  
+rudimentary form. The storage(-key) with a length of 1 - 64 characters and the
+individual root element can be regarded as secret.
 For further security the approach of Basic Authentication, Digest Access
 Authentication and/or Server/Client certificates is followed, which is
 configured outside of the XMEX (XML-Micro-Exchange) at the web server.
