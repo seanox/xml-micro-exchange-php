@@ -17,8 +17,8 @@ The attribute values can be static (text) and dynamic (XPath function).
 Values are send as request-body.
 Whether they are used as text or XPath function is decided by the
 Content-Type header of the request:
-- `text/plain`: static text
-- `text/xpath`: XPath function
+- `text/plain` Static text
+- `text/xpath` XPath function
 
 If the XPath notation does not match the attributes, elements are assumed.  
 For elements, the notation for pseudo elements is supported:  
@@ -29,9 +29,9 @@ Pseudo elements are a relative position specification to the selected element.
 The value of elements can be static (text), dynamic (XPath function) or be an
 XML structure. Also here the value is send with the request-body  and the type
 of processing is determined by the Content-Type:
-- `text/plain`: static text
-- `text/xpath`: XPath function
-- `application/xslt+xml`: XML structure
+- `text/plain` Static text
+- `text/xpath` XPath function
+- `application/xslt+xml` XML structure
 
 The PUT method works resolutely and inserts or overwrites existing data.
 The XPath processing is strict and does not accept unnecessary spaces.
