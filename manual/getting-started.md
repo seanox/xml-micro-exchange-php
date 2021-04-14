@@ -178,7 +178,7 @@ guests does not exist.
 ```
 PUT https://xmex.seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 49
 
 <guests>
@@ -213,7 +213,7 @@ So that all notice him, he puts his name in the guest list.
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 55
 
 <person name="John Doe" mail="john.doe@example.local"/>
@@ -276,7 +276,7 @@ Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 PUT https://xmex.seanox.com/xmex!/table[not(guests)]::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 49
 
 <guests>
@@ -290,7 +290,7 @@ And they also put their names in the guest list.
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 55
 
 <person name="Jane Doe" mail="jane.doe@example.local"/>
@@ -298,7 +298,7 @@ Content-Length: 55
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 57
 
 <person name="Mike Ross" mail="mike.ross@example.local"/>
@@ -306,7 +306,7 @@ Content-Length: 57
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/persons::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 56
 
 <person name="Dan Star" mail="dan.star@example.local"/>
@@ -331,7 +331,7 @@ function are always of type `text/plain`.
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 88
 
 <message from="john.doe@example.local">Hello, nice to meet you all. I am John.</message>
@@ -346,7 +346,7 @@ Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 88
 
 <message from="jane.doe@example.local">Hello, nice to meet you all. I am Jane.</message>
@@ -354,7 +354,7 @@ Content-Length: 88
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 89
 
 <message from="mike.ross@example.local">Hello, nice to meet you all. I am Mike.</message>
@@ -362,7 +362,7 @@ Content-Length: 89
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 88
 
 <message from="dan.star@example.local">Hello, nice to meet you all. I am Dan.</message>
@@ -373,7 +373,7 @@ Content-Length: 88
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 77
 
 <message from="dan.star@example.local">
@@ -382,7 +382,7 @@ Content-Length: 77
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 100
 
 <message from="john.doe@example.local">
@@ -391,7 +391,7 @@ Content-Length: 100
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 102
 
 <message from="jane.doe@example.local">
@@ -400,7 +400,7 @@ Content-Length: 102
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 117
 
 <message from="mike.ross@example.local">
@@ -409,7 +409,7 @@ Content-Length: 117
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 95
 
 <message from="dan.star@example.local">
@@ -418,7 +418,7 @@ Content-Length: 95
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 106
 
 <message from="dan.star@example.local">
@@ -427,7 +427,7 @@ Content-Length: 106
 ```
 PUT https://xmex.seanox.com/xmex!/table/guests/conversation::last HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 Content-Length: 8
 
 <message from="dan.star@example.local">
@@ -509,7 +509,7 @@ as a collection.
 ```
 GET https://xmex.seanox.com/xmex!//message[@from='dan.star@example.local'] HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 ```
 ```xml
 <?xml version="1.0"?>
@@ -533,7 +533,7 @@ and matches of multiple attrubutes are returned as XML collection.
 ```
 GET https://xmex.seanox.com/xmex!//*/@mail|//*/@from HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 ```
 ```xml
 <?xml version="1.0"?>
