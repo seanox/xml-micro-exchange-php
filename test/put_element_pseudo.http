@@ -14,13 +14,13 @@
 # - Status code 404 Resource Not Found
 PUT {{service}}/books/book%5B1%5D::before HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <before id="beforeA"/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "84eb3707738fe89b892955f951ff779a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5c9073d2b307edecdb8fce6f9649f9c4");
 });
 %}
 
@@ -44,7 +44,7 @@ client.test("unittest", function() {
 # - Storage-Effects: 4x UID-A 1x UID-M
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <book title="A2"/>
 <book title="B2"/>
@@ -53,7 +53,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "91add3d1ae4c85b9ef391e58f98ca838");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c3d1ecbf7bdbb86d2d29d3dc119713bc");
 });
 %}
 
@@ -64,7 +64,7 @@ client.test("unittest", function() {
 # - before-elements are put in /books before first book (order A,B,C)
 PUT {{service}}/books/book%5B1%5D::before HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <before id="beforeA"/>
 <before id="beforeB"/>
@@ -72,7 +72,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e5a1461b55191f99694d69d4e4e86a48");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7d3dd16e52b3eb57c642c46af26664dc");
 });
 %}
 
@@ -83,7 +83,7 @@ client.test("unittest", function() {
 # - after-elements are put in /books after last book (order A,B,C)
 PUT {{service}}/books/book%5Blast()%5D::after HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <after id="afterA"/>
 <after id="afterB"/>
@@ -91,7 +91,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "eccc84c81237a4799e65ab1b61b244f8");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "9c1c11a7ce86116c5c3709f025361d5a");
 });
 %}
 
@@ -102,7 +102,7 @@ client.test("unittest", function() {
 # - first-elements are put in /books as first elements before the existing (order A,B,C)
 PUT {{service}}/books::first HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <first id="firstA"/>
 <first id="firstB"/>
@@ -110,7 +110,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0cb35f0ea4770525881e471beab2930c");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "75b2f27dd3451e1de1300a553f95dafc");
 });
 %}
 
@@ -121,7 +121,7 @@ client.test("unittest", function() {
 # - last-elements are put in /books as last elements after the existing (order A,B,C)
 PUT {{service}}/books::last HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <last id="lastA"/>
 <last id="lastB"/>
@@ -129,7 +129,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0462167df072e971bfa5675b44a80bda");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "38cd6c4a184e1e1cc8a4899e8be8dbb6");
 });
 %}
 
@@ -142,13 +142,13 @@ client.test("unittest", function() {
 # - URI: (/books)//last::before
 PUT {{service}}0x282f626f6f6b73292f2f6c6173743a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <test/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "102dd976bc82ad58d26dbe4122951280");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6ccb81e3761a2c48dd4601a1f34ccc8d");
 });
 %}
 
@@ -158,7 +158,7 @@ client.test("unittest", function() {
 # - Message: Invalid XPath axis (Invalid expression)
 PUT {{service}}/books::wrong HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
@@ -166,7 +166,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "23c5b4ce7e7a711ff5263f038f73b43e");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1c91b30df4baa54e8d0e69645a1add86");
 });
 %}
 
@@ -179,7 +179,7 @@ client.test("unittest", function() {
 # - Storage-Revision is not increased
 PUT {{service}}/books::before HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
@@ -187,7 +187,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1403c8f5070f1e586aa013188dff2cc9");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2ace8d11838cd988ec1cb7e98b956cf2");
 });
 %}
 
@@ -200,7 +200,7 @@ client.test("unittest", function() {
 # - Storage-Revision is not increased
 PUT {{service}}/books::after HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
@@ -208,7 +208,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bdadf3701ffe3abd75453d05f4e85d78");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "00e98f864491fd57389be3ad9dc50005");
 });
 %}
 
@@ -222,7 +222,7 @@ client.test("unittest", function() {
 # - URI: /*/..::before
 PUT {{service}}0x2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
@@ -230,7 +230,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b8e8b978ee96c5d7bf3b71c791213592");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4ff78f1a8838c6ee3a7c880c8844ac9f");
 });
 %}
 
@@ -244,7 +244,7 @@ client.test("unittest", function() {
 # - URI: /books/..::before
 PUT {{service}}0x2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
@@ -252,7 +252,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a2c9de23679067c73a8f3bd25520399d");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3e81d70b4e6d3cd2de98878379743949");
 });
 %}
 
@@ -262,7 +262,7 @@ client.test("unittest", function() {
 # - Status code 404 Resource Not Found
 PUT {{service}}/wrong::before HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
@@ -270,7 +270,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "251d37277073b6211419d84fa36079cb");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "43c33364f90f5327583c97ab30862b6a");
 });
 %}
 
@@ -280,7 +280,7 @@ client.test("unittest", function() {
 # - Status code 404 Resource Not Found
 PUT {{service}}/wrong/wrong::before HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <wrong id="wrongA"/>
 <wrong id="wrongB"/>
@@ -288,7 +288,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e9cca62ad190cc701760e69b733af112");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "077384085fdfae05b667d8c4c7114bd0");
 });
 %}
 
@@ -300,13 +300,13 @@ client.test("unittest", function() {
 # - URI: //*[@id='lastC']::first
 PUT {{service}}0x2f2f2a5b4069643d276c61737443275d3a3a6669727374 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <test/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5b6e9c1b4ffc9f6382bc63396da461f2");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "593d94500ec3cfc9220e7c8221b41693");
 });
 %}
 
@@ -319,7 +319,7 @@ client.test("unittest", function() {
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
 Accept-Effects: ALL
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <book>
   <chapter title="Chapter-X-A">
@@ -339,7 +339,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c44d3a3659e526035bdb9a3bd770832d");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a9b75c801eeb709360ab8f818dc475a2");
 });
 %}
 
@@ -351,13 +351,13 @@ client.test("unittest", function() {
 # - Storage: <fist/> after <text title="Text X6"> and before text
 PUT {{service}}/books/book/chapter/text%5B3%5D::first HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <first/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a094397f83826d16f6e3d91366c64a99");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2ada9fa763aa537802036bd9103f33e2");
 });
 %}
 
@@ -369,13 +369,13 @@ client.test("unittest", function() {
 # - Storage: <last/> as last in <text title="Text X6">
 PUT {{service}}/books/book/chapter/text%5B3%5D::last HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <last/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ba37d6d33b3e0263cec4b453b86ac7ec");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6cc8a23faf6d59d014f674bfb972a3e8");
 });
 %}
 
@@ -387,13 +387,13 @@ client.test("unittest", function() {
 # - Storage: <before/> directly before <a/>
 PUT {{service}}/books/book/chapter/text%5B3%5D/a::before HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <before/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "643336a4a7fc4604b0412b06040f56ee");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1816d11d8db8fadba4559f87780a6d62");
 });
 %}
 
@@ -405,13 +405,13 @@ client.test("unittest", function() {
 # - Storage: <after/> directly after <a/>
 PUT {{service}}/books/book/chapter/text%5B3%5D/a::after HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <after/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2f3c334ccedce9d0f4de2800504ce77b");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "353dffe8d5d3d9f8a3d85615f88313b6");
 });
 %}
 

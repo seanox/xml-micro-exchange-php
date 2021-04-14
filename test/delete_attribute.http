@@ -43,7 +43,7 @@ client.test("unittest", function() {
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_delete_attribute}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <book title="Book-A" a="A" b="A" c="A" d="A">
   <chapter title="Chapter-A-A">
@@ -96,7 +96,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "30d8e0e9141d4a67c9b149bffc3f14f5");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "358acf5634dbb6022cd958b55106bd49");
 });
 %}
 

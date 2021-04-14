@@ -38,7 +38,7 @@ client.test("unittest", function() {
 # - Storage-Effects: with a lot of UIDs 
 PUT {{service}}/statistic HTTP/1.0
 Storage: {{storage_get}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <cities>
   <city name="Berlin" empty="">
@@ -193,7 +193,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "47a2f5a77ae3e788313b6be17f7f16d9");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fd2c09bc8c46cdc706eb24f15fc47482");
 });
 %}
 
@@ -202,14 +202,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 14456
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - Complete storage
 GET {{service}}/ HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f77506dfc8101d0a730f4de208685725");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2e25f8219427dfef313031090b632f00");
 });
 %}
 
@@ -218,14 +218,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 14456
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - Complete storage
 GET {{service}} HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f77506dfc8101d0a730f4de208685725");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2e25f8219427dfef313031090b632f00");
 });
 %}
 
@@ -234,7 +234,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 14263
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - Only an extract of districts
 # - URI: (/statistic//districts)
 GET {{service}}0x282f7374617469737469632f2f64697374726963747329 HTTP/1.0
@@ -242,7 +242,7 @@ Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0b116c18de74ac516ba99cd3c5997206");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "51a998a9f13c97ec6f8c860082ac4f91");
 });
 %}
 
@@ -251,7 +251,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 14141
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - Only an extract of all district entries as collection
 # - URI: (/statistic//districts)/district
 GET {{service}}0x282f7374617469737469632f2f646973747269637473292f6469737472696374 HTTP/1.0
@@ -259,7 +259,7 @@ Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4a1a555b8325ba7f3699e1fb8b90473a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5211e3883e95f101bdb41615e9b2bec4");
 });
 %}
 
@@ -677,14 +677,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 2385
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - URI: //quarter/@name
 GET {{service}}0x2f2f717561727465722f406e616d65 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "db7d744ca7f555b223d1c124827acdf8");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "2078fe1059ee1a21aa45500e5ec7c3d2");
 });
 %}
 
@@ -695,14 +695,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 3995
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - URI: //quarter/@name|//quarter/@area
 GET {{service}}0x2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1e68f06c393477bf16fbfefc8b88a001");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c257c1a2cdc1270e9965ae279b20acf7");
 });
 %}
 
@@ -728,14 +728,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 92
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - URI: //district[1]//quarter[1]/@name|//district[1]//quarter[1]/@area
 GET {{service}}0x2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d657c2f2f64697374726963745b315d2f2f717561727465725b315d2f4061726561 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "faf380bfc7c9c41c39a5d9355657c38a");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0724ddd91d9f3b149a659f74696b842d");
 });
 %}
 
@@ -744,14 +744,14 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 1144
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - URI: //district[1]|//district[1]/@name
 GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3a820d06bcea8a08043acbb8544791ed");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "116dfa3e081a27c4bf6ab2f3eb324ae3");
 });
 %}
 
@@ -827,7 +827,7 @@ client.test("unittest", function() {
 # Query of a data record as JSON
 # Expectations:
 # - Status code 200 Success
-# - Content-Type: application/xslt+xml
+# - Content-Type: application/xml
 # - Content-Length: 137
 # - URI: //quarter[@name='Rahnsdorf']
 GET {{service}}0x2f2f717561727465725b406e616d653d275261686e73646f7266275d HTTP/1.0
@@ -835,7 +835,7 @@ Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d409809ad3c474ca5d74aa03177d515e");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "27c3f86b6cd9da0efb301668b5ce3a77");
 });
 %}
 

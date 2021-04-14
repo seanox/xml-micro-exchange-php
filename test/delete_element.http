@@ -41,7 +41,7 @@ client.test("unittest", function() {
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_delete_element}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <book title="Book-A" a="A" b="A" c="A" d="A">
   <chapter title="Chapter-A-A">
@@ -94,7 +94,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0a13c7606689e48169ad284a353f2fcc");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3e7f7d94415c11058efe260c430d1ecd");
 });
 %}
 
@@ -217,7 +217,7 @@ client.test("unittest", function() {
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_delete_element}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <book title="Book-A" a="A" b="A" c="A" d="A">
   <chapter title="Chapter-A-A">
@@ -270,7 +270,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1232ecf0aba8d9af53779da9f6709486");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c6787bd8d5b535ec921eb30da74c0289");
 });
 %}
 
@@ -319,7 +319,7 @@ client.test("unittest", function() {
 # - all new elements have the attributes ___rev and ___uid
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_delete_element}}
-Content-Type: application/xslt+xml
+Content-Type: application/xml
 
 <book title="Book-A" a="A" b="A" c="A" d="A">
   <chapter title="Chapter-A-A">
@@ -340,7 +340,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "77da912f7f910fe11fa2ea5a7958ab74");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e28a56436780d8bc5665fd05e30228a9");
 });
 %}
 

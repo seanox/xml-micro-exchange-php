@@ -307,13 +307,12 @@ class Storage {
     const PATTERN_XPATH_FUNCTION = "/^[\(\s]*[^\/\.\s\(].*$/";
 
     /** Constants of used content types */
-    const CONTENT_TYPE_TEXT      = "text/plain";
-    const CONTENT_TYPE_XPATH     = "text/xpath";
-    const CONTENT_TYPE_HTML      = "text/html";
-    const CONTENT_TYPE_XML       = "text/xml";
-    const CONTENT_TYPE_APP_XML   = "application/xml";
-    const CONTENT_TYPE_APP_XSLT  = "application/xslt+xml";
-    const CONTENT_TYPE_APP_JSON  = "application/json";
+    const CONTENT_TYPE_TEXT  = "text/plain";
+    const CONTENT_TYPE_XPATH = "text/xpath";
+    const CONTENT_TYPE_HTML  = "text/html";
+    const CONTENT_TYPE_XML   = "application/xml";
+    const CONTENT_TYPE_XSLT  = "application/xslt+xml";
+    const CONTENT_TYPE_JSON  = "application/json";
 
     /**
      * Constructor creates a new Storage object.
@@ -911,7 +910,7 @@ class Storage {
 
         // POST always expects an valid XSLT template for transformation.
         if (!isset($_SERVER["CONTENT_TYPE"])
-                || strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_APP_XSLT) !== 0)
+                || strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XSLT) !== 0)
             $this->quit(415, "Unsupported Media Type");
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
@@ -984,7 +983,7 @@ class Storage {
                     || empty($method))
                 if (in_array("json", $this->options))
                     $output = simplexml_load_string($output);
-                else $header = ["Content-Type" => Storage::CONTENT_TYPE_APP_XML];
+                else $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
             else if (strcasecmp($method, "html") === 0)
                 $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
         $this->quit(200, "Success", $header, $output);
@@ -1924,7 +1923,7 @@ class Storage {
                 && $data !== null) {
             if (!$media) {
                 if (in_array("json", $this->options)) {
-                    $media = Storage::CONTENT_TYPE_APP_JSON;
+                    $media = Storage::CONTENT_TYPE_JSON;
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement)
                         $data = simplexml_import_dom($data);
@@ -1932,7 +1931,7 @@ class Storage {
                 } else {
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement) {
-                        $media = Storage::CONTENT_TYPE_APP_XML;
+                        $media = Storage::CONTENT_TYPE_XML;
                         $data = $data->saveXML();
                     } else $media = Storage::CONTENT_TYPE_TEXT;
                 }
