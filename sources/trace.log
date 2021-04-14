@@ -1939,19 +1939,19 @@ ee45c9aceaeae61580c05b0baa79a1d5
 	934888cf70d149e6b7915d5e557396c9 Trace-XPath-Hash
 	//*/@mail|//*/@from
 	95332b2e3e25a8b9df387ae61ebaf902 Trace-Composite-Hash
-48e315f283438021c8ee88e680d4f9e8
+1a5dec9c4d3e897b8a1b65f83e5c1b90
 	Request Method:POST XPath: Length:723
-	Response Status:415 Length:0
+	Response Status:200 Length:589
 	Storage Identifier: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 Revision:13 Space:1311
-	de1395e5b7495b8b102821c514146a40 Trace-Request-Header-Hash
-	{"Method":"POST","URI":"/xmex!","Storage":"US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table","Content-Length":"723","Content-Type":"APPLICATION/XML"}
+	e64323bb018ab5943afc85153fee0d5c Trace-Request-Header-Hash
+	{"Method":"POST","URI":"/xmex!","Storage":"US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table","Content-Length":"723","Content-Type":"APPLICATION/XSLT+XML"}
 	c85b029b0f21a07c70e09db14324b818 Trace-Request-Body-Hash
-	42e7aaa88b48137a16a1acd04ed91125 Trace-Response-Header-Hash
-	[415]
-	d41d8cd98f00b204e9800998ecf8427e Trace-Response-Body-Hash
+	27d16b16b14d180ca0e0027934940882 Trace-Response-Header-Hash
+	[200,"Content-Length: 589","Content-Type: text/plain","Storage-Revision: 13","Storage-Space: 262144/1311 bytes","Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01"]
+	806294a0ab683e56d51739e0e9915956 Trace-Response-Body-Hash
 	241ca9538ffe957b70d6adc9560a2b0e Trace-Storage-Hash
 	d41d8cd98f00b204e9800998ecf8427e Trace-XPath-Hash
-	48e315f283438021c8ee88e680d4f9e8 Trace-Composite-Hash
+	1a5dec9c4d3e897b8a1b65f83e5c1b90 Trace-Composite-Hash
 ce45d35e5927332972ac2ada46f83e9a
 	Request Method:OPTIONS XPath:/books Length:0
 	Response Status:404 Length:0
