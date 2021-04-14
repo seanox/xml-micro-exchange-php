@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMEX (XML-Micro-Exchange) at the web server.
  *
- * Service 1.3.0 20210410
+ * Service 1.3.0 20210414
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.3.0 20210410
+ * @version 1.3.0 20210414
  */
 class Storage {
 
@@ -307,11 +307,13 @@ class Storage {
     const PATTERN_XPATH_FUNCTION = "/^[\(\s]*[^\/\.\s\(].*$/";
 
     /** Constants of used content types */
-    const CONTENT_TYPE_TEXT  = "text/plain";
-    const CONTENT_TYPE_XPATH = "text/xpath";
-    const CONTENT_TYPE_HTML  = "text/html";
-    const CONTENT_TYPE_XML   = "application/xslt+xml";
-    const CONTENT_TYPE_JSON  = "application/json";
+    const CONTENT_TYPE_TEXT      = "text/plain";
+    const CONTENT_TYPE_XPATH     = "text/xpath";
+    const CONTENT_TYPE_HTML      = "text/html";
+    const CONTENT_TYPE_XML       = "text/xml";
+    const CONTENT_TYPE_APP_XML   = "application/xml";
+    const CONTENT_TYPE_APP_XSLT  = "application/xslt+xml";
+    const CONTENT_TYPE_APP_JSON  = "application/json";
 
     /**
      * Constructor creates a new Storage object.
@@ -587,11 +589,13 @@ class Storage {
      *         HTTP/1.0 201 Resource Created
      * - Response can be status 201 if the storage was newly created
      *         HTTP/1.0 204 No Content
-     * - Response can be status 204 if the storage already exists#
+     * - Response can be status 204 if the storage already exists
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
      * - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      *         HTTP/1.0 507 Insufficient Storage
      * - Response can be status 507 if the storage is full
      */
@@ -650,6 +654,8 @@ class Storage {
      * - XPath is missing or malformed
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      *
      * In addition, OPTIONS can also be used as an alternative to CONNECT,
      * because CONNECT is not an HTTP standard. For this purpose OPTIONS
@@ -692,7 +698,9 @@ class Storage {
      *         HTTP/1.0 201 Resource Created
      * - Response can be status 201 if the storage was newly created
      *         HTTP/1.0 204 No Content
-     * - Response can be status 204 if the storage already exists#
+     * - Response can be status 204 if the storage already exists
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      *         HTTP/1.0 507 Insufficient Storage
      * - Response can be status 507 if the storage is full
      */
@@ -790,6 +798,8 @@ class Storage {
      * - XPath is missing or malformed
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      */
     function doGet() {
 
@@ -890,6 +900,8 @@ class Storage {
      * - Attribute request without Content-Type text/plain
      *         HTTP/1.0 422 Unprocessable Entity
      * - Data in the request body cannot be processed
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      */
     function doPost() {
 
@@ -899,7 +911,7 @@ class Storage {
 
         // POST always expects an valid XSLT template for transformation.
         if (!isset($_SERVER["CONTENT_TYPE"])
-                || strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
+                || strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_APP_XSLT) !== 0)
             $this->quit(415, "Unsupported Media Type");
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
@@ -972,7 +984,7 @@ class Storage {
                     || empty($method))
                 if (in_array("json", $this->options))
                     $output = simplexml_load_string($output);
-                else $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
+                else $header = ["Content-Type" => Storage::CONTENT_TYPE_APP_XML];
             else if (strcasecmp($method, "html") === 0)
                 $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
         $this->quit(200, "Success", $header, $output);
@@ -1075,6 +1087,8 @@ class Storage {
      * - Attribute request without Content-Type text/plain
      *         HTTP/1.0 422 Unprocessable Entity
      * - Data in the request body cannot be processed
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      */
     function doPut() {
 
@@ -1510,6 +1524,8 @@ class Storage {
      * - Attribute request without Content-Type text/plain
      *         HTTP/1.0 422 Unprocessable Entity
      * - Data in the request body cannot be processed
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      */
     function doPatch() {
 
@@ -1613,6 +1629,8 @@ class Storage {
      * - XPath without addressing a target is responded with status 204
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
+     *         HTTP/1.0 500 Internal Server Error
+     * - An unexpected error has occurred
      */
     function doDelete() {
 
@@ -1906,7 +1924,7 @@ class Storage {
                 && $data !== null) {
             if (!$media) {
                 if (in_array("json", $this->options)) {
-                    $media = Storage::CONTENT_TYPE_JSON;
+                    $media = Storage::CONTENT_TYPE_APP_JSON;
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement)
                         $data = simplexml_import_dom($data);
@@ -1914,7 +1932,7 @@ class Storage {
                 } else {
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement) {
-                        $media = Storage::CONTENT_TYPE_XML;
+                        $media = Storage::CONTENT_TYPE_APP_XML;
                         $data = $data->saveXML();
                     } else $media = Storage::CONTENT_TYPE_TEXT;
                 }
