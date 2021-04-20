@@ -1967,13 +1967,20 @@ class Storage {
         if (isset($_SERVER["REQUEST"])
                 && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $uri, PREG_UNMATCHED_AS_NULL))
             $uri = $uri[2];
-        $hash = json_encode([
-            "Method" => strtoupper($fetchRequestHeader("REQUEST_METHOD")),
-            "URI" => urldecode($uri),
-            "Storage" => $fetchRequestHeader("HTTP_STORAGE"),
-            "Content-Length" => strtoupper($fetchRequestHeader("HTTP_CONTENT_LENGTH", "CONTENT_LENGTH")),
-            "Content-Type" => strtoupper($fetchRequestHeader("HTTP_CONTENT_TYPE", "CONTENT_TYPE"))
-        ], JSON_UNESCAPED_SLASHES);
+
+        $hash = [];
+        if ($fetchRequestHeader("REQUEST_METHOD"))
+            $hash["Method"] = strtoupper($fetchRequestHeader("REQUEST_METHOD"));
+        if (urldecode($uri))
+            $hash["URI"] = urldecode($uri);
+        if ($fetchRequestHeader("HTTP_STORAGE"))
+            $hash["Storage"] = $fetchRequestHeader("HTTP_STORAGE");
+        if ($fetchRequestHeader("HTTP_CONTENT_LENGTH", "CONTENT_LENGTH"))
+            $hash["Content-Length"] = strtoupper($fetchRequestHeader("HTTP_CONTENT_LENGTH", "CONTENT_LENGTH"));
+        if ($fetchRequestHeader("HTTP_CONTENT_TYPE", "CONTENT_TYPE"))
+            $hash["Content-Type"] = strtoupper($fetchRequestHeader("HTTP_CONTENT_TYPE", "CONTENT_TYPE"));
+        $hash = json_encode($hash, JSON_UNESCAPED_SLASHES);
+
         header("Trace-Request-Header-Hash: " . hash("md5", $hash));
         $trace = [hash("md5", $hash) . " Trace-Request-Header-Hash", $hash];
 
