@@ -28,7 +28,7 @@ client.test("unittest", function() {
 ###
 # CORS preflight OPTIONS
 # Expectations:
-# - Status code 200 Success
+# - Status code 204 No Content
 # - Access-Control-Allow-Origin: *
 # - Access-Control-Allow-Credentials: true
 # - Access-Control-Max-Age: 86400
@@ -37,7 +37,7 @@ Origin: {{origin}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5d11a93555860ffafb883d603c34e187");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "0058c7a5b05c404d1c3ff22121aa26f3");
 });
 %}
 

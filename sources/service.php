@@ -180,12 +180,12 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMEX (XML-Micro-Exchange) at the web server.
  *
- * Service 1.3.0 20210414
+ * Service 1.3.0 20210420
  * Copyright (C) 2021 Seanox Software Solutions
  * All rights reserved.
  *
  * @author  Seanox Software Solutions
- * @version 1.3.0 20210414
+ * @version 1.3.0 20210420
  */
 class Storage {
 
@@ -2217,7 +2217,7 @@ $method = strtoupper($_SERVER["REQUEST_METHOD"]);
 if ($method === "OPTIONS"
         && isset($_SERVER["HTTP_ORIGIN"])
         && !isset($_SERVER["HTTP_STORAGE"]))
-    (new Storage)->quit(200, "Success");
+    (new Storage)->quit(204, "No Content");
 
 $storage = null;
 if (isset($_SERVER["HTTP_STORAGE"]))

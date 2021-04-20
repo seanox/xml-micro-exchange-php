@@ -8,6 +8,7 @@
       Fragments (PUT/PATCH) uses text/xhtml
       XML output uses application/xml
       XSLT input (POST) uses application/xslt+xml
+  CR: Service: OPTIONS responds with 204 instead of 200
 
 1.2.0 2021xxxx
   NT: Version was skipped
