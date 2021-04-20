@@ -40,7 +40,7 @@ Storage: {{storage_post}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "491fedb1f861a0001b6d36470cc978c6");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cc41ee8e436a8b6b4d76b8dbbbe2d383");
 });
 %}
 
@@ -678,7 +678,7 @@ Storage: {{storage_post}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d220041bc4f05a9568eaab826a0caa10");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "48d26235057d8b18cf70e1bb2aa02769");
 });
 %}
 
@@ -692,7 +692,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "80c054e56610d087a3a41e979cca17a5");
+    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "dd5e5c93fba252ebedcea51e18d796d5");
 });
 %}
 
