@@ -113,7 +113,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.1.0](https://github.com/seanox/xml-micro-exchange/raw/master/releases/seanox-xmex-1.1.0.zip)  
+[Seanox XML-Micro-Exchange 1.3.0](https://github.com/seanox/xml-micro-exchange/raw/master/releases/seanox-xmex-1.3.0.zip)  
 
 
 # Free XML-Micro-Exchange
@@ -153,17 +153,11 @@ and double memory.
 
 
 # Changes (Change Log)
-## 1.1.0 20210225 (summary of the current version)  
-BF: Service: Optimization of CONNECT  
-BF: Service: Optimization of CORS  
-BF: Build: Correction of release  
-BF: Service: Uniform use of the GMT time zone  
-BF: Service: Correction in the creation of trace and trace hashes  
-BF: Service: Correction of POST for use of status 422 by errors in the stylesheets instead of status 400  
-CR: Service: Added directives for XPath  
-CR: Service: Added the directive JSON  
-CR: Service GET/POST: Added support for accept header: application/json  
-CR: Test: Added Snake as proof of concept for a multiplayer game  
+## 1.3.0 20210525 (summary of the current version)  
+BF: Service: Uniform use of status 204 for 202 / 404  
+BF: Service: Uniform use of status 204 for 404 in relation to targets in the storage (axes)  
+BF: Service: Optimization/harmonization of content types for XML  
+CR: Service: OPTIONS responds with 204 instead of 200  
 
 [Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange/master/CHANGES)
 
