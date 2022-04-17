@@ -48,44 +48,38 @@ __All meet without obligation.__
 
 # Features
 
-## RESTful
-The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT, PATCH,
-DELETE. The CONNECT method is not a standard and the function can be used
-alternatively via OPTIONS.  
-
-## XPath
-XPath axes and functions are used for access, navigation and addressing of
-targets in the data source and it is an integral part of the URI with dynamic
-and functional effects.
-
-## Multible axes and targets
-An XPath axis can address several elements and attributes simultaneously, which
-can be changed with one call.
-
-## XPath Functions
-PUT and PATCH support XML structures and static values (text), as well as XPath
-functions that allow dynamic values. 
-
-## Data Query
-Data can be queried in the form of XML structure or substructure if the XPath
-notation represents an axis, otherwise the XPath is interpreted as an XPath
-function and responded with the result as text. Thus XPath provides a dynamic
-syntax for queries.
-
-## Data Transformation
-The POST method supports data transformation via XSLT. Similar to GET, data can
-be queried and then transformed with an XSLT template transmitted via POST.
-
-## JSON Support
-All requests can be responded by the service in JSON format.
-
-## Security
-This aspect was deliberately considered and implemented here only in a very
-rudimentary form. The storage(-key) with a length of 1 - 64 characters and the
-individual root element can be regarded as secret.
-For further security the approach of Basic Authentication, Digest Access
-Authentication and/or Server/Client certificates is followed, which is
-configured outside of the XMEX (XML-Micro-Exchange) at the web server.
+- __RESTful__  
+  The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT,
+  PATCH, DELETE. The CONNECT method is not a standard and the function can be
+  used alternatively via OPTIONS.  
+- __XPath__  
+  XPath axes and functions are used for access, navigation and addressing of
+  targets in the data source and it is an integral part of the URI with dynamic
+  and functional effects.
+- __Multible axes and targets__  
+  An XPath axis can address several elements and attributes simultaneously,
+  which can be changed with one call.
+- __XPath Functions__  
+  PUT and PATCH support XML structures and static values (text), as well as
+  XPath functions that allow dynamic values. 
+- __Data Query__  
+  Data can be queried in the form of XML structure or substructure if the XPath
+  notation represents an axis, otherwise the XPath is interpreted as an XPath
+  function and responded with the result as text. Thus XPath provides a dynamic
+  syntax for queries.
+- __Data Transformation__  
+  The POST method supports data transformation via XSLT. Similar to GET, data
+  can be queried and then transformed with an XSLT template transmitted via
+  POST.
+- __JSON Support__ 
+  All requests can be responded by the service in JSON format.
+- __Security__  
+  This aspect was deliberately considered and implemented here only in a very
+  rudimentary form. The storage(-key) with a length of 1 - 64 characters and
+  the individual root element can be regarded as secret.  
+  For further security the approach of Basic Authentication, Digest Access
+  Authentication and/or Server/Client certificates is followed, which is
+  configured outside of the XMEX (XML-Micro-Exchange) at the web server.
 
 
 # Licence Agreement
