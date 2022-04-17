@@ -71,7 +71,7 @@ __All meet without obligation.__
   The POST method supports data transformation via XSLT. Similar to GET, data
   can be queried and then transformed with an XSLT template transmitted via
   POST.
-- __JSON Support__ 
+- __JSON Support__  
   All requests can be responded by the service in JSON format.
 - __Security__  
   This aspect was deliberately considered and implemented here only in a very
