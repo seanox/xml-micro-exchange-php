@@ -146,8 +146,8 @@ and double memory.
 * [Test](https://github.com/seanox/xml-micro-exchange/blob/master/manual/test.md)
 
 
-# Changes (Change Log)
-## 1.3.0 20210525 (summary of the current version)  
+# Changes
+## 1.3.0 20210525 
 BF: Service: Uniform use of status 204 for 202 / 404  
 BF: Service: Uniform use of status 204 for 404 in relation to targets in the storage (axes)  
 BF: Service: Optimization/harmonization of content types for XML  
