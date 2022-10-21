@@ -1,19 +1,22 @@
 <?xml version="1.0"?>
 <project name="xml-micro-exchange" default="usage" basedir="..">
   <target name="usage">
-    <echo>                                                    </echo>
-    <echo> the following targets are available ...            </echo>
-    <echo>                                                    </echo>
-    <echo>   release    builds the final scripts and creates  </echo>
-    <echo>              the release for the distribution.     </echo>
-    <echo>                                                    </echo>
-    <echo>   changes    synchronizes README.md with CHANGES   </echo>
+    <echo>                                                                   </echo>
+    <echo>the following targets are available ...                            </echo>
+    <echo>                                                                   </echo>
+    <echo>  changes    Synchronizes README.md with CHANGES.                  </echo>
+    <echo>                                                                   </echo>
+    <echo>  release    Builds the final the release for the distribution.    </echo>
+    <echo>                                                                   </echo>
+    <echo>  clean      Cleanup of temporary data from release task and tests.</echo>
+    <echo>                                                                   </echo>
   </target>
   
   <property name="workspace" value="${basedir}"/>
+  <property name="workspace.build" value="${workspace}/build"/>
   <property name="workspace.sources" value="${workspace}/sources"/>
   <property name="workspace.test" value="${workspace}/test"/>
-  <property name="workspace.releases" value="${workspace}/releases"/>
+  <property name="workspace.release" value="${workspace}/release"/>
   <property name="workspace.manual" value="${workspace}/manual"/>
   
   <macrodef name="release-locate">
@@ -51,6 +54,8 @@
   </macrodef>
   
   <target name="changes">
+    <release-locate/>
+
     <replaceregexp file="${workspace}/CHANGES" match="&#x00E4;" replace="ae" flags="g"/>
     <replaceregexp file="${workspace}/CHANGES" match="&#x00C4;" replace="Ae" flags="g"/>
     <replaceregexp file="${workspace}/CHANGES" match="&#x00F6;" replace="oe" flags="g"/>
@@ -64,15 +69,15 @@
     <replaceregexp file="${workspace}/CHANGES.tmp" match="^(.*?)\s*$" replace="\1  " flags="g" byline="true"/>
     <replaceregexp file="${workspace}/CHANGES.tmp" match="^(\d[\.\d x]+)[^\r\n]*" replace="## \1" byline="false"/>
     <replaceregexp file="${workspace}/CHANGES.tmp" match="^ {0,4}([A-Z]+:.*)\s*$" replace="\1" byline="true"/>
-    <replaceregexp file="${workspace}/CHANGES.tmp" match="(?s)[\r\n]+ [^\r\n]+" replace="" flags="g" byline="false"/>  
-    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ \d+)(  )" replace="\1 (summary of the current version)\2" flags="g" byline="true"/>
-    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ [\dx]+)(  )" replace="\1 (summary of the next version)\2" flags="g" byline="true"/>
+    <replaceregexp file="${workspace}/CHANGES.tmp" match="(?s)[\r\n]+ [^\r\n]+" replace="" flags="g" byline="false"/>
+    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ \d+)(  )" replace="\1\2" flags="g" byline="true"/>
+    <replaceregexp file="${workspace}/CHANGES.tmp" match="^(## \d[\.\d]+ \d+x+)(  )" replace="\1 (upcoming version)\2" flags="g" byline="true"/>
     <loadresource property="changes">
       <file file="${workspace}/CHANGES.tmp"/>
     </loadresource>
     <delete file="${workspace}/CHANGES.tmp"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(?si)(# Changes \(Change Log\)\s+).*?(\[Read more\])" flags="g" byline="false"
+        match="(?si)(# Changes\s+).*?(\[Read more\])" flags="g" byline="false"
         replace="\1${changes}${line.separator}${line.separator}\2"/>
     <tstamp>
       <format property="now.year" pattern="yyyy"/>
@@ -81,45 +86,62 @@
         match="(?si)(?&lt;=\(C\)\s)\d{4}\b" flags="g" byline="true"
         replace="${now.year}"/>  
   </target>  
-  
+
   <target name="release" depends="changes">
     <release-locate/>
-    <delete dir="${workspace.releases}" excludes="seanox-xmex-*.zip"/>
-    <copy file="${workspace.sources}/.htaccess" todir="${workspace.releases}" overwrite="true"/>
-    <copy file="${workspace.sources}/service.php" todir="${workspace.releases}" overwrite="true"/>
-    <compress-php file="${workspace.releases}/service.php"/>
-    <replaceregexp file="${workspace.releases}/service.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
-    <copy file="${workspace.sources}/service.php" tofile="${workspace.releases}/service-dev.php" overwrite="true"/>
-    <replaceregexp file="${workspace.releases}/service-dev.php" match="\s+$" replace="" flags="g" byline="true"/>
-    <replaceregexp file="${workspace.releases}/service-dev.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
-    <copy file="${workspace}/LICENSE" todir="${workspace.releases}" overwrite="true"/>
-    <copy file="${workspace.manual}/README.md" todir="${workspace.releases}" overwrite="true"/>
+
+    <delete dir="${workspace.build}"/>
+    <mkdir dir="${workspace.build}"/>
+    <copy file="${workspace.sources}/.htaccess" todir="${workspace.build}"/>
+    <copy file="${workspace.sources}/service.php" todir="${workspace.build}"/>
+    <compress-php file="${workspace.build}/service.php"/>
+    <replaceregexp file="${workspace.build}/service.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
+    <copy file="${workspace.sources}/service.php" tofile="${workspace.build}/service-dev.php"/>
+    <replaceregexp file="${workspace.build}/service-dev.php" match="\s+$" replace="" flags="g" byline="true"/>
+    <replaceregexp file="${workspace.build}/service-dev.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
+    <copy file="${workspace}/LICENSE" todir="${workspace.build}"/>
+    <copy file="${workspace.manual}/README.md" todir="${workspace.build}"/>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
-      <fileset dir="${workspace.releases}">
+      <fileset dir="${workspace.build}">
         <include name=".htaccess"/>
         <include name="service.php"/>
         <include name="service-dev.php"/>
         <include name="LICENSE"/>
       </fileset>
     </touch>
-    <delete file="${workspace.releases}/seanox-xmex-${release.version}.zip"/>
-    <zip destfile="${workspace.releases}/seanox-xmex-${release.version}.zip">
-      <fileset dir="${workspace.releases}">
+
+    <delete dir="${workspace.release}"/>
+    <mkdir dir="${workspace.release}"/>
+    <zip destfile="${workspace.release}/seanox-xmex-${release.version}.zip">
+      <fileset dir="${workspace.build}">
         <include name=".htaccess"/>
         <include name="service.php"/>
         <include name="service-dev.php"/>
-        <include name="LICENSE"/> 
+        <include name="LICENSE"/>
       </fileset>
     </zip>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
-      <fileset dir="${workspace.releases}" includes="seanox-xmex-${release.version}.zip"/>
+      <fileset dir="${workspace.release}" includes="seanox-xmex-${release.version}.zip"/>
     </touch>
-    <delete dir="${workspace.releases}" excludes="seanox-xmex-*.zip"/>
+
+    <delete dir="${workspace.build}"/>
+
     <replaceregexp file="${workspace}/README.md"
         match="(Seanox\s+XML-Micro-Exchange\s+)\d+[\.\d]+" flags="g" byline="false"
         replace="\1${release.version}"/>
     <replaceregexp file="${workspace}/README.md"
+        match="(seanox/${ant.project.name}/releases/download/)\d[\d\.]+"
+        replace="\1${release.version}" flags="g" byline="false"/>
+    <replaceregexp file="${workspace}/README.md"
         match="(seanox-xmex-)\d+[\.\d]+(\.zip)" flags="g" byline="false"
         replace="\1${release.version}\2"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${workspace}/sources/data"/>
+    <delete file="${workspace}/sources/trace.log"/>
+    <touch file="${workspace}/sources/trace.log"/>
+    <delete file="${workspace}/sources/trace-docker.log"/>
+    <touch file="${workspace}/sources/trace-docker.log"/>
   </target>
 </project>
