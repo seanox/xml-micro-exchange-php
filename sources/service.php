@@ -180,10 +180,6 @@
  * Authentication and/or Server/Client certificates is followed, which is
  * configured outside of the XMEX (XML-Micro-Exchange) at the web server.
  *
- * Service 1.3.0 20210420
- * Copyright (C) 2021 Seanox Software Solutions
- * All rights reserved.
- *
  * @author  Seanox Software Solutions
  * @version 1.3.0 20210420
  */
