@@ -107,7 +107,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.3.0](https://github.com/seanox/xml-micro-exchange/raw/master/releases/seanox-xmex-1.3.0.zip)  
+[Seanox XML-Micro-Exchange 1.3.0](https://github.com/seanox/xml-micro-exchange/releases/download/1.3.0/seanox-xmex-1.3.0.zip)  
 
 
 # Free XML-Micro-Exchange
