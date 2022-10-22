@@ -1,15 +1,14 @@
 <?xml version="1.0"?>
 <project name="xml-micro-exchange" default="usage" basedir="..">
   <target name="usage">
-    <echo>                                                                   </echo>
-    <echo>the following targets are available ...                            </echo>
-    <echo>                                                                   </echo>
-    <echo>  changes    Synchronizes README.md with CHANGES.                  </echo>
-    <echo>                                                                   </echo>
-    <echo>  release    Builds the final the release for the distribution.    </echo>
-    <echo>                                                                   </echo>
-    <echo>  clean      Cleanup of temporary data from release task and tests.</echo>
-    <echo>                                                                   </echo>
+    <echo>Following targets are available:                               </echo>
+    <echo>                                                               </echo>
+    <echo>  changes    Synchronizes README.md with CHANGES.              </echo>
+    <echo>                                                               </echo>
+    <echo>  release    Builds the final the release for the distribution </echo>
+    <echo>                                                               </echo>
+    <echo>  clean      Cleanup of temporary data from release and tests  </echo>
+    <echo>                                                               </echo>
   </target>
   
   <property name="workspace" value="${basedir}"/>
