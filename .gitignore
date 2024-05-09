@@ -1,3 +1,5 @@
+.idea
+.project
 /release/
 /sources/data/
 /test/cumulate.http
