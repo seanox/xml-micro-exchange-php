@@ -6,7 +6,7 @@
   <a href="https://github.com/seanox/xml-micro-exchange-php/issues"
     ><img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge"
   ></a>
-  <a href="http://seanox.de/contact"
+  <a href="http://seanox.com/contact"
     ><img src="https://img.shields.io/badge/support-active-green?style=for-the-badge"
   ></a>
 </p>
@@ -159,4 +159,4 @@ CR: Service: OPTIONS responds with 204 instead of 200
 # Contact
 [Issues](https://github.com/seanox/xml-micro-exchange-php/issues)  
 [Requests](https://github.com/seanox/xml-micro-exchange-php/pulls)  
-[Mail](http://seanox.de/contact)  
+[Mail](http://seanox.com/contact)  
