@@ -1,14 +1,14 @@
 <p>
-  <a href="https://github.com/seanox/xml-micro-exchange/pulls
-      title="Development is waiting for new issues / requests / ideas">
-    <img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge">
-  </a>
-  <a href="https://github.com/seanox/xml-micro-exchange/issues">
-    <img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge">
-  </a>
-  <a href="http://seanox.de/contact">
-    <img src="https://img.shields.io/badge/support-active-green?style=for-the-badge">
-  </a>
+  <a href="https://github.com/seanox/xml-micro-exchange-php/pulls
+      title="Development is waiting for new issues / requests / ideas"
+    ><img src="https://img.shields.io/badge/development-passive-blue?style=for-the-badge"
+  ></a>
+  <a href="https://github.com/seanox/xml-micro-exchange-php/issues"
+    ><img src="https://img.shields.io/badge/maintenance-active-green?style=for-the-badge"
+  ></a>
+  <a href="http://seanox.de/contact"
+    ><img src="https://img.shields.io/badge/support-active-green?style=for-the-badge"
+  ></a>
 </p>
 
 
@@ -107,7 +107,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.3.0](https://github.com/seanox/xml-micro-exchange/releases/download/1.3.0/seanox-xmex-1.3.0.zip)  
+[Seanox XML-Micro-Exchange 1.3.0](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.3.0/seanox-xmex-1.3.0.zip)  
 
 
 # Free XML-Micro-Exchange
@@ -125,25 +125,25 @@ and double memory.
 
 
 # Manual
-* [Table Of Contents](https://github.com/seanox/xml-micro-exchange/blob/master/manual/README.md#manual)
-* [Motivation](https://github.com/seanox/xml-micro-exchange/blob/master/manual/motivation.md)
-* [Installation](https://github.com/seanox/xml-micro-exchange/blob/master/manual/installation.md)
-* [Configuration](https://github.com/seanox/xml-micro-exchange/blob/master/manual/configuration.md)
-  * [Web Server](https://github.com/seanox/xml-micro-exchange/blob/master/manual/configuration.md#web-server)
-  * [Parameters](https://github.com/seanox/xml-micro-exchange/blob/master/manual/configuration.md#parameters)
-* [Terms](https://github.com/seanox/xml-micro-exchange/blob/master/manual/terms.md)
-* [Getting Started](https://github.com/seanox/xml-micro-exchange/blob/master/manual/getting-started.md)
-* [API](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api.md)
-  * [CONNECT](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api-connect.md)
-  * [DELETE](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api-delete.md)
-  * [GET](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api-get.md)
-  * [OPTIONS](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api-options.md)
-  * [PATCH](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api-patch.md)
-  * [POST](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api-post.md)
-  * [PUT](https://github.com/seanox/xml-micro-exchange/blob/master/manual/api-put.md)
-* [Error Handling](https://github.com/seanox/xml-micro-exchange/blob/master/manual/error-handling.md)
-* [Development](https://github.com/seanox/xml-micro-exchange/blob/master/manual/development.md)
-* [Test](https://github.com/seanox/xml-micro-exchange/blob/master/manual/test.md)
+* [Table Of Contents](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/README.md#manual)
+* [Motivation](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/motivation.md)
+* [Installation](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/installation.md)
+* [Configuration](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/configuration.md)
+  * [Web Server](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/configuration.md#web-server)
+  * [Parameters](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/configuration.md#parameters)
+* [Terms](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/terms.md)
+* [Getting Started](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/getting-started.md)
+* [API](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api.md)
+  * [CONNECT](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-connect.md)
+  * [DELETE](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-delete.md)
+  * [GET](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-get.md)
+  * [OPTIONS](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-options.md)
+  * [PATCH](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-patch.md)
+  * [POST](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-post.md)
+  * [PUT](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-put.md)
+* [Error Handling](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/error-handling.md)
+* [Development](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/development.md)
+* [Test](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/test.md)
 
 
 # Changes
@@ -153,10 +153,10 @@ BF: Service: Uniform use of status 204 for 404 in relation to targets in the sto
 BF: Service: Optimization/harmonization of content types for XML  
 CR: Service: OPTIONS responds with 204 instead of 200  
 
-[Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange/master/CHANGES)
+[Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange-php/master/CHANGES)
 
 
 # Contact
-[Issues](https://github.com/seanox/xml-micro-exchange/issues)  
-[Requests](https://github.com/seanox/xml-micro-exchange/pulls)  
+[Issues](https://github.com/seanox/xml-micro-exchange-php/issues)  
+[Requests](https://github.com/seanox/xml-micro-exchange-php/pulls)  
 [Mail](http://seanox.de/contact)  
