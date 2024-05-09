@@ -47,7 +47,6 @@ __All meet without obligation.__
 
 
 # Features
-
 - __RESTful__  
   The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT,
   PATCH, DELETE. The CONNECT method is not a standard and the function can be
@@ -117,7 +116,8 @@ __Please do not get confused, the API is online.
 Requests without storage identifier (see [manual](manual/README.md#manual)) are
 responded with status 400.__  
 
-It is a small server (1 Core, 512 MB, 10 GB SSD) in a big datacenter -- but apparently enough.  
+It is a small server (1 Core, 1 GB, 10 GB SSD) in a big datacenter -- but
+apparently enough.  
 __Sponsors are always welcome.__  
 The project needs ~~a good and simple domain~~ and if possible more power.  
 It costs about 5 Euro per month for 65536 x 1024 kB with double CPU cores
