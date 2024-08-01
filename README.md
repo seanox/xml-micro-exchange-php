@@ -104,7 +104,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.3.0](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.3.0/seanox-xmex-1.3.0.zip)  
+[Seanox XML-Micro-Exchange 1.3.1](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.3.0/seanox-xmex-1.3.1.zip)  
 
 
 # Free XML-Micro-Exchange
@@ -158,11 +158,13 @@ https://xmex.seanox.com/snake.html
 
 
 # Changes
-## 1.3.0 20210525 
-BF: Service: Uniform use of status 204 for 202 / 404  
-BF: Service: Uniform use of status 204 for 404 in relation to targets in the storage (axes)  
-BF: Service: Optimization/harmonization of content types for XML  
-CR: Service: OPTIONS responds with 204 instead of 200  
+## 1.3.1 20240801  
+BF: Review: Optimization/Corrections  
+BF: Build: Optimization / correction of the release info process  
+CR: Build: Releases are now only available on the release page  
+CR: OpenAPI: Added the missing OpenAPI Specification  
+CR: Project: Moved repository to xml-micro-exchange-php  
+NT: Harmonization of version numbers for the different implementations  
 
 [Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange-php/master/CHANGES)
 
