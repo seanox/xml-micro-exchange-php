@@ -1,54 +1,54 @@
 1.3.1 20240801
-  BF: Review: Optimization/Corrections
-  BF: Build: Optimization / correction of the release info process
-  CR: Build: Releases are now only available on the release page
-  CR: OpenAPI: Added the missing OpenAPI Specification
-  CR: Project: Moved repository to xml-micro-exchange-php
-  NT: Harmonization of version numbers for the different implementations
-      Major and minor describe the API, patch refers to the implementation.
-      The version of OpenAPI therefore only uses major and minor, patch is always 0.
+BF: Review: Optimization/Corrections
+BF: Build: Optimization / correction of the release info process
+CR: Build: Releases are now only available on the release page
+CR: OpenAPI: Added the missing OpenAPI Specification
+CR: Project: Moved repository to xml-micro-exchange-php
+NT: Harmonization of version numbers for the different implementations
+    Major and minor describe the API, patch refers to the implementation.
+    The version of OpenAPI therefore only uses major and minor, patch is always 0.
 
 1.3.0 20210525
-  BF: Service: Uniform use of status 204 for 202 / 404
-      Status 404 always refers storage and not entities/addressed targets in the storage.
-  BF: Service: Uniform use of status 204 for 404 in relation to targets in the storage (axes)
-      Status 404 is now only used in relation to storage.
-      Addressed targets (axes) use status 204 in combination with the response header Storage-Effects.
-  BF: Service: Optimization/harmonization of content types for XML
-      Fragments (PUT/PATCH) uses text/xhtml
-      XML output uses application/xml
-      XSLT input (POST) uses application/xslt+xml
-  CR: Service: OPTIONS responds with 204 instead of 200
+BF: Service: Uniform use of status 204 for 202 / 404
+    Status 404 always refers storage and not entities/addressed targets in the storage.
+BF: Service: Uniform use of status 204 for 404 in relation to targets in the storage (axes)
+    Status 404 is now only used in relation to storage.
+    Addressed targets (axes) use status 204 in combination with the response header Storage-Effects.
+BF: Service: Optimization/harmonization of content types for XML
+    Fragments (PUT/PATCH) uses text/xhtml
+    XML output uses application/xml
+    XSLT input (POST) uses application/xslt+xml
+CR: Service: OPTIONS responds with 204 instead of 200
 
 1.2.0 2021xxxx
-  NT: Version was skipped
-      For compatibility with the JavaScript implementation
+NT: Version was skipped
+    For compatibility with the JavaScript implementation
 
 1.1.0 20210225
-  BF: Service: Optimization of CONNECT
-      Status 507 (Insufficient Storage) now only occurs when a new storage is
-      to be created, but not when connecting to an existing one.
-  BF: Service: Optimization of CORS
-      Correction for a correct preflight OPTIONS response.
-      Change to the full notation of the Access-Control headers.
-      Omission of the automatic prefix.
-  BF: Build: Correction of release
-      Release file (zip) was not overwritten if already exists.
-  BF: Service: Uniform use of the GMT time zone
-      changes: Storage-Last-Modified / Storage-Expiration
-  BF: Service: Correction in the creation of trace and trace hashes
-  BF: Service: Correction of POST for use of status 422 by errors in the stylesheets instead of status 400
-      Concerns the declaration from the output
-  CR: Service: Added directives for XPath
-      Directives are added at the end of the XPath separated by exclamation marks (!).
-  CR: Service: Added the directive JSON
-      This directive transforms the output to JSON.
-  CR: Service GET/POST: Added support for accept header: application/json
-      The header enforces the transformation of XML and text output as JSON.
-      If the return value is not application/xslt+xml or text/plain, the header
-      has no effect on the output. The client is informed via the Content-Type
-      whether the transformation was used.
-  CR: Test: Added Snake as proof of concept for a multiplayer game
+BF: Service: Optimization of CONNECT
+    Status 507 (Insufficient Storage) now only occurs when a new storage is
+    to be created, but not when connecting to an existing one.
+BF: Service: Optimization of CORS
+    Correction for a correct preflight OPTIONS response.
+    Change to the full notation of the Access-Control headers.
+    Omission of the automatic prefix.
+BF: Build: Correction of release
+    Release file (zip) was not overwritten if already exists.
+BF: Service: Uniform use of the GMT time zone
+    changes: Storage-Last-Modified / Storage-Expiration
+BF: Service: Correction in the creation of trace and trace hashes
+BF: Service: Correction of POST for use of status 422 by errors in the stylesheets instead of status 400
+    Concerns the declaration from the output
+CR: Service: Added directives for XPath
+    Directives are added at the end of the XPath separated by exclamation marks (!).
+CR: Service: Added the directive JSON
+    This directive transforms the output to JSON.
+CR: Service GET/POST: Added support for accept header: application/json
+    The header enforces the transformation of XML and text output as JSON.
+    If the return value is not application/xslt+xml or text/plain, the header
+    has no effect on the output. The client is informed via the Content-Type
+    whether the transformation was used.
+CR: Test: Added Snake as proof of concept for a multiplayer game
 
 1.0.0 20201220
-  NT: Release is available
+NT: Release is available
