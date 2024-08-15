@@ -172,4 +172,4 @@ NT: Harmonization of version numbers for the different implementations
 # Contact
 [Issues](https://github.com/seanox/xml-micro-exchange-php/issues)  
 [Requests](https://github.com/seanox/xml-micro-exchange-php/pulls)  
-[Mail](http://seanox.com/contact)  
+[Mail](https://seanox.com/contact)  
