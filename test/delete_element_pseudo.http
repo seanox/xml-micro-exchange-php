@@ -359,7 +359,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 6x UID-D 1x UID-M
 # - URI: //text[@title='Text EA']::before
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204541275d3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204541275d3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -375,7 +375,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 6x UID-D 1x UID-M
 # - URI: //text[@title='Text FA']::after
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204641275d3a3a6166746572 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204641275d3a3a6166746572 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -406,7 +406,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 1x UID-M
 # - URI: //text[@title='Text F1']::before
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -422,7 +422,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - URI: //text[@title='Text F1']::before
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -439,7 +439,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 1x UID-M
 # - URI: //text[@title='Text F3']::after
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -455,7 +455,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - URI: //text[@title='Text F3']::after
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -472,7 +472,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - URI: //text[@title='Text F9']::first
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204639275d3a3a6669727374 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204639275d3a3a6669727374 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -489,7 +489,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Without Storage-Effects
 # - URI: //text[@title='Text F9']::last
-DELETE {{service}}0x2f2f746578745b407469746c653d2754657874204639275d3a3a6c617374 HTTP/1.0
+DELETE {{service}}2f2f746578745b407469746c653d2754657874204639275d3a3a6c617374 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 Accept-Effects: ALL
 
@@ -550,7 +550,7 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /*/..::before
-DELETE {{service}}0x2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
@@ -567,7 +567,7 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..::before
-DELETE {{service}}0x2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%

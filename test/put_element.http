@@ -141,7 +141,7 @@ client.test("unittest", function() {
 # - Status code 400 Bad Request
 # - Message: Invalid XPath (Functions are not supported)
 # - URI: name(.)
-PUT {{service}}0x6e616d65282e29 HTTP/1.0
+PUT {{service}}6e616d65282e29 HTTP/1.0
 Storage: {{storage_put_element}}
 Content-Type: application/xml
 
@@ -161,7 +161,7 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..
-PUT {{service}}0x2f626f6f6b732f2e2e HTTP/1.0
+PUT {{service}}2f626f6f6b732f2e2e HTTP/1.0
 Storage: {{storage_put_element}}
 Content-Type: application/xml
 
@@ -181,7 +181,7 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 #- URI: /*/..
-PUT {{service}}0x2f2a2f2e2e HTTP/1.0
+PUT {{service}}2f2a2f2e2e HTTP/1.0
 Storage: {{storage_put_element}}
 Content-Type: application/xml
 
@@ -329,7 +329,7 @@ client.test("unittest", function() {
 # - Storage-Effects: 36x UID-D, 1x UID-A, 1x UID-M
 # - Storage-Revision is increased
 # - URI: //*[@___uid]
-PUT {{service}}0x2f2f2a5b405f5f5f7569645d HTTP/1.0
+PUT {{service}}2f2f2a5b405f5f5f7569645d HTTP/1.0
 Storage: {{storage_put_element}}
 Accept-Effects: ALL
 Content-Type: application/xml

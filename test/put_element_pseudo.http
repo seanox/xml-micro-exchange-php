@@ -140,7 +140,7 @@ client.test("unittest", function() {
 # - Storage-Effects: 3x UID-A 1x UID-M
 # - test are put in before all last elements
 # - URI: (/books)//last::before
-PUT {{service}}0x282f626f6f6b73292f2f6c6173743a3a6265666f7265 HTTP/1.0
+PUT {{service}}282f626f6f6b73292f2f6c6173743a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xml
 
@@ -220,7 +220,7 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /*/..::before
-PUT {{service}}0x2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
+PUT {{service}}2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xml
 
@@ -242,7 +242,7 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..::before
-PUT {{service}}0x2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
+PUT {{service}}2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xml
 
@@ -298,7 +298,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 2x UID (A/M)
 # - URI: //*[@id='lastC']::first
-PUT {{service}}0x2f2f2a5b4069643d276c61737443275d3a3a6669727374 HTTP/1.0
+PUT {{service}}2f2f2a5b4069643d276c61737443275d3a3a6669727374 HTTP/1.0
 Storage: {{storage_put_element_pseudo}}
 Content-Type: application/xml
 

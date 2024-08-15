@@ -224,7 +224,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Response-Body: 6
 # - URI: count(//book[1]//text[@title])
-GET {{service}}0x636f756e74282f2f626f6f6b5b315d2f2f746578745b407469746c655d29 HTTP/1.0
+GET {{service}}636f756e74282f2f626f6f6b5b315d2f2f746578745b407469746c655d29 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%
@@ -242,7 +242,7 @@ client.test("unittest", function() {
 # - Storage-Revision: was increased
 # - All title attributes in  book[1] was deleted
 # - URI: (//book[1]//text)/@title
-DELETE {{service}}0x2f2f626f6f6b5b315d2f2f746578742f407469746c65 HTTP/1.0
+DELETE {{service}}2f2f626f6f6b5b315d2f2f746578742f407469746c65 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%
@@ -259,7 +259,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Response-Body: 0
 # - URI: count(//book[1]//text[@title])
-GET {{service}}0x636f756e74282f2f626f6f6b5b315d2f2f746578745b407469746c655d29 HTTP/1.0
+GET {{service}}636f756e74282f2f626f6f6b5b315d2f2f746578745b407469746c655d29 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%
@@ -276,7 +276,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Response-Body: 6
 # - URI: count(//book[2]//text[attribute::title])
-GET {{service}}0x636f756e74282f2f626f6f6b5b325d2f2f746578745b6174747269627574653a3a7469746c655d29 HTTP/1.0
+GET {{service}}636f756e74282f2f626f6f6b5b325d2f2f746578745b6174747269627574653a3a7469746c655d29 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%
@@ -294,7 +294,7 @@ client.test("unittest", function() {
 # - Storage-Revision: was increased
 # - All title attributes in  book[2] was deleted
 # - URI: (//book[2]//text)/attribute::title
-DELETE {{service}}0x282f2f626f6f6b5b325d2f2f74657874292f6174747269627574653a3a7469746c65 HTTP/1.0
+DELETE {{service}}282f2f626f6f6b5b325d2f2f74657874292f6174747269627574653a3a7469746c65 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%
@@ -311,7 +311,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Response-Body: 0
 # - URI: count(//book[2]//text[attribute::title])
-GET {{service}}0x636f756e74282f2f626f6f6b5b325d2f2f746578745b6174747269627574653a3a7469746c655d29 HTTP/1.0
+GET {{service}}636f756e74282f2f626f6f6b5b325d2f2f746578745b6174747269627574653a3a7469746c655d29 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%
@@ -358,7 +358,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 404 Resource Not Found
 # - URI: /*/../@___xxx
-DELETE {{service}}0x2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
+DELETE {{service}}2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%
@@ -373,7 +373,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 404 Resource Not Found
 # - URI: //books/../@___xxx
-DELETE {{service}}0x2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
+DELETE {{service}}2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
 > {%

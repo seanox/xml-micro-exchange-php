@@ -67,7 +67,7 @@ client.test("unittest", function() {
 # - Storage-Revision is increased
 # - Title of all books change (Test_1)
 # - URI: //*/@title
-PUT {{service}}0x2f2f2a2f407469746c65 HTTP/1.0
+PUT {{service}}2f2f2a2f407469746c65 HTTP/1.0
 Storage: {{storage_request}}
 Content-Type: text/plain
 
@@ -522,7 +522,7 @@ client.test("unittest", function() {
 # - Content-Length: 85
 # - Content: ...Text D3
 # - URI: //book[last()]/chapter[last()]
-GET {{service}}0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d HTTP/1.0
+GET {{service}}2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d HTTP/1.0
 Storage: {{storage_request}}
 
 > {%
@@ -537,7 +537,7 @@ client.test("unittest", function() {
 # - Status code 400 Bad Request
 # - Message: Invalid XPath function (Invalid expression)
 # - URI: //book[last()]/chapter[last()]
-GET {{service}}0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X HTTP/1.0
+GET {{service}}2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X HTTP/1.0
 Storage: {{storage_request}}
 
 > {%
@@ -554,13 +554,13 @@ client.test("unittest", function() {
 # making the request invalid.
 # But the request can be sent via Console + Telnet.
 #     telnet 127.0.0.1 80
-#     GET /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld HTTP/1.0
+#     GET /xmex!Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld HTTP/1.0
 #     Storage: UnitTest_Storage_R0 books
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 85
 # - URI: //book[last()]/chapter[last()]
-#GET {{service}}Base64:ALy9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld HTTP/1.0
+#GET {{service}}ALy9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld HTTP/1.0
 #Storage: {{storage_request}}
 #
 #> {%
@@ -580,7 +580,7 @@ client.test("unittest", function() {
 # - Storage-Revision is increased
 # - Title of all books change (Test_2)
 # URI: //*/@title
-#PUT {{service}}?0x2f2f2a2f407469746c65 HTTP/1.0
+#PUT {{service}}?2f2f2a2f407469746c65 HTTP/1.0
 #Storage: {{storage_request}}
 #Content-Type: text/plain
 #

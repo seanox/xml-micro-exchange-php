@@ -117,7 +117,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects; 1x UID-M
 # - URI: //a/@touch
-PATCH {{service}}0x2f2f612f40746f756368 HTTP/1.0
+PATCH {{service}}2f2f612f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -135,7 +135,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects; 1x UID-M
 # - URI: //b/@touch
-PATCH {{service}}0x2f2f622f40746f756368 HTTP/1.0
+PATCH {{service}}2f2f622f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -153,7 +153,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects; 1x UID-M
 # - URI: //c/@touch
-PATCH {{service}}0x2f2f632f40746f756368 HTTP/1.0
+PATCH {{service}}2f2f632f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -171,7 +171,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects; 1x UID-M
 # - URI: //d/@touch
-PATCH {{service}}0x2f2f642f40746f756368 HTTP/1.0
+PATCH {{service}}2f2f642f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -189,7 +189,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects; 1x UID-M
 # - URI: //a/@touch
-PATCH {{service}}0x2f2f612f40746f756368 HTTP/1.0
+PATCH {{service}}2f2f612f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -207,7 +207,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 3x UID-A 1x UID-M
 # - URI: //players[not(//field[@id=1])]//a
-PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d315d295d2f2f61 HTTP/1.0
+PATCH {{service}}2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d315d295d2f2f61 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: application/xml
 
@@ -225,7 +225,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 3x UID-A 1x UID-M
 # - URI: //players[not(//field[@id=1])]//b
-PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d315d295d2f2f62 HTTP/1.0
+PATCH {{service}}2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d315d295d2f2f62 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: application/xml
 
@@ -244,7 +244,7 @@ client.test("unittest", function() {
 # - Content-Type: application/json
 # - Content-Length: 491
 # - URI: //players//field!json
-GET {{service}}0x2f2f706c61796572732f2f6669656c64216a736f6e HTTP/1.0
+GET {{service}}2f2f706c61796572732f2f6669656c64216a736f6e HTTP/1.0
 Storage: {{storage_snake}}
 
 > {%
@@ -259,7 +259,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 6x UID-M
 # - URI: //players/*[@touch<400]|//players/*[@touch='']
-PATCH {{service}}0x2f2f706c61796572732f2a5b40746f7563683c3430305d7c2f2f706c61796572732f2a5b40746f7563683d27275d HTTP/1.0
+PATCH {{service}}2f2f706c61796572732f2a5b40746f7563683c3430305d7c2f2f706c61796572732f2a5b40746f7563683d27275d HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -275,7 +275,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 2x UID-M
 # - URI: //players/*[@touch<400]/@touch
-PATCH {{service}}0x2f2f706c61796572732f2a5b40746f7563683c3430305d2f40746f756368 HTTP/1.0
+PATCH {{service}}2f2f706c61796572732f2a5b40746f7563683c3430305d2f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -292,7 +292,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 1x UID-M
 # - URI: //players/*[@touch=''][1]/@touch
-PATCH {{service}}0x2f2f706c61796572732f2a5b40746f7563683d27275d5b315d2f40746f756368 HTTP/1.0
+PATCH {{service}}2f2f706c61796572732f2a5b40746f7563683d27275d5b315d2f40746f756368 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: text/plain
 
@@ -310,7 +310,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 404 Resource Not Found
 # - URI: /snake[not(//field/@id=11)]//h
-PATCH  {{service}}0x2f736e616b655b6e6f74282f2f6669656c642f4069643d3131295d2f2f68 HTTP/1.0
+PATCH  {{service}}2f736e616b655b6e6f74282f2f6669656c642f4069643d3131295d2f2f68 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: application/xml
 
@@ -329,7 +329,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 3x UID-A 1x UID-M
 # - URI: //players[not(//field[@id=14])]//a
-PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d31345d295d2f2f61 HTTP/1.0
+PATCH {{service}}2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d31345d295d2f2f61 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: application/xml
 
@@ -348,7 +348,7 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Effects: 1x UID-A 1x UID-M
 # - URI: /snake[not(//field/@id=11)]//h
-PATCH  {{service}}0x2f736e616b655b6e6f74282f2f6669656c642f4069643d3131295d2f2f68 HTTP/1.0
+PATCH  {{service}}2f736e616b655b6e6f74282f2f6669656c642f4069643d3131295d2f2f68 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: application/xml
 
@@ -366,7 +366,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 404 Resource Not Found
 # - URI: //players[not(//field[@id=14])]//b
-PATCH {{service}}0x2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d31345d295d2f2f62 HTTP/1.0
+PATCH {{service}}2f2f706c61796572735b6e6f74282f2f6669656c645b4069643d31345d295d2f2f62 HTTP/1.0
 Storage: {{storage_snake}}
 Content-Type: application/xml
 

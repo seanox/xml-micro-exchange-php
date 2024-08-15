@@ -237,7 +237,7 @@ client.test("unittest", function() {
 # - Content-Type: application/xml
 # - Only an extract of districts
 # - URI: (/statistic//districts)
-GET {{service}}0x282f7374617469737469632f2f64697374726963747329 HTTP/1.0
+GET {{service}}282f7374617469737469632f2f64697374726963747329 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -254,7 +254,7 @@ client.test("unittest", function() {
 # - Content-Type: application/xml
 # - Only an extract of all district entries as collection
 # - URI: (/statistic//districts)/district
-GET {{service}}0x282f7374617469737469632f2f646973747269637473292f6469737472696374 HTTP/1.0
+GET {{service}}282f7374617469737469632f2f646973747269637473292f6469737472696374 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -269,7 +269,7 @@ client.test("unittest", function() {
 # - Status code 400 Bad Request
 # - Message: Invalid XPath (Invalid expression)
 # - URI: (/wrong//districts/)
-GET {{service}}0x282f77726f6e672f2f6469737472696374732f29 HTTP/1.0
+GET {{service}}282f77726f6e672f2f6469737472696374732f29 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -299,7 +299,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Value: 1
 # - URI: count(/statistic//districts)
-GET {{service}}0x636f756e74282f7374617469737469632f2f6469737472696374732920 HTTP/1.0
+GET {{service}}636f756e74282f7374617469737469632f2f6469737472696374732920 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -330,7 +330,7 @@ client.test("unittest", function() {
 # - Status code 400 Bad Request
 # - Message: Invalid XPath function (Unregistered function)
 # - URI: wrong(/statistic//districts)
-GET {{service}}0x77726f6e67282f7374617469737469632f2f64697374726963747329 HTTP/1.0
+GET {{service}}77726f6e67282f7374617469737469632f2f64697374726963747329 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -347,7 +347,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Value: false
 # - URI: count(/statistic//districts)<0
-GET {{service}}0x636f756e74282f7374617469737469632f2f646973747269637473293c30 HTTP/1.0
+GET {{service}}636f756e74282f7374617469737469632f2f646973747269637473293c30 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -364,7 +364,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Value: true
 # - URI: count(/statistic//districts)>0
-GET {{service}}0x636f756e74282f7374617469737469632f2f646973747269637473293e30 HTTP/1.0
+GET {{service}}636f756e74282f7374617469737469632f2f646973747269637473293e30 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -381,7 +381,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Value: false
 # - URI: count(/statistic//districts)>100
-GET {{service}}0x636f756e74282f7374617469737469632f2f646973747269637473293e313030 HTTP/1.0
+GET {{service}}636f756e74282f7374617469737469632f2f646973747269637473293e313030 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -414,7 +414,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Value: Berlin
 # - URI: //city[1]/@name
-GET {{service}}0x2f2f636974795b315d2f406e616d65 HTTP/1.0
+GET {{service}}2f2f636974795b315d2f406e616d65 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -431,7 +431,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Value: Berlin
 # - URI: //city[1]/attribute::name
-GET {{service}}0x2f2f636974795b315d2f6174747269627574653a3a6e616d65 HTTP/1.0
+GET {{service}}2f2f636974795b315d2f6174747269627574653a3a6e616d65 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -445,7 +445,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 404 Resource Not Found
 # - URI: //city[1]/attribute::wrong
-GET {{service}}0x2f2f636974795b315d2f6174747269627574653a3a77726f6e67 HTTP/1.0
+GET {{service}}2f2f636974795b315d2f6174747269627574653a3a77726f6e67 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -461,7 +461,7 @@ client.test("unittest", function() {
 # - Content-Length: 0
 # - Without Content-Type
 # - URI: //city[1]/attribute::empty
-GET {{service}}0x2F2F636974795b315d2f6174747269627574653a3a656d707479 HTTP/1.0
+GET {{service}}2F2F636974795b315d2f6174747269627574653a3a656d707479 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -679,7 +679,7 @@ client.test("unittest", function() {
 # - Content-Length: 2385
 # - Content-Type: application/xml
 # - URI: //quarter/@name
-GET {{service}}0x2f2f717561727465722f406e616d65 HTTP/1.0
+GET {{service}}2f2f717561727465722f406e616d65 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -697,7 +697,7 @@ client.test("unittest", function() {
 # - Content-Length: 3995
 # - Content-Type: application/xml
 # - URI: //quarter/@name|//quarter/@area
-GET {{service}}0x2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
+GET {{service}}2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -714,7 +714,7 @@ client.test("unittest", function() {
 # - Content-Type: text/plain
 # - Content: Charlottenburg
 # - URI: //district[1]//quarter[1]/@name
-GET {{service}}0x2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d65 HTTP/1.0
+GET {{service}}2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d65 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -730,7 +730,7 @@ client.test("unittest", function() {
 # - Content-Length: 92
 # - Content-Type: application/xml
 # - URI: //district[1]//quarter[1]/@name|//district[1]//quarter[1]/@area
-GET {{service}}0x2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d657c2f2f64697374726963745b315d2f2f717561727465725b315d2f4061726561 HTTP/1.0
+GET {{service}}2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d657c2f2f64697374726963745b315d2f2f717561727465725b315d2f4061726561 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -746,7 +746,7 @@ client.test("unittest", function() {
 # - Content-Length: 1144
 # - Content-Type: application/xml
 # - URI: //district[1]|//district[1]/@name
-GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
+GET {{service}}2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -779,7 +779,7 @@ client.test("unittest", function() {
 # - Content-Type: application/json
 # - Content-Length: 1170
 # - URI: //district[1]|//district[1]/@name!JSon
-GET {{service}}0x2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e HTTP/1.0
+GET {{service}}2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -814,7 +814,7 @@ client.test("unittest", function() {
 # - Content-Type: application/json
 # - Value: "Berlin"
 # - URI: //city[1]/@name!jSOn
-GET {{service}}0x2f2f636974795b315d2f406e616d65216a534f6e HTTP/1.0
+GET {{service}}2f2f636974795b315d2f406e616d65216a534f6e HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -830,7 +830,7 @@ client.test("unittest", function() {
 # - Content-Type: application/xml
 # - Content-Length: 137
 # - URI: //quarter[@name='Rahnsdorf']
-GET {{service}}0x2f2f717561727465725b406e616d653d275261686e73646f7266275d HTTP/1.0
+GET {{service}}2f2f717561727465725b406e616d653d275261686e73646f7266275d HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
@@ -846,7 +846,7 @@ client.test("unittest", function() {
 # - Content-Type: application/json
 # - Content-Length: 133
 # - URI: //quarter[@name='Rahnsdorf']!json
-GET {{service}}0x2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e HTTP/1.0
+GET {{service}}2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e HTTP/1.0
 Storage: {{storage_get}}
 
 > {%

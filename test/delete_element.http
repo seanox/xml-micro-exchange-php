@@ -167,7 +167,7 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..
-DELETE {{service}}0x2f626f6f6b732f2e2e HTTP/1.0
+DELETE {{service}}2f626f6f6b732f2e2e HTTP/1.0
 Storage: {{storage_delete_element}}
 
 > {%
@@ -297,7 +297,7 @@ client.test("unittest", function() {
 # - Storage-Effects: 28x UID-D, 1x UID-A
 # - Storage-Revision is increased
 # - URI: //*[@___uid]
-DELETE {{service}}0x2f2f2a5b405f5f5f7569645d HTTP/1.0
+DELETE {{service}}2f2f2a5b405f5f5f7569645d HTTP/1.0
 Storage: {{storage_delete_element}}
 Accept-Effects: ALL
 

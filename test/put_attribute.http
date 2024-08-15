@@ -330,7 +330,7 @@ client.test("unittest", function() {
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 # - URI: //books/../@___xxx
-PUT {{service}}0x2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
+PUT {{service}}2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
 Storage: {{storage_put_attribute}}
 Content-Type: text/plain
 
@@ -351,7 +351,7 @@ client.test("unittest", function() {
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 # - URI: /*/../@___xxx
-PUT {{service}}0x2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
+PUT {{service}}2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
 Storage: {{storage_put_attribute}}
 Content-Type: text/plain
 

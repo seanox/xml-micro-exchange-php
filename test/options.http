@@ -141,7 +141,7 @@ client.test("unittest", function() {
 # - Without Storage-Effects header
 # - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 # - URI: /
-OPTIONS {{service}}0x2f HTTP/1.0
+OPTIONS {{service}}2f HTTP/1.0
 Storage: {{storage_options}}
 
 > {%
@@ -156,7 +156,7 @@ client.test("unittest", function() {
 # - Status code 400 Bad Request
 # - Message: Invalid XPath axis (Invalid expression)
 # - URI: //
-OPTIONS {{service}}0x2f2f HTTP/1.0
+OPTIONS {{service}}2f2f HTTP/1.0
 Storage: {{storage_options}}
 
 > {%
@@ -187,7 +187,7 @@ client.test("unittest", function() {
 # - Storage-Effects: 9x UID
 # - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 # - URI: (/books)//chapter
-OPTIONS {{service}}0x282f626f6f6b73292f2f63686170746572 HTTP/1.0
+OPTIONS {{service}}282f626f6f6b73292f2f63686170746572 HTTP/1.0
 Storage: {{storage_options}}
 
 > {%
@@ -203,7 +203,7 @@ client.test("unittest", function() {
 # - Storage-Effects: 27x UID
 # - Allow: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
 # - URI: (/books)//paragraph
-OPTIONS {{service}}0x282f626f6f6b73292f2f706172616772617068 HTTP/1.0
+OPTIONS {{service}}282f626f6f6b73292f2f706172616772617068 HTTP/1.0
 Storage: {{storage_options}}
 
 > {%

@@ -235,7 +235,7 @@ client.test("unittest", function() {
 
 ###
 # - URI: //conversation/message[position()<=count(//conversation/message)-5]
-DELETE {{service}}0x2f2f636f6e766572736174696f6e2f6d6573736167655b706f736974696f6e28293c3d636f756e74282f2f636f6e766572736174696f6e2f6d657373616765292d355d HTTP/1.0
+DELETE {{service}}2f2f636f6e766572736174696f6e2f6d6573736167655b706f736974696f6e28293c3d636f756e74282f2f636f6e766572736174696f6e2f6d657373616765292d355d HTTP/1.0
 Storage: {{storage_getting_started}}
 
 > {%
@@ -246,7 +246,7 @@ client.test("unittest", function() {
 
 ###
 # - URI: //message[@from='dan.star@example.local']
-GET {{service}}0x2f2f6d6573736167655b4066726f6d3d2764616e2e73746172406578616d706c652e6c6f63616c275d HTTP/1.0
+GET {{service}}2f2f6d6573736167655b4066726f6d3d2764616e2e73746172406578616d706c652e6c6f63616c275d HTTP/1.0
 Storage: {{storage_getting_started}}
 
 > {%
@@ -257,7 +257,7 @@ client.test("unittest", function() {
 
 ###
 # - URI: //*/@mail|//*/@from
-GET {{service}}0x2f2f2a2f406d61696c7c2f2f2a2f4066726f6d HTTP/1.0
+GET {{service}}2f2f2a2f406d61696c7c2f2f2a2f4066726f6d HTTP/1.0
 Storage: {{storage_getting_started}}
 
 > {%

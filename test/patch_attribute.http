@@ -384,7 +384,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 404 Resource Not Found
 # - URI: //books/../@___xxx
-PATCH {{service}}0x2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
+PATCH {{service}}2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
 Storage: {{storage_patch_attribute}}
 Content-Type: text/plain
 
@@ -402,7 +402,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 404 Resource Not Found
 # - URI: /*/../@___xxx
-PATCH {{service}}0x2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
+PATCH {{service}}2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
 Storage: {{storage_patch_attribute}}
 Content-Type: text/plain
 
