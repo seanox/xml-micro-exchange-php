@@ -69,7 +69,7 @@ Storage-Revision: Revision (number)
 Storage-Space: Total/Used (bytes)
 Storage-Last-Modified: Timestamp (RFC822)
 Storage-Expiration: Timestamp (RFC822)
-Storage-Expiration-Time: Timeout (milliseconds)
+Storage-Expiration-Time: Expiration (milliseconds)
 Content-Length: (bytes)
     Response-Body:
 The result of the XPath request

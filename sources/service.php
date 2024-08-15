@@ -5,7 +5,7 @@
  * Diese Software unterliegt der Version 2 der Apache License.
  *
  * XMEX XML-Micro-Exchange
- * Copyright (C) 2021 Seanox Software Solutions
+ * Copyright (C) 2024 Seanox Software Solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -181,24 +181,24 @@
  * configured outside of the XMEX (XML-Micro-Exchange) at the web server.
  *
  * @author  Seanox Software Solutions
- * @version 1.3.0 20210420
+ * @version 1.4.0 20240815
  */
 class Storage {
 
     /** Directory of the data storage */
-    const DIRECTORY = "./data";
+    const DIRECTORY = getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data";
 
     /** Maximum number of files in data storage */
-    const QUANTITY = 65535;
+    const QUANTITY = getenv("XMEX_STORAGE_QUANTITY", true) ?: 65535;
 
     /**
      * Maximum data size of files in data storage in bytes.
      * The value also limits the size of the requests(-body).
      */
-    const SPACE = 256 *1024;
+    const SPACE = getenv("XMEX_STORAGE_SPACE", true) ?: 256 *1024;
 
     /** Maximum idle time of the files in seconds */
-    const TIMEOUT = 15 *60;
+    const EXPIRATION = getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60;
 
     /**
      * Optional CORS response headers as associative array.
@@ -362,7 +362,7 @@ class Storage {
         if (!is_dir(Storage::DIRECTORY))
             return;
         if ($handle = opendir(Storage::DIRECTORY)) {
-            $timeout = time() -Storage::TIMEOUT;
+            $timeout = time() -Storage::EXPIRATION;
             while (($entry = readdir($handle)) !== false) {
                 if ($entry == "."
                         || $entry == "..")
@@ -567,7 +567,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      * Connection-Unique: UID
      *
      *     Response:
@@ -577,7 +577,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      * Connection-Unique: UID
      *
      *     Response codes / behavior:
@@ -639,7 +639,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -676,7 +676,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      * Connection-Unique: UID
      *
      *     Response:
@@ -686,7 +686,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      * Connection-Unique: UID
      *
      *     Response codes / behavior:
@@ -779,7 +779,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      * Content-Length: (bytes)
      *     Response-Body:
      * The result of the XPath request
@@ -876,7 +876,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      * Content-Length: (bytes)
      *     Response-Body:
      * The result of the transformation
@@ -1064,7 +1064,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -1501,7 +1501,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -1612,7 +1612,7 @@ class Storage {
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Timeout (milliseconds)
+     * Storage-Expiration-Time: Expiration (milliseconds)
      *
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
@@ -1822,7 +1822,7 @@ class Storage {
                 && $this->storage
                 && $this->xml) {
             $expiration = new DateTime();
-            $expiration->add(new DateInterval("PT" . Storage::TIMEOUT . "S"));
+            $expiration->add(new DateInterval("PT" . Storage::EXPIRATION . "S"));
             $expiration = $expiration->format("D, d M Y H:i:s T");
             $headers = array_merge($headers, [
                 "Storage" => $this->storage,
@@ -1830,7 +1830,7 @@ class Storage {
                 "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
                 "Storage-Last-Modified" => date("D, d M Y H:i:s T"),
                 "Storage-Expiration" => $expiration,
-                "Storage-Expiration-Time" => (Storage::TIMEOUT *1000) . " ms"
+                "Storage-Expiration-Time" => (Storage::EXPIRATION *1000) . " ms"
             ]);
         }
 
