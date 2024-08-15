@@ -146,13 +146,13 @@
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
  *        XPath as hexadecimal string
- * The URI starts with 0x after the XPath separator:
- * e.g. /xmex!0x2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d
+ * The URI starts with  after the XPath separator:
+ * e.g. /xmex!2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
  *        XPath as Base64 encoded string
  * The URI starts with Base64 after the XPath separator:
- * e.g. /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
+ * e.g. /xmex!Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
  *     TRANSACTION / SIMULTANEOUS ACCESS
@@ -242,6 +242,12 @@ class Storage {
     /** Unique ID related to the request */
     private $unique;
 
+    /** Pattern for detecting Base64 decoding */
+    const PATTERN_BASE64 = "/^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/";
+
+    /** Pattern for detecting HEX decoding */
+    const PATTERN_HEX = "/^([A-Fa-f0-9]{2})+$/";
+
     /**
      * Pattern to determine a HTTP request
      *     Group 0. Full match
@@ -249,7 +255,7 @@ class Storage {
      *     Group 2. URI
      *     Group 3. Protocol
      */
-    const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HtTP\/\d+(?:\.\d+)*)$/i";
+    const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HTTP\/\d+(?:\.\d+)*)$/i";
 
     /**
      * Pattern for separating URI-Path and XPath.
@@ -2243,9 +2249,9 @@ if (Storage::PATTERN_HTTP_REQUEST_URI) {
         $xpath = $xpath[2];
     $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 }
-if (preg_match("/^0x([A-Fa-f0-9]{2})+$/", $xpath))
+if (preg_match(Storage::PATTERN_HEX, $xpath))
     $xpath = hex2bin(substr($xpath, 2));
-else if (preg_match("/^Base64:[A-Za-z0-9\+\/]+=*$/", $xpath))
+else if (preg_match(Storage::PATTERN_BASE64, $xpath))
     $xpath = base64_decode(substr($xpath, 7));
 else $xpath = urldecode($xpath);
 
