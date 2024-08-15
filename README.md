@@ -53,7 +53,7 @@ __All meet without obligation.__
   XPath axes and functions are used for access, navigation and addressing of
   targets in the data source and it is an integral part of the URI with dynamic
   and functional effects.
-- __Multible axes and targets__  
+- __Multiple axes and targets__  
   An XPath axis can address several elements and attributes simultaneously,
   which can be changed with one call.
 - __XPath Functions__  
