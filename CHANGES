@@ -6,24 +6,24 @@ CR: Service: Optimization of the configuration via environment variables
     - XMEX_STORAGE_QUANTITY: Maximum number of files in data storage (65535)
     - XMEX_STORAGE_SPACE: Maximum data size of files in data storage in bytes (256 *1024)
     - XMEX_STORAGE_EXPIRATION: Maximum idle time of the files in seconds (15 *60)
-    TODO: Add description in manual
+    TODO: Add description in manual + OpenAPI
     TODO: Test
 CR: Request: Configurable XPath delimiter of the URI
     XPath delimiter for the URI is not automatically the first symbol.
     The uniform standard is the exclamation mark !
-    TODO: Add description in manual
+    TODO: Add description in manual + OpenAPI
     TODO: Test
 CR: Request: Omission of XPath via query string
     The XPath includes the query string as part of the path.
 CR: Request: Omission of prefix Base64: for Base64 encoded paths
     old: /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
     new: /xmex!Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
-    TODO: Add description in manual
+    TODO: Add description in manual + OpenAPI
     TODO: Test
 CR: Request: Omission of prefix 0x for hex encoded paths
     old: /xmex!0x282f626f6f6b73292f2f6c6173743a3a6265666f7265
     new: /xmex!282f626f6f6b73292f2f6c6173743a3a6265666f7265
-    TODO: Add description in manual
+    TODO: Add description in manual + OpenAPI
     TODO: Test
 
 1.3.1 20240801
