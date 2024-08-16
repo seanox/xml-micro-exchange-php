@@ -1,12 +1,20 @@
 1.4.0 2024xxxx
 CR: Service: Optimization of the configuration via environment variables
     Simplifies the provision as a container.
+    - XMEX_URI_XPATH_DELIMITER: XPath delimiter in the URI (!)
     - XMEX_STORAGE_DIRECTORY: Directory of the data storage (./data)
     - XMEX_STORAGE_QUANTITY: Maximum number of files in data storage (65535)
     - XMEX_STORAGE_SPACE: Maximum data size of files in data storage in bytes (256 *1024)
     - XMEX_STORAGE_EXPIRATION: Maximum idle time of the files in seconds (15 *60)
     TODO: Add description in manual
     TODO: Test
+CR: Request: Configurable XPath delimiter of the URI
+    XPath delimiter for the URI is not automatically the first symbol.
+    The uniform standard is the exclamation mark !
+    TODO: Add description in manual
+    TODO: Test
+CR: Request: Omission of XPath via query string
+    The XPath includes the query string as part of the path.
 CR: Request: Omission of prefix Base64: for Base64 encoded paths
     old: /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
     new: /xmex!Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld

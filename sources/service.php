@@ -137,14 +137,6 @@
  * e.g. /xmex!//book%5Blast()%5D/chapter%5Blast()%5D
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
- *        XPath as query string and URL encoding
- * The XPath is transmitted as a query string.
- * e.g. /xmex!?//book[last()]/chapter[last()]
- *      /xmex!?//book%5Blast()%5D/chapter%5Blast()%5D
- *      /xmex?//book[last()]/chapter[last()]
- *      /xmex?//book%5Blast()%5D/chapter%5Blast()%5D
- * is equivalent to: /xmex!//book[last()]/chapter[last()]
- *
  *        XPath as hexadecimal string
  * The URI starts with  after the XPath separator:
  * e.g. /xmex!2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d
@@ -199,6 +191,9 @@ class Storage {
 
     /** Maximum idle time of the files in seconds */
     const EXPIRATION = getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60;
+
+    /** Character or character sequence of the XPath delimiter in the URI */
+    const DELIMITER = getenv("XMEX_URI_XPATH_DELIMITER", true) ?: "!";
 
     /**
      * Optional CORS response headers as associative array.
@@ -265,7 +260,7 @@ class Storage {
      *     Group 1. URI-Path
      *     Group 2. XPath
      */
-    const PATTERN_HTTP_REQUEST_URI = "/^(.*?)[!#\$\*:\?@\|~]+(.*)$/i";
+    const PATTERN_HTTP_REQUEST_URI = "/^(.*?)" + Storage::DELIMITER + "(.*)$/i";
 
     /**
      * Pattern for the Storage header
@@ -594,8 +589,6 @@ class Storage {
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
-     * - XPath is used from PATH_INFO + QUERY_STRING, not the request URI
-     *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
      *         HTTP/1.0 507 Insufficient Storage
      * - Response can be status 507 if the storage is full
