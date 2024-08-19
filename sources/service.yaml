@@ -116,15 +116,15 @@ externalDocs:
   description: Find out more about Seanox XMEX (incl. Manual and Getting Started)
   url: https://github.com/seanox/xml-micro-exchange-js/blob/main/manual/README.md
 servers:
-  - url: https://xmex.seanox.com
-  - url: http://127.0.0.1:8000
+- url: https://xmex.seanox.com
+- url: http://127.0.0.1:8000
 tags:
-  - name: "API"
+- name: "API"
 paths:
   /xmex!:
     options:
       tags:
-        - API
+      - API
       summary: "
           Opens a storage for use and/or queries the current informations about the storage.
         "
@@ -204,32 +204,32 @@ paths:
           </pre>
         "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-              <br>
-              Special case CORS.<br>
-              The request header Storage is normally always required. However,
-              it is not required for the CORS preflight-request. Therefore, the
-              header has been decalarized as non-optional.
-            "
-          required: false
-          schema:
-            type: string
-            example: BookReview books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+            <br>
+            Special case CORS.<br>
+            The request header Storage is normally always required. However,
+            it is not required for the CORS preflight-request. Therefore, the
+            header has been decalarized as non-optional.
+          "
+        required: false
+        schema:
+          type: string
+          example: BookReview books
       responses:
         201:
           description: "Storage was newly created."
@@ -255,7 +255,7 @@ paths:
   /xmex!{xpath}:
     options:
       tags:
-        - API
+      - API
       summary: "
           Gets information about the storage and/or a target addressed by XPath.
         "
@@ -318,43 +318,43 @@ paths:
           </pre>
         "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: /books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: /books
       responses:
         204:
           description: "Request was successfully executed."
@@ -373,7 +373,7 @@ paths:
             "
     put:
       tags:
-        - API
+      - API
       summary: "
           Creates elements and attributes in storage and/or changes the value of existing ones
         "
@@ -499,43 +499,43 @@ paths:
           </pre>
         "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: "/books"
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: "/books"
       requestBody:
         description: "
             The attribute values can be static (text) and dynamic (XPath function). Values
@@ -601,7 +601,7 @@ paths:
             "
     patch:
       tags:
-        - API
+      - API
       summary: "
           Changes existing elements and attributes in storage
         "
@@ -722,43 +722,43 @@ paths:
           </pre>
         "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: /books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: /books
       requestBody:
         description: "
             The attribute values can be static (text) and dynamic (XPath function). Values are send as
@@ -825,7 +825,7 @@ paths:
             "
     get:
       tags:
-        - API
+      - API
       summary: "
            Queries data about XPath axes and functions
          "
@@ -916,43 +916,43 @@ paths:
           </pre>
          "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: /books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: /books
       responses:
         200:
           description: "Request was successfully executed."
@@ -981,7 +981,7 @@ paths:
             "
     post:
       tags:
-        - API
+      - API
       summary: "
           Queries data about XPath axes and functions via transformation
         "
@@ -1058,43 +1058,43 @@ paths:
           </pre>
         "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: /books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: /books
       requestBody:
         content:
           application/xslt+xml:
@@ -1140,7 +1140,7 @@ paths:
             "
     delete:
       tags:
-        - API
+      - API
       summary: "
           Deletes elements and attributes in the storage
         "
@@ -1219,43 +1219,43 @@ paths:
           </pre>
         "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: /books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: /books
       responses:
         204:
           description: "
@@ -1279,7 +1279,7 @@ paths:
   /xmex!{xpath}!json:
     get:
       tags:
-        - API
+      - API
       summary: "
            Queries data about XPath axes and functions as JSON output
          "
@@ -1363,43 +1363,43 @@ paths:
           </pre>
          "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: /books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: /books
       responses:
         200:
           description: "Request was successfully executed."
@@ -1424,7 +1424,7 @@ paths:
             "
     post:
       tags:
-        - API
+      - API
       summary: "
           Queries data about XPath axes and functions via transformation as JSON output
         "
@@ -1505,43 +1505,43 @@ paths:
           </pre>
         "
       parameters:
-        - name: Storage
-          in: header
-          description: "
-              Each storage has an identifier. The Storage Identifier is used as
-              the filename of the corresponding XML file and must be specified
-              with each request so that the datasource uses the correct storage.
-              Optionally, the storage identifier can be followed by the name of
-              the root element of the XML file separated by a space.<br>
-              If the root element is not specified, the default 'data' is used.<br>
-              <br>
-              <b>Important:</b> To use a storage, the storage identifier and name
-              of the root element must match.<br>
-              <br>
-              <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
-              <br>
-              <b>Example:</b> BookReview / BookReview books<br>
-            "
-          required: true
-          schema:
-            type: string
-            example: BookReview books
-        - name: xpath
-          in: path
-          description: "
-              XPath axis or function. Axes always start with a slash, functions do not. This
-              is only for the initial distinction from the expression for the interpreter.
-              Functions can then also use axes and axes can then also use functions.
-              <dir>Example:</dir>
-              <pre>
-              count(/books/*)<br>
-              /books/book[position()>count(//book)-5]
-              </pre>
-            "
-          required: true
-          schema:
-            type: string
-            example: /books
+      - name: Storage
+        in: header
+        description: "
+            Each storage has an identifier. The Storage Identifier is used as
+            the filename of the corresponding XML file and must be specified
+            with each request so that the datasource uses the correct storage.
+            Optionally, the storage identifier can be followed by the name of
+            the root element of the XML file separated by a space.<br>
+            If the root element is not specified, the default 'data' is used.<br>
+            <br>
+            <b>Important:</b> To use a storage, the storage identifier and name
+            of the root element must match.<br>
+            <br>
+            <b>Pattern:</b> ^(\\w{1,64})(?:\\s+(\\w+))?$<br>
+            <br>
+            <b>Example:</b> BookReview / BookReview books<br>
+          "
+        required: true
+        schema:
+          type: string
+          example: BookReview books
+      - name: xpath
+        in: path
+        description: "
+            XPath axis or function. Axes always start with a slash, functions do not. This
+            is only for the initial distinction from the expression for the interpreter.
+            Functions can then also use axes and axes can then also use functions.
+            <dir>Example:</dir>
+            <pre>
+            count(/books/*)<br>
+            /books/book[position()>count(//book)-5]
+            </pre>
+          "
+        required: true
+        schema:
+          type: string
+          example: /books
       requestBody:
         content:
           application/xslt+xml:
