@@ -6,7 +6,7 @@ CR: Service: Optimization of the configuration via environment variables
     - XMEX_STORAGE_QUANTITY: Maximum number of files in data storage (65535)
     - XMEX_STORAGE_SPACE: Maximum data size of files in data storage in bytes (256 *1024)
     - XMEX_STORAGE_EXPIRATION: Maximum idle time of the files in seconds (15 *60)
-    TODO: Add description in manual + OpenAPI
+    TODO: Add description in manual
     TODO: Test
 CR: Request: Configurable XPath delimiter of the URI
     XPath delimiter for the URI is not automatically the first symbol.
