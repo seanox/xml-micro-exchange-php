@@ -175,25 +175,47 @@
  * @author  Seanox Software Solutions
  * @version 1.4.0 20240815
  */
+
+// To assign constant values to the constants at compiler time, PHP constants
+// are created for the environment variables.
+
+/** Directory of the data storage */
+define("XMEX_STORAGE_DIRECTORY", getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data");
+
+/** Maximum number of files in data storage */
+define("XMEX_STORAGE_QUANTITY", getenv("XMEX_STORAGE_QUANTITY", true) ?: 65535);
+
+/**
+ * Maximum data size of files in data storage in bytes.
+ * The value also limits the size of the requests(-body).
+ */
+define("XMEX_STORAGE_SPACE", getenv("XMEX_STORAGE_SPACE", true) ?: 256 *1024);
+
+/** Maximum idle time of the files in seconds */
+define("XMEX_STORAGE_EXPIRATION", getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60);
+
+/** Character or character sequence of the XPath delimiter in the URI */
+define("XMEX_URI_XPATH_DELIMITER", getenv("XMEX_URI_XPATH_DELIMITER", true) ?: "!");
+
 class Storage {
 
     /** Directory of the data storage */
-    const DIRECTORY = getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data";
+    const DIRECTORY = XMEX_STORAGE_DIRECTORY;
 
     /** Maximum number of files in data storage */
-    const QUANTITY = getenv("XMEX_STORAGE_QUANTITY", true) ?: 65535;
+    const QUANTITY = XMEX_STORAGE_QUANTITY;
 
     /**
      * Maximum data size of files in data storage in bytes.
      * The value also limits the size of the requests(-body).
      */
-    const SPACE = getenv("XMEX_STORAGE_SPACE", true) ?: 256 *1024;
+    const SPACE = XMEX_STORAGE_SPACE;
 
     /** Maximum idle time of the files in seconds */
-    const EXPIRATION = getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60;
+    const EXPIRATION = XMEX_STORAGE_EXPIRATION;
 
     /** Character or character sequence of the XPath delimiter in the URI */
-    const DELIMITER = getenv("XMEX_URI_XPATH_DELIMITER", true) ?: "!";
+    const DELIMITER = XMEX_URI_XPATH_DELIMITER;
 
     /**
      * Optional CORS response headers as associative array.
