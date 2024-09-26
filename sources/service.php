@@ -282,7 +282,7 @@ class Storage {
      *     Group 1. URI-Path
      *     Group 2. XPath
      */
-    const PATTERN_HTTP_REQUEST_URI = "/^(.*?)" + Storage::DELIMITER + "(.*)$/i";
+    const PATTERN_HTTP_REQUEST_URI = "/^(.*?)" . Storage::DELIMITER . "(.*)$/i";
 
     /**
      * Pattern for the Storage header
@@ -381,7 +381,6 @@ class Storage {
 
     /** Cleans up all files that have exceeded the maximum idle time. */
     private static function cleanUp() {
-
         if (!is_dir(Storage::DIRECTORY))
             return;
         if ($handle = opendir(Storage::DIRECTORY)) {
@@ -528,7 +527,6 @@ class Storage {
      * @return integer current size of the storage
      */
     private function getSize() {
-
         if ($this->xml !== null)
             return strlen($this->xml->saveXML());
         if ($this->share !== null)
@@ -545,7 +543,6 @@ class Storage {
      * @param string     $revision
      */
     private static function updateNodeRevision($node, $revision) {
-
         while ($node && $node->nodeType === XML_ELEMENT_NODE) {
             $node->setAttribute("___rev", $revision);
             $node = $node->parentNode;
@@ -1879,7 +1876,7 @@ class Storage {
             $serials = preg_split("/\s+/", $serials);
             $serials = array_unique($serials);
             foreach ($serials as $serial) {
-                if (substr($serial, -2) !== ":D")
+                if (!str_ends_with($serial, ":D"))
                     continue;
                 $search = substr($serial, 0, -2) . ":M";
                 if (in_array($search, $serials))
@@ -2168,7 +2165,6 @@ class Storage {
      * @return mixed the last caused XML error, otherwise FALSE
      */
     private static function fetchLastXmlErrorMessage() {
-
         if (empty(libxml_get_errors()))
             return false;
         $message = libxml_get_errors();
@@ -2193,7 +2189,7 @@ class Storage {
         // These cannot be caught any other way. Therefore the error header
         // is implemented here.
         $filter = "XSLTProcessor::transformToXml()";
-        if (substr($message, 0, strlen($filter)) === $filter) {
+        if (str_starts_with($message, $filter)) {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
