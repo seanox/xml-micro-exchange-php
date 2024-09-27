@@ -390,7 +390,7 @@ class Storage {
         // cannot be excluded, but this should not be a problem.
         $marker = Storage::DIRECTORY . "/cleanup";
         if (file_exists($marker)
-                &&  time() -filemtime($marker) < 60)
+                && time() -filemtime($marker) < 60)
             return;
         touch($marker);
 
