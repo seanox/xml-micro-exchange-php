@@ -1,4 +1,4 @@
-1.4.0 2024xxxx
+1.4.0 2025xxxx
 CR: Service: Optimization of the configuration via environment variables
     Simplifies the provision as a container.
     - XMEX_URI_XPATH_DELIMITER: XPath delimiter in the URI (!)
@@ -25,6 +25,10 @@ CR: Request: Omission of prefix 0x for hex encoded paths
     new: /xmex!282f626f6f6b73292f2f6c6173743a3a6265666f7265
     TODO: Add description in manual + OpenAPI
     TODO: Test
+CR: Storage: Optimization of the cleanup
+    To reduce the execution time of the requests, the cleanup is only carried
+    out every minute. Parallel cleanup due to parallel requests cannot be
+    excluded, but this should not be a problem.
 
 1.3.1 20240801
 BF: Review: Optimization/Corrections

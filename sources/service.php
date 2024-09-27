@@ -176,8 +176,8 @@
  * @version 1.4.0 20240815
  */
 
-// To assign constant values to the constants at compiler time, PHP constants
-// are created for the environment variables.
+// For the environment variables, PHP constants are created so that they can be
+// assigned as static values to the constants in the class!
 
 /** Directory of the data storage */
 define("XMEX_STORAGE_DIRECTORY", getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data");
@@ -381,13 +381,25 @@ class Storage {
 
     /** Cleans up all files that have exceeded the maximum idle time. */
     private static function cleanUp() {
+
         if (!is_dir(Storage::DIRECTORY))
             return;
+
+        // To reduce the execution time of the requests, the cleanup is only
+        // carried out every minute. Parallel cleanup due to parallel requests
+        // cannot be excluded, but this should not be a problem.
+        $marker = Storage::DIRECTORY . "/cleanup";
+        if (file_exists($marker)
+                &&  time() -filemtime($marker) < 60)
+            return;
+        touch($marker);
+
         if ($handle = opendir(Storage::DIRECTORY)) {
             $timeout = time() -Storage::EXPIRATION;
             while (($entry = readdir($handle)) !== false) {
                 if ($entry == "."
-                        || $entry == "..")
+                        || $entry == ".."
+                        || $entry == "cleanup")
                     continue;
                 $entry = Storage::DIRECTORY . "/$entry";
                 if (filemtime($entry) > $timeout)
