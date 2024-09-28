@@ -6,6 +6,8 @@ CR: Service: Optimization of the configuration via environment variables
     - XMEX_STORAGE_QUANTITY: Maximum number of files in data storage (65535)
     - XMEX_STORAGE_SPACE: Maximum data size of files in data storage in bytes (256 *1024)
     - XMEX_STORAGE_EXPIRATION: Maximum idle time of the files in seconds (15 *60)
+    - XMEX_STORAGE_REVISION_TYPE: Basis of the revision number (1)
+    - XMEX_DEBUG_MODE: Activates debug mode for unit tests (false)
     TODO: Add description in manual
     TODO: Test
 CR: Request: Configurable XPath delimiter of the URI
@@ -29,6 +31,23 @@ CR: Storage: Optimization of the cleanup
     To reduce the execution time of the requests, the cleanup is only carried
     out every minute. Parallel cleanup due to parallel requests cannot be
     excluded, but this should not be a problem.
+    TODO: Add description in manual
+    TODO: Test
+CR: Service: Added option XMEX_STORAGE_REVISION_TYPE
+    For a revision type, either automatic increment (0) or alphanumeric
+    timestamp (1) is available. The alphanumeric timestamp is the default. The
+    option specifies the basis on which the ___rev and ___uid attributes are
+    formed.
+    TODO: Add description in manual
+    TODO: Test
+CR: Service: Added option XMEX_DEBUG_MODE
+    The activation of debug mode is primarily planned for unit tests and
+    enforces the auto incremental revision type. In addition, the headers
+    Hash-Request, Hash-Response and Hash-Storage are added to the response,
+    which can be checked by the unit tests.
+    TODO: Add description in manual
+    TODO: Test
+CR: Test: Switch to the use of XMEX_DEBUG_MODE
     TODO: Test
 
 1.3.1 20240801

@@ -179,6 +179,9 @@
 // For the environment variables, PHP constants are created so that they can be
 // assigned as static values to the constants in the class!
 
+/** TODO */
+define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), array("on", "true", "1")) ?: false);
+
 /** Directory of the data storage */
 define("XMEX_STORAGE_DIRECTORY", getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data");
 
@@ -193,6 +196,9 @@ define("XMEX_STORAGE_SPACE", getenv("XMEX_STORAGE_SPACE", true) ?: 256 *1024);
 
 /** Maximum idle time of the files in seconds */
 define("XMEX_STORAGE_EXPIRATION", getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60);
+
+/** TODO */
+define("XMEX_STORAGE_REVISION_TYPE", XMEX_DEBUG_MODE ? 0 : (getenv("XMEX_STORAGE_REVISION_TYPE", true) ?: 1));
 
 /** Character or character sequence of the XPath delimiter in the URI */
 define("XMEX_URI_XPATH_DELIMITER", getenv("XMEX_URI_XPATH_DELIMITER", true) ?: "!");
