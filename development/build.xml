@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="xml-micro-exchange" default="usage" basedir="..">
+<project name="xml-micro-exchange" default="usage" basedir="${ant.file}/../..">
   <target name="usage">
     <echo>Following targets are available:                               </echo>
     <echo>                                                               </echo>
@@ -31,9 +31,9 @@
       <delete file="CHANGES.tmp"/>
       <echo file="CHANGES.tmp" message="release.major=${release.version}"/>
       <replaceregexp file="CHANGES.tmp"
-        match="(?&lt;=\d+)\." byline="true" replace="&#x000D;release.minor="/>
+          match="(?&lt;=\d+)\." byline="true" replace="&#x000D;release.minor="/>
       <replaceregexp file="CHANGES.tmp"
-        match="(?&lt;=\d+)\." byline="true" replace="&#x000D;release.patch="/>
+          match="(?&lt;=\d+)\." byline="true" replace="&#x000D;release.patch="/>
       <loadproperties>
         <file file="CHANGES.tmp"/>
       </loadproperties>
@@ -49,6 +49,7 @@
       <replaceregexp file="@{file}" match="(?s)\R\x20*//[^\r\n]*" replace="" flags="g" byline="false"/>
       <replaceregexp file="@{file}" match="(\x20*\R){3,}" replace="${line.separator}${line.separator}" flags="g" byline="false"/>
       <replaceregexp file="@{file}" match="\s+$" replace="" flags="g" byline="true"/>
+      <replaceregexp file="@{file}" match="\s*\R\s*(\R)" replace="\1" flags="g" byline="false"/>
     </sequential>
   </macrodef>
   
@@ -94,17 +95,12 @@
     <copy file="${workspace.sources}/.htaccess" todir="${workspace.build}"/>
     <copy file="${workspace.sources}/service.php" todir="${workspace.build}"/>
     <compress-php file="${workspace.build}/service.php"/>
-    <replaceregexp file="${workspace.build}/service.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
-    <copy file="${workspace.sources}/service.php" tofile="${workspace.build}/service-dev.php"/>
-    <replaceregexp file="${workspace.build}/service-dev.php" match="\s+$" replace="" flags="g" byline="true"/>
-    <replaceregexp file="${workspace.build}/service-dev.php" match="(?s)[\r\n]+\s*\{{3,}.*?\}{3,}" replace="" flags="g" byline="false"/>
     <copy file="${workspace}/LICENSE" todir="${workspace.build}"/>
     <copy file="${workspace.manual}/README.md" todir="${workspace.build}"/>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
       <fileset dir="${workspace.build}">
         <include name=".htaccess"/>
         <include name="service.php"/>
-        <include name="service-dev.php"/>
         <include name="LICENSE"/>
       </fileset>
     </touch>
@@ -115,7 +111,6 @@
       <fileset dir="${workspace.build}">
         <include name=".htaccess"/>
         <include name="service.php"/>
-        <include name="service-dev.php"/>
         <include name="LICENSE"/>
       </fileset>
     </zip>

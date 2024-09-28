@@ -1,4 +1,5 @@
 1.4.0 2025xxxx
+BF: Build: Review and optimization
 CR: Service: Optimization of the configuration via environment variables
     Simplifies the provision as a container.
     - XMEX_URI_XPATH_DELIMITER: XPath delimiter in the URI (!)
