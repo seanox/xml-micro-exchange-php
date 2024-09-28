@@ -581,10 +581,6 @@ class Storage {
      * There are no rules, only the clients know the rules.
      * A storage expires with all information if it is not used (read/write).
      *
-     * The response for a CONNECT always contains a Connection-Unique header.
-     * The Unique is unique in the Datasource and in the Storage and can be
-     * used by the client e.g. in XML as attributes to locate his data faster.
-     *
      * In addition, OPTIONS can also be used as an alternative to CONNECT,
      * because CONNECT is not an HTTP standard. For this purpose OPTIONS
      * without XPath, but with context path if necessary, is used. In this case
@@ -606,7 +602,6 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
      * Storage-Expiration-Time: Expiration (milliseconds)
-     * Connection-Unique: UID
      *
      *     Response:
      * HTTP/1.0 204 No Content
@@ -616,7 +611,6 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
      * Storage-Expiration-Time: Expiration (milliseconds)
-     * Connection-Unique: UID
      *
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
@@ -644,7 +638,7 @@ class Storage {
         } else $response = [204, "No Content"];
 
         $this->materialize();
-        $this->quit($response[0], $response[1], ["Connection-Unique" => $this->unique, "Allow" => "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE"]);
+        $this->quit($response[0], $response[1], ["Allow" => "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE"]);
     }
 
     /**
@@ -693,10 +687,6 @@ class Storage {
      * without XPath, but with context path if necessary, is used. In this case
      * OPTIONS will hand over the work to CONNECT.
      *
-     * The response for a CONNECT always contains a Connection-Unique header.
-     * The Unique is unique in the Datasource and in the Storage and can be
-     * used by the client e.g. in XML as attributes to locate his data faster.
-     *
      *     Request:
      * OPTIONS / HTTP/1.0
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
@@ -713,7 +703,6 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
      * Storage-Expiration-Time: Expiration (milliseconds)
-     * Connection-Unique: UID
      *
      *     Response:
      * HTTP/1.0 No Content
@@ -723,7 +712,6 @@ class Storage {
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
      * Storage-Expiration-Time: Expiration (milliseconds)
-     * Connection-Unique: UID
      *
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
@@ -2076,10 +2064,6 @@ class Storage {
                 . " #" . implode(" #", array_values($effects));
         }
 
-        // Connection-Unique header is unique and only checked for presence.
-        if ($fetchHeader("Connection-Unique"))
-            $headers[] = "Connection-Unique";
-
         // Status Message should not be used because different hashes may be
         // calculated for tests on different web servers.
         $headers[] = $status;
@@ -2214,7 +2198,9 @@ class Storage {
             (new Storage)->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
-        $unique = "#" . Storage::uniqueId();
+        $unique = round(microtime(true) *1000);
+        $unique = base_convert($unique, 10, 36);
+        $unique = "#" . strtoupper($unique);
         $message = "$message" . PHP_EOL . "\tat $file $line";
         if (!is_numeric($error))
             $message = "$error:" . $message;

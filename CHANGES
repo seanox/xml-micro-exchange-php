@@ -49,6 +49,9 @@ CR: Service: Added option XMEX_DEBUG_MODE
     TODO: Test
 CR: Test: Switch to the use of XMEX_DEBUG_MODE
     TODO: Test
+CR: Service: Omission of Connection-Unique
+    The client can manage this better for itself. The created ___uid attribute
+    of the elements are now based on the storage revision ___rev attribute.
 
 1.3.1 20240801
 BF: Review: Optimization/Corrections
