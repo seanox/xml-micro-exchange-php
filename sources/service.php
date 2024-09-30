@@ -180,7 +180,7 @@
 // assigned as static values to the constants in the class!
 
 /** TODO */
-define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), array("on", "true", "1")) ?: false);
+define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), array("on", "true", "1")));
 
 /** Directory of the data storage */
 define("XMEX_STORAGE_DIRECTORY", getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data");
@@ -357,7 +357,7 @@ class Storage {
         }
 
         $this->storage  = $storage;
-        $this->root     = $root ? $root : "data";
+        $this->root     = $root ?: "data";
         $this->store    = Storage::DIRECTORY . "/" . base64_encode($this->storage);
         $this->xpath    = $xpath;
         $this->options  = $options;
@@ -447,7 +447,7 @@ class Storage {
             // Safe is safe, if not the default 'data' is used,
             // the name of the root element must be known.
             // Otherwise the request is quit with status 404 and terminated.
-            if (($root ? $root : "data") != $storage->xml->documentElement->nodeName)
+            if (($root ?: "data") != $storage->xml->documentElement->nodeName)
                 $storage->quit(404, "Resource Not Found");
         }
         return $storage;
@@ -455,7 +455,7 @@ class Storage {
 
     /**
      * Return TRUE if the storage already exists.
-     * @return TRUE if the storage already exists
+     * @return bool TRUE if the storage already exists
      */
     private function exists() {
         return file_exists($this->store)
@@ -842,7 +842,8 @@ class Storage {
             $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
             $this->quit(400, "Bad Request", ["Message" => $message]);
         } else if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)
-                &&  (!$result || empty($result) || $result->length <= 0)) {
+                &&  (empty($result)
+                        || $result->length <= 0)) {
             $this->quit(204, "No Content");
         } else if ($result instanceof DOMNodeList) {
             if ($result->length == 1) {
@@ -967,7 +968,8 @@ class Storage {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0)
+            if (empty($targets)
+                    || $targets->length <= 0)
                 $this->quit(204, "No Content");
             if ($targets->length == 1) {
                 $target = $targets[0];
@@ -1196,7 +1198,8 @@ class Storage {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0)
+            if (empty($targets)
+                    || $targets->length <= 0)
                 $this->quit(204, "No Content");
 
             // The attributes ___rev and ___uid are essential for the internal
@@ -1283,7 +1286,8 @@ class Storage {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0)
+            if (empty($targets)
+                    || $targets->length <= 0)
                 $this->quit(204, "No Content");
 
             foreach ($targets as $target) {
@@ -1358,7 +1362,8 @@ class Storage {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!$targets || empty($targets) || $targets->length <= 0)
+            if (empty($targets)
+                    || $targets->length <= 0)
                 $this->quit(204, "No Content");
 
             foreach ($targets as $target) {
@@ -1584,7 +1589,8 @@ class Storage {
             $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
-        if (!$targets || empty($targets) || $targets->length <= 0)
+        if (empty($targets)
+                || $targets->length <= 0)
             $this->quit(204, "No Content");
 
         // The response to the request is delegated to PUT.
@@ -1686,7 +1692,8 @@ class Storage {
             $this->quit(400, "Bad Request", ["Message" => $message]);
         }
 
-        if (!$targets || empty($targets) || $targets->length <= 0)
+        if (empty($targets)
+                || $targets->length <= 0)
             $this->quit(204, "No Content");
 
         // Pseudo elements can be used to delete in an XML substructure
