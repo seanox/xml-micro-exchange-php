@@ -34,25 +34,31 @@ CR: Storage: Optimization of the cleanup
     excluded, but this should not be a problem.
     TODO: Add description in manual
     TODO: Test
-CR: Service: Added option XMEX_STORAGE_REVISION_TYPE
-    For a revision type, either automatic increment (0) or alphanumeric
-    timestamp (1) is available. The alphanumeric timestamp is the default. The
-    option specifies the basis on which the ___rev and ___uid attributes are
-    formed.
-    TODO: Add description in manual
-    TODO: Test
-CR: Service: Added option XMEX_DEBUG_MODE
-    The activation of debug mode is primarily planned for unit tests and
-    enforces the auto incremental revision type. In addition, the headers
-    Hash-Request, Hash-Response and Hash-Storage are added to the response,
-    which can be checked by the unit tests.
-    TODO: Add description in manual
-    TODO: Test
-CR: Test: Switch to the use of XMEX_DEBUG_MODE
-    TODO: Test
-CR: Service: Omission of Connection-Unique
-    The client can manage this better for itself. The created ___uid attribute
-    of the elements are now based on the storage revision ___rev attribute.
+CR: Service: Review of revision management
+    - Added option XMEX_STORAGE_REVISION_TYPE
+      Defines what the revision which is used in the attributes ___rev and
+      ___uid should be based on. With 'serial', an auto incremental integer is
+      used. The default value is 'timestamp', which uses an alphanumeric
+      timestamp.
+      TODO: Add description in manual
+      TODO: Test
+    - Omission of the response header Connection-Unique
+      The client can manage this better for itself. The created ___uid
+      attribute of the elements are now based on the storage revision ___rev
+      attribute.
+      TODO: Update description in manual
+CR: Service: Review and optimization of CONNECT
+    - Storage must be initialized mandatory with CONNECT before it can be used.
+CR: Test: Review and optimization
+    - Added option XMEX_DEBUG_MODE
+      The activation of debug mode is primarily planned for unit tests and
+      enforces the auto incremental revision type. In addition, the headers
+      Hash-Request, Hash-Response and Hash-Storage are added to the response,
+      which can be checked by the unit tests.
+      TODO: Add description in manual
+      TODO: Test
+    - Switch to the use of XMEX_DEBUG_MODE
+      TODO: Test
 
 1.3.1 20240801
 BF: Review: Optimization/Corrections

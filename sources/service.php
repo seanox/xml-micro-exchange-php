@@ -223,6 +223,12 @@ class Storage {
     /** Character or character sequence of the XPath delimiter in the URI */
     const DELIMITER = XMEX_URI_XPATH_DELIMITER;
 
+    /** TODO */
+    const DEBUG_MODE = XMEX_DEBUG_MODE;
+
+    /** TODO */
+    const REVISION_TYPE = XMEX_STORAGE_REVISION_TYPE;
+
     /**
      * Optional CORS response headers as associative array.
      * For the preflight OPTIONS the following headers are added automatically:
@@ -270,6 +276,9 @@ class Storage {
 
     /** Pattern for detecting HEX decoding */
     const PATTERN_HEX = "/^([A-Fa-f0-9]{2})+$/";
+
+    /** Pattern for recognizing non-numerical values */
+    const PATTERN_NON_NUMERICAL = "/^.*\D/";
 
     /**
      * Pattern to determine a HTTP request
@@ -339,6 +348,11 @@ class Storage {
     const CONTENT_TYPE_XSLT  = "application/xslt+xml";
     const CONTENT_TYPE_JSON  = "application/json";
 
+    /** Constants of share options */
+    const STORAGE_SHARE_NONE      = 0;
+    const STORAGE_SHARE_EXCLUSIVE = 1;
+    const STORAGE_SHARE_INITIAL   = 2;
+
     /**
      * Constructor creates a new Storage object.
      * @param string $storage
@@ -361,9 +375,9 @@ class Storage {
         $this->store    = Storage::DIRECTORY . "/" . base64_encode($this->storage);
         $this->xpath    = $xpath;
         $this->options  = $options;
-        $this->unique   = Storage::uniqueId();
         $this->serial   = 0;
-        $this->revision = 0;
+        $this->unique   = null;
+        $this->revision = null;
     }
 
     /**
@@ -424,32 +438,70 @@ class Storage {
      * Simultaneous requests must then wait through the file lock.
      * @param  string  $storage
      * @param  string  $xpath
-     * @param  boolean $exclusive
+     * @param  int     $options
      * @return Storage Instance of the Storage
      */
-    static function share($storage, $xpath, $exclusive = true) {
-
-        if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
-            (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
+    static function share($storage, $xpath, $options = Storage::STORAGE_SHARE_NONE) {
 
         $root = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$2", $storage);
         $storage = preg_replace(Storage::PATTERN_HEADER_STORAGE, "$1", $storage);
-
-        Storage::cleanUp();
-        if (!file_exists(Storage::DIRECTORY)) {
-             mkdir(Storage::DIRECTORY, true);
-             chmod(Storage::DIRECTORY, 0755);
-        }
+        if (!file_exists(Storage::DIRECTORY))
+            mkdir(Storage::DIRECTORY, 0755, true);
         $storage = new Storage($storage, $root, $xpath);
 
-        if ($storage->exists()) {
-            $storage->open($exclusive);
-            // Safe is safe, if not the default 'data' is used,
-            // the name of the root element must be known.
-            // Otherwise the request is quit with status 404 and terminated.
-            if (($root ?: "data") != $storage->xml->documentElement->nodeName)
-                $storage->quit(404, "Resource Not Found");
+        // The cleanup does not run permanently, so the possible expiry is
+        // checked before access and the storage is deleted if necessary.
+        $expiration = time() -Storage::EXPIRATION;
+        if (file_exists($$storage->store)
+                && (filemtime($storage->store) < $expiration
+                        || filesize($storage->store) <= 0))
+            @unlink($storage->store);
+
+        $initial = ($options & Storage::STORAGE_SHARE_INITIAL) != Storage::STORAGE_SHARE_INITIAL;
+        if ($initial
+                && !$storage->exists())
+            $storage->quit(404, "Resource Not Found");
+
+        $storage->share = fopen($storage->store, "c+");
+        $exclusive = ($options & Storage::STORAGE_SHARE_EXCLUSIVE) == Storage::STORAGE_SHARE_EXCLUSIVE;
+        flock($storage->share, filesize($storage->store) <= 0 || $exclusive ? LOCK_EX : LOCK_SH);
+
+        if (!strcasecmp(Storage::REVISION_TYPE, "serial")) {
+            $storage->unique = round(microtime(true) *1000);
+            while ($storage->unique == round(microtime(true) *1000))
+                usleep(1);
+            $storage->unique = base_convert($storage->unique, 10, 36);
+            $storage->unique = strtoupper($storage->unique);
+        } else $storage->unique = 1;
+
+        if ($initial
+                && filesize($storage->store) <= 0) {
+            $storage->unique = 0;
+            $storage->serial = 1;
+            fwrite($storage->share,
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
+                "<" . $storage->root . " ___rev=\"1\" ___uid=\"1:1\"/>");
+            rewind($storage->share);
         }
+
+        fseek($storage->share, 0, SEEK_END);
+        $size = ftell($storage->share);
+        rewind($storage->share);
+        $storage->xml = new DOMDocument();
+        $storage->xml->loadXML(fread($storage->share, $size));
+        $storage->revision = $storage->xml->documentElement->getAttribute("___rev");
+        if (strcasecmp(Storage::REVISION_TYPE, "serial")) {
+            if (preg_match(Storage::PATTERN_NON_NUMERICAL, $storage->revision))
+                $storage->quit(503, "Resource revision conflict");
+            $storage->unique += $storage->revision;
+        }
+
+        // Safe is safe, if not the default 'data' is used, the name of the
+        // root element must be known. Otherwise the request is quit with
+        // status 404 and terminated.
+        if (($root ?: "data") != $storage->xml->documentElement->nodeName)
+            $storage->quit(404, "Resource Not Found");
+
         return $storage;
     }
 
@@ -460,37 +512,6 @@ class Storage {
     private function exists() {
         return file_exists($this->store)
                 && filesize($this->store) > 0;
-    }
-
-    /**
-     * Opens the storage for the current request.
-     * The storage can optionally be opened exclusively for write access.
-     * If the storage to be opened does not yet exist, it is initialized.
-     * Simultaneous requests must then wait through the file lock.
-     * @param boolean $exclusive
-     */
-    private function open($exclusive = true) {
-
-        if ($this->share !== null)
-            return;
-
-        touch($this->store);
-        $this->share = fopen($this->store, "c+");
-        flock($this->share, filesize($this->store) <= 0 || $exclusive === true ? LOCK_EX : LOCK_SH);
-
-        if (filesize($this->store) <= 0) {
-            fwrite($this->share,
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
-            "<" . $this->root . " ___rev=\"0\" ___uid=\"" . $this->getSerial() . "\"/>");
-            rewind($this->share);
-        }
-
-        fseek($this->share, 0, SEEK_END);
-        $size = ftell($this->share);
-        rewind($this->share);
-        $this->xml = new DOMDocument();
-        $this->xml->loadXML(fread($this->share, $size));
-        $this->revision = $this->xml->documentElement->getAttribute("___rev");
     }
 
     /**
@@ -536,7 +557,7 @@ class Storage {
      * @return string unique incremental ID
      */
     private function getSerial() {
-        return $this->unique . ":" . $this->serial++;
+        return $this->unique . ":" . ++$this->serial;
     }
 
     /**
@@ -626,6 +647,11 @@ class Storage {
      */
     function doConnect() {
 
+        // Cleaning up can run longer and delay the request. It is least
+        // disruptive during the connect. Threads were deliberately omitted
+        // here to keep the service simple.
+        Storage::cleanUp();
+
         if (!empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
@@ -634,7 +660,6 @@ class Storage {
             $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
             if (iterator_count($iterator) >= Storage::QUANTITY)
                 $this->quit(507, "Insufficient Storage");
-            $this->open();
         } else $response = [204, "No Content"];
 
         $this->materialize();
@@ -2063,9 +2088,9 @@ if ($method === "OPTIONS"
         && !isset($_SERVER["HTTP_STORAGE"]))
     (new Storage)->quit(204, "No Content");
 
-$storage = null;
-if (isset($_SERVER["HTTP_STORAGE"]))
-    $storage = $_SERVER["HTTP_STORAGE"];
+if (!isset($_SERVER["HTTP_STORAGE"]))
+    (new Storage)->quit(400, "Bad Request", ["Message" => "Missing storage identifier"]);
+$storage = $_SERVER["HTTP_STORAGE"];
 if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
     (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
@@ -2099,8 +2124,12 @@ else $xpath = urldecode($xpath);
 if (empty($xpath)
         && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";
-$exclusive = in_array($method, ["DELETE", "PATCH", "PUT"]);
-$storage = Storage::share($storage, $xpath, $exclusive);
+$options = Storage::STORAGE_SHARE_NONE;
+if (in_array($method, ["CONNECT", "DELETE", "PATCH", "PUT"]))
+    $options |= Storage::STORAGE_SHARE_EXCLUSIVE;
+if (in_array($method, ["CONNECT"]))
+    $options |= Storage::STORAGE_SHARE_INITIAL;
+$storage = Storage::share($storage, $xpath, $options);
 
 try {
     switch ($method) {
