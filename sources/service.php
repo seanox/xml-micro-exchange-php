@@ -476,12 +476,15 @@ class Storage {
 
         if ($initial
                 && filesize($storage->store) <= 0) {
-            $storage->unique = 0;
-            $storage->serial = 1;
+            $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
+            if (iterator_count($iterator) >= Storage::QUANTITY)
+                $storage->quit(507, "Insufficient Storage");
             fwrite($storage->share,
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
-                "<" . $storage->root . " ___rev=\"1\" ___uid=\"1:1\"/>");
+                "<" . $storage->root . " ___rev=\"" . $storage->unique . "\" ___uid=\"" . $storage->getSerial() ."\"/>");
             rewind($storage->share);
+            if (strcasecmp(Storage::REVISION_TYPE, "serial"))
+                $storage->unique = 0;
         }
 
         fseek($storage->share, 0, SEEK_END);
@@ -653,14 +656,11 @@ class Storage {
         Storage::cleanUp();
 
         if (!empty($this->xpath))
-            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
+            $this->quit(400, "Bad Request", ["Message" => "Unexpected XPath"]);
 
         $response = [201, "Created"];
-        if (!$this->exists()) {
-            $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
-            if (iterator_count($iterator) >= Storage::QUANTITY)
-                $this->quit(507, "Insufficient Storage");
-        } else $response = [204, "No Content"];
+        if ($this->revision != $this->unique)
+            $response = [204, "No Content"];
 
         $this->materialize();
         $this->quit($response[0], $response[1], ["Allow" => "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE"]);
@@ -1997,6 +1997,15 @@ class Storage {
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
+        if (Storage::DEBUG_MODE) {
+            header("Trace-Request: " . hash("md5", $_SERVER["REQUEST"]));
+            header("Trace-Request-Data: " . hash("md5", @file_get_contents("php://input")));
+            header("Trace-Response: " . hash("md5", $status . " " . $message));
+            header("Trace-Response-Header: " . "");
+            header("Trace-Response-Data: " . hash("md5", $data));
+            header("Trace-Storage: " . hash("md5", $this->xml?->saveXML()));
+        }
+
         if ($status >= 200 && $status < 300
                 && $data !== "" && $data !== null)
             print($data);
@@ -2048,7 +2057,7 @@ class Storage {
         $unique = "#" . strtoupper($unique);
         $message = "$message" . PHP_EOL . "\tat $file $line";
         if (!is_numeric($error))
-            $message = "$error:" . $message;
+            $message = "$error: " . $message;
         $time = time();
         file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message" . PHP_EOL, FILE_APPEND | LOCK_EX);
         (new Storage)->quit(500, "Internal Server Error", ["Error" => $unique]);

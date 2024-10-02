@@ -49,6 +49,8 @@ CR: Service: Review of revision management
       TODO: Update description in manual
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
+    - XPath is still not supported, new message “Unexpected XPath”, status code
+      400 as before
 CR: Test: Review and optimization
     - Added option XMEX_DEBUG_MODE
       The activation of debug mode is primarily planned for unit tests and
