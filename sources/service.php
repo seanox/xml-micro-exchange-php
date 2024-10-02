@@ -97,27 +97,17 @@
  *
  * Changes are: PUT, PATCH, DELETE
  *
- * Write accesses to attribute ___rev are accepted with status 204, will have
- * no effect from then on and are therefore not listed in the response header
- * Storage-Effects.
+ * Write accesses to attribute ___rev are accepted with status 204.
  *
  *       UID
  * Each element uses a unique identifier in the form of the read-only attribute
  * ___uid. The unique identifier is automatically created when an element is
- * put into storage and never changes.
- * If elements are created or modified by a request, the created or affected
- * unique identifiers are sent to the client in the response header
- * Storage-Effects.
+ * put into storage and never changes. The UID uses, depending on
+ * XMEX_STORAGE_REVISION_TYPE an alphanumeric timestamp or an auto-incremental
+ * integer. The UID is thus also sortable and provides information about the
+ * order in which elements are created.
  *
- * The UID uses an alphanumeric format based on radix 36 which, when converted
- * into a number, gives the timestamps of the creation in milliseconds since
- * 01/01/2000.
- * The UID is thus also sortable and provides information about the order in
- * which elements are created.
- *
- * Write accesses to attribute ___uid are accepted with status 204, will have
- * no effect from then on and are therefore not listed in the response header
- * Storage-Effects.
+ * Write accesses to attribute ___uid are accepted with status 204.
  *
  *     REQUEST
  * The implementation works RESTfull and uses normal HTTP request.
@@ -432,10 +422,12 @@ class Storage {
     }
 
     /**
-     * Opens a storage with a XPath for the current request.
-     * The storage can optionally be opened exclusively for write access.
-     * If the storage to be opened does not yet exist, it is initialized.
-     * Simultaneous requests must then wait through the file lock.
+     * Opens a storage with a XPath for the current request. The storage can be
+     * opened with various options, which are passed as a bit mask. If the
+     * storage to be opened does not yet exist, it is initialized with option
+     * Storage::STORAGE_SHARE_INITIAL, otherwise the request will be
+     * terminated. With option Storage::STORAGE_SHARE_EXCLUSIVE, simultaneous
+     * requests must wait for a file lock.
      * @param  string  $storage
      * @param  string  $xpath
      * @param  int     $options
@@ -518,20 +510,21 @@ class Storage {
     }
 
     /**
-     * Materializes the XML document from the memory in the file system.
-     * Unlike save, the file is not closed and the data can be modified without
+     * Materializes the XML document from the memory in the file system. Unlike
+     * save, the file is not closed and the data can be modified without
      * another (PHP)process being able to read the data before finalizing it by
      * closing it. Materialization is only executed if there are changes in the
      * XML document, which is determined by the revision of the root element.
      * The size of the storage is limited by Storage::SPACE because it is a
-     * volatile micro datasource for short-term data exchange.
-     * An overrun causes the status 413.
+     * volatile micro datasource for short-term data exchange. An overrun
+     * causes the status 413.
      */
     function materialize() {
 
         if ($this->share == null)
             return;
-        if ($this->revision == $this->xml->documentElement->getAttribute("___rev"))
+        if ($this->revision == $this->xml->documentElement->getAttribute("___rev")
+                && $this->revision != $this->unique)
             return;
 
         $output = $this->xml->saveXML();
@@ -592,23 +585,17 @@ class Storage {
     }
 
     /**
-     * CONNECT initiates the use of a storage.
-     * A storage is a volatile XML construct that is used via a datasource URL.
-     * The datasource managed several independent storages.
-     * Each storage has a name specified by the client, which must be sent with
-     * each request. This is similar to the header host for virtual servers.
-     * Optionally, the name of the root element can also be defined by the
-     * client.
+     * CONNECT initiates the use of a storage. A storage is a volatile XML
+     * construct that is used via a datasource URL. The datasource managed
+     * several independent storages. Each storage has a name specified by the
+     * client, which must be sent with each request. This is similar to the
+     * header host for virtual servers. Optionally, the name of the root
+     * element can also be defined by the client.
      *
-     * Each client can create a new storage at any time.
-     * Communication is established when all parties use the same name.
-     * There are no rules, only the clients know the rules.
-     * A storage expires with all information if it is not used (read/write).
-     *
-     * In addition, OPTIONS can also be used as an alternative to CONNECT,
-     * because CONNECT is not an HTTP standard. For this purpose OPTIONS
-     * without XPath, but with context path if necessary, is used. In this case
-     * OPTIONS will hand over the work to CONNECT.
+     * Each client can create a new storage at any time. Communication is
+     * established when all parties use the same name. There are no rules, only
+     * the clients know the rules. A storage expires with all information if it
+     * is not used (read/write).
      *
      *     Request:
      * CONNECT / HTTP/1.0
@@ -667,20 +654,19 @@ class Storage {
     }
 
     /**
+     * TODO
      * OPTIONS is used to query the allowed HTTP methods for an XPath, which is
      * responded with the Allow-header. This method distinguishes between XPath
      * axis and XPath function and uses different Allow headers. Also the
      * existence of the target on an XPath axis has an influence on the
      * response. The method will not use status 404 in relation to non-existing
      * targets, but will offer the methods CONNECT, OPTIONS, PUT via
-     * Allow-Header.
-     * In the case of an XPath axis, the UIDs of the targets are returned in
-     * the Storage-Effects header. Unlike modifier methods like PUT, PATCH and
-     * DELETE, the effect suffix (:A/:M/:D) is omitted here.
-     * If the XPath is a function, it is executed and thus validated, but
-     * without returning the result.
-     * The XPath processing is strict and does not accept unnecessary spaces.
-     * Faulty XPath will cause the status 400.
+     * Allow-Header. In the case of an XPath axis, the UIDs of the targets are
+     * returned in the Storage-Effects header. Unlike modifier methods like
+     * PUT, PATCH and DELETE, the effect suffix (:A/:M/:D) is omitted here. If
+     * the XPath is a function, it is executed and thus validated, but without
+     * returning the result. The XPath processing is strict and does not accept
+     * unnecessary spaces. Faulty XPath will cause the status 400.
      *
      *     Request:
      * OPTIONS /<xpath> HTTP/1.0
@@ -706,47 +692,6 @@ class Storage {
      * - Storage does not exist
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
-     *
-     * In addition, OPTIONS can also be used as an alternative to CONNECT,
-     * because CONNECT is not an HTTP standard. For this purpose OPTIONS
-     * without XPath, but with context path if necessary, is used. In this case
-     * OPTIONS will hand over the work to CONNECT.
-     *
-     *     Request:
-     * OPTIONS / HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
-     *
-     *     Request:
-     * OPTIONS / HTTP/1.0
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ root (identifier)
-     *
-     *    Response:
-     * HTTP/1.0 201 Created
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
-     * Storage-Space: Total/Used (bytes)
-     * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Expiration (milliseconds)
-     *
-     *     Response:
-     * HTTP/1.0 No Content
-     * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
-     * Storage-Space: Total/Used (bytes)
-     * Storage-Last-Modified: Timestamp (RFC822)
-     * Storage-Expiration: Timestamp (RFC822)
-     * Storage-Expiration-Time: Expiration (milliseconds)
-     *
-     *     Response codes / behavior:
-     *         HTTP/1.0 201 Resource Created
-     * - Response can be status 201 if the storage was newly created
-     *         HTTP/1.0 204 No Content
-     * - Response can be status 204 if the storage already exists
-     *         HTTP/1.0 500 Internal Server Error
-     * - An unexpected error has occurred
-     *         HTTP/1.0 507 Insufficient Storage
-     * - Response can be status 507 if the storage is full
      */
     function doOptions() {
 
@@ -781,6 +726,7 @@ class Storage {
                         $serials[] = $target->getAttribute("___uid");
                 }
                 if (!empty($serials))
+                    // TODO:
                     header("Storage-Effects: " . join(" ", $serials));
                 $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
             } else $allow = "CONNECT, OPTIONS, PUT";
@@ -888,15 +834,14 @@ class Storage {
     }
 
     /**
-     * POST queries data about XPath axes and functions via transformation.
-     * For this, an XSLT stylesheet is sent with the request-body, which is
-     * then applied by the XSLT processor to the data in storage.
-     * Thus the content type application/xslt+xml is always required.
-     * The client defines the content type for the output with the output-tag
-     * and the method-attribute.
-     * The XPath is optional for this method and is used to limit and preselect
-     * the data. The processing is strict and does not accept unnecessary
-     * spaces.
+     * POST queries data about XPath axes and functions via transformation. For
+     * this, an XSLT stylesheet is sent with the request-body, which is then
+     * applied by the XSLT processor to the data in storage. Thus the content
+     * type application/xslt+xml is always required. The client defines the
+     * content type for the output with the output-tag and the
+     * method-attribute. The XPath is optional for this method and is used to
+     * limit and preselect the data. The processing is strict and does not
+     * accept unnecessary spaces.
      *
      *     Request:
      * POST /<xpath> HTTP/1.0
@@ -1020,18 +965,16 @@ class Storage {
 
     /**
      * PUT creates elements and attributes in storage and/or changes the value
-     * of existing ones.
-     * The position for the insert is defined via an XPath.
+     * of existing ones. The position for the insert is defined via an XPath.
      * For better understanding, the method should be called PUT INTO, because
-     * it is always based on an existing XPath axis as the parent target.
-     * XPath uses different notations for elements and attributes.
+     * it is always based on an existing XPath axis as the parent target. XPath
+     * uses different notations for elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
      *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
      * The attribute values can be static (text) and dynamic (XPath function).
-     * Values are send as request-body.
-     * Whether they are used as text or XPath function is decided by the
-     * Content-Type header of the request.
+     * Values are send as request-body. Whether they are used as text or XPath
+     * function is decided by the Content-Type header of the request.
      *     text/plain: static text
      *     text/xpath: XPath function
      *
@@ -1053,14 +996,9 @@ class Storage {
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
      *
-     * In general, PUT requests are responded to with status 204. Status 404 is
-     * used only with relation to the storage. In all other cases the PUT
-     * method informs the client about changes also with status 204 and the
-     * response headers Storage-Effects and Storage-Revision. The header
-     * Storage-Effects contains a list of the UIDs that were directly affected
-     * by the change and also contains the UIDs of newly created elements. If
-     * no changes were made because the XPath cannot find a writable target,
-     * the header Storage-Effects can be omitted completely in the response.
+     * In general, PUT requests are responded to with status 204. Changes at
+     * the storage are indicated by the two-part response header
+     * Storage-Revision. Status 404 is used only with relation to the storage.
      *
      * Syntactic and semantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1092,7 +1030,6 @@ class Storage {
      *
      *     Response:
      * HTTP/1.0 204 No Content
-     * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
@@ -1143,19 +1080,17 @@ class Storage {
         libxml_clear_errors();
 
         // PUT requests can address attributes and elements via XPath.
-        // Multi-axis XPaths allow multiple targets.
-        // The method only supports these two possibilities, other requests are
-        // responded with an error, because this situation cannot occur because
-        // the XPath is recognized as XPath for an attribute and otherwise an
-        // element is assumed.
-        // In this case it can only happen that the XPath does not address a
-        // target, which is not an error in the true sense. It only affects the
-        // Storage-Effects header.
-        // Therefore there is only one decision here.
+        // Multi-axis XPaths allow multiple targets. The method only supports
+        // these two possibilities, other requests are responded with an error,
+        // because this situation cannot occur because the XPath is recognized
+        // as XPath for an attribute and otherwise an element is assumed. In
+        // this case it can only happen that the XPath does not address target,
+        // which is not an error in the true sense. Therefore there is only one
+        // decision here.
 
-        // XPath can address elements and attributes.
-        // If the XPath ends with /attribute::<attribute> or /@<attribute> an
-        // attribute is expected, in all other cases a element.
+        // XPath can address elements and attributes. If the XPath ends with
+        // /attribute::<attribute> or /@<attribute> an attribute is expected,
+        // in all other cases a element.
 
         if (preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
 
@@ -1170,13 +1105,12 @@ class Storage {
 
             $input = file_get_contents("php://input");
 
-            // The Content-Type text/xpath is a special of the XMEX Storage.
-            // It expects a plain text which is an XPath function.
-            // The XPath function is first once applied to the current XML
-            // document from the storage and the result is put like the
-            // Content-Type text/plain. Even if the target is mutable, the
-            // XPath function is executed only once and the result is put on
-            // all targets.
+            // The Content-Type text/xpath is a special of the XMEX Storage. It
+            // expects a plain text which is an XPath function. The XPath
+            // function is first once applied to the current XML document from
+            // the storage and the result is put like the Content-Type
+            // text/plain. Even if the target is mutable, the XPath function is
+            // executed only once and the result is put on all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
@@ -1212,28 +1146,19 @@ class Storage {
             // no matching node was found. It should say request understood and
             // executed but without effect.
             if (!in_array($attribute, ["___rev", "___uid"])) {
-                $serials = [];
                 foreach ($targets as $target) {
                     // Only elements are supported, this prevents the
                     // addressing of the XML document by the XPath.
                     if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
-                    $serials[] = $target->getAttribute("___uid") . ":M";
                     $target->setAttribute($attribute, $input);
-                    // The revision is updated at the parent nodes, so you
-                    // can later determine which nodes have changed and
-                    // with which revision. Partial access allows the
-                    // client to check if the data or a tree is still up to
-                    // date, because he can compare the revision.
-                    Storage::updateNodeRevision($target, $this->revision +1);
+                    // The revision is updated at the parent nodes, so you can
+                    // later determine which nodes have changed and with which
+                    // revision. Partial access allows the client to check if
+                    // the data or a tree is still up to date, because he can
+                    // compare the revision.
+                    Storage::updateNodeRevision($target, $this->unique);
                 }
-
-                // Only the list of serials is an indicator that data has
-                // changed and whether the revision changes with it.
-                // If necessary the revision must be corrected if there are
-                // no data changes.
-                if (!empty($serials))
-                    header("Storage-Effects: " . join(" ", $serials));
             }
 
             $this->materialize();
@@ -1262,13 +1187,12 @@ class Storage {
 
             $input = file_get_contents("php://input");
 
-            // The Content-Type text/xpath is a special of the XMEX Storage.
-            // It expects a plain text which is an XPath function.
-            // The XPath function is first once applied to the current XML
-            // document from the storage and the result is put like the
-            // Content-Type text/plain. Even if the target is mutable, the
-            // XPath function is executed only once and the result is put on
-            // all targets.
+            // The Content-Type text/xpath is a special of the XMEX Storage. It
+            // expects a plain text which is an XPath function. The XPath
+            // function is first once applied to the current XML document from
+            // the storage and the result is put like the Content-Type
+            // text/plain. Even if the target is mutable, the XPath function is
+            // executed only once and the result is put on all targets.
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
@@ -1284,7 +1208,6 @@ class Storage {
                 }
             }
 
-            $serials = [];
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -1295,36 +1218,29 @@ class Storage {
                 $this->quit(204, "No Content");
 
             foreach ($targets as $target) {
-                // Overwriting of the root element is not possible, as it
-                // is an essential part of the storage, and is ignored. It
-                // does not cause to an error, so the behaviour is
-                // analogous to putting attributes.
+                // Overwriting of the root element is not possible, as it is an
+                // essential part of the storage, and is ignored. It does not
+                // cause to an error, so the behaviour is analogous to putting
+                // attributes.
                 if ($target->nodeType != XML_ELEMENT_NODE)
                     continue;
-                $serials[] = $target->getAttribute("___uid") . ":M";
                 $replace = $target->cloneNode(false);
                 $replace->appendChild($this->xml->createTextNode($input));
                 $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
                 // The revision is updated at the parent nodes, so you can
                 // later determine which nodes have changed and with which
-                // revision. Partial access allows the client to check if
-                // the data or a tree is still up to date, because he can
-                // compare the revision.
-                Storage::updateNodeRevision($replace, $this->revision +1);
+                // revision. Partial access allows the client to check if the
+                // data or a tree is still up to date, because he can compare
+                // the revision.
+                Storage::updateNodeRevision($replace, $this->unique);
             }
-
-            // Only the list of serials is an indicator that data has changed
-            // and whether the revision changes with it. If necessary the
-            // revision must be corrected if there are no data changes.
-            if (!empty($serials))
-                header("Storage-Effects: " . join(" ", $serials));
 
             $this->materialize();
             $this->quit(204, "No Content");
         }
 
-        // Only an XML structure can be inserted, nothing else is supported.
-        // So only the Content-Type application/xml can be used.
+        // Only an XML structure can be inserted, nothing else is supported. So
+        // only the Content-Type application/xml can be used.
         if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
             $this->quit(415, "Unsupported Media Type");
 
@@ -1346,20 +1262,19 @@ class Storage {
         }
 
         // The attributes ___rev and ___uid are essential for the internal
-        // organization and management of the data and cannot be changed.
-        // When inserting, the attributes ___rev and ___uid are set
-        // automatically. These attributes must not be  contained in the XML
-        // structure to be inserted, because all XML elements without ___uid
-        // attributes are determined after insertion and it is assumed that
-        // they have been newly inserted. This approach was chosen to avoid a
-        // recursive search/iteration in the XML structure to be inserted.
+        // organization and management of the data and cannot be changed. When
+        // inserting, the attributes ___rev and ___uid are set automatically.
+        // These attributes must not be  contained in the XML structure to be
+        // inserted, because all XML elements without ___uid attributes are
+        // determined after insertion and it is assumed that they have been
+        // newly inserted. This approach was chosen to avoid a recursive
+        // search/iteration in the XML structure to be inserted.
         $nodes = (new DOMXpath($xml))->query("//*[@___rev|@___uid]");
         foreach ($nodes as $node) {
             $node->removeAttribute("___rev");
             $node->removeAttribute("___uid");
         }
 
-        $serials = [];
         if ($xml->documentElement->hasChildNodes()) {
             $targets = (new DOMXpath($this->xml))->query($xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
@@ -1372,24 +1287,19 @@ class Storage {
 
             foreach ($targets as $target) {
 
-                // Overwriting of the root element is not possible, as it
-                // is an essential part of the storage, and is ignored. It
-                // does not cause to an error, so the behaviour is
-                // analogous to putting attributes.
+                // Overwriting of the root element is not possible, as it is an
+                // essential part of the storage, and is ignored. It does not
+                // cause to an error, so the behaviour is analogous to putting
+                // attributes.
                 if ($target->nodeType != XML_ELEMENT_NODE)
                     continue;
 
                 if (!empty($pseudo))
                     $pseudo = strtolower($pseudo);
 
-                // Pseudo elements can be used to put in an XML
-                // substructure relative to the selected element.
+                // Pseudo elements can be used to put in an XML substructure
+                // relative to the selected element.
                 if (empty($pseudo)) {
-                    // The UIDs of the children that are removed by the
-                    // replacement are determined for storage effects.
-                    $childs = (new DOMXpath($this->xml))->query(".//*[@___uid]", $target);
-                    foreach ($childs as $child)
-                        $serials[] = $child->getAttribute("___uid") . ":D";
                     $replace = $target->cloneNode(false);
                     foreach ($xml->documentElement->childNodes as $insert)
                         $replace->appendChild($this->xml->importNode($insert->cloneNode(true), true));
@@ -1419,57 +1329,33 @@ class Storage {
             }
         }
 
-        // The attribute ___uid of all newly inserted elements is set.
-        // It is assumed that all elements without the  ___uid attribute are
-        // new. The revision of all affected nodes are updated, so you can
-        // later determine which nodes have changed and with which revision.
-        // Partial access allows the client to check if the data or a tree is
-        // still up to date, because he can compare the revision.
-
+        // The attribute ___uid of all newly inserted elements is set. It is
+        // assumed that all elements without the  ___uid attribute are new. The
+        // revision of all affected nodes are updated, so you can later
+        // determine which nodes have changed and with which revision. Partial
+        // access allows the client to check if the data or a tree is still up
+        // to date, because he can compare the revision.
         $nodes = (new DOMXpath($this->xml))->query("//*[not(@___uid)]");
         foreach ($nodes as $node) {
-            $serial = $this->getSerial();
-            $serials[] = $serial . ":A";
-            $node->setAttribute("___uid", $serial);
-            Storage::updateNodeRevision($node, $this->revision +1);
-
-            // Also the UID of the directly addressed element is transmitted to
-            // the client in the response, because the element itself has not
-            // changed, but its content has. Other parent elements are not
-            // listed because they are only indirectly affected. So the
-            // behaviour is analogous to putting attributes.
-            if ($node->parentNode->nodeType != XML_ELEMENT_NODE)
-                continue;
-            $serial = $node->parentNode->getAttribute("___uid");
-            if (!empty($serial)
-                    && !in_array($serial . ":A", $serials)
-                    && !in_array($serial . ":M", $serials))
-                $serials[] = $serial . ":M";
+            $node->setAttribute("___uid", $this->getSerial());
+            Storage::updateNodeRevision($node, $this->unique);
         }
-
-        // Only the list of serials is an indicator that data has changed and
-        // whether the revision changes with it. If necessary the revision must
-        // be corrected if there are no data changes.
-        if (!empty($serials))
-            header("Storage-Effects: " . join(" ", $serials));
 
         $this->materialize();
         $this->quit(204, "No Content");
     }
 
     /**
-     * PATCH changes existing elements and attributes in storage.
-     * The position for the insert is defined via an XPath.
-     * The method works almost like PUT, but the XPath axis of the request
-     * always expects an existing target.
-     * XPath uses different notations for elements and attributes.
+     * PATCH changes existing elements and attributes in storage. The position
+     * for the insert is defined via an XPath. The method works almost like
+     * PUT, but the XPath axis of the request always expects an existing
+     * target. XPath uses different notations for elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
      *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
      * The attribute values can be static (text) and dynamic (XPath function).
-     * Values are send as request-body.
-     * Whether they are used as text or XPath function is decided by the
-     * Content-Type header of the request.
+     * Values are send as request-body. Whether they are used as text or XPath
+     * function is decided by the Content-Type header of the request.
      *     text/plain: static text
      *     text/xpath: XPath function
      *
@@ -1484,19 +1370,14 @@ class Storage {
      *     text/xpath: XPath function
      *     application/xml: XML structure
      *
-     * The PATCH method works resolutely and  overwrites existing data.
-     * The XPath processing is strict and does not accept unnecessary spaces.
-     * The attributes ___rev / ___uid used internally by the storage are
-     * read-only and cannot be changed.
+     * The PATCH method works resolutely and  overwrites existing data. The
+     * XPath processing is strict and does not accept unnecessary spaces. The
+     * attributes ___rev / ___uid used internally by the storage are read-only
+     * and cannot be changed.
      *
-     * In general, PATCH requests are responded to with status 204. Status 404
-     * is used only with relation to the storage. In all other cases the PATCH
-     * method informs the client about changes with status 204 and the response
-     * headers Storage-Effects and Storage-Revision. The header Storage-Effects
-     * contains a list of the UIDs that were directly affected by the change
-     * elements. If no changes were made because the XPath cannot find a
-     * writable target, the header Storage-Effects can be omitted completely in
-     * the response.
+     * In general, PATCH requests are responded to with status 204. Changes at
+     * the storage are indicated by the two-part response header
+     * Storage-Revision. Status 404 is used only with relation to the storage.
      *
      * Syntactic and semantics errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1528,7 +1409,6 @@ class Storage {
      *
      *     Response:
      * HTTP/1.0 204 No Content
-     * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
@@ -1556,9 +1436,9 @@ class Storage {
      */
     function doPatch() {
 
-        // PATCH is implemented like PUT.
-        // There are some additional conditions and restrictions that will be
-        // checked. After that the answer to the request can be passed to PUT.
+        // PATCH is implemented like PUT. There are some additional conditions
+        // and restrictions that will be checked. After that the answer to the
+        // request can be passed to PUT.
         // - Pseudo elements are not supported
         // - Target must exist, particularly for attributes
 
@@ -1566,8 +1446,9 @@ class Storage {
         if (empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
-        // Storage::SPACE also limits the maximum size of writing request(-body).
-        // If the limit is exceeded, the request is quit with status 413.
+        // Storage::SPACE also limits the maximum size of writing
+        // request(-body). If the limit is exceeded, the request is quit with
+        // status 413.
         if (strlen(file_get_contents("php://input")) > Storage::SPACE)
             $this->quit(413, "Payload Too Large");
 
@@ -1599,9 +1480,9 @@ class Storage {
     }
 
     /**
-     * DELETE deletes elements and attributes in the storage.
-     * The position for deletion is defined via an XPath.
-     * XPath uses different notations for elements and attributes.
+     * DELETE deletes elements and attributes in the storage. The position for
+     * deletion is defined via an XPath. XPath uses different notations for
+     * elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
      *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
@@ -1612,20 +1493,14 @@ class Storage {
      * Pseudo elements are a relative position specification to the selected
      * element.
      *
-     * The DELETE method works resolutely and deletes existing data.
-     * The XPath processing is strict and does not accept unnecessary spaces.
-     * The attributes ___rev / ___uid used internally by the storage are
-     * read-only and cannot be changed.
+     * The DELETE method works resolutely and deletes existing data. The XPath
+     * processing is strict and does not accept unnecessary spaces. The
+     * attributes ___rev / ___uid used internally by the storage are read-only
+     * and cannot be changed.
      *
-     * In general, DELETE requests are responded to with status 204. Status 404
-     * is used only with relation to the storage. In all other cases the DELETE
-     * method informs the client about changes with status 204 and the response
-     * headers Storage-Effects and Storage-Revision. The header Storage-Effects
-     * contains a list of the UIDs that were directly affected by the change
-     * and also contains the UIDs of newly created elements (e.g. when the root
-     * element is deleted, a new one is automatically created). If no changes
-     * were made because the XPath cannot find a writable target, the header
-     * Storage-Effects can be omitted completely in the response.
+     * In general, DELETE requests are responded to with status 204. Changes at
+     * the storage are indicated by the two-part response header
+     * Storage-Revision. Status 404 is used only with relation to the storage.
      *
      * Syntactic and semantic errors in the request and/or XPath can cause
      * error status 400.
@@ -1636,7 +1511,6 @@ class Storage {
      *
      *     Response:
      * HTTP/1.0 204 No Content
-     * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
@@ -1728,7 +1602,6 @@ class Storage {
             } else $this->quit(400, "Bad Request", ["Message" => "Invalid XPath axis (Unsupported pseudo syntax found)"]);
         }
 
-        $serials = [];
         foreach ($targets as $target) {
             if ($target->nodeType === XML_ATTRIBUTE_NODE) {
                 if (!$target->parentNode
@@ -1737,39 +1610,21 @@ class Storage {
                     continue;
                 $parent = $target->parentNode;
                 $parent->removeAttribute($target->name);
-                $serials[] = $parent->getAttribute("___uid") . ":M";
-                Storage::updateNodeRevision($parent, $this->revision +1);
+                Storage::updateNodeRevision($parent, $this->unique);
             } else if ($target->nodeType !== XML_DOCUMENT_NODE) {
                 if (!$target->parentNode
                         || !in_array($target->parentNode->nodeType, [XML_ELEMENT_NODE, XML_DOCUMENT_NODE]))
                     continue;
-                if ($target instanceof DOMElement) {
-                    $serials[] = $target->getAttribute("___uid") . ":D";
-                    $nodes = (new DOMXpath($this->xml))->query(".//*[@___uid]", $target);
-                    foreach ($nodes as $node)
-                        $serials[] = $node->getAttribute("___uid") . ":D";
-                }
                 $parent = $target->parentNode;
                 $parent->removeChild($target);
                 if ($parent->nodeType === XML_DOCUMENT_NODE) {
                     $target = $this->xml->createElement($this->root);
                     $target = $this->xml->appendChild($target);
-                    Storage::updateNodeRevision($target, $this->revision +1);
-                    $serial = $this->getSerial();
-                    $serials[] = $serial . ":A";
-                    $target->setAttribute("___uid", $serial);
-                } else {
-                    $serials[] = $parent->getAttribute("___uid") . ":M";
-                    Storage::updateNodeRevision($parent, $this->revision +1);
-                }
+                    Storage::updateNodeRevision($target, $this->unique);
+                    $target->setAttribute("___uid", $this->getSerial());
+                } else Storage::updateNodeRevision($parent, $this->unique);
             }
         }
-
-        // Only the list of serials is an indicator that data has changed and
-        // whether the revision changes with it. If necessary the revision must
-        // be corrected if there are no data changes.
-        if (!empty($serials))
-            header("Storage-Effects: " . join(" ", $serials));
 
         $this->materialize();
         $this->quit(204, "No Content");
@@ -1777,13 +1632,12 @@ class Storage {
 
     /**
      * Quit sends a response and ends the connection and closes the storage.
-     * The behavior of the method is hard.
-     * A response status and a response message are expected.
-     * Optionally, additional headers and data for the response body can be
-     * passed. Headers for storage and data length are set automatically. Data
-     * from the response body is only sent to the client if the response status
-     * is in class 2xx. This also affects the dependent headers Content-Type
-     * and Content-Length.
+     * The behavior of the method is hard. A response status and a response
+     * message are expected. Optionally, additional headers and data for the
+     * response body can be passed. Headers for storage and data length are set
+     * automatically. Data from the response body is only sent to the client if
+     * the response status is in class 2xx. This also affects the dependent
+     * headers Content-Type and Content-Length.
      * @param int    $status
      * @param string $message
      * @param array  $headers
@@ -1860,75 +1714,6 @@ class Storage {
                 "Storage-Expiration-Time" => (Storage::EXPIRATION *1000) . " ms"
             ]);
         }
-
-        // The response from the Storage-Effects header can be very extensive.
-        // With the Request-Header Accept-Effects you can define which classes
-        // of UIDs are returned to the client, comparable to a filter.
-        // There are the classes case-insensitive  ADD, MODIFIED and DELETED
-        // and the pseudonym NONE, which deselects all classes and ALL, which
-        // selects all classes.
-        // If no Accept-Effects header is specified, the default is:
-        //     ADDED MODIFIED
-        // Except for the DELETE method, which is the default:
-        //     MODIFIED DELETED
-        // Sorting of efficacy / priority (1 is highest):
-        //     1:ALL 2:NONE 3:DELETED 3:MODIFIED 3:ADDED
-
-        // Before that, the effects are minimized by removing obsolete entries.
-        // Obsolete entries are caused by a relative XPath in the PUT, PATCH
-        // and DELETE methods when elements are recursively modified and then
-        // also deleted.
-
-        $serials = $fetchHeader("Storage-Effects", true);
-        $serials = $serials ? $serials->value : "";
-        if (!empty($serials)) {
-            $serials = preg_split("/\s+/", $serials);
-            $serials = array_unique($serials);
-            foreach ($serials as $serial) {
-                if (!str_ends_with($serial, ":D"))
-                    continue;
-                $search = substr($serial, 0, -2) . ":M";
-                if (in_array($search, $serials))
-                    unset($serials[array_search($search, $serials)]);
-                $search = substr($serial, 0, -2) . ":A";
-                if (in_array($search, $serials))
-                    unset($serials[array_search($search, $serials)]);
-            }
-            $serials = implode(" ", $serials);
-        }
-
-        $accepts = isset($_SERVER["HTTP_ACCEPT_EFFECTS"]) ? strtolower(trim($_SERVER["HTTP_ACCEPT_EFFECTS"])) : "";
-        $accepts = !empty($accepts) ? preg_split("/\s+/", $accepts) : [];
-        $pattern = [];
-        if (strtoupper($_SERVER["REQUEST_METHOD"]) !== "DELETE") {
-            if (!empty($accepts)
-                    && !in_array("added", $accepts))
-                $pattern[] = "A";
-            if (empty($accepts)
-                    || !in_array("deleted", $accepts))
-                $pattern[] = "D";
-        } else {
-            if (empty($accepts)
-                    || !in_array("added", $accepts))
-                $pattern[] = "A";
-            if (!empty($accepts)
-                    && !in_array("deleted", $accepts))
-                $pattern[] = "D";
-        }
-        if (!empty($accepts)
-                && !in_array("modified", $accepts))
-            $pattern[] = "M";
-        if (!empty($accepts)
-                && in_array("none", $accepts))
-            $pattern = ["A", "M", "D"];
-        if (!empty($accepts)
-                && in_array("all", $accepts))
-            $pattern = [];
-        if (!empty($pattern))
-            $serials = preg_replace("/\s*\w+:\w+:[" . implode("|", $pattern) . "]\s*/i", " ", $serials);
-        $serials = trim(preg_replace("/\s{2,}/", " ", $serials));
-        if (!empty($serials))
-            header("Storage-Effects: " . $serials);
 
         foreach ($headers as $key => $value) {
             if (strcasecmp($key, "Content-Length") === 0)
@@ -2013,8 +1798,8 @@ class Storage {
     static function onError($error, $message, $file, $line) {
 
         // Special case XSLTProcessor errors
-        // These cannot be caught any other way. Therefore the error header
-        // is implemented here.
+        // These cannot be caught any other way. Therefore the error header is
+        // implemented here.
         $filter = "XSLTProcessor::transformToXml()";
         if (str_starts_with($message, $filter)) {
             $message = "Invalid XSLT stylesheet";
@@ -2075,13 +1860,13 @@ if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
     (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
 // The XPath is determined from REQUEST_URI or alternatively from REQUEST
-// because some servers normalize the paths and URI for the CGI.
-// It was not easy to determine the context path for all servers safely and
-// then extract the XPath from the request. Therefore it was decided that the
-// context path and XPath are separated by a symbol or a symbol sequence.
-// The behavior can be customized with Storage::PATTERN_HTTP_REQUEST_URI.
-// If the pattern is empty, null or false, the request URI without context path
-// will be used. This is helpful when the service is used as a domain.
+// because some servers normalize the paths and URI for the CGI. It was not
+// easy to determine the context path for all servers safely and then extract
+// the XPath from the request. Therefore it was decided that the context path
+// and XPath are separated by a symbol or a symbol sequence. The behavior can
+// be customized with Storage::PATTERN_HTTP_REQUEST_URI. If the pattern is
+// empty, null or false, the request URI without context path will be used.
+// This is helpful when the service is used as a domain.
 $xpath = $_SERVER["REQUEST_URI"];
 if (Storage::PATTERN_HTTP_REQUEST_URI) {
     if (isset($_SERVER["REQUEST"])
@@ -2096,11 +1881,10 @@ else if (preg_match(Storage::PATTERN_BASE64, $xpath))
 else $xpath = urldecode($xpath);
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an
-// XPath or XPath function.
-// CONNECT and OPTIONS do not use an (X)Path to establish a storage.
-// POST uses the XPath for transformation only optionally to delimit the XML
-// data for the transformation and works also without.
-// In the other cases an empty XPath is replaced by the root slash.
+// XPath or XPath function. CONNECT does not use an (X)Path to establish a
+// storage. POST uses the XPath for transformation only optionally to delimit
+// the XML data for the transformation and works also without. In the other
+// cases an empty XPath is replaced by the root slash.
 if (empty($xpath)
         && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";

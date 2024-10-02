@@ -47,10 +47,11 @@ CR: Service: Review of revision management
       attribute of the elements are now based on the storage revision ___rev
       attribute.
       TODO: Update description in manual
+    - Omission of the response header Storage-Effects
+      TODO: Add description in manual
+      TODO: Test
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
-    - XPath is still not supported, new message “Unexpected XPath”, status code
-      400 as before
 CR: Test: Review and optimization
     - Added option XMEX_DEBUG_MODE
       The activation of debug mode is primarily planned for unit tests and
