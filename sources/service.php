@@ -458,7 +458,7 @@ class Storage {
             @unlink($storage->store);
 
         $initial = ($options & Storage::STORAGE_SHARE_INITIAL) != Storage::STORAGE_SHARE_INITIAL;
-        if ($initial
+        if (!$initial
                 && !$storage->exists())
             $storage->quit(404, "Resource Not Found");
 
@@ -750,17 +750,8 @@ class Storage {
      */
     function doOptions() {
 
-        // Without XPath (PATH_INFO) behaves like CONNECT,
-        // because CONNECT is no HTTP standard.
-        // The function call is executed and the request is terminated.
-        if (empty($this->xpath))
-            $this->doConnect();
-
-        // Without existing storage the request is not valid.
-        if (!$this->exists())
-            $this->quit(404, "Resource Not Found");
-
         // In any case an XPath is required for a valid request.
+        // TODO: Without a XPath, options for the storage in general
         if (empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
@@ -845,10 +836,6 @@ class Storage {
      * - An unexpected error has occurred
      */
     function doGet() {
-
-        // Without existing storage the request is not valid.
-        if (!$this->exists())
-            $this->quit(404, "Resource Not Found");
 
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath))
@@ -948,10 +935,6 @@ class Storage {
      * - An unexpected error has occurred
      */
     function doPost() {
-
-        // Without existing storage the request is not valid.
-        if (!$this->exists())
-            $this->quit(404, "Resource Not Found");
 
         // POST always expects an valid XSLT template for transformation.
         if (!isset($_SERVER["CONTENT_TYPE"])
@@ -1136,10 +1119,6 @@ class Storage {
      * - An unexpected error has occurred
      */
     function doPut() {
-
-        // Without existing storage the request is not valid.
-        if (!$this->exists())
-            $this->quit(404, "Resource Not Found");
 
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath))
@@ -1583,10 +1562,6 @@ class Storage {
         // - Pseudo elements are not supported
         // - Target must exist, particularly for attributes
 
-        // Without existing storage the request is not valid.
-        if (!$this->exists())
-            $this->quit(404, "Resource Not Found");
-
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
@@ -1682,10 +1657,6 @@ class Storage {
      * - An unexpected error has occurred
      */
     function doDelete() {
-
-        // Without existing storage the request is not valid.
-        if (!$this->exists())
-            $this->quit(404, "Resource Not Found");
 
         // In any case an XPath is required for a valid request.
         if (empty($this->xpath))
