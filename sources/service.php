@@ -1610,6 +1610,7 @@ class Storage {
                     continue;
                 $parent = $target->parentNode;
                 $parent->removeAttribute($target->name);
+                $this->serial++;
                 Storage::updateNodeRevision($parent, $this->unique);
             } else if ($target->nodeType !== XML_DOCUMENT_NODE) {
                 if (!$target->parentNode
@@ -1617,6 +1618,7 @@ class Storage {
                     continue;
                 $parent = $target->parentNode;
                 $parent->removeChild($target);
+                $this->serial++;
                 if ($parent->nodeType === XML_DOCUMENT_NODE) {
                     $target = $this->xml->createElement($this->root);
                     $target = $this->xml->appendChild($target);
@@ -1707,7 +1709,7 @@ class Storage {
             $expiration = $expiration->format("D, d M Y H:i:s T");
             $headers = array_merge($headers, [
                 "Storage" => $this->storage,
-                "Storage-Revision" => $this->xml->documentElement->getAttribute("___rev"),
+                "Storage-Revision" => $this->xml->documentElement->getAttribute("___rev") . "/" . $this->serial,
                 "Storage-Space" => Storage::SPACE . "/" . $this->getSize() . " bytes",
                 "Storage-Last-Modified" => date("D, d M Y H:i:s T"),
                 "Storage-Expiration" => $expiration,

@@ -50,6 +50,11 @@ CR: Service: Review of revision management
     - Omission of the response header Storage-Effects
       TODO: Add description in manual
       TODO: Test
+    - Switch to response header Storage-Revision with the number of changes
+      schema: revision/number of changes, e.g. Storage-Revision: 123/45
+      without changes Storage-Revision: 123/0
+      TODO: Add description in manual
+      TODO: Test
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
 CR: Test: Review and optimization
