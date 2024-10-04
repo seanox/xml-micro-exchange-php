@@ -78,19 +78,17 @@
  * dynamic.
  *
  *        Revision
- * TODO:
  * Every change in a storage is expressed as a revision. This should make it
  * easier for the client to determine whether data has changed, even for partial
- * requests. The revision is a counter of changes per request, without any claim
- * of version management of past revisions. It starts with initial revision 0
- * when a storage is created on the first call. The first change already uses
- * revision 1.
+ * requests. Depending on the configuration (XMEX_STORAGE_REVISION_TYPE), the
+ * revision is an auto-incremental integer starting with 1 or an alphanumeric
+ * timestamp.
  *
  * Each element uses a revision in the read-only attribute ___rev, which, as
- * with all parent revision attributes, is automatically incremented when it
- * changes. change can affect the element itself or the change to its children.
- * Because the revision is passed up, the root element automatically always uses
- * the current revision.
+ * with all parent revision attributes, is automatically update when it changes.
+ * A change can affect the element itself or the change to its children. Because
+ * the revision is passed up, the root element automatically always uses the
+ * current revision.
  *
  * Changes are: PUT, PATCH, DELETE
  *
@@ -99,10 +97,11 @@
  *       UID
  * Each element uses a unique identifier in the form of the read-only attribute
  * ___uid. The unique identifier is automatically created when an element is put
- * into storage and never changes. The UID uses, depending on
- * XMEX_STORAGE_REVISION_TYPE an alphanumeric timestamp or an auto-incremental
- * integer. The UID is thus also sortable and provides information about the
- * order in which elements are created.
+ * into storage and never changes. The UID is based on the current revision,
+ * which, depending on the configuration (XMEX_STORAGE_REVISION_TYPE), is an
+ * alphanumeric timestamp or an automatically incremented integer. The UID is
+ * thus also sortable and provides information about the order in which elements
+ * are created.
  *
  * Write accesses to attribute ___uid are accepted with status 204.
  *
@@ -586,7 +585,7 @@ class Storage {
      *    Response:
      * HTTP/1.0 201 Created
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
@@ -595,7 +594,7 @@ class Storage {
      *     Response:
      * HTTP/1.0 204 No Content
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
@@ -655,7 +654,7 @@ class Storage {
      *     Response:
      * HTTP/1.0 204 No Content
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
@@ -728,7 +727,7 @@ class Storage {
      *     Response:
      * HTTP/1.0 200 Success
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
@@ -821,7 +820,7 @@ class Storage {
      *     Response:
      * HTTP/1.0 200 Success
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
@@ -998,7 +997,7 @@ class Storage {
      *     Response:
      * HTTP/1.0 204 No Content
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
@@ -1297,7 +1296,7 @@ class Storage {
         }
 
         // The attribute ___uid of all newly inserted elements is set. It is
-        // assumed that all elements without the  ___uid attribute are new. The
+        // assumed that all elements without the ___uid attribute are new. The
         // revision of all affected nodes are updated, so you can later
         // determine which nodes have changed and with which revision. Partial
         // access allows the client to check if the data or a tree is still up
@@ -1377,7 +1376,7 @@ class Storage {
      *     Response:
      * HTTP/1.0 204 No Content
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
@@ -1479,7 +1478,7 @@ class Storage {
      *     Response:
      * HTTP/1.0 204 No Content
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     * Storage-Revision: Revision (number)
+     * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
      * Storage-Last-Modified: Timestamp (RFC822)
      * Storage-Expiration: Timestamp (RFC822)
