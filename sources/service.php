@@ -355,38 +355,26 @@ class Storage {
         // To ensure that this also works with Windows, Base64 encoding is used.
 
         $options = [];
-        if (preg_match(Storage::PATTERN_XPATH_OPTIONS, $xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
+        if (preg_match(Storage::PATTERN_XPATH_OPTIONS, $xpath ?: "", $matches, PREG_UNMATCHED_AS_NULL)) {
             $xpath = $matches[1];
             $options = array_merge(array_filter(explode("!", strtolower($matches[2]))));
         }
 
+        $store = null;
+        if (!empty($storage))
+            $store = Storage::DIRECTORY . "/" . base64_encode($storage);
+        if (empty($storage))
+            $root ?: "data";
+        else $root = null;
+
         $this->storage  = $storage;
-        $this->root     = $root ?: "data";
-        $this->store    = Storage::DIRECTORY . "/" . base64_encode($this->storage);
+        $this->root     = $root;
+        $this->store    = $store;
         $this->xpath    = $xpath;
         $this->options  = $options;
         $this->serial   = 0;
         $this->unique   = null;
         $this->revision = null;
-    }
-
-    /**
-     * Return a unique ID related to the request.
-     * @return string unique ID related to the request
-     */
-    private static function uniqueId() {
-
-        // The method is based on time, network port and the assumption that a
-        // port is not used more than once at the same time. On fast platforms,
-        // however, the time factor is uncertain because the time from calling
-        // the method is less than one millisecond. This is ignored here,
-        // assuming that the port reassignment is greater than one millisecond.
-
-        // Structure of the Unique-Id [? MICROSECONDS][4 PORT]
-        $unique = base_convert($_SERVER["REMOTE_PORT"], 10, 36);
-        $unique = str_pad($unique, 4, 0, STR_PAD_LEFT);
-        $unique = base_convert(round(microtime(true) *1000), 10, 36) . $unique;
-        return strtoupper($unique);
     }
 
     /** Cleans up all files that have exceeded the maximum idle time. */
@@ -444,7 +432,7 @@ class Storage {
         // The cleanup does not run permanently, so the possible expiry is
         // checked before access and the storage is deleted if necessary.
         $expiration = time() -Storage::EXPIRATION;
-        if (file_exists($$storage->store)
+        if (file_exists($storage->store)
                 && (filemtime($storage->store) < $expiration
                         || filesize($storage->store) <= 0))
             @unlink($storage->store);
