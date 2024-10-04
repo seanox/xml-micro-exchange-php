@@ -21,14 +21,13 @@
  *
  *     DESCRIPTION
  *
- * XML-Micro-Exchange is a volatile RESTful micro datasource.
- * It is designed for easy communication and data exchange of web-applications
- * and for IoT.
- * The XML based datasource is volatile and lives through continuous use and
- * expires through inactivity. They are designed for active and near real-time
- * data exchange but not as a real-time capable long-term storage.
- * Compared to a JSON storage, this datasource supports more dynamics, partial
- * data access, data transformation, and volatile short-term storage.
+ * XML-Micro-Exchange is a volatile RESTful micro datasource. It is designed for
+ * easy communication and data exchange of web-applications and for IoT. The XML
+ * based datasource is volatile and lives through continuous use and expires
+ * through inactivity. They are designed for active and near real-time data
+ * exchange but not as a real-time capable long-term storage. Compared to a JSON
+ * storage, this datasource supports more dynamics, partial data access, data
+ * transformation, and volatile short-term storage.
  *
  *     TERMS / WORDING
  *
@@ -41,31 +40,30 @@
  * Physically this is the data directory.
  *
  *         Storage
- * The data areas managed by the XML-Micro-Exchange as a data service are
- * called storage areas. A storage area corresponds to an XML file in the data
+ * The data areas managed by the XML-Micro-Exchange as a data service are called
+ * storage areas. A storage area corresponds to an XML file in the data
  * directory.
  *
  *         Storage Identifier
- * Each storage has an identifier, the Storage Identifier.
- * The Storage Identifier is used as the filename of the corresponding XML file
- * and must be specified with each request so that the datasource uses the
- * correct storage.
+ * Each storage has an identifier, the Storage Identifier. The Storage
+ * Identifier is used as the filename of the corresponding XML file and must be
+ * specified with each request so that the datasource uses the correct storage.
  *
  *         Element(s)
  * The content of the XML file of a storage provide the data as object or tree
- * structure. The data entries are called elements.
- * Elements can enclose other elements.
+ * structure. The data entries are called elements. Elements can enclose other
+ * elements.
  *
  *         Attribute(s)
  * Elements can also contain direct values in the form of attributes.
  *
  *         XPath
- * XPath is a notation for accessing and navigating the XML data structure.
- * An XPath can be an axis or a function.
+ * XPath is a notation for accessing and navigating the XML data structure. An
+ * XPath can be an axis or a function.
  *
  *         XPath Axis
- * XPath axes address or select elements or attributes.
- * The axes can have a multidimensional effect.
+ * XPath axes address or select elements or attributes. The axes can have a
+ * multidimensional effect.
  *
  *         XPath Axis Pseudo Elements
  * For PUT requests it is helpful to specify a relative navigation to an XPath
@@ -75,25 +73,24 @@
  *
  *         XPath Function
  * The XPath notation also supports functions that can be used in combination
- * with axes and standalone for dynamic data requests. In combination with
- * XPath axes, the addressing and selection of elements and attributes can be
- * made dynamic.
+ * with axes and standalone for dynamic data requests. In combination with XPath
+ * axes, the addressing and selection of elements and attributes can be made
+ * dynamic.
  *
  *        Revision
- * Every change in a storage is expressed as a revision.
- * This should make it easier for the client to determine whether data has
- * changed, even for partial requests.
- * The revision is a counter of changes per request, without any claim of
- * version management of past revisions.
- * It starts with initial revision 0 when a storage is created on the first
- * call. The first change already uses revision 1.
+ * TODO:
+ * Every change in a storage is expressed as a revision. This should make it
+ * easier for the client to determine whether data has changed, even for partial
+ * requests. The revision is a counter of changes per request, without any claim
+ * of version management of past revisions. It starts with initial revision 0
+ * when a storage is created on the first call. The first change already uses
+ * revision 1.
  *
  * Each element uses a revision in the read-only attribute ___rev, which, as
  * with all parent revision attributes, is automatically incremented when it
- * changes.
- * A change can affect the element itself or the change to its children.
- * Because the revision is passed up, the root element automatically always
- * uses the current revision.
+ * changes. change can affect the element itself or the change to its children.
+ * Because the revision is passed up, the root element automatically always uses
+ * the current revision.
  *
  * Changes are: PUT, PATCH, DELETE
  *
@@ -101,8 +98,8 @@
  *
  *       UID
  * Each element uses a unique identifier in the form of the read-only attribute
- * ___uid. The unique identifier is automatically created when an element is
- * put into storage and never changes. The UID uses, depending on
+ * ___uid. The unique identifier is automatically created when an element is put
+ * into storage and never changes. The UID uses, depending on
  * XMEX_STORAGE_REVISION_TYPE an alphanumeric timestamp or an auto-incremental
  * integer. The UID is thus also sortable and provides information about the
  * order in which elements are created.
@@ -110,14 +107,12 @@
  * Write accesses to attribute ___uid are accepted with status 204.
  *
  *     REQUEST
- * The implementation works RESTfull and uses normal HTTP request.
- * For the addressing of targets XPath axes and XPath functions are used,
- * which are transmitted as part of the URI path.
- * Because XPath has a different structure than the URI, even if it uses
- * similar characters, clients and/or gateways may experience syntax problems
- * when optimizing the request.
- * For this reason different ways of transmission and escape are supported for
- * the XPath.
+ * The implementation works RESTfull and uses normal HTTP request. For the
+ * addressing of targets XPath axes and XPath functions are used, which are
+ * transmitted as part of the URI path. Because XPath has a different structure
+ * than the URI, even if it uses similar characters, clients and/or gateways may
+ * experience syntax problems when optimizing the request. For this reason
+ * different ways of transmission and escape are supported for the XPath.
  *
  *        URI (not escaped)
  * e.g. /xmex!//book[last()]/chapter[last()]
@@ -138,32 +133,27 @@
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
  *     TRANSACTION / SIMULTANEOUS ACCESS
- * XML-Micro-Exchange supports simultaneous access.
- * Read accesses are executed simultaneously.
- * Write accesses creates a lock and avoids dirty reading.
+ * XML-Micro-Exchange supports simultaneous access. Read accesses are executed
+ * simultaneously. Write accesses creates a lock and avoids dirty reading.
  *
  *     ERROR HANDLING
- * Errors are communicated via the server status 500 and the header 'Error'.
- * The header 'Error' contains only an error number, for security reasons no
+ * Errors are communicated via the server status 500 and the header 'Error'. The
+ * header 'Error' contains only an error number, for security reasons no
  * details. The error number with details can be found in the log file of the
- * service.
- * In the case of status 400 and 422, XML-Micro-Exchange uses the additional
- * header Message in the response, which contains more details about the error.
- * The difference between status 400 and 422 is that status 400 always refers
- * to the request and 422 to the request body. With status 400, errors are
- * detected in the request itself, and with status 422, errors are detected in
- * the content of the request body.
+ * service. In the case of status 400 and 422, XML-Micro-Exchange uses the
+ * additional header Message in the response, which contains more details about
+ * the error. The difference between status 400 and 422 is that status 400
+ * always refers to the request and 422 to the request body. With status 400
+ * errors are detected in the request itself, and with status 422, errors are
+ * detected in the content of the request body.
  *
  *     SECURITY
  * This aspect was deliberately considered and implemented here only in a very
  * rudimentary form. Only the storage(-key) with a length of 1 - 64 characters
- * can be regarded as secret.
- * For further security the approach of Basic Authentication, Digest Access
- * Authentication and/or Server/Client certificates is followed, which is
- * configured outside of the XMEX (XML-Micro-Exchange) at the web server.
- *
- * @author  Seanox Software Solutions
- * @version 1.4.0 20240815
+ * can be regarded as secret. For further security the approach of Basic
+ * Authentication, Digest Access Authentication and/or Server/Clien
+ * certificates is followed, which is configured at the web server and outside
+ * of the XMEX (XML-Micro-Exchange) .
  */
 
 // For the environment variables, PHP constants are created so that they can be
@@ -324,8 +314,8 @@ class Storage {
     /**
      * Pattern as indicator for XPath functions
      * Assumption for interpretation: Slash and dot are indications of an axis
-     * notation, the round brackets can be ignored, the question remains, if
-     * the XPath starts with an axis symbol, then it is an axis, with other
+     * notation, the round brackets can be ignored, the question remains, if the
+     * XPath starts with an axis symbol, then it is an axis, with other
      * characters at the beginning must be a function.
      */
     const PATTERN_XPATH_FUNCTION = "/^[\(\s]*[^\/\.\s\(].*$/";
@@ -364,7 +354,7 @@ class Storage {
         if (!empty($storage))
             $store = Storage::DIRECTORY . "/" . base64_encode($storage);
         if (empty($storage))
-            $root ?: "data";
+            $root = $root ?: "data";
         else $root = null;
 
         $this->storage  = $storage;
@@ -413,8 +403,8 @@ class Storage {
      * Opens a storage with a XPath for the current request. The storage can be
      * opened with various options, which are passed as a bit mask. If the
      * storage to be opened does not yet exist, it is initialized with option
-     * Storage::STORAGE_SHARE_INITIAL, otherwise the request will be
-     * terminated. With option Storage::STORAGE_SHARE_EXCLUSIVE, simultaneous
+     * Storage::STORAGE_SHARE_INITIAL, otherwise the request will be terminated.
+     * With option Storage::STORAGE_SHARE_EXCLUSIVE, simultaneous
      * requests must wait for a file lock.
      * @param  string  $storage
      * @param  string  $xpath
@@ -479,9 +469,9 @@ class Storage {
             $storage->unique += $storage->revision;
         }
 
-        // Safe is safe, if not the default 'data' is used, the name of the
-        // root element must be known. Otherwise the request is quit with
-        // status 404 and terminated.
+        // Safe is safe, if not the default 'data' is used, the name of the root
+        // element must be known. Otherwise the request is quit with status 404
+        // and terminated.
         if (($root ?: "data") != $storage->xml->documentElement->nodeName)
             $storage->quit(404, "Resource Not Found");
 
@@ -499,13 +489,13 @@ class Storage {
 
     /**
      * Materializes the XML document from the memory in the file system. Unlike
-     * save, the file is not closed and the data can be modified without
-     * another (PHP)process being able to read the data before finalizing it by
-     * closing it. Materialization is only executed if there are changes in the
-     * XML document, which is determined by the revision of the root element.
-     * The size of the storage is limited by Storage::SPACE because it is a
-     * volatile micro datasource for short-term data exchange. An overrun
-     * causes the status 413.
+     * save, the file is not closed and the data can be modified without another
+     * (PHP)process being able to read the data before finalizing it by closing
+     * it. Materialization is only executed if there are changes in the XML
+     * document, which is determined by the revision of the root element. The
+     * size of the storage is limited by Storage::SPACE because it is a volatile
+     * micro datasource for short-term data exchange. An overrun causes the
+     * status 413.
      */
     function materialize() {
 
@@ -577,8 +567,8 @@ class Storage {
      * construct that is used via a datasource URL. The datasource managed
      * several independent storages. Each storage has a name specified by the
      * client, which must be sent with each request. This is similar to the
-     * header host for virtual servers. Optionally, the name of the root
-     * element can also be defined by the client.
+     * header host for virtual servers. Optionally, the name of the root element
+     * can also be defined by the client.
      *
      * Each client can create a new storage at any time. Communication is
      * established when all parties use the same name. There are no rules, only
@@ -626,8 +616,8 @@ class Storage {
     function doConnect() {
 
         // Cleaning up can run longer and delay the request. It is least
-        // disruptive during the connect. Threads were deliberately omitted
-        // here to keep the service simple.
+        // disruptive during the connect. Threads were deliberately omitted here
+        // to keep the service simple.
         Storage::cleanUp();
 
         if (!empty($this->xpath))
@@ -713,10 +703,10 @@ class Storage {
     }
 
     /**
-     * GET queries data about XPath axes and functions. For this, the XPath
-     * axis or function is sent with URI. Depending on whether the request is
-     * an XPath axis or an XPath function, different Content-Type are used for
-     * the response.
+     * GET queries data about XPath axes and functions. For this, the XPath axis
+     * or function is sent with URI. Depending on whether the request is an
+     * XPath axis or an XPath function, different Content-Type are used for the
+     * response.
      *
      *     application/xml
      * When the XPath axis addresses one target, the addressed target is the
@@ -725,9 +715,9 @@ class Storage {
      * collection.
      *
      *     text/plain
-     * If the XPath addresses only one attribute, the value is returned as
-     * plain text. Also the result of XPath functions is returned as plain
-     * text. Decimal results use float, booleans the values true and false.
+     * If the XPath addresses only one attribute, the value is returned as plain
+     * text. Also the result of XPath functions is returned as plain text.
+     * Decimal results use float, booleans the values true and false.
      *
      * The XPath processing is strict and does not accept unnecessary spaces.
      *
@@ -815,10 +805,10 @@ class Storage {
      * this, an XSLT stylesheet is sent with the request-body, which is then
      * applied by the XSLT processor to the data in storage. Thus the content
      * type application/xslt+xml is always required. The client defines the
-     * content type for the output with the output-tag and the
-     * method-attribute. The XPath is optional for this method and is used to
-     * limit and preselect the data. The processing is strict and does not
-     * accept unnecessary spaces.
+     * content type for the output with the output-tag and the method-attribute.
+     * The XPath is optional for this method and is used to limit and preselect
+     * the data. The processing is strict and does not accept unnecessary
+     * spaces.
      *
      *     Request:
      * POST /<xpath> HTTP/1.0
@@ -973,9 +963,9 @@ class Storage {
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
      *
-     * In general, PUT requests are responded to with status 204. Changes at
-     * the storage are indicated by the two-part response header
-     * Storage-Revision. Status 404 is used only with relation to the storage.
+     * In general, PUT requests are responded to with status 204. Changes at the
+     * storage are indicated by the two-part response header Storage-Revision.
+     * Status 404 is used only with relation to the storage.
      *
      * Syntactic and semantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1119,13 +1109,13 @@ class Storage {
 
             // The attributes ___rev and ___uid are essential for the internal
             // organization and management of the data and cannot be changed.
-            // PUT requests for these attributes are ignored and behave as if
-            // no matching node was found. It should say request understood and
+            // PUT requests for these attributes are ignored and behave as if no
+            // matching node was found. It should say request understood and
             // executed but without effect.
             if (!in_array($attribute, ["___rev", "___uid"])) {
                 foreach ($targets as $target) {
-                    // Only elements are supported, this prevents the
-                    // addressing of the XML document by the XPath.
+                    // Only elements are supported, this prevents the addressing
+                    // of the XML document by the XPath.
                     if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
                     $target->setAttribute($attribute, $input);
@@ -1204,11 +1194,11 @@ class Storage {
                 $replace = $target->cloneNode(false);
                 $replace->appendChild($this->xml->createTextNode($input));
                 $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
-                // The revision is updated at the parent nodes, so you can
-                // later determine which nodes have changed and with which
-                // revision. Partial access allows the client to check if the
-                // data or a tree is still up to date, because he can compare
-                // the revision.
+                // The revision is updated at the parent nodes, so you can later
+                // determine which nodes have changed and with which revision.
+                // Partial access allows the client to check if the data or a
+                // tree is still up to date, because he can compare the
+                // revision.
                 Storage::updateNodeRevision($replace, $this->unique);
             }
 
@@ -1324,9 +1314,9 @@ class Storage {
 
     /**
      * PATCH changes existing elements and attributes in storage. The position
-     * for the insert is defined via an XPath. The method works almost like
-     * PUT, but the XPath axis of the request always expects an existing
-     * target. XPath uses different notations for elements and attributes.
+     * for the insert is defined via an XPath. The method works almost like PUT,
+     * but the XPath axis of the request always expects an existing target.
+     * XPath uses different notations for elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
      *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
@@ -1479,8 +1469,8 @@ class Storage {
      * the storage are indicated by the two-part response header
      * Storage-Revision. Status 404 is used only with relation to the storage.
      *
-     * Syntactic and semantic errors in the request and/or XPath can cause
-     * error status 400.
+     * Syntactic and semantic errors in the request and/or XPath can cause error
+     * status 400.
      *
      *     Request:
      * DELETE /<xpath> HTTP/1.0
@@ -1543,8 +1533,8 @@ class Storage {
                 || $targets->length <= 0)
             $this->quit(204, "No Content");
 
-        // Pseudo elements can be used to delete in an XML substructure
-        // relative to the selected element.
+        // Pseudo elements can be used to delete in an XML substructure relative
+        // to the selected element.
         if ($pseudo) {
             if (strcasecmp($pseudo, "before") === 0) {
                 $childs = [];
@@ -1610,10 +1600,10 @@ class Storage {
     }
 
     /**
-     * Quit sends a response and ends the connection and closes the storage.
-     * The behavior of the method is hard. A response status and a response
-     * message are expected. Optionally, additional headers and data for the
-     * response body can be passed. Headers for storage and data length are set
+     * Quit sends a response and ends the connection and closes the storage. The
+     * behavior of the method is hard. A response status and a response message
+     * are expected. Optionally, additional headers and data for the response
+     * body can be passed. Headers for storage and data length are set
      * automatically. Data from the response body is only sent to the client if
      * the response status is in class 2xx. This also affects the dependent
      * headers Content-Type and Content-Length.
@@ -1631,8 +1621,8 @@ class Storage {
             exit;
         }
 
-        // This is implemented for scanning and modification of headers.
-        // To remove, the headers are set before, so that standard headers like
+        // This is implemented for scanning and modification of headers. To
+        // remove, the headers are set before, so that standard headers like
         // Content-Type are also removed correctly.
         $fetchHeader = function($name, $remove = false) {
             $result = false;
@@ -1836,8 +1826,7 @@ set_exception_handler("Storage::onException");
 $script = basename(__FILE__);
 if (isset($_SERVER["PHP_SELF"])
         && preg_match("/\/" . str_replace(".", "\\.", $script) . "([\/\?].*)?$/", $_SERVER["PHP_SELF"])
-        && (!isset($_SERVER["REDIRECT_URL"])
-                || empty($_SERVER["REDIRECT_URL"])))
+        && (empty($_SERVER["REDIRECT_URL"])))
     (new Storage)->quit(404, "Resource Not Found");
 
 // Request method is determined
@@ -1856,13 +1845,13 @@ if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
     (new Storage)->quit(400, "Bad Request", ["Message" => "Invalid storage identifier"]);
 
 // The XPath is determined from REQUEST_URI or alternatively from REQUEST
-// because some servers normalize the paths and URI for the CGI. It was not
-// easy to determine the context path for all servers safely and then extract
-// the XPath from the request. Therefore it was decided that the context path
-// and XPath are separated by a symbol or a symbol sequence. The behavior can
-// be customized with Storage::PATTERN_HTTP_REQUEST_URI. If the pattern is
-// empty, null or false, the request URI without context path will be used.
-// This is helpful when the service is used as a domain.
+// because some servers normalize the paths and URI for the CGI. It was not easy
+// to determine the context path for all servers safely and then extract the
+// XPath from the request. Therefore it was decided that the context path and
+// XPath are separated by a symbol or a symbol sequence. The behavior can be
+// customized with Storage::PATTERN_HTTP_REQUEST_URI. If the pattern is empty,
+// null or false, the request URI without context path will be used. This is
+// helpful when the service is used as a domain.
 $xpath = $_SERVER["REQUEST_URI"];
 if (Storage::PATTERN_HTTP_REQUEST_URI) {
     if (isset($_SERVER["REQUEST"])
@@ -1876,11 +1865,11 @@ else if (preg_match(Storage::PATTERN_BASE64, $xpath))
     $xpath = base64_decode(substr($xpath, 7));
 else $xpath = urldecode($xpath);
 
-// With the exception of CONNECT, OPTIONS and POST, all requests expect an
-// XPath or XPath function. CONNECT does not use an (X)Path to establish a
-// storage. POST uses the XPath for transformation only optionally to delimit
-// the XML data for the transformation and works also without. In the other
-// cases an empty XPath is replaced by the root slash.
+// With the exception of CONNECT, OPTIONS and POST, all requests expect an XPath
+// or XPath function. CONNECT does not use an (X)Path to establish a storage.
+// POST uses the XPath for transformation only optionally to delimit the XML
+// data for the transformation and works also without. In the other cases an
+// empty XPath is replaced by the root slash.
 if (empty($xpath)
         && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";
