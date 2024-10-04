@@ -57,6 +57,8 @@ CR: Service: Review of revision management
       TODO: Test
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
+CR: Service: Review and optimization of OPTIONS
+    - Omission of the response header Storage-Effects.
 CR: Test: Review and optimization
     - Added option XMEX_DEBUG_MODE
       The activation of debug mode is primarily planned for unit tests and

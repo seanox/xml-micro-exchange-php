@@ -642,18 +642,20 @@ class Storage {
     }
 
     /**
-     * TODO
      * OPTIONS is used to query the allowed HTTP methods for an XPath, which is
-     * responded with the Allow-header. This method distinguishes between XPath
-     * axis and XPath function and uses different Allow headers. Also the
-     * existence of the target on an XPath axis has an influence on the
-     * response. The method will not use status 404 in relation to non-existing
-     * targets, but will offer the methods CONNECT, OPTIONS, PUT via
-     * Allow-Header. In the case of an XPath axis, the UIDs of the targets are
-     * returned in the Storage-Effects header. Unlike modifier methods like
-     * PUT, PATCH and DELETE, the effect suffix (:A/:M/:D) is omitted here. If
-     * the XPath is a function, it is executed and thus validated, but without
-     * returning the result. The XPath processing is strict and does not accept
+     * responded with the header Allow. This method distinguishes between XPath
+     * function and XPath axis and for an XPath axis the target exists or not
+     * and uses different Allow headers accordingly.
+     *
+     * Overview of header Allow
+     * - XPath function: CONNECT, OPTIONS, GET, POST
+     * - XPath axis without target: CONNECT, OPTIONS, PUT
+     * - XPath axis with target: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+     *
+     * The method always executes a transmitted XPath, but does not return the
+     * result directly, but reflects the result via different header Allow. The
+     * status 404 is not used in relation to the XPath, but only in relation to
+     * the storage. The XPath processing is strict and does not accept
      * unnecessary spaces. Faulty XPath will cause the status 400.
      *
      *     Request:
@@ -662,7 +664,6 @@ class Storage {
      *
      *     Response:
      * HTTP/1.0 204 No Content
-     * Storage-Effects: ... (list of UIDs)
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number)
      * Storage-Space: Total/Used (bytes)
@@ -684,7 +685,6 @@ class Storage {
     function doOptions() {
 
         // In any case an XPath is required for a valid request.
-        // TODO: Without a XPath, options for the storage in general
         if (empty($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
@@ -705,19 +705,8 @@ class Storage {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (!empty($targets) && $targets->length > 0) {
-                $serials = [];
-                foreach ($targets as $target) {
-                    if ($target instanceof DOMAttr)
-                        $target = $target->parentNode;
-                    if ($target instanceof DOMElement)
-                        $serials[] = $target->getAttribute("___uid");
-                }
-                if (!empty($serials))
-                    // TODO:
-                    header("Storage-Effects: " . join(" ", $serials));
-                $allow = "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE";
-            } else $allow = "CONNECT, OPTIONS, PUT";
+            if (empty($targets) && $targets->length <= 0)
+                $allow = "CONNECT, OPTIONS, PUT";
         }
 
         $this->quit(204, "No Content", ["Allow" => $allow]);
