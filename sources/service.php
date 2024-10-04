@@ -284,7 +284,7 @@ class Storage {
      *     Group 1. Storage
      *     Group 2. Name of the root element (optional)
      */
-    const PATTERN_HEADER_STORAGE = "/^(\w{1,64})(?:\s+(\w+)){0,1}$/";
+    const PATTERN_HEADER_STORAGE = "/^(\w(?:[-\w]{0,62}\w)?)(?:\s+(\w{1,64}))?$/";
 
     /**
      * Pattern to determine options (optional directives) at the end of XPath
@@ -351,7 +351,7 @@ class Storage {
 
         $store = null;
         if (!empty($storage))
-            $store = Storage::DIRECTORY . "/" . base64_encode($storage);
+            $store = Storage::DIRECTORY . "/" . $storage;
         if (empty($storage))
             $root = $root ?: "data";
         else $root = null;
@@ -426,7 +426,7 @@ class Storage {
                         || filesize($storage->store) <= 0))
             @unlink($storage->store);
 
-        $initial = ($options & Storage::STORAGE_SHARE_INITIAL) != Storage::STORAGE_SHARE_INITIAL;
+        $initial = ($options & Storage::STORAGE_SHARE_INITIAL) == Storage::STORAGE_SHARE_INITIAL;
         if (!$initial
                 && !$storage->exists())
             $storage->quit(404, "Resource Not Found");
