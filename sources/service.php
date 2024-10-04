@@ -1648,14 +1648,14 @@ class Storage {
         $fetchHeader = function($name, $remove = false) {
             $result = false;
             foreach (headers_list() as $header) {
-                if (!preg_match("/^\s*" . $name . "\s*:/i", $header))
+                $header = explode(":", $header, 2);
+                if (strcasecmp($name, trim($header[0])) != 0)
                     continue;
-                preg_match("/^\s*(.*?)\s*:\s*(.*)\s*$/", $header, $header, PREG_UNMATCHED_AS_NULL);
                 if ($remove) {
-                    header($header[1] . ":");
-                    header_remove($header[1]);
+                    header($header[0] . ":");
+                    header_remove($header[0]);
                 }
-                $result = (object)["name" => $header[1], "value" => $header[2]];
+                $result = (object)["name" => trim($header[0]), "value" => trim($header[1] ?? "")];
             }
             return $result;
         };
@@ -1744,12 +1744,29 @@ class Storage {
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
         if (Storage::DEBUG_MODE) {
-            header("Trace-Request: " . hash("md5", $_SERVER["REQUEST"]));
-            header("Trace-Request-Data: " . hash("md5", @file_get_contents("php://input")));
-            header("Trace-Response: " . hash("md5", $status . " " . $message));
-            header("Trace-Response-Header: " . "");
-            header("Trace-Response-Data: " . hash("md5", $data));
-            header("Trace-Storage: " . hash("md5", $this->xml?->saveXML()));
+            header("Trace-Request-Hash: " . hash("md5", $_SERVER["REQUEST"] ?: ""));
+            $header = join("\t",
+                array(
+                    $_SERVER["HTTP_STORAGE"] ?? "null",
+                    $_SERVER["CONTENT_TYPE"] ?? "null",
+                    $_SERVER["CONTENT_LENGTH"] ?? "null"
+                )
+            );
+            header("Trace-Request-Header-Hash: " . hash("md5", $header));
+            header("Trace-Request-Data-Hash: " . hash("md5", @file_get_contents("php://input") ?: ""));
+            header("Trace-Response-Hash: " . hash("md5", $status . " " . $message));
+            $header = join("\t",
+                array(
+                    $headers["Storage"] ?? "null",
+                    $headers["Storage-Revision"] ?? "null",
+                    $headers["Storage-Space"] ?? "null",
+                    $headers["Error"] ?? "null",
+                    $headers["Message"] ?? "null"
+                )
+            );
+            header("Trace-Response-Header-Hash: " . hash("md5", $header));
+            header("Trace-Response-Data-Hash: " . hash("md5", $data ?: ""));
+            header("Trace-Storage-Hash: " . hash("md5", $this->xml?->saveXML() ?: ""));
         }
 
         if ($status >= 200 && $status < 300
