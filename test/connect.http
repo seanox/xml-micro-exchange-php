@@ -14,7 +14,13 @@ CONNECT {{service}} HTTP/1.0
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cc8d8f7aa200e60a8f73701756fc679a");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "0c5c8ae6f93483159a1600ceba66f8fc");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "213c9ae49b6297889b923047f7143857");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
 %}
 
@@ -28,7 +34,13 @@ Storage:
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cc8d8f7aa200e60a8f73701756fc679a");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "0c5c8ae6f93483159a1600ceba66f8fc");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "213c9ae49b6297889b923047f7143857");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
 %}
 
@@ -42,7 +54,13 @@ Storage: C________10________20________30________40________50________60____
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "28b181a1013a46fd18cde0c3c77ade3a");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "4c8d2a976d0361229ef9d7000b125bf6");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "32ff4bf3299474af789e4bfaff5ccd95");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
 %}
 
@@ -54,7 +72,13 @@ Storage: C________10________20________30________40________50________60___
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3826e74a6db74a3534fc1d0ce18d0678");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "0db53ba5818a567d9b575a230aead53f");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "b2c16417dd57151e96356ad8ff613ed7");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
 });
 %}
 
@@ -67,7 +91,13 @@ Storage: C________10________20________30________40________50________60__A
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c98c388b02a1f5b4c82a370ed6b1016a");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "ccbab89c8b1338c8211f4629fbd1779e");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "70fae254e107208e94d9b85dbb3bb7e9");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
 });
 %}
 
@@ -80,7 +110,13 @@ Storage: C________10________20________30________40________50________60__A
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e0a8cc9c1c0590572435f5588889d2c8");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "ccbab89c8b1338c8211f4629fbd1779e");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0fd6effc8c459cf0844ccb4ab33a3961");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
 });
 %}
 
@@ -93,7 +129,13 @@ Storage: C________10________20________30________40________50________60__a
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4c2126295046d2507484a10ef9bf32a5");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "411e650820497ef3598351c81687b724");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "410ff54672ea9cb7d32dc3fc34e3a8f1");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
 });
 %}
 
@@ -106,7 +148,13 @@ Storage: C
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5efd0a3821a6ca9e0606f7fdf5040bee");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "1792a4b4cf93dada6d29c75b1d11746a");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "59e7d4bcc128029c83fea978415e9d48");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
 });
 %}
 
@@ -120,21 +168,72 @@ Storage: ?
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f9b9db3b368716fef1cbfe4d002eb091");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "a347d58b94bb7c3463b094a0e8cc9695");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "32ff4bf3299474af789e4bfaff5ccd95");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
 %}
 
 ###
-# Header Storage is to invalid
+# Header Storage with a minus is valid
 # Expectations:
-# - Status code 400 Bad Request
-# - Message: Invalid storage identifier
+# - Status code 201 Resource Created
 CONNECT {{service}} HTTP/1.0
 Storage: UnitTest_Storage-C0
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b4f703447ae36c2f5fcc9de6b7183c35");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "31de2bd4fdf9b254556a5c96560cfb7d");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "ee629f4b84aba5f984824d8e7b08605a");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
+});
+%}
+
+###
+# Header Storage invalid storage identifier with a minus at the end
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid storage identifier
+CONNECT {{service}} HTTP/1.0
+Storage: UnitTest_Storage-
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f15a9337d33a32c11f7ff0f01324cbee");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "32ff4bf3299474af789e4bfaff5ccd95");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+});
+%}
+
+###
+# Header Storage invalid storage identifier with a minus at beginning
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid storage identifier
+CONNECT {{service}} HTTP/1.0
+Storage: -UnitTest_Storage
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "67a49aea254358914e640ff15718679c");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "32ff4bf3299474af789e4bfaff5ccd95");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
 %}
 
@@ -143,13 +242,18 @@ client.test("unittest", function() {
 # correctly, the storage can be created.
 # Expectations:
 # - Status code 201 Resource Created
-# - Connection-Unique: UID
 CONNECT {{service}} HTTP/1.0
 Storage: {{storage_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b415c6898750b7e09c3dd1fc22be6bcc");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f17ae5355c039a4d0374480e4d2e630b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "09b3677177e08904ff01e3392192e969");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "90e5f8a2884ecb0f5669c01376905d97");
 });
 %}
 
@@ -158,26 +262,38 @@ client.test("unittest", function() {
 # correctly, the storage can be shared.
 # Expectations:
 # - Status code 204 No Content
-# - Connection-Unique: UID
 CONNECT {{service}} HTTP/1.0
 Storage: {{storage_connect}} books
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "44dc3c99b7e14f6a02d451d2c5e6f1d8");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f17ae5355c039a4d0374480e4d2e630b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "a42d6ffe4d6d65600fb77271c46d4d14");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "90e5f8a2884ecb0f5669c01376905d97");
 });
 %}
 
 ###
-# Name of the root element is not correct.
+# Name of the root element is part of the storage file name.
+# book vs. bookS opens a new/different storage.
 # Expectations:
-# - Status code 404 Resource Not Found
+# - Status code 201 Resource Created
 CONNECT {{service}} HTTP/1.0
 Storage: {{storage_connect}} bookS
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "11fdd8c2f500031c810c0c0bdb3966b5");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "effb4fe1fea78f5a5007318c7aa334fb");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "09b3677177e08904ff01e3392192e969");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "c2a867b98b8f2d4414977db2cd8cb56d");
 });
 %}
 
@@ -191,23 +307,33 @@ Storage: {{storage_connect}} books x
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "926753efa012e02f46b0d85ee23d0f6a");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "0b5b2af3717a9cc7b1ca9c9f23379ba1");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "32ff4bf3299474af789e4bfaff5ccd95");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
 %}
 
 ###
-# Name of the root element is not correct.
-# Without specification the default 'data' is used.
-#   Storage header corresponds to: 
-# Storage: UnitTest_Storage_C0 data
+# Name of the root element is not defined and is different with the default name
+# data. Therefore, a new storage is created for 'data'.
 # Expectations:
-# - Status code 404 Resource Not Found
+# - Status code 201 Resource Created
 CONNECT {{service}} HTTP/1.0
 Storage: {{storage_connect}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a1f3ce06d9431150374d1ed3ccc1d8bb");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "c2a8bd2015afba6eca105f14b6e445eb");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "9df171f018aee81da22937ff81a858d9");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
 });
 %}
 
