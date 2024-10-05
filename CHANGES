@@ -37,9 +37,12 @@ CR: Storage: Optimization of the cleanup
 CR: Storage: Review and optimization
     - The name now allows word characters and minus, if the minus is not at the
       beginning and not at the end.
-    - The storage now uses the name in plain text in the file system. The
-      original Base64 was intended to protect special characters and control
-      characters, but this is obsolete.
+    - The encoding of the file name has been optimized so that case-sensitive
+      also works in case-insensitive file systems (like Windows).
+    - Added the consideration of the root element. Name of storage and name of
+      root element define the case-sensitive name of the storage in the file
+      system. This means that the different spelling of the root element creates
+      different storages.
     TODO: Add description in manual
     TODO: Test
 CR: Service: Review of revision management

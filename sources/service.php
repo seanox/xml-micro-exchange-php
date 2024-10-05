@@ -177,7 +177,7 @@ define("XMEX_STORAGE_SPACE", getenv("XMEX_STORAGE_SPACE", true) ?: 256 *1024);
 define("XMEX_STORAGE_EXPIRATION", getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60);
 
 /** TODO */
-define("XMEX_STORAGE_REVISION_TYPE", (XMEX_DEBUG_MODE ? "serial" : strcasecmp(getenv("XMEX_STORAGE_REVISION_TYPE", true), "serial") == 0) ? "serial" : "timestamp");
+define("XMEX_STORAGE_REVISION_TYPE", (XMEX_DEBUG_MODE ? "serial" : strcasecmp(getenv("XMEX_STORAGE_REVISION_TYPE", true), "serial") === 0) ? "serial" : "timestamp");
 
 /** Character or character sequence of the XPath delimiter in the URI */
 define("XMEX_URI_XPATH_DELIMITER", getenv("XMEX_URI_XPATH_DELIMITER", true) ?: "!");
@@ -349,12 +349,24 @@ class Storage {
             $options = array_merge(array_filter(explode("!", strtolower($matches[2]))));
         }
 
-        $store = null;
         if (!empty($storage))
-            $store = Storage::DIRECTORY . "/" . $storage;
-        if (empty($storage))
             $root = $root ?: "data";
         else $root = null;
+        $store = null;
+        if (!empty($storage)) {
+            // The file name from the storage is case-sensitive, which is not
+            // automatically supported by Windows by default. The file name must
+            // therefore be formatted so that case-sensitive characteristics are
+            // retained but the spelling is case-insensitive. For this purpose,
+            // the lower case transitions are marked with a special character.
+            // Afterwards, the file name can be used in lower case letters. The
+            // idea of simply converting everything to hexadecimal was rejected
+            // due to the length of the file name.
+            $store = $storage . "[" . $root . "]";
+            $store = preg_replace("/(^|[^a-z])([a-z])/", "$1'$2", $store);
+            $store = preg_replace("/([a-z])([^a-z]|$)/", "$1'$2", $store);
+            $store = Storage::DIRECTORY . "/" . strtolower($store);
+        }
 
         $this->storage  = $storage;
         $this->root     = $root;
@@ -435,7 +447,7 @@ class Storage {
         $exclusive = ($options & Storage::STORAGE_SHARE_EXCLUSIVE) == Storage::STORAGE_SHARE_EXCLUSIVE;
         flock($storage->share, filesize($storage->store) <= 0 || $exclusive ? LOCK_EX : LOCK_SH);
 
-        if (!strcasecmp(Storage::REVISION_TYPE, "serial")) {
+        if (strcasecmp(Storage::REVISION_TYPE, "serial") !== 0) {
             $storage->unique = round(microtime(true) *1000);
             while ($storage->unique == round(microtime(true) *1000))
                 usleep(1);
@@ -452,7 +464,7 @@ class Storage {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
                 "<" . $storage->root . " ___rev=\"" . $storage->unique . "\" ___uid=\"" . $storage->getSerial() ."\"/>");
             rewind($storage->share);
-            if (strcasecmp(Storage::REVISION_TYPE, "serial"))
+            if (strcasecmp(Storage::REVISION_TYPE, "serial") === 0)
                 $storage->unique = 0;
         }
 
@@ -462,17 +474,11 @@ class Storage {
         $storage->xml = new DOMDocument();
         $storage->xml->loadXML(fread($storage->share, $size));
         $storage->revision = $storage->xml->documentElement->getAttribute("___rev");
-        if (strcasecmp(Storage::REVISION_TYPE, "serial")) {
+        if (strcasecmp(Storage::REVISION_TYPE, "serial") === 0) {
             if (preg_match(Storage::PATTERN_NON_NUMERICAL, $storage->revision))
                 $storage->quit(503, "Resource revision conflict");
             $storage->unique += $storage->revision;
         }
-
-        // Safe is safe, if not the default 'data' is used, the name of the root
-        // element must be known. Otherwise the request is quit with status 404
-        // and terminated.
-        if (($root ?: "data") != $storage->xml->documentElement->nodeName)
-            $storage->quit(404, "Resource Not Found");
 
         return $storage;
     }
@@ -1627,7 +1633,7 @@ class Storage {
             $result = false;
             foreach (headers_list() as $header) {
                 $header = explode(":", $header, 2);
-                if (strcasecmp($name, trim($header[0])) != 0)
+                if (strcasecmp($name, trim($header[0])) !== 0)
                     continue;
                 if ($remove) {
                     header($header[0] . ":");
@@ -1744,7 +1750,9 @@ class Storage {
             );
             header("Trace-Response-Header-Hash: " . hash("md5", $header));
             header("Trace-Response-Data-Hash: " . hash("md5", $data ?: ""));
-            header("Trace-Storage-Hash: " . hash("md5", $this->xml?->saveXML() ?: ""));
+            $header = $status >= 200 && $status < 300
+                ? $this->xml?->saveXML() ?: "" : "";
+            header("Trace-Storage-Hash: " . hash("md5", $header));
         }
 
         if ($status >= 200 && $status < 300
