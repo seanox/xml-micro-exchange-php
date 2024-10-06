@@ -625,7 +625,8 @@ class Storage {
         // to keep the service simple.
         Storage::cleanUp();
 
-        if (!empty($this->xpath))
+        if ($this->xpath !== null
+                && strlen($this->xpath))
             $this->quit(400, "Bad Request", ["Message" => "Unexpected XPath"]);
 
         $response = [201, "Created"];
@@ -680,7 +681,8 @@ class Storage {
     function doOptions() {
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath))
+        if ($this->xpath === null
+                || strlen($this->xpath) <= 0)
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         libxml_use_internal_errors(true);
@@ -756,7 +758,8 @@ class Storage {
     function doGet() {
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath))
+        if ($this->xpath === null
+                || strlen($this->xpath) <= 0)
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         libxml_use_internal_errors(true);
@@ -886,7 +889,8 @@ class Storage {
         }
 
         $xml = $this->xml;
-        if (!empty($this->xpath)) {
+        if ($this->xpath !== null
+                && strlen($this->xpath) > 0) {
             $xml = new DOMDocument();
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
@@ -1030,7 +1034,8 @@ class Storage {
     function doPut() {
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath))
+        if ($this->xpath === null
+                || strlen($this->xpath) <= 0)
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         // Storage::SPACE also limits the maximum size of writing request(-body).
@@ -1416,7 +1421,8 @@ class Storage {
         // - Target must exist, particularly for attributes
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath))
+        if ($this->xpath === null
+                || strlen($this->xpath) <= 0)
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         // Storage::SPACE also limits the maximum size of writing
@@ -1507,7 +1513,8 @@ class Storage {
     function doDelete() {
 
         // In any case an XPath is required for a valid request.
-        if (empty($this->xpath))
+        if ($this->xpath === null
+                || strlen($this->xpath) <= 0)
             $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         if (preg_match(Storage::PATTERN_XPATH_FUNCTION, $this->xpath)) {
@@ -1663,10 +1670,12 @@ class Storage {
             ]);
 
             if ($status != 200
-                    || empty($data))
+                    || $data === null
+                    || strlen($data) <= 0)
                 $data = null;
 
-            if (!empty($data)) {
+            if ($data !== null
+                    && strlen($data) > 0) {
                 if (in_array("json", $this->options)) {
                     $media = Storage::CONTENT_TYPE_JSON;
                     if ($data instanceof DOMDocument
@@ -1697,7 +1706,7 @@ class Storage {
 
         foreach ($headers as $key => $value) {
             $value = trim(preg_replace("/[\r\n]+/", " ", $value));
-            if (!empty(trim($value)))
+            if (strlen(trim($value)) > 0)
                 header("$key: $value");
             else header_remove($key);
         }
@@ -1734,7 +1743,8 @@ class Storage {
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
-        if (!empty($data))
+        if ($data !== null
+                && strlen($data) > 0)
             print($data);
 
         // The function and the response are complete.
