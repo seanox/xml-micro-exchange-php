@@ -1734,7 +1734,7 @@ class Storage {
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
-        if (empty($data))
+        if (!empty($data))
             print($data);
 
         // The function and the response are complete.
@@ -1845,9 +1845,9 @@ if (Storage::PATTERN_HTTP_REQUEST_URI) {
     $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 }
 if (preg_match(Storage::PATTERN_HEX, $xpath))
-    $xpath = hex2bin(substr($xpath, 2));
+    $xpath = hex2bin($xpath);
 else if (preg_match(Storage::PATTERN_BASE64, $xpath))
-    $xpath = base64_decode(substr($xpath, 7));
+    $xpath = base64_decode($xpath);
 else $xpath = urldecode($xpath);
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an XPath
