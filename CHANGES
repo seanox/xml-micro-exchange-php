@@ -60,16 +60,17 @@ CR: Service: Review of revision management
       TODO: Update description in manual
     - Omission of the response header Storage-Effects
       TODO: Add description in manual
-      TODO: Test
     - Switch to response header Storage-Revision with the number of changes
       schema: revision/number of changes, e.g. Storage-Revision: 123/45
       without changes Storage-Revision: 123/0
       TODO: Add description in manual
-      TODO: Test
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
 CR: Service: Review and optimization of OPTIONS
     - Omission of the response header Storage-Effects.
+CR: Service: Review and optimization of DELETE
+    - Requests with XPath that do not address a target are answered with status
+      304 (Not Modified), as the request does not change the storage.
 CR: Test: Review and optimization
     - Added option XMEX_DEBUG_MODE
       The activation of debug mode is primarily planned for unit tests and
@@ -77,9 +78,7 @@ CR: Test: Review and optimization
       headers for request, response and storage are added to the response,
       which can be checked by the unit tests.
       TODO: Add description in manual
-      TODO: Test
     - Switch to the use of XMEX_DEBUG_MODE
-      TODO: Test
     - Switch to new hashes in the response header
       Trace-Request-Hash, Trace-Request-Header-Hash, Trace-Request-Data-Hash
       Trace-Response-Hash, Trace-Response-Header-Hash, Trace-Response-Data-Hash

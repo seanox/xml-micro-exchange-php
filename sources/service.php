@@ -1497,7 +1497,8 @@ class Storage {
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
-     * - XPath without addressing a target is responded with status 204
+     *         HTTP/1.0 304 Not Modified
+     * - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
      *         HTTP/1.0 500 Internal Server Error
@@ -1537,7 +1538,7 @@ class Storage {
 
         if (empty($targets)
                 || $targets->length <= 0)
-            $this->quit(204, "No Content");
+            $this->quit(304, "Not Modified");
 
         // Pseudo elements can be used to delete in an XML substructure relative
         // to the selected element.
@@ -1627,35 +1628,7 @@ class Storage {
             exit;
         }
 
-        // This is implemented for scanning and modification of headers. To
-        // remove, the headers are set before, so that standard headers like
-        // Content-Type are also removed correctly.
-        $fetchHeader = function($name, $remove = false) {
-            $result = false;
-            foreach (headers_list() as $header) {
-                $header = explode(":", $header, 2);
-                if (strcasecmp($name, trim($header[0])) !== 0)
-                    continue;
-                if ($remove) {
-                    header($header[0] . ":");
-                    header_remove($header[0]);
-                }
-                $result = (object)["name" => trim($header[0]), "value" => trim($header[1] ?? "")];
-            }
-            return $result;
-        };
-
         header(trim("HTTP/1.0 $status $message"));
-
-        // Workaround to remove all default headers.
-        // Some must be set explicitly before removing works.
-        header("Content-Type:");
-        header("Content-Length:");
-
-        // Not relevant headers are removed.
-        $filter = ["X-Powered-By", "Content-Type", "Content-Length"];
-        foreach ($filter as $header)
-            $fetchHeader($header, true);
 
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
@@ -1672,9 +1645,9 @@ class Storage {
         if (!$headers)
             $headers = [];
 
-        // For status class 2xx the storage headers are added.
+        // For status class 2xx + 304 the storage headers are added.
         // The revision is read from the current storage because it can change.
-        if ($status >= 200 && $status < 300
+        if ((($status >= 200 && $status < 300) || $status == 304)
                 && $this->storage
                 && $this->xml) {
             $expiration = new DateTime();
@@ -1688,22 +1661,12 @@ class Storage {
                 "Storage-Expiration" => $expiration,
                 "Storage-Expiration-Time" => (Storage::EXPIRATION *1000) . " ms"
             ]);
-        }
 
-        foreach ($headers as $key => $value) {
-            if (strcasecmp($key, "Content-Length") === 0)
-                continue;
-            $value = trim(preg_replace("/[\r\n]+/", " ", $value));
-            if (strlen(trim($value)) > 0)
-                header("$key: $value");
-            else header_remove($key);
-        }
+            if ($status != 200
+                    || empty($data))
+                $data = null;
 
-        $media = $fetchHeader("Content-Type", true);
-        if ($status == 200
-                && $data !== ""
-                && $data !== null) {
-            if (!$media) {
+            if (!empty($data)) {
                 if (in_array("json", $this->options)) {
                     $media = Storage::CONTENT_TYPE_JSON;
                     if ($data instanceof DOMDocument
@@ -1711,20 +1674,33 @@ class Storage {
                         $data = simplexml_import_dom($data);
                     $data = json_encode($data, JSON_UNESCAPED_SLASHES);
                 } else {
+                    $media = Storage::CONTENT_TYPE_TEXT;
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement) {
                         $media = Storage::CONTENT_TYPE_XML;
                         $data = $data->saveXML();
-                    } else $media = Storage::CONTENT_TYPE_TEXT;
+                    }
                 }
-            } else $media = $media->value;
-            header("Content-Type: $media");
+                $headers["Content-Type"] = $media;
+                $headers["Content-Length"] = strlen($data);
+            }
+        } else $data = null;
+
+        // Workaround to remove all default headers.
+        // Some must be set explicitly before removing works.
+        // Not relevant headers are removed.
+        $filter = ["X-Powered-By", "Content-Type", "Content-Length"];
+        foreach ($filter as $header) {
+            header("$header:");
+            header_remove($header);
         }
 
-        if ($status >= 200 && $status < 300)
-            if (($data !== "" && $data !== null)
-                    || $status == 200)
-                header("Content-Length: " . strlen($data));
+        foreach ($headers as $key => $value) {
+            $value = trim(preg_replace("/[\r\n]+/", " ", $value));
+            if (!empty(trim($value)))
+                header("$key: $value");
+            else header_remove($key);
+        }
 
         if (Storage::DEBUG_MODE) {
             header("Trace-Request-Hash: " . hash("md5", $_SERVER["REQUEST"] ?: ""));
@@ -1758,8 +1734,7 @@ class Storage {
 
         header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
-        if ($status >= 200 && $status < 300
-                && $data !== "" && $data !== null)
+        if (empty($data))
             print($data);
 
         // The function and the response are complete.
