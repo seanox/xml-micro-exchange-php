@@ -344,3 +344,103 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "c03def63a1c071bc3b793fe6149ecba3");
 });
 %}
+
+###
+# Count of text-attributes in book[1]
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 1
+# - Content-Type: text/plain
+# - Storage-Revision: 6/0
+# - Storage-Space: 262144/2115 bytes
+# - Response-Body: 0
+# - URI: count(//book[1]//text[@title])
+GET {{service}}636f756e74282f2f626f6f6b5b315d2f2f746578745b407469746c655d29 HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "1259151525ed79b4c2e7cd1653d40303");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0ebd321dfbb6284759be51783027cfe6");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "cfcd208495d565ef66e7dff9f98764da");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "c03def63a1c071bc3b793fe6149ecba3");
+});
+%}
+
+###
+# Count of text-attributes in book[1]
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 1
+# - Content-Type: text/plain
+# - Storage-Revision: 6/0
+# - Storage-Space: 262144/2115 bytes
+# - Response-Body: 6
+# - URI: count(//book[2]//text[attribute::title])
+GET {{service}}636f756e74282f2f626f6f6b5b325d2f2f746578745b6174747269627574653a3a7469746c655d29 HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "07be3ebe842c2ab8ce241dfa5e36cee8");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0ebd321dfbb6284759be51783027cfe6");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1679091c5a880faf6fb5e6087eb1b2dc");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "c03def63a1c071bc3b793fe6149ecba3");
+});
+%}
+
+###
+# Attribute does exist
+# Round brackets in XPath should not be a problem.
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Revision: 7/6
+# - Storage-Space: 262144/2019 bytes
+# - Storage-Revision: was increased
+# - All title attributes in  book[2] was deleted
+# - URI: (//book[2]//text)/attribute::title
+DELETE {{service}}282f2f626f6f6b5b325d2f2f74657874292f6174747269627574653a3a7469746c65 HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "6f89169945745654b58f05e3527e3b90");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "66a70f3cb911b23eaf27eecf1fd48361");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "9f134e763e02bd032b0054a7a1acad4b");
+});
+%}
+
+###
+# Count of text-attributes in book[1]
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 7/0
+# - Storage-Space: 262144/2019 bytes
+# - Content-Length: 1
+# - Content-Type: text/plain
+# - Response-Body: 0
+# - URI: count(//book[2]//text[attribute::title])
+GET {{service}}636f756e74282f2f626f6f6b5b325d2f2f746578745b6174747269627574653a3a7469746c655d29 HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "07be3ebe842c2ab8ce241dfa5e36cee8");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "8fff57a317ba036356cefae761a5da97");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "cfcd208495d565ef66e7dff9f98764da");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "9f134e763e02bd032b0054a7a1acad4b");
+});
+%}
