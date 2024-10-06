@@ -1124,6 +1124,7 @@ class Storage {
                     if ($target->nodeType != XML_ELEMENT_NODE)
                         continue;
                     $target->setAttribute($attribute, $input);
+                    $this->serial++;
                     // The revision is updated at the parent nodes, so you can
                     // later determine which nodes have changed and with which
                     // revision. Partial access allows the client to check if
@@ -1725,8 +1726,6 @@ class Storage {
                     || $status == 200)
                 header("Content-Length: " . strlen($data));
 
-        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
-
         if (Storage::DEBUG_MODE) {
             header("Trace-Request-Hash: " . hash("md5", $_SERVER["REQUEST"] ?: ""));
             $header = join("\t",
@@ -1745,15 +1744,19 @@ class Storage {
                     $headers["Storage-Revision"] ?? "null",
                     $headers["Storage-Space"] ?? "null",
                     $headers["Error"] ?? "null",
-                    $headers["Message"] ?? "null"
+                    $headers["Message"] ?? "null",
+                    $headers["Content-Type"] ?? "null",
+                    $headers["Content-Length"] ?? "null"
                 )
             );
             header("Trace-Response-Header-Hash: " . hash("md5", $header));
             header("Trace-Response-Data-Hash: " . hash("md5", $data ?: ""));
-            $header = $status >= 200 && $status < 300
+            $header = $this->storage && $this->xml
                 ? $this->xml?->saveXML() ?: "" : "";
             header("Trace-Storage-Hash: " . hash("md5", $header));
         }
+
+        header("Execution-Time: " . round((microtime(true) -$_SERVER["REQUEST_TIME_FLOAT"]) *1000) . " ms");
 
         if ($status >= 200 && $status < 300
                 && $data !== "" && $data !== null)
