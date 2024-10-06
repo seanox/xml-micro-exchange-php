@@ -1735,7 +1735,7 @@ class Storage {
                 )
             );
             header("Trace-Response-Header-Hash: " . hash("md5", $header));
-            header("Trace-Response-Data-Hash: " . hash("md5", $data ?: ""));
+            header("Trace-Response-Data-Hash: " . hash("md5", strval($data)));
             $header = $this->storage && $this->xml
                 ? $this->xml?->saveXML() ?: "" : "";
             header("Trace-Storage-Hash: " . hash("md5", $header));
