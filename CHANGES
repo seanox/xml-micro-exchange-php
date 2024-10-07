@@ -68,7 +68,7 @@ CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
 CR: Service: Review and optimization of OPTIONS
     - Omission of the response header Storage-Effects.
-CR: Service: Review and optimization of DELETE
+CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are answered with status
       304 (Not Modified), as the request does not change the storage.
 CR: Test: Review and optimization

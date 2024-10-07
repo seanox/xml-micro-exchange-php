@@ -158,7 +158,7 @@
 // For the environment variables, PHP constants are created so that they can be
 // assigned as static values to the constants in the class!
 
-/** TODO */
+/** Activates the debug and test mode (supports on, true, 1) */
 define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), array("on", "true", "1")));
 
 /** Directory of the data storage */
@@ -899,7 +899,7 @@ class Storage {
             }
             if (empty($targets)
                     || $targets->length <= 0)
-                $this->quit(204, "No Content");
+                $this->quit(304, "Not Modified");
             if ($targets->length == 1) {
                 $target = $targets[0];
                 if ($target instanceof DOMAttr)
@@ -1019,7 +1019,8 @@ class Storage {
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
-     * - XPath without addressing a target is responded with status 204
+     *         HTTP/1.0 304 Not Modified
+     *  - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
      *         HTTP/1.0 413 Payload Too Large
@@ -1115,7 +1116,7 @@ class Storage {
             }
             if (empty($targets)
                     || $targets->length <= 0)
-                $this->quit(204, "No Content");
+                $this->quit(304, "Not Modified");
 
             // The attributes ___rev and ___uid are essential for the internal
             // organization and management of the data and cannot be changed.
@@ -1138,6 +1139,9 @@ class Storage {
                     Storage::updateNodeRevision($target, $this->unique);
                 }
             }
+
+            if ($this->serial <= 0)
+                $this->quit(304, "Not Modified");
 
             $this->materialize();
             $this->quit(204, "No Content");
@@ -1193,7 +1197,7 @@ class Storage {
             }
             if (empty($targets)
                     || $targets->length <= 0)
-                $this->quit(204, "No Content");
+                $this->quit(304, "Not Modified");
 
             foreach ($targets as $target) {
                 // Overwriting of the root element is not possible, as it is an
@@ -1212,6 +1216,9 @@ class Storage {
                 // revision.
                 Storage::updateNodeRevision($replace, $this->unique);
             }
+
+            if ($this->serial <= 0)
+                $this->quit(304, "Not Modified");
 
             $this->materialize();
             $this->quit(204, "No Content");
@@ -1261,7 +1268,7 @@ class Storage {
             }
             if (empty($targets)
                     || $targets->length <= 0)
-                $this->quit(204, "No Content");
+                $this->quit(304, "Not Modified");
 
             foreach ($targets as $target) {
 
@@ -1318,6 +1325,9 @@ class Storage {
             $node->setAttribute("___uid", $this->getSerial());
             Storage::updateNodeRevision($node, $this->unique);
         }
+
+        if ($this->serial <= 0)
+            $this->quit(304, "Not Modified");
 
         $this->materialize();
         $this->quit(204, "No Content");
@@ -1400,7 +1410,8 @@ class Storage {
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
      * - XPath is missing or malformed
-     * - XPath without addressing a target is responded with status 204
+     *         HTTP/1.0 304 Not Modified
+     * * - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
      * - Storage does not exist
      *         HTTP/1.0 413 Payload Too Large
@@ -1451,7 +1462,7 @@ class Storage {
         }
         if (empty($targets)
                 || $targets->length <= 0)
-            $this->quit(204, "No Content");
+            $this->quit(304, "Not Modified");
 
         // The response to the request is delegated to PUT.
         // The function call is executed and the request is terminated.
@@ -1608,6 +1619,9 @@ class Storage {
                 } else Storage::updateNodeRevision($parent, $this->unique);
             }
         }
+
+        if ($this->serial <= 0)
+            $this->quit(304, "Not Modified");
 
         $this->materialize();
         $this->quit(204, "No Content");
