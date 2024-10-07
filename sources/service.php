@@ -1620,6 +1620,10 @@ class Storage {
                 $parent->removeChild($target);
                 $this->serial++;
                 if ($parent->nodeType === XML_DOCUMENT_NODE) {
+                    // Special case, if the root element is deleted, then the
+                    // newly created root element should have the serial (the
+                    // same change number).
+                    $this->serial--;
                     $target = $this->xml->createElement($this->root);
                     $target = $this->xml->appendChild($target);
                     Storage::updateNodeRevision($target, $this->unique);
