@@ -52,7 +52,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 2/36
-# - Storage-Space: 262144/2040 bytes
+# - Storage-Space: 262144/2313 bytes
 # - 4 books are overwritten
 # - 4 books with chapter are created
 # - all new elements have the attributes ___rev and ___uid
@@ -115,9 +115,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "59615cb66ffb09730ac2d9b3f7ba2f8c");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "00e2c359698f8dcfcbcc96d374841383");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "50a27e4f262db0212ea37480ae1abea4");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1caa25406531f6fb83a0b0daa4ed64c0");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "b92b44b0e3c1256a8c43a2784fd4152e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "8003405d9a6a7f1b895ca3b93328e9a4");
 });
 %}
 
@@ -126,7 +126,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 3/1
-# - Storage-Space: 262144/2048 bytes
+# - Storage-Space: 262144/2321 bytes
 PUT {{service}}/books/@xa HTTP/1.0
 Storage: {{storage_delete_attribute}}
 Content-Type: text/plain
@@ -139,9 +139,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "2dfade71ed15949f438a576eff63800f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "53e59fface936ea788f7cf51e7b25531");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "21181bd1d0a12aeea2a5509d81be52bd");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "a8f3f35701a103e889d2c6972b75b7b9");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "bda51e44d2bdaf1f81cff0efafee2028");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "3a63a2c66d85d4c90279555a17c92641");
 });
 %}
 
@@ -150,7 +150,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 304 Not Modified
 # - Storage-Revision: 3/0
-# - Storage-Space: 262144/2048 bytes
+# - Storage-Space: 262144/2321 bytes
 DELETE {{service}}/books/book%5B1%5D/attribute::not_exists HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
@@ -160,9 +160,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "c1610b491fd89092dfe0f50eb5a3cf0f");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "06622fd8f21f065fdc12ed9f99e9bf39");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "bda51e44d2bdaf1f81cff0efafee2028");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "3a63a2c66d85d4c90279555a17c92641");
 });
 %}
 
@@ -171,7 +171,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 304 Not Modified
 # - Storage-Revision: 3/0
-# - Storage-Space: 262144/2048 bytes
+# - Storage-Space: 262144/2321 bytes
 DELETE {{service}}/books/book%5B1%5D/@not_exists HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
@@ -181,9 +181,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "c1610b491fd89092dfe0f50eb5a3cf0f");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "06622fd8f21f065fdc12ed9f99e9bf39");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "bda51e44d2bdaf1f81cff0efafee2028");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "3a63a2c66d85d4c90279555a17c92641");
 });
 %}
 
@@ -204,7 +204,7 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
     client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "b0dc0b357fdc347f6f9e804978870bf6");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "bda51e44d2bdaf1f81cff0efafee2028");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "3a63a2c66d85d4c90279555a17c92641");
 });
 %}
 
@@ -213,7 +213,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 4/1
-# - Storage-Space: 262144/2042 bytes
+# - Storage-Space: 262144/2315 bytes
 # - Storage-Revision: was increased
 # - Attribute /books/book[1]/attribute::a was deleted
 DELETE {{service}}/books/book%5B1%5D/attribute::a HTTP/1.0
@@ -225,9 +225,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "ac77a3f2dfb950bf2119fd6f27b98ba1");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f4eeb10c92b88bd4f28da2792193b248");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "e352ff69f31f393851fd214480ffab51");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "25525acc954f9a4dea4cc66fd902bbe9");
 });
 %}
 
@@ -236,7 +236,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 304 Not Modified
 # - Storage-Revision: 4/0
-# - Storage-Space: 262144/2042 bytes
+# - Storage-Space: 262144/2315 bytes
 DELETE {{service}}/books/book%5B1%5D/attribute::a HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
@@ -246,9 +246,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "2d4af54adf920cd632acaf64a97d591b");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "48478d3f9b2f73f4fd764b87af974ce3");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "e352ff69f31f393851fd214480ffab51");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "25525acc954f9a4dea4cc66fd902bbe9");
 });
 %}
 
@@ -257,7 +257,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 5/1
-# - Storage-Space: 262144/2036 bytes
+# - Storage-Space: 262144/2309 bytes
 # - Storage-Revision: was increased
 # - Attribute /books/book[1]/@b was deleted
 DELETE {{service}}/books/book%5B1%5D/@b HTTP/1.0
@@ -269,9 +269,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "130f37217f4fa94673063c869669e5f8");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7f1047eb5efe5be0663b202dd667eb83");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "b7fb7bb1657742e0d5cb0933239ffd0f");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "2db3c6a97d6ef6c531b953b0b36e38e6");
 });
 %}
 
@@ -280,7 +280,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 304 Not Modified
 # - Storage-Revision: 5/0
-# - Storage-Space: 262144/2036 bytes
+# - Storage-Space: 262144/2309 bytes
 DELETE {{service}}/books/book%5B1%5D/@b HTTP/1.0
 Storage: {{storage_delete_attribute}}
 
@@ -290,9 +290,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "28337d8622556f29ecbe7a7fc21612f1");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4ff00366f5e6799aa591cc2d67ec4129");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "b7fb7bb1657742e0d5cb0933239ffd0f");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "2db3c6a97d6ef6c531b953b0b36e38e6");
 });
 %}
 
@@ -303,7 +303,7 @@ client.test("unittest", function() {
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Storage-Revision: 5/0
-# - Storage-Space: 262144/2036 bytes
+# - Storage-Space: 262144/2309 bytes
 # - Response-Body: 6
 # - URI: count(//book[1]//text[@title])
 GET {{service}}636f756e74282f2f626f6f6b5b315d2f2f746578745b407469746c655d29 HTTP/1.0
@@ -315,9 +315,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "9ad4159cf4dae60ba98980b6a1fb94c7");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "44c00d4e0bf4289d66b11decb852ebb5");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1679091c5a880faf6fb5e6087eb1b2dc");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "b7fb7bb1657742e0d5cb0933239ffd0f");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "2db3c6a97d6ef6c531b953b0b36e38e6");
 });
 %}
 
@@ -327,7 +327,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 6/0
-# - Storage-Space: 262144/1940 bytes
+# - Storage-Space: 262144/2213 bytes
 # - All title attributes in  book[1] was deleted
 # - URI: (//book[1]//text)/@title
 DELETE {{service}}2f2f626f6f6b5b315d2f2f746578742f407469746c65 HTTP/1.0
@@ -339,9 +339,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "e89cfcce5d7da2ae8e96b18998c01762");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "6322174bed301b09b60162a2c6c4f201");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "5d4e87d2aab2213fa4a9f4ebd09ae398");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "8a99502f9d20fc23f2b17a04a7f4218c");
 });
 %}
 
@@ -352,7 +352,7 @@ client.test("unittest", function() {
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Storage-Revision: 6/0
-# - Storage-Space: 262144/1940 bytes
+# - Storage-Space: 262144/2213 bytes
 # - Response-Body: 0
 # - URI: count(//book[1]//text[@title])
 GET {{service}}636f756e74282f2f626f6f6b5b315d2f2f746578745b407469746c655d29 HTTP/1.0
@@ -364,9 +364,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "439c5c631217fee2e30a30770524bb00");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1e06552faa6d2d8e9a20886e19ef0012");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "cfcd208495d565ef66e7dff9f98764da");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "5d4e87d2aab2213fa4a9f4ebd09ae398");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "8a99502f9d20fc23f2b17a04a7f4218c");
 });
 %}
 
@@ -377,7 +377,7 @@ client.test("unittest", function() {
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Storage-Revision: 6/0
-# - Storage-Space: 262144/1940 bytes
+# - Storage-Space: 262144/2213 bytes
 # - Response-Body: 6
 # - URI: count(//book[2]//text[attribute::title])
 GET {{service}}636f756e74282f2f626f6f6b5b325d2f2f746578745b6174747269627574653a3a7469746c655d29 HTTP/1.0
@@ -389,9 +389,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "439c5c631217fee2e30a30770524bb00");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1e06552faa6d2d8e9a20886e19ef0012");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1679091c5a880faf6fb5e6087eb1b2dc");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "5d4e87d2aab2213fa4a9f4ebd09ae398");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "8a99502f9d20fc23f2b17a04a7f4218c");
 });
 %}
 
@@ -401,7 +401,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 7/6
-# - Storage-Space: 262144/1844 bytes
+# - Storage-Space: 262144/2117 bytes
 # - Storage-Revision: was increased
 # - All title attributes in  book[2] was deleted
 # - URI: (//book[2]//text)/attribute::title
@@ -414,9 +414,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "613b2ef28324bfd3198e8917e589cf19");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "85ddc77d9b7785008bc49d639f53ce1f");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "59b8bb6b982cccf5c533ee8d2bdf5d27");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "53998d20bbd43532ab6027146f366e53");
 });
 %}
 
@@ -425,7 +425,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 200 Success
 # - Storage-Revision: 7/0
-# - Storage-Space: 262144/1844 bytes
+# - Storage-Space: 262144/2117 bytes
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Response-Body: 0
@@ -439,9 +439,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "3a3dc95c201c7274afda071dee4c8c99");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "82e34985753f994cfc5fc8bab4947bf3");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "cfcd208495d565ef66e7dff9f98764da");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "59b8bb6b982cccf5c533ee8d2bdf5d27");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "53998d20bbd43532ab6027146f366e53");
 });
 %}
 
@@ -450,7 +450,7 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 #   attribute ___rev is ignored, but does not cause errors
 # - Storage-Revision: 7/0
-# - Storage-Space: 262144/1844 bytes
+# - Storage-Space: 262144/2117 bytes
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 DELETE {{service}}/books/@___rev HTTP/1.0
@@ -462,9 +462,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "925c16f122adea471301f98da551e880");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4a5070d9a775538571771b8c9a06bc17");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "59b8bb6b982cccf5c533ee8d2bdf5d27");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "53998d20bbd43532ab6027146f366e53");
 });
 %}
 
@@ -473,7 +473,7 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 #   attribute ___uid is ignored, but does not cause errors
 # - Storage-Revision: 7/0
-# - Storage-Space: 262144/1844 bytes
+# - Storage-Space: 262144/2117 bytes
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 DELETE {{service}}/books/@___uid HTTP/1.0
@@ -485,9 +485,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "925c16f122adea471301f98da551e880");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4a5070d9a775538571771b8c9a06bc17");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "59b8bb6b982cccf5c533ee8d2bdf5d27");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "53998d20bbd43532ab6027146f366e53");
 });
 %}
 
@@ -497,7 +497,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 304 Not Modified
 # - Storage-Revision: 7/0
-# - Storage-Space: 262144/1844 bytes
+# - Storage-Space: 262144/2117 bytes
 # - Storage-Revision is not increased
 # - URI: /*/../@___xxx
 DELETE {{service}}2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
@@ -509,9 +509,9 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "925c16f122adea471301f98da551e880");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4a5070d9a775538571771b8c9a06bc17");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "59b8bb6b982cccf5c533ee8d2bdf5d27");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "53998d20bbd43532ab6027146f366e53");
 });
 %}
 
@@ -521,7 +521,7 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 304 Not Modified
 # - Storage-Revision: 7/0
-# - Storage-Space: 262144/1844 bytes
+# - Storage-Space: 262144/2117 bytes
 # - Storage-Revision is not increased
 # - URI: //books/../@___xxx
 DELETE {{service}}2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
@@ -533,8 +533,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "925c16f122adea471301f98da551e880");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4a5070d9a775538571771b8c9a06bc17");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "59b8bb6b982cccf5c533ee8d2bdf5d27");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "53998d20bbd43532ab6027146f366e53");
 });
 %}
