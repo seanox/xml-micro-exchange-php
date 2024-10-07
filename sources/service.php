@@ -520,6 +520,12 @@ class Storage {
         ftruncate($this->share, 0);
         rewind($this->share);
         fwrite($this->share, $output);
+
+        if (Storage::DEBUG_MODE) {
+            $unique = sprintf("%03d", $this->unique);
+            $target = preg_replace("/(\.\w+$)/", "___$unique$1", $this->store);
+            file_put_contents($target, $output);
+        }
     }
 
     /** Closes the storage for the current request. */
