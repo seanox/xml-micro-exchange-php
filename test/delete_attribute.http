@@ -444,3 +444,97 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "9f134e763e02bd032b0054a7a1acad4b");
 });
 %}
+
+###
+# Expectations:
+# - Status code 304 Not Modified
+#   attribute ___rev is ignored, but does not cause errors
+# - Storage-Revision: 7/0
+# - Storage-Space: 262144/2019 bytes
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+DELETE {{service}}/books/@___rev HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "08c5ba0c65aeb29a3d6fa517e645504e");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f6ed8ff04ac20561bdfc86b710a78032");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "9f134e763e02bd032b0054a7a1acad4b");
+});
+%}
+
+###
+# Expectations:
+# - Status code 304 Not Modified
+#   attribute ___uid is ignored, but does not cause errors
+# - Storage-Revision: 7/0
+# - Storage-Space: 262144/2019 bytes
+# - Storage-Revision is not increased
+# - Storage-Expiration is extended
+DELETE {{service}}/books/@___uid HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "473000fac467e3b34faeb8a0cb7665d4");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f6ed8ff04ac20561bdfc86b710a78032");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "9f134e763e02bd032b0054a7a1acad4b");
+});
+%}
+
+###
+# DELETE outside the root element, shall be ignored
+# but PATCH can only set attributes that exist
+# Expectations:
+# - Status code 304 Not Modified
+# - Storage-Revision: 7/0
+# - Storage-Space: 262144/2019 bytes
+# - Storage-Revision is not increased
+# - URI: /*/../@___xxx
+DELETE {{service}}2f2a2f2e2e2f405f5f5f787878 HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "96964ba6815ee0770ecb1c92e6a973e7");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f6ed8ff04ac20561bdfc86b710a78032");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "9f134e763e02bd032b0054a7a1acad4b");
+});
+%}
+
+###
+# DELETE outside the root element, shall be ignored
+# but PATCH can only set attributes that exist
+# Expectations:
+# - Status code 304 Not Modified
+# - Storage-Revision: 7/0
+# - Storage-Space: 262144/2019 bytes
+# - Storage-Revision is not increased
+# - URI: //books/../@___xxx
+DELETE {{service}}2f2f626f6f6b732f2e2e2f405f5f5f787878 HTTP/1.0
+Storage: {{storage_delete_attribute}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "d674f47259470e7148b0ef8e1f74288f");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "724c9236266485ae5caca7261725d5cf");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f6ed8ff04ac20561bdfc86b710a78032");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "9f134e763e02bd032b0054a7a1acad4b");
+});
+%}
