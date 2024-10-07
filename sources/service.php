@@ -1221,6 +1221,11 @@ class Storage {
                 $replace = $target->cloneNode(false);
                 $replace->appendChild($this->xml->createTextNode($input));
                 $target->parentNode->replaceChild($this->xml->importNode($replace, true), $target);
+                // Because text nodes have no attributes, the serial must be
+                // increased manually, even if the change is then only partially
+                // traceable. But without incrementing the serial, there is no
+                // indicator that something has changed in the storage.
+                $this->serial++;
                 // The revision is updated at the parent nodes, so you can later
                 // determine which nodes have changed and with which revision.
                 // Partial access allows the client to check if the data or a
@@ -1701,13 +1706,13 @@ class Storage {
                 "Storage-Expiration-Time" => (Storage::EXPIRATION *1000) . " ms"
             ]);
 
-            if ($status != 200
-                    || $data === null
-                    || strlen($data) <= 0)
+            if ($status != 200)
+                $data = null;
+            if (is_string($data)
+                    && strlen($data) <= 0)
                 $data = null;
 
-            if ($data !== null
-                    && strlen($data) > 0) {
+            if ($data !== null) {
                 if (in_array("json", $this->options)) {
                     $media = Storage::CONTENT_TYPE_JSON;
                     if ($data instanceof DOMDocument
