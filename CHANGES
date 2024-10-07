@@ -71,12 +71,15 @@ CR: Service: Review and optimization of OPTIONS
 CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are answered with status
       304 (Not Modified), as the request does not change the storage.
+CR: Service: Optimization of data storage
+    - Unnecessary spaces and indentations are removed.
 CR: Test: Review and optimization
     - Added option XMEX_DEBUG_MODE
       The activation of debug mode is primarily planned for unit tests and
       enforces the auto incremental revision type. In addition, the hashed
-      headers for request, response and storage are added to the response,
-      which can be checked by the unit tests.
+      headers for request, response and storage are added to the response, which
+      can be checked by the unit tests. In addition, the storage files are also
+      created with the file extension xml and formatted.
       TODO: Add description in manual
     - Switch to the use of XMEX_DEBUG_MODE
     - Switch to new hashes in the response header

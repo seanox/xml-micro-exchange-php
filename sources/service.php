@@ -366,6 +366,8 @@ class Storage {
             $store = preg_replace("/(^|[^a-z])([a-z])/", "$1'$2", $store);
             $store = preg_replace("/([a-z])([^a-z]|$)/", "$1'$2", $store);
             $store = Storage::DIRECTORY . "/" . strtolower($store);
+            if (Storage::DEBUG_MODE)
+                $store .= ".xml";
         }
 
         $this->storage  = $storage;
@@ -472,6 +474,8 @@ class Storage {
         $size = ftell($storage->share);
         rewind($storage->share);
         $storage->xml = new DOMDocument();
+        $storage->xml->preserveWhiteSpace = false;
+        $storage->xml->formatOutput = Storage::DEBUG_MODE;
         $storage->xml->loadXML(fread($storage->share, $size));
         $storage->revision = $storage->xml->documentElement->getAttribute("___rev");
         if (strcasecmp(Storage::REVISION_TYPE, "serial") === 0) {
@@ -871,6 +875,8 @@ class Storage {
 
         // POST always expects an valid XSLT template for transformation.
         $style = new DOMDocument();
+        $style->preserveWhiteSpace = false;
+        $style->formatOutput = Storage::DEBUG_MODE;
         $input = file_get_contents("php://input");
         if (empty($input)
                 || !$style->loadXML($input)
@@ -1238,6 +1244,8 @@ class Storage {
         // parsing? Status 400 or 422 - The decision for 422, because 400 means
         // faulty request. But this is a (semantic) error in the request body.
         $xml = new DOMDocument();
+        $xml->preserveWhiteSpace = false;
+        $xml->formatOutput = Storage::DEBUG_MODE;
         if (!$xml->loadXML($input)
                 || Storage::fetchLastXmlErrorMessage()) {
             $message = "Invalid XML document";
