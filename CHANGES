@@ -18,12 +18,9 @@ CR: Request: Configurable XPath delimiter of the URI
     TODO: Test
 CR: Request: Omission of XPath via query string
     The XPath includes the query string as part of the path.
-CR: Request: Omission of prefix Base64: for Base64 encoded paths
+CR: Request: Omission of the prefix for Base64 and hex encoded paths
     old: /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
     new: /xmex!Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
-    TODO: Add description in manual + OpenAPI
-    TODO: Test
-CR: Request: Omission of prefix 0x for hex encoded paths
     old: /xmex!0x282f626f6f6b73292f2f6c6173743a3a6265666f7265
     new: /xmex!282f626f6f6b73292f2f6c6173743a3a6265666f7265
     TODO: Add description in manual + OpenAPI
@@ -54,9 +51,8 @@ CR: Service: Review of revision management
       TODO: Add description in manual
       TODO: Test
     - Omission of the response header Connection-Unique
-      The client can manage this better for itself. The created ___uid
-      attribute of the elements are now based on the storage revision ___rev
-      attribute.
+      The client can manage this better for itself. The created ___uid attribute
+      of the elements are now based on the storage revision ___rev attribute.
       TODO: Update description in manual
     - Omission of the response header Storage-Effects
       TODO: Add description in manual
@@ -66,26 +62,28 @@ CR: Service: Review of revision management
       TODO: Add description in manual
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
+    - Added alternative alias method TOUCH, if CONNECT is not allowed.
 CR: Service: Review and optimization of OPTIONS
     - Omission of the response header Storage-Effects.
+    - Omission as an alternative to CONNECT, if CONNECT is not allowed use TOUCH.
 CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are answered with status
       304 (Not Modified), as the request does not change the storage.
 CR: Service: Optimization of data storage
     - Unnecessary spaces and indentations are removed.
-CR: Test: Review and optimization
-    - Added option XMEX_DEBUG_MODE
-      The activation of debug mode is primarily planned for unit tests and
-      enforces the auto incremental revision type. In addition, the hashed
-      headers for request, response and storage are added to the response, which
-      can be checked by the unit tests. In addition, the storage files are also
-      created with the file extension xml and formatted.
+CR: Test: Added option XMEX_DEBUG_MODE
+    - Forces the use of the automatic incremental revision type
+    - Adds hashed headers for request, response and storage to the response
+    - Storage files are also created with the file extension xml and formatted
+    - Storage files are saved in versions
       TODO: Add description in manual
+CR: Test: Review and optimization
     - Switch to the use of XMEX_DEBUG_MODE
     - Switch to new hashes in the response header
       Trace-Request-Hash, Trace-Request-Header-Hash, Trace-Request-Data-Hash
       Trace-Response-Hash, Trace-Response-Header-Hash, Trace-Response-Data-Hash
       Trace-Storage-Hash
+      TODO: Add description in manual
 
 1.3.1 20240801
 BF: Review: Optimization/Corrections

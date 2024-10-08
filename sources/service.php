@@ -1897,24 +1897,25 @@ else if (preg_match(Storage::PATTERN_BASE64, $xpath))
     $xpath = base64_decode($xpath);
 else $xpath = urldecode($xpath);
 
-// With the exception of CONNECT, OPTIONS and POST, all requests expect an XPath
-// or XPath function. CONNECT does not use an (X)Path to establish a storage.
-// POST uses the XPath for transformation only optionally to delimit the XML
-// data for the transformation and works also without. In the other cases an
-// empty XPath is replaced by the root slash.
+// With the exception of CONNECT, TOUCH, OPTIONS and POST, all requests expect
+// an XPath or XPath function. CONNECT and TOUCH does not use an (X)Path to
+// establish a storage. POST uses the XPath for transformation only optionally
+// to delimit the XML data for the transformation and works also without. In the
+// other cases an empty XPath is replaced by the root slash.
 if (empty($xpath)
-        && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
+        && !in_array($method, ["CONNECT", "TOUCH", "OPTIONS", "POST"]))
     $xpath = "/";
 $options = Storage::STORAGE_SHARE_NONE;
-if (in_array($method, ["CONNECT", "DELETE", "PATCH", "PUT"]))
+if (in_array($method, ["CONNECT", "TOUCH", "DELETE", "PATCH", "PUT"]))
     $options |= Storage::STORAGE_SHARE_EXCLUSIVE;
-if (in_array($method, ["CONNECT"]))
+if (in_array($method, ["CONNECT", "TOUCH"]))
     $options |= Storage::STORAGE_SHARE_INITIAL;
 $storage = Storage::share($storage, $xpath, $options);
 
 try {
     switch ($method) {
         case "CONNECT":
+        case "TOUCH":
             $storage->doConnect();
         case "OPTIONS":
             $storage->doOptions();
@@ -1934,4 +1935,3 @@ try {
 } finally {
     $storage->close();
 }
-?>
