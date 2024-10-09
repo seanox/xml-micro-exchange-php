@@ -1,5 +1,7 @@
 .idea
 .project
-/release/
-/sources/data/
-/test/cumulate.http
+
+/release
+
+/sources/data
+/sources/*.log
