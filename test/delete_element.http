@@ -220,12 +220,12 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..
-DELETE {{service}}2f626f6f6b732f2e2e HTTP/1.0
+DELETE {{service}}?2f626f6f6b732f2e2e HTTP/1.0
 Storage: {{storage_delete_element}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eb1ebf9b7a50bc9e0153d2e6b78b8abe");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "475b58762c5d003a072e276e15ddad32");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "5f4ab9f70afc3fa81dec01252f657ac2");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
@@ -383,12 +383,12 @@ client.test("unittest", function() {
 # - Storage-Space: 262144/72 bytes
 # - Storage-Revision is increased
 # - URI: //*[@___uid]
-DELETE {{service}}2f2f2a5b405f5f5f7569645d HTTP/1.0
+DELETE {{service}}?2f2f2a5b405f5f5f7569645d HTTP/1.0
 Storage: {{storage_delete_element}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "6a38805ed3472566c72497d2689ddf6e");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "3c7e7830a65f42c9174bca308bb6b282");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "5f4ab9f70afc3fa81dec01252f657ac2");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
