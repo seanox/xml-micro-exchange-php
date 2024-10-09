@@ -394,12 +394,12 @@ client.test("unittest", function() {
 
 # - Storage-Effects: 6x UID-D 1x UID-M
 # - URI: //text[@title='Text EA']::before
-DELETE {{service}}2f2f746578745b407469746c653d2754657874204541275d3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}?2f2f746578745b407469746c653d2754657874204541275d3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "35bec74fcb5783cce71c0ee5e2220b0a");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "490eb23c4f6bcee4c48354a4e3b950bb");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
@@ -416,12 +416,12 @@ client.test("unittest", function() {
 # - Storage-Revision: 8/11
 # - Storage-Space: 262144/1706 bytes
 # - URI: //text[@title='Text FA']::after
-DELETE {{service}}2f2f746578745b407469746c653d2754657874204641275d3a3a6166746572 HTTP/1.0
+DELETE {{service}}?2f2f746578745b407469746c653d2754657874204641275d3a3a6166746572 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "4447421595236667503e60d1e0ab1351");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "30cef7144a9a1dd32e26d7a7b004210b");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
@@ -459,12 +459,12 @@ client.test("unittest", function() {
 # - Storage-Revision: 8/0
 # - Storage-Space: 262144/1706 bytes
 # - URI: //text[@title='Text F1']::before
-DELETE {{service}}2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}?2f2f746578745b407469746c653d2754657874204631275d3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "273cf30e066ce555a292063a11110bd1");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "6b0fbc6ce92660c5a57ab74ccd4989b4");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
@@ -482,12 +482,12 @@ client.test("unittest", function() {
 # - Storage-Revision: 8/0
 # - Storage-Space: 262144/1706 bytes
 # - URI: //text[@title='Text F3']::after
-DELETE {{service}}2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
+DELETE {{service}}?2f2f746578745b407469746c653d2754657874204633275d3a3a6166746572 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "a18d79de42207343a2e697126af0e3bc");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "f8c1d1520a529c57843f02a1396fca4a");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
@@ -505,12 +505,12 @@ client.test("unittest", function() {
 # - Storage-Revision: 8/0
 # - Storage-Space: 262144/1706 bytes
 # - URI: //text[@title='Text F9']::first
-DELETE {{service}}2f2f746578745b407469746c653d2754657874204639275d3a3a6669727374 HTTP/1.0
+DELETE {{service}}?2f2f746578745b407469746c653d2754657874204639275d3a3a6669727374 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "d34dcea07d5d3776e0a105f2c8554aa0");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eca04348d54822ae4a739e13b1353737");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
@@ -528,12 +528,12 @@ client.test("unittest", function() {
 # - Storage-Revision: 8/0
 # - Storage-Space: 262144/1706 bytes
 # - URI: //text[@title='Text F9']::last
-DELETE {{service}}2f2f746578745b407469746c653d2754657874204639275d3a3a6c617374 HTTP/1.0
+DELETE {{service}}?2f2f746578745b407469746c653d2754657874204639275d3a3a6c617374 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "b67ab2b54b253b3540ff0209037a496f");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "c44335790f4fda186a5d9184f13bd83f");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
@@ -616,12 +616,12 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /*/..::before
-DELETE {{service}}2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}?2f2a2f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "ef174a1941bbf8470c1f7b8c6db7a51f");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "8166a029cdf2509af0a2208ec4c0f5f5");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
@@ -640,12 +640,12 @@ client.test("unittest", function() {
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..::before
-DELETE {{service}}2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
+DELETE {{service}}?2f626f6f6b732f2e2e3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "234c533c5ab0c5d4d6f154c822be62de");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "20e67d997d74ea0f330380198c922088");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f5f6eaf8c3a91c077d3dc9684aa30c7f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
