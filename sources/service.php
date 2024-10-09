@@ -251,10 +251,10 @@ class Storage {
     private $unique;
 
     /** Pattern for detecting Base64 decoding */
-    const PATTERN_BASE64 = "/^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/";
+    const PATTERN_BASE64 = "/^\?(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/";
 
     /** Pattern for detecting HEX decoding */
-    const PATTERN_HEX = "/^([A-Fa-f0-9]{2})+$/";
+    const PATTERN_HEX = "/^\?([A-Fa-f0-9]{2})+$/";
 
     /** Pattern for recognizing non-numerical values */
     const PATTERN_NON_NUMERICAL = "/^.*\D/";
@@ -1892,9 +1892,9 @@ if (Storage::PATTERN_HTTP_REQUEST_URI) {
     $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 }
 if (preg_match(Storage::PATTERN_HEX, $xpath))
-    $xpath = hex2bin($xpath);
+    $xpath = hex2bin(substr($xpath, 1));
 else if (preg_match(Storage::PATTERN_BASE64, $xpath))
-    $xpath = base64_decode($xpath);
+    $xpath = base64_decode(substr($xpath, 1));
 else $xpath = urldecode($xpath);
 
 // With the exception of CONNECT, TOUCH, OPTIONS and POST, all requests expect

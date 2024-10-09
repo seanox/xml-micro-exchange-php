@@ -18,11 +18,11 @@ CR: Request: Configurable XPath delimiter of the URI
     TODO: Test
 CR: Request: Omission of XPath via query string
     The XPath includes the query string as part of the path.
-CR: Request: Omission of the prefix for Base64 and hex encoded paths
+CR: Request: Uniform identifier question mark for Base64 and hex encoded paths
     old: /xmex!Base64:Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
-    new: /xmex!Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
+    new: /xmex!?Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
     old: /xmex!0x282f626f6f6b73292f2f6c6173743a3a6265666f7265
-    new: /xmex!282f626f6f6b73292f2f6c6173743a3a6265666f7265
+    new: /xmex!?282f626f6f6b73292f2f6c6173743a3a6265666f7265
     TODO: Add description in manual + OpenAPI
     TODO: Test
 CR: Storage: Optimization of the cleanup
