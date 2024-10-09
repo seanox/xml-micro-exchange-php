@@ -24,11 +24,10 @@
       }
       button {
         width:      25px;
-        height:     30px;
+        height:     25px;
         visibility: hidden;
       }
       button[id] {
-        width:      50px;
         visibility: visible;
       }
     </style>
@@ -183,14 +182,15 @@
                   document.body.innerHTML += `<table id="board">${markup}</table>`
                           + "<br/>"
                           + "<button disabled>&nbsp;</button>"
-                          + "<button id=\"ArrowUp\">&uarr;</button>"
+                          + "<button id=\"ArrowUp\">&#11205;</button>"
                           + "<button disabled>&nbsp;</button>"
                           + "<br>"
-                          + "<button id=\"ArrowLeft\">&larr;</button>"
-                          + "<button id=\"ArrowRight\">&rarr;</button>"
+                          + "<button id=\"ArrowLeft\">&#11207;</button>"
+                          + "<button disabled>&nbsp;</button>"
+                          + "<button id=\"ArrowRight\">&#11208;</button>"
                           + "<br/>"
                           + "<button disabled>&nbsp;</button>"
-                          + "<button id=\"ArrowDown\">&darr;</button>"
+                          + "<button id=\"ArrowDown\">&#11206;</button>"
                           + "<button disabled>&nbsp;</button>"
                           + "<br/>"
                           + "<br/>";
