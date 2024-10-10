@@ -63,9 +63,12 @@ CR: Service: Review of revision management
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
     - Added alternative alias method TOUCH, if CONNECT is not allowed.
+    - Added alternative PUT without XPath, if CONNECT and TOUCH is not allowed.
 CR: Service: Review and optimization of OPTIONS
     - Omission of the response header Storage-Effects.
-    - Omission as an alternative to CONNECT, if CONNECT is not allowed use TOUCH.
+    - Omission as an alternative to CONNECT.
+      If CONNECT is not allowed use TOUCH.
+      If TOUCH is not allowed use PUT without XPath.
 CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are answered with status
       304 (Not Modified), as the request does not change the storage.

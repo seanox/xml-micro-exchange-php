@@ -1894,25 +1894,33 @@ else if (preg_match(Storage::PATTERN_BASE64, $xpath))
     $xpath = base64_decode(substr($xpath, 1));
 else $xpath = urldecode($xpath);
 
-// With the exception of CONNECT, TOUCH, OPTIONS and POST, all requests expect
-// an XPath or XPath function. CONNECT and TOUCH does not use an (X)Path to
-// establish a storage. POST uses the XPath for transformation only optionally
-// to delimit the XML data for the transformation and works also without. In the
-// other cases an empty XPath is replaced by the root slash.
+// As an alternative to CONNECT, the TOUCH method (as an alias) and PUT can be
+// used without a path. CONNECT is not supported by XMLHttpRequest, for example.
+// TOUCH is not supported as an HTTP method by strict frameworks -- that is why
+// there are three variants. Because PUT without XPath is always valid.
+if (strcasecmp("TOUCH", $method) === 0
+        || (strcasecmp("PUT", $method) === 0
+                && strlen($xpath ?: "") <= 0))
+    $method = "CONNECT";
+
+// With the exception of CONNECT, OPTIONS and POST, all requests expect an XPath
+// or XPath function. CONNECT does not use an (X)Path to establish a storage.
+// POST uses the XPath for transformation only optionally to delimit the XML
+// data for the transformation and works also without. In the other cases an
+// empty XPath is replaced by the root slash.
 if (empty($xpath)
-        && !in_array($method, ["CONNECT", "TOUCH", "OPTIONS", "POST"]))
+        && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";
 $options = Storage::STORAGE_SHARE_NONE;
-if (in_array($method, ["CONNECT", "TOUCH", "DELETE", "PATCH", "PUT"]))
+if (in_array($method, ["CONNECT", "DELETE", "PATCH", "PUT"]))
     $options |= Storage::STORAGE_SHARE_EXCLUSIVE;
-if (in_array($method, ["CONNECT", "TOUCH"]))
+if (in_array($method, ["CONNECT"]))
     $options |= Storage::STORAGE_SHARE_INITIAL;
 $storage = Storage::share($storage, $xpath, $options);
 
 try {
     switch ($method) {
         case "CONNECT":
-        case "TOUCH":
             $storage->doConnect();
         case "OPTIONS":
             $storage->doOptions();
