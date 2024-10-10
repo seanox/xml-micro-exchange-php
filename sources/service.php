@@ -446,6 +446,7 @@ class Storage {
         $storage->share = fopen($storage->store, "c+");
         $exclusive = ($options & Storage::STORAGE_SHARE_EXCLUSIVE) == Storage::STORAGE_SHARE_EXCLUSIVE;
         flock($storage->share, $initial || $exclusive ? LOCK_EX : LOCK_SH);
+        touch($storage->store);
 
         if (strcasecmp(Storage::REVISION_TYPE, "serial") !== 0) {
             $storage->unique = round(microtime(true) *1000);
