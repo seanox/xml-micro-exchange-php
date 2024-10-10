@@ -1,12 +1,12 @@
 # Test sequence for GET requests.
 
-# GET queries data about XPath axes and functions.  
-# For this, the XPath axis or function is sent with URI.  
+# GET queries data about XPath axes and functions.
+# For this, the XPath axis or function is sent with URI.
 # Depending on whether the request is an XPath axis or an XPath function,
 # different Content-Type are used for the response.
 
 ###
-# Storage is not establish 
+# Storage is not establish
 # Expectations:
 # - Status code 404 Resource Not Found
 GET {{service}}/ HTTP/1.0
@@ -14,7 +14,13 @@ Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "bdf5ea7815d1f0bf6bfb5a82d99183aa");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "bee9dd34525bc35cae05c083a5bc3da2");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "1a3b8937cde8aa40ce5ffe8d389146ec");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "e24e92218b87cffc8c8aa00c5ef5b3e2");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
 %}
 
@@ -22,12 +28,18 @@ client.test("unittest", function() {
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
-OPTIONS {{service}} HTTP/1.0
+PUT {{service}} HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "196ff3902ff5f4aff6a5c3fb8abd65c0");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "b064518214ba578ef590d162ae445172");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "c562638b3c98a0b9729b8aadb2229756");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "c7de5f9da0e9b455cc44337cdbd78cfb");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "34a4a9d925fed6ff5359a00c4ecc02d5");
 });
 %}
 
@@ -35,165 +47,172 @@ client.test("unittest", function() {
 # Initial request to establish the storage
 # Expectations:
 # - Status code 204 No Content
-# - Storage-Effects: with a lot of UIDs 
+# - Storage-Revision: 2/123
+# - Storage-Space: 262144/13333 bytes
 PUT {{service}}/statistic HTTP/1.0
 Storage: {{storage_get}}
 Content-Type: application/xml
 
 <cities>
-  <city name="Berlin" empty="">
-    <districts>
-      <district name="Charlottenburg-Wilmersdorf">
-        <quarters>
-          <quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327"/>
-          <quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161"/>
-          <quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2"/>
-          <quarter name="Halensee" area="1.27" inhabitants="15627" population="12305"/>
-          <quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185"/>
-          <quarter name="Westend" area="13.5" inhabitants="41882" population="3102"/>
-          <quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332"/>
-        </quarters>
-      </district>
-      <district name="Friedrichshain-Kreuzberg">
-        <quarters>
-          <quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910"/>
-          <quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841"/>
-        </quarters>
-      </district>
-      <district name="Lichtenberg">
-        <quarters>
-          <quarter name="Alt-Hohenschönhausen" area="9.33" inhabitants="48979" population="5250"/>
-          <quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1"/>
-          <quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073"/>
-          <quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696"/>
-          <quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236"/>
-          <quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784"/>
-          <quarter name="Malchow" area="1.54" inhabitants="635" population="412.3"/>
-          <quarter name="Neu-Hohenschönhausen" area="5.16" inhabitants="56918" population="11031"/>
-          <quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675"/>
-          <quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2"/>
-        </quarters>
-      </district>
-      <district name="Marzahn-Hellersdorf">
-        <quarters>
-          <quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264"/>
-          <quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137"/>
-          <quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203"/>
-          <quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276"/>
-          <quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693"/>
-        </quarters>
-      </district>
-      <district name="Mitte">
-        <quarters>
-          <quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526"/>
-          <quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181"/>
-          <quarter name="Mitte" area="10.7" inhabitants="102465" population="9576"/>
-          <quarter name="Moabit" area="7.72" inhabitants="80495" population="10427"/>
-          <quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878"/>
-          <quarter name="Wedding" area="9.23" inhabitants="86806" population="9405"/>
-        </quarters>
-      </district>
-      <district name="Neukölln">
-        <quarters>
-          <quarter name="Britz" area="12.4" inhabitants="42796" population="3451"/>
-          <quarter name="Buckow" area="6.35" inhabitants="40703" population="6410"/>
-          <quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147"/>
-          <quarter name="Neukölln" area="11.7" inhabitants="166157" population="14201"/>
-          <quarter name="Rudow" area="11.8" inhabitants="42631" population="3613"/>
-        </quarters>
-      </district>
-      <district name="Pankow">
-        <quarters>
-          <quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140"/>
-          <quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154"/>
-          <quarter name="Buch" area="18.2" inhabitants="16868" population="926.8"/>
-          <quarter name="Französisch Buchholz" area="12" inhabitants="21281" population="1773"/>
-          <quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992"/>
-          <quarter name="Karow" area="6.65" inhabitants="19679" population="2959"/>
-          <quarter name="Niederschönhausen" area="6.49" inhabitants="31996" population="4930"/>
-          <quarter name="Pankow" area="5.66" inhabitants="64945" population="11474"/>
-          <quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000"/>
-          <quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958"/>
-          <quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2"/>
-          <quarter name="Weißensee" area="7.93" inhabitants="54032" population="6814"/>
-          <quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845"/>
-        </quarters>
-      </district>
-      <district name="Reinickendorf">
-        <quarters>
-          <quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389"/>
-          <quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156"/>
-          <quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692"/>
-          <quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722"/>
-          <quarter name="Konradshöhe" area="2.2" inhabitants="6004" population="2729"/>
-          <quarter name="Lübars" area="5" inhabitants="5203" population="1041"/>
-          <quarter name="Märkisches Viertel" area="3.2" inhabitants="40379" population="12618"/>
-          <quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991"/>
-          <quarter name="Tegel" area="33.7" inhabitants="36986" population="1098"/>
-          <quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771"/>
-          <quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179"/>
-        </quarters>
-      </district>
-      <district name="Spandau">
-        <quarters>
-          <quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634"/>
-          <quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6"/>
-          <quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534"/>
-          <quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311"/>
-          <quarter name="Kladow" area="14.8" inhabitants="16212" population="1095"/>
-          <quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267"/>
-          <quarter name="Spandau" area="8.03" inhabitants="39560" population="4927"/>
-          <quarter name="Staaken" area="10.9" inhabitants="46607" population="4276"/>
-          <quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898"/>
-        </quarters>
-      </district>
-      <district name="Steglitz-Zehlendorf">
-        <quarters>
-          <quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018"/>
-          <quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233"/>
-          <quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737"/>
-          <quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8"/>
-          <quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164"/>
-          <quarter name="Wannsee" area="23.7" inhabitants="10334" population="436"/>
-          <quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220"/>
-        </quarters>
-      </district>
-      <district name="Tempelhof-Schöneberg">
-        <quarters>
-          <quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129"/>
-          <quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144"/>
-          <quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660"/>
-          <quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535"/>
-          <quarter name="Schöneberg" area="10.6" inhabitants="123075" population="11611"/>
-          <quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102"/>
-        </quarters>
-      </district>
-      <district name="Treptow-Köpenick">
-        <quarters>
-          <quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263"/>
-          <quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721"/>
-          <quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575"/>
-          <quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909"/>
-          <quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790"/>
-          <quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368"/>
-          <quarter name="Grünau" area="9.13" inhabitants="6784" population="743"/>
-          <quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036"/>
-          <quarter name="Köpenick" area="34.9" inhabitants="66765" population="1913"/>
-          <quarter name="Müggelheim" area="22.2" inhabitants="6798" population="306.2"/>
-          <quarter name="Niederschöneweide" area="3.49" inhabitants="12850" population="3682"/>
-          <quarter name="Oberschöneweide" area="6.18" inhabitants="23500" population="3803"/>
-          <quarter name="Plänterwald" area="3.01" inhabitants="11365" population="3776"/>
-          <quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9"/>
-          <quarter name="Schmöckwitz" area="17.1" inhabitants="4424" population="258.7"/>
-        </quarters>
-      </district>
-    </districts>
-  </city>
+    <city name="Berlin" empty="">
+        <districts>
+            <district name="Charlottenburg-Wilmersdorf">
+                <quarters>
+                    <quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327"/>
+                    <quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161"/>
+                    <quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2"/>
+                    <quarter name="Halensee" area="1.27" inhabitants="15627" population="12305"/>
+                    <quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185"/>
+                    <quarter name="Westend" area="13.5" inhabitants="41882" population="3102"/>
+                    <quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332"/>
+                </quarters>
+            </district>
+            <district name="Friedrichshain-Kreuzberg">
+                <quarters>
+                    <quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910"/>
+                    <quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841"/>
+                </quarters>
+            </district>
+            <district name="Lichtenberg">
+                <quarters>
+                    <quarter name="Alt-Hohenschönhausen" area="9.33" inhabitants="48979" population="5250"/>
+                    <quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1"/>
+                    <quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073"/>
+                    <quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696"/>
+                    <quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236"/>
+                    <quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784"/>
+                    <quarter name="Malchow" area="1.54" inhabitants="635" population="412.3"/>
+                    <quarter name="Neu-Hohenschönhausen" area="5.16" inhabitants="56918" population="11031"/>
+                    <quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675"/>
+                    <quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2"/>
+                </quarters>
+            </district>
+            <district name="Marzahn-Hellersdorf">
+                <quarters>
+                    <quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264"/>
+                    <quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137"/>
+                    <quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203"/>
+                    <quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276"/>
+                    <quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693"/>
+                </quarters>
+            </district>
+            <district name="Mitte">
+                <quarters>
+                    <quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526"/>
+                    <quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181"/>
+                    <quarter name="Mitte" area="10.7" inhabitants="102465" population="9576"/>
+                    <quarter name="Moabit" area="7.72" inhabitants="80495" population="10427"/>
+                    <quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878"/>
+                    <quarter name="Wedding" area="9.23" inhabitants="86806" population="9405"/>
+                </quarters>
+            </district>
+            <district name="Neukölln">
+                <quarters>
+                    <quarter name="Britz" area="12.4" inhabitants="42796" population="3451"/>
+                    <quarter name="Buckow" area="6.35" inhabitants="40703" population="6410"/>
+                    <quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147"/>
+                    <quarter name="Neukölln" area="11.7" inhabitants="166157" population="14201"/>
+                    <quarter name="Rudow" area="11.8" inhabitants="42631" population="3613"/>
+                </quarters>
+            </district>
+            <district name="Pankow">
+                <quarters>
+                    <quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140"/>
+                    <quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154"/>
+                    <quarter name="Buch" area="18.2" inhabitants="16868" population="926.8"/>
+                    <quarter name="Französisch Buchholz" area="12" inhabitants="21281" population="1773"/>
+                    <quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992"/>
+                    <quarter name="Karow" area="6.65" inhabitants="19679" population="2959"/>
+                    <quarter name="Niederschönhausen" area="6.49" inhabitants="31996" population="4930"/>
+                    <quarter name="Pankow" area="5.66" inhabitants="64945" population="11474"/>
+                    <quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000"/>
+                    <quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958"/>
+                    <quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2"/>
+                    <quarter name="Weißensee" area="7.93" inhabitants="54032" population="6814"/>
+                    <quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845"/>
+                </quarters>
+            </district>
+            <district name="Reinickendorf">
+                <quarters>
+                    <quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389"/>
+                    <quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156"/>
+                    <quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692"/>
+                    <quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722"/>
+                    <quarter name="Konradshöhe" area="2.2" inhabitants="6004" population="2729"/>
+                    <quarter name="Lübars" area="5" inhabitants="5203" population="1041"/>
+                    <quarter name="Märkisches Viertel" area="3.2" inhabitants="40379" population="12618"/>
+                    <quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991"/>
+                    <quarter name="Tegel" area="33.7" inhabitants="36986" population="1098"/>
+                    <quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771"/>
+                    <quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179"/>
+                </quarters>
+            </district>
+            <district name="Spandau">
+                <quarters>
+                    <quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634"/>
+                    <quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6"/>
+                    <quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534"/>
+                    <quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311"/>
+                    <quarter name="Kladow" area="14.8" inhabitants="16212" population="1095"/>
+                    <quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267"/>
+                    <quarter name="Spandau" area="8.03" inhabitants="39560" population="4927"/>
+                    <quarter name="Staaken" area="10.9" inhabitants="46607" population="4276"/>
+                    <quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898"/>
+                </quarters>
+            </district>
+            <district name="Steglitz-Zehlendorf">
+                <quarters>
+                    <quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018"/>
+                    <quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233"/>
+                    <quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737"/>
+                    <quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8"/>
+                    <quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164"/>
+                    <quarter name="Wannsee" area="23.7" inhabitants="10334" population="436"/>
+                    <quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220"/>
+                </quarters>
+            </district>
+            <district name="Tempelhof-Schöneberg">
+                <quarters>
+                    <quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129"/>
+                    <quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144"/>
+                    <quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660"/>
+                    <quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535"/>
+                    <quarter name="Schöneberg" area="10.6" inhabitants="123075" population="11611"/>
+                    <quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102"/>
+                </quarters>
+            </district>
+            <district name="Treptow-Köpenick">
+                <quarters>
+                    <quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263"/>
+                    <quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721"/>
+                    <quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575"/>
+                    <quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909"/>
+                    <quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790"/>
+                    <quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368"/>
+                    <quarter name="Grünau" area="9.13" inhabitants="6784" population="743"/>
+                    <quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036"/>
+                    <quarter name="Köpenick" area="34.9" inhabitants="66765" population="1913"/>
+                    <quarter name="Müggelheim" area="22.2" inhabitants="6798" population="306.2"/>
+                    <quarter name="Niederschöneweide" area="3.49" inhabitants="12850" population="3682"/>
+                    <quarter name="Oberschöneweide" area="6.18" inhabitants="23500" population="3803"/>
+                    <quarter name="Plänterwald" area="3.01" inhabitants="11365" population="3776"/>
+                    <quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9"/>
+                    <quarter name="Schmöckwitz" area="17.1" inhabitants="4424" population="258.7"/>
+                </quarters>
+            </district>
+        </districts>
+    </city>
 </cities>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "fd2c09bc8c46cdc706eb24f15fc47482");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "251c1c0fa751edeb1172882a65aefc07");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f70bae65ea4f02beaaaaf9d98922987d");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "5268b0cc323f6ebfb1339224bc6b5c94");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1b6bee8774fc3297f2b83b163eb8c5b0");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -201,15 +220,23 @@ client.test("unittest", function() {
 # Request for the root in the storage
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 14456
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
+# - Content-Length: 11637
 # - Complete storage
 GET {{service}}/ HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "07b62015e401ab7ef0caca5ebd5eb09f");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "bee9dd34525bc35cae05c083a5bc3da2");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1c0a313f14b1dd26ff3000db7f20444e");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1ed53f90c896ba8da67f7f0781114725");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -217,15 +244,23 @@ client.test("unittest", function() {
 # Request without a path is the same as / for the root in the storage
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 14456
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
+# - Content-Length: 11637
 # - Complete storage
 GET {{service}} HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "07b62015e401ab7ef0caca5ebd5eb09f");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "bee9dd34525bc35cae05c083a5bc3da2");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1c0a313f14b1dd26ff3000db7f20444e");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1ed53f90c896ba8da67f7f0781114725");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -233,16 +268,24 @@ client.test("unittest", function() {
 # Brackets in XPath also work
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 14263
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
+# - Content-Length: 11489
 # - Only an extract of districts
 # - URI: (/statistic//districts)
-GET {{service}}282f7374617469737469632f2f64697374726963747329 HTTP/1.0
+GET {{service}}?282f7374617469737469632f2f64697374726963747329 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d9ebcb33509ef9b13914f0ae6d5e21d3");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "7f6b7142b83927724b6a8e0522b8df2f");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "d2d5ecc7031007e2240684922236d62a");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "387f2779d75c69ce47bb253ceff73fde");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -250,16 +293,24 @@ client.test("unittest", function() {
 # Brackets in XPath also work
 # Expectations:
 # - Status code 200 Success
-# - Content-Length: 14141
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
+# - Content-Length: 11467
 # - Only an extract of all district entries as collection
 # - URI: (/statistic//districts)/district
-GET {{service}}282f7374617469737469632f2f646973747269637473292f6469737472696374 HTTP/1.0
+GET {{service}}?282f7374617469737469632f2f646973747269637473292f6469737472696374 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "60eaca41b7de9acdc3b96c072f199331");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "5c52437eeb8ddbd87597bd9c0049332d");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "597731d6b960ce78521a4e636ec41cc5");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "ea5f8b28211dac1b3c1bc079c0fc94b5");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -269,25 +320,39 @@ client.test("unittest", function() {
 # - Status code 400 Bad Request
 # - Message: Invalid XPath (Invalid expression)
 # - URI: (/wrong//districts/)
-GET {{service}}282f77726f6e672f2f6469737472696374732f29 HTTP/1.0
+GET {{service}}?282f77726f6e672f2f6469737472696374732f29 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b00902bab1fc1ee62dd14d10c3886806");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "b2e7d3c57289650dca8fd22406812056");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "262560451fe2a68874b84424f701d745");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
 ###
 # XPath axis without target
 # Expectations:
-# - Status code 404 Resource Not Found
+# - Status code 204 No Content
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 GET {{service}}/unknown/unknown HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "871ea6aec9d9926e04c8ea724c7eafb1");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "4b6f7862e6cc69cee61add7c983d93bd");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0eaaea4a4ab8608786df97f7c4049053");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -295,16 +360,24 @@ client.test("unittest", function() {
 # XPath functions should work
 # Expectations:
 # - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Length: 1
 # - Content-Type: text/plain
 # - Value: 1
 # - URI: count(/statistic//districts)
-GET {{service}}636f756e74282f7374617469737469632f2f6469737472696374732920 HTTP/1.0
+GET {{service}}?636f756e74282f7374617469737469632f2f6469737472696374732920 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e5c264d75db658bfad9c722266c1202b");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "681cb5c3788b4b9db9a88da1aa26fc11");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "2053b28b4fe823a5291e29f0a94cf031");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "c4ca4238a0b923820dcc509a6f75849b");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -312,6 +385,8 @@ client.test("unittest", function() {
 # XPath functions should work
 # Expectations:
 # - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Length: 9
 # - Content-Type: text/plain
 # - Value: statistic
@@ -320,7 +395,13 @@ Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5391309a59e2a751f4f2c5dbcff79cde");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "deb5eaaba8b004044573db79f720d629");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0dc3d34111f6963336c596983516a194");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "77acf0a3ea333213a84f8a9dcb2cd4a1");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -330,12 +411,18 @@ client.test("unittest", function() {
 # - Status code 400 Bad Request
 # - Message: Invalid XPath function (Unregistered function)
 # - URI: wrong(/statistic//districts)
-GET {{service}}77726f6e67282f7374617469737469632f2f64697374726963747329 HTTP/1.0
+GET {{service}}?77726f6e67282f7374617469737469632f2f64697374726963747329 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "62fd9114819e7f08fe86578d3a0bfa74");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "7c49710f51032bf3c3e856194c2ecd0a");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "03f3e50db9a251d768527c6ed0360501");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -343,16 +430,24 @@ client.test("unittest", function() {
 # XPath functions with return type boolean should work
 # Expectations:
 # - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Length: 5
 # - Content-Type: text/plain
 # - Value: false
 # - URI: count(/statistic//districts)<0
-GET {{service}}636f756e74282f7374617469737469632f2f646973747269637473293c30 HTTP/1.0
+GET {{service}}?636f756e74282f7374617469737469632f2f646973747269637473293c30 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "99e033c64d88e4c1fafd948677aea367");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "3c0eb6a49d50a5f1a3e3458c6d2fae59");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7a2a8cd622a6695d6e1489b18d59a22c");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "68934a3e9455fa72420237eb05902327");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -360,16 +455,24 @@ client.test("unittest", function() {
 # XPath functions with return type boolean should work
 # Expectations:
 # - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Length: 4
 # - Content-Type: text/plain
 # - Value: true
 # - URI: count(/statistic//districts)>0
-GET {{service}}636f756e74282f7374617469737469632f2f646973747269637473293e30 HTTP/1.0
+GET {{service}}?636f756e74282f7374617469737469632f2f646973747269637473293e30 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e22dce28518d473c5c2d8929313552d6");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "15c975d45f4b4cf7831d6e94067160ec");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "97b69f0c7b870823a9fe7e3b41f70bec");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "b326b5062b2f0e69046810717534cb09");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
 
@@ -377,482 +480,23 @@ client.test("unittest", function() {
 # XPath functions with return type boolean should work
 # Expectations:
 # - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
 # - Content-Length: 5
 # - Content-Type: text/plain
 # - Value: false
 # - URI: count(/statistic//districts)>100
-GET {{service}}636f756e74282f7374617469737469632f2f646973747269637473293e313030 HTTP/1.0
+GET {{service}}?636f756e74282f7374617469737469632f2f646973747269637473293e313030 HTTP/1.0
 Storage: {{storage_get}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8d2352aca7e8b52c2b024ba23968d2f7");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "a64118d5f64787bb09b50055d488f7d0");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7a2a8cd622a6695d6e1489b18d59a22c");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "68934a3e9455fa72420237eb05902327");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
-
-###
-# XPath functions should work
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 1
-# - Content-Type: text/plain
-# - Value: 1
-GET {{service}}count(/statistic) HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6427a3ae0f130c7f0a8c4f0624aa3acd");
-});
-%}
-
-###
-# XPath axis for a attribute should work
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 6
-# - Content-Type: text/plain
-# - Value: Berlin
-# - URI: //city[1]/@name
-GET {{service}}2f2f636974795b315d2f406e616d65 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "7a1a017c345c9143622c1ceb744bbb5d");
-});
-%}
-
-###
-# XPath axis for a attribute should work
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 6
-# - Content-Type: text/plain
-# - Value: Berlin
-# - URI: //city[1]/attribute::name
-GET {{service}}2f2f636974795b315d2f6174747269627574653a3a6e616d65 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "23997ea39fa520e8bced288b2294c4e3");
-});
-%}
-
-###
-# XPath axis for a attribute that does not exist should cause status 404
-# Expectations:
-# - Status code 404 Resource Not Found
-# - URI: //city[1]/attribute::wrong
-GET {{service}}2f2f636974795b315d2f6174747269627574653a3a77726f6e67 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "8f26f52900bacff4063cff437aa35d00");
-});
-%}
-
-###
-# XPath axis for a empty attribute should work
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 0
-# - Without Content-Type
-# - URI: //city[1]/attribute::empty
-GET {{service}}2F2F636974795b315d2f6174747269627574653a3a656d707479 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3d8e2b70fe49037708d854ed3dd51486");
-});
-%}
-
-###
-# XPath function with an empty result should work
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 0
-# - Without Content-Type
-GET {{service}}concat('','') HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "192eccdcf02693970c7d9a29537ab9e1");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 1
-# - Content-Type: text/plain
-# - Response-Body: 3
-GET {{service}}1%2B2 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ee9dbacd49eec68885b747664b771089");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 2
-# - Content-Type: text/plain
-# - Response-Body: -2
-GET {{service}}1-3 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "c47bb008e05796485b3620dd8fb63e98");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 5
-# - Content-Type: text/plain
-# - Response-Body: Hallo
-GET {{service}}'Hallo' HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b2f4d7bdaf01ff09df5e7380b950a141");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 5
-# - Content-Type: text/plain
-# - Response-Body: false
-GET {{service}}1=2 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "316d56dba4be0279e4e0a0adf09a0f14");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 4
-# - Content-Type: text/plain
-# - Response-Body: true
-GET {{service}}1!=2 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "e2adff4089c554d8cf2630596286d94c");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 5
-# - Content-Type: text/plain
-# - Response-Body: false
-GET {{service}}2!=2 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "aaf5b61e9c6b33dce2681fcdbac414ea");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 4
-# - Content-Type: text/plain
-# - Response-Body: true
-GET {{service}}2=2 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d810c10e37b5f8650a36f929bd72e8ff");
-});
-%}
-
-###
-# The output of misunderstandable values must work correctly
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 1
-# - Response Body: 0
-GET {{service}}'0' HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d2eeb070e9460580bcbd5761eb93d108");
-});
-%}
-
-###
-# The output of misunderstandable values must work correctly
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 2
-# - Response Body: -1
-GET {{service}}'-1' HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "01be88a5caadcc5fe41f0d01d294d00e");
-});
-%}
-
-###
-# The output of misunderstandable values must work correctly
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 5
-# - Response Body: false
-GET {{service}}'false' HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "3ddf5b8d51d4abc7b9210386f8b8fc6e");
-});
-%}
-
-###
-# The output of misunderstandable values must work correctly
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 4
-# - Response Body: null
-GET {{service}}'null' HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d2aec097ac51914ad020043a78c4d0a6");
-});
-%}
-
-###
-# Invalid XPath /books/book[1]x
-# Expectations:
-# - Status code 400 Bad Request
-# - Message: Invalid XPath axis (Invalid expression)
-GET {{service}}/books/book%5B1%5Dx HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f7ad8f3583bae6fb2959ef9bb90bf313");
-});
-%}
-
-###
-# If attributes are queried and there is more than one match,
-# the attributes must be returned as a collection.
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 2385
-# - Content-Type: application/xml
-# - URI: //quarter/@name
-GET {{service}}2f2f717561727465722f406e616d65 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "74b215ad790771a055751e76d9d17797");
-});
-%}
-
-###
-# If attributes are queried and there is more than one match,
-# the attributes must be returned as a collection.
-# This must also work with mixed attributes.
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 3995
-# - Content-Type: application/xml
-# - URI: //quarter/@name|//quarter/@area
-GET {{service}}2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "6684dd994143710adca9e94e52384359");
-});
-%}
-
-###
-# For single attributes only the value is returned.
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 14
-# - Content-Type: text/plain
-# - Content: Charlottenburg
-# - URI: //district[1]//quarter[1]/@name
-GET {{service}}2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d65 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "f01c73130eed11cf767f3a73cde6d082");
-});
-%}
-
-###
-# Two single attributes are returned as a collection.
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 92
-# - Content-Type: application/xml
-# - URI: //district[1]//quarter[1]/@name|//district[1]//quarter[1]/@area
-GET {{service}}2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d657c2f2f64697374726963745b315d2f2f717561727465725b315d2f4061726561 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "4e01e1016d6e88d0806047bbcb061e15");
-});
-%}
-
-###
-# The mix of element and attributes are returned as a collection.
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 1144
-# - Content-Type: application/xml
-# - URI: //district[1]|//district[1]/@name
-GET {{service}}2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "5bd98b55c469d87eb67127b59e6cac6d");
-});
-%}
-
-###
-# The mix of element and attributes are returned as a collection.
-# Text/JSON output, the JSON directive in the URI has an effect.
-# Expectations:
-# - Status code 200 Success
-# - Content-Type: application/json
-# - Content-Length: 15276
-GET {{service}}/statistic!JSON HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "d8c9f11c69a2c8db2c75928864d0c0c9");
-});
-%}
-
-###
-# The mix of element and attributes are returned as a collection.
-# Text/JSON output, the JSON directive in the URI has an effect.
-# Expectations:
-# - Status code 200 Success
-# - Content-Type: application/json
-# - Content-Length: 1170
-# - URI: //district[1]|//district[1]/@name!JSon
-GET {{service}}2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "a0a781493fd1b821d4a94d892601e4ce");
-});
-%}
-
-###
-# XPath expression for direct processing
-# Text/JSON output, the JSON directive in the URI has an effect.
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 2
-# - Content-Type: application/json
-# - Response-Body: -2
-GET {{service}}1-3!jsON HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "1ac74b85e76e46e9e603a291366eb48f");
-});
-%}
-
-###
-# XPath axis for a attribute should work
-# Text/JSON output, the JSON directive in the URI has an effect.
-# Expectations:
-# - Status code 200 Success
-# - Content-Length: 8
-# - Content-Type: application/json
-# - Value: "Berlin"
-# - URI: //city[1]/@name!jSOn
-GET {{service}}2f2f636974795b315d2f406e616d65216a534f6e HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "16d91108457db0f345933d941afebcd5");
-});
-%}
-
-###
-# Query of a data record as JSON
-# Expectations:
-# - Status code 200 Success
-# - Content-Type: application/xml
-# - Content-Length: 137
-# - URI: //quarter[@name='Rahnsdorf']
-GET {{service}}2f2f717561727465725b406e616d653d275261686e73646f7266275d HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "ca5c4fd590deac6ef83fca32ec12e5fe");
-});
-%}
-
-###
-# Query of a data record as JSON
-# Expectations:
-# - Status code 200 Success
-# - Content-Type: application/json
-# - Content-Length: 133
-# - URI: //quarter[@name='Rahnsdorf']!json
-GET {{service}}2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e HTTP/1.0
-Storage: {{storage_get}}
-
-> {%
-client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Composite-Hash") === "b80076f16f8cc5c0899e9fa918a17df4");
-});
-%}
-
-###
