@@ -11,6 +11,8 @@
       }
       table {
         border-collapse: collapse;
+        display:         none;
+        margin-bottom:   12px;
       }
       table td {
         background: #A0A0A0;
@@ -93,7 +95,7 @@
                   while (true) {
                       try {
                           const request = new XMLHttpRequest();
-                          request.open("TOUCH", SnakeService.DATASOURCE_URL, false);
+                          request.open("PUT", SnakeService.DATASOURCE_URL, false);
                           request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                           request.send();
                           if (request.status === 201
@@ -180,20 +182,17 @@
                       markup += "</tr>";
                   }
                   document.body.innerHTML += `<table id="board">${markup}</table>`
-                          + "<br/>"
-                          + "<button disabled>&nbsp;</button>"
-                          + "<button id=\"ArrowUp\">&#11205;</button>"
-                          + "<button disabled>&nbsp;</button>"
-                          + "<br>"
-                          + "<button id=\"ArrowLeft\">&#11207;</button>"
-                          + "<button disabled>&nbsp;</button>"
-                          + "<button id=\"ArrowRight\">&#11208;</button>"
-                          + "<br/>"
-                          + "<button disabled>&nbsp;</button>"
-                          + "<button id=\"ArrowDown\">&#11206;</button>"
-                          + "<button disabled>&nbsp;</button>"
-                          + "<br/>"
-                          + "<br/>";
+                          + `<button disabled>&nbsp;</button>`
+                          + `<button id=\"ArrowUp\">&#11205;</button>`
+                          + `<button disabled>&nbsp;</button>`
+                          + `<br>`
+                          + `<button id=\"ArrowLeft\">&#11207;</button>`
+                          + `<button disabled>&nbsp;</button>`
+                          + `<button id=\"ArrowRight\">&#11208;</button>`
+                          + `<br/>`
+                          + `<button disabled>&nbsp;</button>`
+                          + `<button id=\"ArrowDown\">&#11206;</button>`
+                          + `<button disabled>&nbsp;</button>`;
               },
 
               initScreenUpdate() {
@@ -364,7 +363,7 @@
                               + ` <span class="player ${player.alias}"></span>`, true);
                       SnakeService.player = player;
 
-                      SnakeService.showMessage("Waiting for the free start position (center of the field)", true);
+                      SnakeService.showMessage("Waiting for the free start position (middle of the pitch)", true);
                       const start = () => {
                           const center = Math.ceil(SnakeService.board.rows *SnakeService.board.cols /2);
                           const patch = `<field id="${center}" player="${SnakeService.player.alias}"/>`;
@@ -383,6 +382,12 @@
                           SnakeService.points = [center];
                           SnakeService.initKeyboardControl();
                           SnakeService.initServerTouch();
+                          window.setTimeout(() => {
+                              document.querySelectorAll("p").forEach((paragraph) => {
+                                  paragraph.parentNode.removeChild(paragraph);
+                              });
+                              document.querySelector("table").style.display = "block";
+                          }, 1000);
                       };
                       start();
                   };
