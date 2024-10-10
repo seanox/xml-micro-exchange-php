@@ -396,16 +396,15 @@ class Storage {
         touch($marker);
 
         if ($handle = opendir(Storage::DIRECTORY)) {
-            $timeout = time() -Storage::EXPIRATION;
+            $expiration = time() -Storage::EXPIRATION;
             while (($entry = readdir($handle)) !== false) {
                 if ($entry == "."
                         || $entry == ".."
                         || $entry == "cleanup")
                     continue;
                 $entry = Storage::DIRECTORY . "/$entry";
-                if (filemtime($entry) > $timeout)
-                    continue;
-                if (file_exists($entry))
+                if (file_exists($entry)
+                        && filemtime($entry) < $expiration)
                     @unlink($entry);
             }
             closedir($handle);
@@ -436,18 +435,17 @@ class Storage {
         // checked before access and the storage is deleted if necessary.
         $expiration = time() -Storage::EXPIRATION;
         if (file_exists($storage->store)
-                && (filemtime($storage->store) < $expiration
-                        || filesize($storage->store) <= 0))
+                && filemtime($storage->store) < $expiration)
             @unlink($storage->store);
 
         $initial = ($options & Storage::STORAGE_SHARE_INITIAL) == Storage::STORAGE_SHARE_INITIAL;
-        if (!$initial
-                && !$storage->exists())
+        if (!$initial && !$storage->exists())
             $storage->quit(404, "Resource Not Found");
+        $initial = $initial && (!file_exists($storage->store) || filesize($storage->store) <= 0);
 
         $storage->share = fopen($storage->store, "c+");
         $exclusive = ($options & Storage::STORAGE_SHARE_EXCLUSIVE) == Storage::STORAGE_SHARE_EXCLUSIVE;
-        flock($storage->share, filesize($storage->store) <= 0 || $exclusive ? LOCK_EX : LOCK_SH);
+        flock($storage->share, $initial || $exclusive ? LOCK_EX : LOCK_SH);
 
         if (strcasecmp(Storage::REVISION_TYPE, "serial") !== 0) {
             $storage->unique = round(microtime(true) *1000);
@@ -457,8 +455,7 @@ class Storage {
             $storage->unique = strtoupper($storage->unique);
         } else $storage->unique = 1;
 
-        if ($initial
-                && filesize($storage->store) <= 0) {
+        if ($initial) {
             $iterator = new FilesystemIterator(Storage::DIRECTORY, FilesystemIterator::SKIP_DOTS);
             if (iterator_count($iterator) >= Storage::QUANTITY)
                 $storage->quit(507, "Insufficient Storage");
