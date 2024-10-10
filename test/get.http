@@ -500,3 +500,696 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
+
+###
+# XPath functions should work
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 1
+# - Content-Type: text/plain
+# - Value: 1
+GET {{service}}count(/statistic) HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "526ee7fcccc34b9f31c72b3cd1846524");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "2053b28b4fe823a5291e29f0a94cf031");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "c4ca4238a0b923820dcc509a6f75849b");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath axis for a attribute should work
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 6
+# - Content-Type: text/plain
+# - Value: Berlin
+# - URI: //city[1]/@name
+GET {{service}}?2f2f636974795b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "551e594a265a281a91b96c979c451bc0");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "355c5f3120d9841b6cc20d5f21b134df");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "ee1611b61f5688e70c12b40684dbb395");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath axis for a attribute should work
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 6
+# - Content-Type: text/plain
+# - Value: Berlin
+# - URI: //city[1]/attribute::name
+GET {{service}}?2f2f636974795b315d2f6174747269627574653a3a6e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "818ad44b835c9e65fcc5903594fdcf68");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "355c5f3120d9841b6cc20d5f21b134df");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "ee1611b61f5688e70c12b40684dbb395");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath axis for a attribute that does not exist should cause status 404
+# Expectations:
+# - Status code 204 No Content
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - URI: //city[1]/attribute::wrong
+GET {{service}}?2f2f636974795b315d2f6174747269627574653a3a77726f6e67 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "dc1a106ac59be9172e6cec3f19ca4402");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0eaaea4a4ab8608786df97f7c4049053");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath axis for a empty attribute should work
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 0
+# - Without Content-Type
+# - URI: //city[1]/attribute::empty
+GET {{service}}?2F2F636974795b315d2f6174747269627574653a3a656d707479 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "a16649d10461b5af0120731fc70677be");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0eaaea4a4ab8608786df97f7c4049053");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath function with an empty result should work
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 0
+# - Without Content-Type
+GET {{service}}concat('','') HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "f67de03586d8c562a6383137207f12f1");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0eaaea4a4ab8608786df97f7c4049053");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 1
+# - Content-Type: text/plain
+# - Response-Body: 3
+GET {{service}}1%2B2 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "b48691c3946ae147959bfd03f07d734e");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "2053b28b4fe823a5291e29f0a94cf031");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "eccbc87e4b5ce2fe28308fd9f2a7baf3");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 2
+# - Content-Type: text/plain
+# - Response-Body: -2
+GET {{service}}1-3 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "42a4a317f8f8a19cc1bea23a739e756f");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "e83cead7c5828cf3138d79e0322b0f88");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "5d7b9adcbe1c629ec722529dd12e5129");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 5
+# - Content-Type: text/plain
+# - Response-Body: Hallo
+GET {{service}}'Hallo' HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "fbf607ffe1389825f67273044fcc5882");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7a2a8cd622a6695d6e1489b18d59a22c");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d1bf93299de1b68e6d382c893bf1215f");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 5
+# - Content-Type: text/plain
+# - Response-Body: false
+GET {{service}}1=2 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "f09a2a23fab508e7cc05c817cc08ca9a");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7a2a8cd622a6695d6e1489b18d59a22c");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "68934a3e9455fa72420237eb05902327");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Expectations:
+# - Status code 200 Success
+# Storage-Revision: 2/0
+# Storage-Space: 262144/13333 bytes
+# - Content-Length: 4
+# - Content-Type: text/plain
+# - Response-Body: true
+GET {{service}}1!=2 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "5a4e004d2dc67cd2f043c95f4f66d5d6");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "97b69f0c7b870823a9fe7e3b41f70bec");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "b326b5062b2f0e69046810717534cb09");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 5
+# - Content-Type: text/plain
+# - Response-Body: false
+GET {{service}}2!=2 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "bd9683460896dd0d10ad6d776fe6b36f");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7a2a8cd622a6695d6e1489b18d59a22c");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "68934a3e9455fa72420237eb05902327");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 4
+# - Content-Type: text/plain
+# - Response-Body: true
+GET {{service}}2=2 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "1399280c073064a1778aa1b40b1fa3f7");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "97b69f0c7b870823a9fe7e3b41f70bec");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "b326b5062b2f0e69046810717534cb09");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# The output of misunderstandable values must work correctly
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 1
+# - Response Body: 0
+GET {{service}}'0' HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "11db9782e377c8f4dcfaff5b0399a7d6");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "2053b28b4fe823a5291e29f0a94cf031");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "cfcd208495d565ef66e7dff9f98764da");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# The output of misunderstandable values must work correctly
+# Expectations:
+# - Status code 200 Success
+# - Content-Length: 2
+# - Response Body: -1
+GET {{service}}'-1' HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "11c14c90cc877e098d6014aa66477bab");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "e83cead7c5828cf3138d79e0322b0f88");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "6bb61e3b7bce0931da574d19d1d82c88");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# The output of misunderstandable values must work correctly
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 5
+# - Response Body: false
+GET {{service}}'false' HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "65ee1741cc1830519075823f6c099809");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7a2a8cd622a6695d6e1489b18d59a22c");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "68934a3e9455fa72420237eb05902327");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# The output of misunderstandable values must work correctly
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 4
+# - Response Body: null
+GET {{service}}'null' HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "e5750b0757f9d347fed5e34b8b5d1006");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "97b69f0c7b870823a9fe7e3b41f70bec");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "37a6259cc0c1dae299a7866489dff0bd");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# Invalid XPath /books/book[1]x
+# Expectations:
+# - Status code 400 Bad Request
+# - Message: Invalid XPath axis (Invalid expression)
+GET {{service}}/books/book%5B1%5Dx HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "f4ccf18fea910a4b019ae07edb6c7e98");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "262560451fe2a68874b84424f701d745");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# If attributes are queried and there is more than one match,
+# the attributes must be returned as a collection.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 2385
+# - Content-Type: application/xml
+# - URI: //quarter/@name
+GET {{service}}?2f2f717561727465722f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "a026fc7bb2f7b5ec544933ff936b7752");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4cc93daf93091d1e4e67084e8aa4e772");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "69f4a7dda563195a2dcff81a6bd6b040");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# If attributes are queried and there is more than one match,
+# the attributes must be returned as a collection.
+# This must also work with mixed attributes.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 3995
+# - Content-Type: application/xml
+# - URI: //quarter/@name|//quarter/@area
+GET {{service}}?2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "b4f8f57fa4c7045173e8b7a203588f65");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f4f0a5154816d616be2f99d673b0333b");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "abaa5b8678626a69426c19d7050dfa9f");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# For single attributes only the value is returned.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 14
+# - Content-Type: text/plain
+# - Content: Charlottenburg
+# - URI: //district[1]//quarter[1]/@name
+GET {{service}}?2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "91b65ddf7a0a5823cc570bfad12fcc76");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "e1d0ecb8cbfdaf89347c5b618f5b0149");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d65db48a692d238e75f8461363bc97fa");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# Two single attributes are returned as a collection.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 92
+# - Content-Type: application/xml
+# - URI: //district[1]//quarter[1]/@name|//district[1]//quarter[1]/@area
+GET {{service}}?2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d657c2f2f64697374726963745b315d2f2f717561727465725b315d2f4061726561 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "18c12330002f6daa3707261ca0cfd91e");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "d356417bc54ec0835946802bdaa0ef2a");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "7cd454faf238152844af3ac93d35345d");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# The mix of element and attributes are returned as a collection.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 944
+# - Content-Type: application/xml
+# - URI: //district[1]|//district[1]/@name
+GET {{service}}?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "9dbb358d0040573500e27b83c65afe35");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "c9db8d441c3b8fd274885ec64414fd12");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "f9da4da771d8c833f8df84f48e26b8a8");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# The mix of element and attributes are returned as a collection.
+# Text/JSON output, the JSON directive in the URI has an effect.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Type: application/json
+# - Content-Length: 13914
+GET {{service}}/statistic!JSON HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "6defe649bfc5bec917fba3c128fe0b31");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "8552b5daf98ef61c21b26c0fa0cdf7e6");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "b69adf6c7093be0b5537260eb0f3636b");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# The mix of element and attributes are returned as a collection.
+# Text/JSON output, the JSON directive in the URI has an effect.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Type: application/json
+# - Content-Length: 1072
+# - URI: //district[1]|//district[1]/@name!JSon
+GET {{service}}?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "6d1ae002a10a50227e8722b1ff68d043");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7ceca4a3329252d59ccca6d7593796a9");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "133b260e674bf459200d5cee4ca0f45f");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath expression for direct processing
+# Text/JSON output, the JSON directive in the URI has an effect.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 2
+# - Content-Type: application/json
+# - Response-Body: -2
+GET {{service}}1-3!jsON HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "84cdbba59f19ebcb6afe5c21956e459e");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0c314e7401155f0b580404219145b200");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "5d7b9adcbe1c629ec722529dd12e5129");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# XPath axis for a attribute should work
+# Text/JSON output, the JSON directive in the URI has an effect.
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Length: 8
+# - Content-Type: application/json
+# - Value: "Berlin"
+# - URI: //city[1]/@name!jSOn
+GET {{service}}?2f2f636974795b315d2f406e616d65216a534f6e HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "f517db7dd8a0a1a2a5e2eef64fe7fb8e");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "3afb65a4562cd2abcd4d3024a6c6281a");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "ac1abdd93f41796f80077aabfe074245");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# Query of a data record as JSON
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Type: application/xml
+# - Content-Length: 126
+# - URI: //quarter[@name='Rahnsdorf']
+GET {{service}}?2f2f717561727465725b406e616d653d275261686e73646f7266275d HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "d407d13c0b8bd87f61454a3cede45a74");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "ec79d3c3aeec0f26fb6b1123945ae023");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "4e32e891173ebfdbf9a6fd003d739dd0");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
+
+###
+# Query of a data record as JSON
+# Expectations:
+# - Status code 200 Success
+# - Storage-Revision: 2/0
+# - Storage-Space: 262144/13333 bytes
+# - Content-Type: application/json
+# - Content-Length: 122
+# - URI: //quarter[@name='Rahnsdorf']!json
+GET {{service}}?2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e HTTP/1.0
+Storage: {{storage_get}}
+
+> {%
+client.test("unittest", function() {
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "8ae67341de51502452e67017c0c8e42e");
+    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
+    client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "6f56aa703cc54f2acef13d7d73ae65c3");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "b881bbbf8100e475963884a279688f62");
+    client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
+});
+%}
