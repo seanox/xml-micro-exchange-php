@@ -12,12 +12,15 @@
       table {
         border-collapse: collapse;
         display:         none;
-        margin-bottom:   12px;
       }
       table td {
         background: #A0A0A0;
         width:      12px;
         height:     12px;
+      }
+      nav {
+        margin-top: 12px;
+        display:    none;
       }
       span.player {
         display: inline-block;
@@ -90,21 +93,13 @@
 
               initDatasource() {
                   SnakeService.showMessage("Creating storage", true);
-                  // With iOS, a network error usually occurs at the first
-                  // request(s). The cause is still unknown.
-                  while (true) {
-                      try {
-                          const request = new XMLHttpRequest();
-                          request.open("PUT", SnakeService.DATASOURCE_URL, false);
-                          request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
-                          request.send();
-                          if (request.status === 201
-                                  || request.status === 204)
-                              return;
-                          break;
-                      } catch (exception) {
-                      }
-                  }
+                  const request = new XMLHttpRequest();
+                  request.open("PUT", SnakeService.DATASOURCE_URL, false);
+                  request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
+                  request.send();
+                  if (request.status === 201
+                          || request.status === 204)
+                      return;
                   throw {message: "Datasource not available", request: request};
               },
 
@@ -182,17 +177,19 @@
                       markup += "</tr>";
                   }
                   document.body.innerHTML += `<table id="board">${markup}</table>`
+                          + `<nav>`
                           + `<button disabled>&nbsp;</button>`
                           + `<button id=\"ArrowUp\">&#11205;</button>`
                           + `<button disabled>&nbsp;</button>`
-                          + `<br>`
+                          + `<br/>`
                           + `<button id=\"ArrowLeft\">&#11207;</button>`
                           + `<button disabled>&nbsp;</button>`
                           + `<button id=\"ArrowRight\">&#11208;</button>`
                           + `<br/>`
                           + `<button disabled>&nbsp;</button>`
                           + `<button id=\"ArrowDown\">&#11206;</button>`
-                          + `<button disabled>&nbsp;</button>`;
+                          + `<button disabled>&nbsp;</button>`
+                          + `</nav>`;
               },
 
               initScreenUpdate() {
@@ -226,7 +223,7 @@
                              (document.getElementById(field.id) || {}).className = field.player;
                           });
                       }, 0, update.field);
-                  }, SnakeService.INTERRUPT);
+                  }, 150);
               },
 
               initServerTouch() {
@@ -273,7 +270,7 @@
                           SnakeService.direction = key;
                   });
 
-                  window.setInterval(() => {
+                  const action = () => {
                       if (!SnakeService.player)
                           return;
                       if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(SnakeService.direction)
@@ -318,6 +315,7 @@
                           SnakeService.points = null;
                           SnakeService.direction = null;
                           SnakeService.ticks = 0;
+                          SnakeService.interrupt = SnakeService.INTERRUPT;
 
                           update = `<field id="${last}" player="${SnakeService.player.alias}"/>`;
                           request.open("PATCH", `${SnakeService.DATASOURCE_URL}//players//${SnakeService.player.alias}`, false);
@@ -330,7 +328,20 @@
                               SnakeService.points = [position];
                           }, SnakeService.WAIT, last);
                       }
-                  }, SnakeService.INTERRUPT);
+
+                      // The speed increases with the length of the snake.
+                      if (SnakeService.points) {
+                          const interrupt = Math.max(100, SnakeService.INTERRUPT -((SnakeService.points.length -1) *2));
+                          if (SnakeService.interrupt != interrupt) {
+                              SnakeService.interrupt = interrupt;
+                              clearInterval(SnakeService.action);
+                              SnakeService.action = window.setInterval(action, SnakeService.interrupt);
+                          }
+                      }
+                  }
+
+                  SnakeService.interrupt = SnakeService.INTERRUPT;
+                  SnakeService.action = window.setInterval(action, SnakeService.interrupt);
               },
 
               join() {
@@ -387,6 +398,7 @@
                                   paragraph.parentNode.removeChild(paragraph);
                               });
                               document.querySelector("table").style.display = "block";
+                              document.querySelector("nav").style.display = "block";
                           }, 1000);
                       };
                       start();
