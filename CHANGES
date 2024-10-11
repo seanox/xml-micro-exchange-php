@@ -69,6 +69,10 @@ CR: Service: Review and optimization of OPTIONS
     - Omission as an alternative to CONNECT.
       If CONNECT is not allowed use TOUCH.
       If TOUCH is not allowed use PUT without XPath.
+CR: Service: Review and optimization of GET
+    - Requests with an XPath that does not address a target are responded to
+      with status 204 (No Content). Previously it was status 404, but 404 now
+      refers exclusively to the storage.
 CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are answered with status
       304 (Not Modified), as the request does not change the storage.
