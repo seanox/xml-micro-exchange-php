@@ -278,6 +278,7 @@
                               || SnakeService.points.length <= 0)
                           return;
                       let point = SnakeService.points[0];
+                      let reset = SnakeService.points[0];
                       if (SnakeService.direction === "ArrowUp") {
                           point -= SnakeService.board.cols;
                           if (point < 1)
@@ -311,22 +312,16 @@
                       request.setRequestHeader("Content-Type", "application/xml");
                       request.send(update);
                       if (request.status === 304) {
-                          const last = SnakeService.points[1];
-                          SnakeService.points = null;
+                          SnakeService.points = [reset];
                           SnakeService.direction = null;
                           SnakeService.ticks = 0;
                           SnakeService.interrupt = SnakeService.INTERRUPT;
 
-                          update = `<field id="${last}" player="${SnakeService.player.alias}"/>`;
+                          update = `<field id="${reset}" player="${SnakeService.player.alias}"/>`;
                           request.open("PATCH", `${SnakeService.DATASOURCE_URL}//players//${SnakeService.player.alias}`, false);
                           request.setRequestHeader("Storage", SnakeService.DATASOURCE_STORAGE);
                           request.setRequestHeader("Content-Type", "application/xml");
                           request.send(update);
-
-                          window.setTimeout((position) => {
-                              SnakeService.direction = null;
-                              SnakeService.points = [position];
-                          }, SnakeService.WAIT, last);
                       }
 
                       // The speed increases with the length of the snake.
