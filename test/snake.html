@@ -7,7 +7,7 @@
         font: 16px sans-serif;
       }
       p {
-        margin: 4px;
+        margin: 0px;
       }
       table {
         border-collapse: collapse;
@@ -39,7 +39,9 @@
     <script type="text/javascript">
       window.addEventListener("load", () => {
 
-          const BASE = window.location.toString().replace(/([a-z]+:\/\/.*?)(?:\/.*|$)/i, "$1");
+          const BASE = !window.location.protocol.match(/^file(:?)$/)
+                  ? window.location.toString().replace(/([a-z]+:\/\/.*?)(?:\/.*|$)/i, "$1")
+                  : "http://127.0.0.1";
 
           // Proof of concept for a multiplayer game
           // Problems that had to be solved or their function had to be proven:
@@ -369,7 +371,7 @@
                               + ` <span class="player ${player.alias}"></span>`, true);
                       SnakeService.player = player;
 
-                      SnakeService.showMessage("Waiting for the free start position (middle of the pitch)", true);
+                      SnakeService.showMessage("Waiting for the free start position (center of the pitch)", true);
                       const start = () => {
                           const center = Math.ceil(SnakeService.board.rows *SnakeService.board.cols /2);
                           const patch = `<field id="${center}" player="${SnakeService.player.alias}"/>`;
