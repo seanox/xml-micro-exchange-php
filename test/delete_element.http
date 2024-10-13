@@ -30,12 +30,12 @@ client.test("unittest", function() {
 # - Status code 201 Resource Created
 # - Storage-Revision: 1/1
 # - Storage-Space: 262144/72 bytes
-CONNECT {{service}} HTTP/1.0
+PUT {{service}} HTTP/1.0
 Storage: {{storage_delete_element}}
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "b064518214ba578ef590d162ae445172");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "b5c8dc473ab4cc47168e2aa163e644d4");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "eece7445b364079bf7390ad5912594ed");
