@@ -122,13 +122,13 @@
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
  *        XPath as hexadecimal string
- * The URI starts with  after the XPath separator:
- * e.g. /xmex!2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d
+ * The URI starts with a question mark after the XPath separator:
+ * e.g. /xmex!?2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
  *        XPath as Base64 encoded string
- * The URI starts with Base64 after the XPath separator:
- * e.g. /xmex!Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
+ * The URI starts with a question mark after the XPath separator:
+ * e.g. /xmex!?Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
  *     TRANSACTION / SIMULTANEOUS ACCESS
@@ -159,7 +159,7 @@
 // assigned as static values to the constants in the class!
 
 /** Activates the debug and test mode (supports on, true, 1) */
-define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), array("on", "true", "1")));
+define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), ["on", "true", "1"]));
 
 /** Directory of the data storage */
 define("XMEX_STORAGE_DIRECTORY", getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data");
@@ -1747,28 +1747,25 @@ class Storage {
         }
 
         if (Storage::DEBUG_MODE) {
-            header("Trace-Request-Hash: " . hash("md5", $_SERVER["REQUEST"] ?: ""));
-            $header = join("\t",
-                array(
-                    $_SERVER["HTTP_STORAGE"] ?? "null",
-                    $_SERVER["CONTENT_TYPE"] ?? "null",
-                    $_SERVER["CONTENT_LENGTH"] ?? "null"
-                )
-            );
+            $request = isset($_SERVER["REQUEST"]) ? $_SERVER["REQUEST"] ?: ""
+                : join(" ", [$_SERVER["REQUEST_METHOD"],
+                    $_SERVER["REQUEST_URI"], $_SERVER["SERVER_PROTOCOL"]]);
+            header("Trace-Request-Hash: " . hash("md5", $request));
+            $header = join("\t", [
+                $_SERVER["HTTP_STORAGE"] ?? "null",
+                $_SERVER["CONTENT_TYPE"] ?? "null",
+                $_SERVER["CONTENT_LENGTH"] ?? "null"]);
             header("Trace-Request-Header-Hash: " . hash("md5", $header));
             header("Trace-Request-Data-Hash: " . hash("md5", @file_get_contents("php://input") ?: ""));
             header("Trace-Response-Hash: " . hash("md5", $status . " " . $message));
-            $header = join("\t",
-                array(
-                    $headers["Storage"] ?? "null",
-                    $headers["Storage-Revision"] ?? "null",
-                    $headers["Storage-Space"] ?? "null",
-                    $headers["Error"] ?? "null",
-                    $headers["Message"] ?? "null",
-                    $headers["Content-Type"] ?? "null",
-                    $headers["Content-Length"] ?? "null"
-                )
-            );
+            $header = join("\t", [
+                $headers["Storage"] ?? "null",
+                $headers["Storage-Revision"] ?? "null",
+                $headers["Storage-Space"] ?? "null",
+                $headers["Error"] ?? "null",
+                $headers["Message"] ?? "null",
+                $headers["Content-Type"] ?? "null",
+                $headers["Content-Length"] ?? "null"]);
             header("Trace-Response-Header-Hash: " . hash("md5", $header));
             header("Trace-Response-Data-Hash: " . hash("md5", strval($data)));
             $header = $this->storage && $this->xml
