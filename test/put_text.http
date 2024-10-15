@@ -1,7 +1,6 @@
 # Test sequence for putting text into elements of the storage.
 
-# PUT creates elements and attributes in storage and/or changes the value
-# of existing ones.
+# PUT creates elements and attributes in storage or changes existing ones.
 # The position for the insert is defined via an XPath.
 # XPath uses different notations for elements and attributes.
 
