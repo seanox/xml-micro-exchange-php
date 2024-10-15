@@ -35,9 +35,9 @@
  * Name of the project and the corresponding abbreviation
  *
  *         Datasource
- * XML-Micro-Exchange is a data service that manages different data areas.
- * The entirety, so the service itself, is the datasource.
- * Physically this is the data directory.
+ * XML-Micro-Exchange is a data service that manages different data areas. The
+ * entirety, so the service itself, is the datasource. Physically this is the
+ * data directory.
  *
  *         Storage
  * The data areas managed by the XML-Micro-Exchange as a data service are called
@@ -77,7 +77,7 @@
  * axes, the addressing and selection of elements and attributes can be made
  * dynamic.
  *
- *        Revision
+ *         Revision
  * Every change in a storage is expressed as a revision. This should make it
  * easier for the client to determine whether data has changed, even for partial
  * requests. Depending on the configuration (XMEX_STORAGE_REVISION_TYPE), the
@@ -92,9 +92,10 @@
  *
  * Changes are: PUT, PATCH, DELETE
  *
- * Write accesses to attribute ___rev are accepted with status 204.
+ * Write accesses to attribute ___rev are accepted but has no effect. If only
+ * the attribute is changed, the request is answered with status 304.
  *
- *       UID
+ *         UID
  * Each element uses a unique identifier in the form of the read-only attribute
  * ___uid. The unique identifier is automatically created when an element is put
  * into storage and never changes. The UID is based on the current revision,
@@ -103,7 +104,8 @@
  * thus also sortable and provides information about the order in which elements
  * are created.
  *
- * Write accesses to attribute ___uid are accepted with status 204.
+ * Write accesses to attribute ___uid are accepted but has no effect. If only
+ * the attribute is changed, the request is answered with status 304.
  *
  *     REQUEST
  * The implementation works RESTfull and uses normal HTTP request. For the
@@ -113,20 +115,20 @@
  * experience syntax problems when optimizing the request. For this reason
  * different ways of transmission and escape are supported for the XPath.
  *
- *        URI (not escaped)
+ *         URI (not escaped)
  * e.g. /xmex!//book[last()]/chapter[last()]
  *
- *        URI + URL Encoding
+ *         URI + URL Encoding
  * The XPath is used URL encoding.
  * e.g. /xmex!//book%5Blast()%5D/chapter%5Blast()%5D
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
- *        XPath as hexadecimal string
+ *         XPath as hexadecimal string
  * The URI starts with a question mark after the XPath separator:
  * e.g. /xmex!?2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295d
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
  *
- *        XPath as Base64 encoded string
+ *         XPath as Base64 encoded string
  * The URI starts with a question mark after the XPath separator:
  * e.g. /xmex!?Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
  * is equivalent to: /xmex!//book[last()]/chapter[last()]
@@ -153,6 +155,9 @@
  * Authentication, Digest Access Authentication and/or Server/Clien
  * certificates is followed, which is configured at the web server and outside
  * of the XMEX (XML-Micro-Exchange) .
+ *
+ *     CONFIGURATION
+ * TODO:
  */
 
 // For the environment variables, PHP constants are created so that they can be
@@ -398,9 +403,7 @@ class Storage {
         if ($handle = opendir(Storage::DIRECTORY)) {
             $expiration = time() -Storage::EXPIRATION;
             while (($entry = readdir($handle)) !== false) {
-                if ($entry == "."
-                        || $entry == ".."
-                        || $entry == "cleanup")
+                if (in_array($entry, [".", "..", "cleanup"]))
                     continue;
                 $entry = Storage::DIRECTORY . "/$entry";
                 if (file_exists($entry)
@@ -620,7 +623,7 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Response can be status 204 if the storage already exists
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
      * - An unexpected error has occurred
      *         HTTP/1.0 507 Insufficient Storage
@@ -659,7 +662,7 @@ class Storage {
      * The method always executes a transmitted XPath, but does not return the
      * result directly, but reflects the result via different header Allow. The
      * status 404 is not used in relation to the XPath, but only in relation to
-     * the storage. The XPath processing is strict and does not accept
+     * the storage file. The XPath processing is strict and does not accept
      * unnecessary spaces. Faulty XPath will cause the status 400.
      *
      *     Request:
@@ -679,19 +682,14 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage does not exist
+     * - Storage file does not exist
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
      */
     function doOptions() {
-
-        // In any case an XPath is required for a valid request.
-        if ($this->xpath === null
-                || strlen($this->xpath) <= 0)
-            $this->quit(400, "Bad Request", ["Message" => "Invalid XPath"]);
 
         libxml_use_internal_errors(true);
         libxml_clear_errors();
@@ -704,15 +702,19 @@ class Storage {
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
             $allow = "CONNECT, OPTIONS, GET, POST";
-        } else {
+        } elseif ($this->xpath !== null
+                && strlen($this->xpath) > 0) {
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
                 $this->quit(400, "Bad Request", ["Message" => $message]);
             }
-            if (empty($targets) && $targets->length <= 0)
+            if (empty($targets)
+                    || $targets->length <= 0)
                 $allow = "CONNECT, OPTIONS, PUT";
         }
+
+        // Without XPath, OPTIONS generally refers to the storage.
 
         $this->quit(204, "No Content", ["Allow" => $allow]);
     }
@@ -756,10 +758,10 @@ class Storage {
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage does not exist
+     * - Storage file does not exist
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
      */
@@ -850,11 +852,11 @@ class Storage {
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
      * - XSLT Stylesheet is erroneous
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage does not exist
+     * - Storage file does not exist
      *         HTTP/1.0 415 Unsupported Media Type
      * - Attribute request without Content-Type text/plain
      *         HTTP/1.0 422 Unprocessable Entity
@@ -1027,12 +1029,12 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully created or set
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
      *         HTTP/1.0 304 Not Modified
      *  - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage does not exist
+     * - Storage file does not exist
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
      *         HTTP/1.0 415 Unsupported Media Type
@@ -1425,12 +1427,12 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully created or set
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
      *         HTTP/1.0 304 Not Modified
      * * - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage does not exist
+     * - Storage file does not exist
      *         HTTP/1.0 413 Payload Too Large
      * - Allowed size of the request(-body) and/or storage is exceeded
      *         HTTP/1.0 415 Unsupported Media Type
@@ -1503,11 +1505,12 @@ class Storage {
      * The DELETE method works resolutely and deletes existing data. The XPath
      * processing is strict and does not accept unnecessary spaces. The
      * attributes ___rev / ___uid used internally by the storage are read-only
-     * and cannot be changed.
+     * and cannot be deleted.
      *
      * In general, DELETE requests are responded to with status 204. Changes at
      * the storage are indicated by the two-part response header
-     * Storage-Revision. Status 404 is used only with relation to the storage.
+     * Storage-Revision. Status 404 is used only with relation to the storage
+     * file.
      *
      * Syntactic and semantic errors in the request and/or XPath can cause error
      * status 400.
@@ -1529,12 +1532,12 @@ class Storage {
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully deleted
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_) are expected
+     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
      *         HTTP/1.0 304 Not Modified
      * - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
-     * - Storage does not exist
+     * - Storage file does not exist
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
      */
