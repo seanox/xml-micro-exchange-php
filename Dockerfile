@@ -39,28 +39,37 @@ WORKDIR $WORKSPACE
 RUN git clone --branch $GIT_REPO_TAG $GIT_REPO_URL/$GIT_REPO_NAME.git
 
 # Optionally, the local sources from the host are used if necessary
-# COPY . $WORKSPACE/$GIT_REPO_NAME
+# TODO:
+COPY . $WORKSPACE/$GIT_REPO_NAME
 
 RUN ant -f $GIT_REPO_NAME/development/build.xml release \
     && mkdir $GIT_REPO_NAME/release/$RELEASE_NAME \
-    && unzip $GIT_REPO_NAME/release/$RELEASE_NAME-$GIT_REPO_TAG.zip -d $GIT_REPO_NAME/release/$RELEASE_NAME
+    && unzip $GIT_REPO_NAME/release/$RELEASE_NAME-*.zip -d $GIT_REPO_NAME/release/$RELEASE_NAME
 
 
 
-FROM httpd:2.4-alpine AS runtime
+FROM alpine:3 AS runtime
 
 ARG GIT_REPO_NAME=xml-micro-exchange-php
 ARG WORKSPACE=/workspace
 ARG RELEASE_NAME=seanox-xmex
 ARG BUILD_DIR=$WORKSPACE/$GIT_REPO_NAME/release/$RELEASE_NAME
+ARG SETUP_DIR=$WORKSPACE/$GIT_REPO_NAME/docker
 ARG APPLICATION_DIR=/usr/local/xmex
 
 RUN apk update \
     && apk upgrade \
-    && apk add php
+    && apk add apache2 apache2-utils \
+    && apk add logrotate \
+    && apk add php83 php83-apache2 php83-xsl php83-simplexml
 
 RUN mkdir -p $APPLICATION_DIR/data
+COPY --from=build $SETUP_DIR /
 COPY --from=build $BUILD_DIR $APPLICATION_DIR
+RUN chown -R apache:apache $APPLICATION_DIR
 
-# For Docker image development only
-# CMD [ "sh", "-c", "tail -f /dev/null" ]
+EXPOSE 80
+
+WORKDIR /usr/local/xmex
+ENTRYPOINT [ "/usr/sbin/httpd" ]
+CMD [ "-D", "FOREGROUND"]
