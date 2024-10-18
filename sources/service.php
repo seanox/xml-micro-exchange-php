@@ -938,16 +938,16 @@ class Storage {
             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
-        $header = null;
+        $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
         $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
         if (!empty($output))
             if (strcasecmp($method, "xml") === 0
-                    || empty($method))
+                    || empty($method)) {
                 if (in_array("json", $this->options))
                     $output = simplexml_load_string($output);
-                else $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
-            else if (strcasecmp($method, "html") === 0)
+            } else if (strcasecmp($method, "html") === 0) {
                 $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
+            } else $header = ["Content-Type" => Storage::CONTENT_TYPE_TEXT];
         $this->quit(200, "Success", $header, $output);
     }
 
@@ -1675,6 +1675,15 @@ class Storage {
 
         header(trim("HTTP/1.0 $status $message"));
 
+        // Workaround to remove all default headers.
+        // Some must be set explicitly before removing works.
+        // Not relevant headers are removed.
+        $filter = ["X-Powered-By", "Content-Type", "Content-Length"];
+        foreach ($filter as $header) {
+            header("$header:");
+            header_remove($header);
+        }
+
         if (!empty(Storage::CORS))
             foreach (Storage::CORS as $key => $value)
                 header("$key: $value");
@@ -1728,19 +1737,11 @@ class Storage {
                         $data = $data->saveXML();
                     }
                 }
-                $headers["Content-Type"] = $media;
+                if (!array_key_exists("Content-Type", $headers))
+                    $headers["Content-Type"] = $media;
                 $headers["Content-Length"] = strlen($data);
             }
         } else $data = null;
-
-        // Workaround to remove all default headers.
-        // Some must be set explicitly before removing works.
-        // Not relevant headers are removed.
-        $filter = ["X-Powered-By", "Content-Type", "Content-Length"];
-        foreach ($filter as $header) {
-            header("$header:");
-            header_remove($header);
-        }
 
         foreach ($headers as $key => $value) {
             $value = trim(preg_replace("/[\r\n]+/", " ", $value));
