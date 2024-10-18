@@ -938,9 +938,10 @@ class Storage {
             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
-        $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
-        $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
-        if (!empty($output))
+        $header = null;
+        if (!empty($output)) {
+            $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
+            $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
             if (strcasecmp($method, "xml") === 0
                     || empty($method)) {
                 if (in_array("json", $this->options))
@@ -948,6 +949,10 @@ class Storage {
             } else if (strcasecmp($method, "html") === 0) {
                 $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
             } else $header = ["Content-Type" => Storage::CONTENT_TYPE_TEXT];
+            $encoding = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@encoding)");
+            if (!empty($encoding))
+                $header["Content-Type"] .= "; charset=$encoding";
+        }
         $this->quit(200, "Success", $header, $output);
     }
 

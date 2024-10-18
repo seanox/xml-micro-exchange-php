@@ -78,6 +78,11 @@ CR: Service: Review and optimization of DELETE, PATCH, PUT
       304 (Not Modified), as the request does not change the storage.
 CR: Service: Optimization of data storage
     - Unnecessary spaces and indentations are removed.
+CR: Service: Review and optimization of POST
+    - Extension of the element output by the attribute property “encoding” to
+      specify the response header Content-Type.
+      TODO: Add description in manual
+      TODO: Test
 CR: Test: Added option XMEX_DEBUG_MODE
     - Forces the use of the automatic incremental revision type
     - Adds hashed headers for request, response and storage to the response
