@@ -336,7 +336,8 @@ client.test("unittest", function() {
 # A wrong hex encoding of XPath should be interpreted as unknown target.
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid XPath function (Invalid expression)
+# - Message: Invalid XPath function (Invalid expression) (Devwex)
+# - Message: Invalid XPath function (Encoding error) (Apache)
 # - URI: //book[last()]/chapter[last()]
 GET {{service}}?2f2f626f6f6b5b6c61737428295d2f636861707465725b6c61737428295X HTTP/1.0
 Storage: {{storage_request}}
@@ -347,7 +348,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "fb885b8f9d8e03731f3d74a1fe877bc8");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4239761ff36ac6d5ca3f8d5402aad92f");
+    client.assert(["4239761ff36ac6d5ca3f8d5402aad92f", "24179e6b1d26506e282672c81f3c0e06"]
+        .includes(response.headers.valueOf("Trace-Response-Header-Hash")));
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "6323c837426985e4f67e3ab35f91f13d");
 });
