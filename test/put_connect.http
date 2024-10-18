@@ -27,17 +27,20 @@ client.test("unittest", function() {
 # Header Storage is empty
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid storage identifier
+# - Message: Missing storage identifier (Devwex)
+# - Message: Invalid storage identifier (Apache)
 PUT {{service}} HTTP/1.0
 Storage:
 
 > {%
 client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Hash") === "b064518214ba578ef590d162ae445172");
-    client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "0c5c8ae6f93483159a1600ceba66f8fc");
+    client.assert(["0c5c8ae6f93483159a1600ceba66f8fc", "eda20a4862c086bc193e8b7b1e369361"]
+        .includes(response.headers.valueOf("Trace-Request-Header-Hash")));
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6196dba52703776af2e6593f772ed7ce");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "19a7f1465142c59716af818217569f4b");
+    client.assert(["19a7f1465142c59716af818217569f4b", "558858853137af6dbb89bb6c721ad3c1"]
+        .includes(response.headers.valueOf("Trace-Response-Header-Hash")));
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
 });
