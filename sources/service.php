@@ -911,7 +911,7 @@ class Storage {
             }
             if (empty($targets)
                     || $targets->length <= 0)
-                $this->quit(304, "Not Modified");
+                $this->quit(204, "No Content");
             if ($targets->length == 1) {
                 $target = $targets[0];
                 if ($target instanceof DOMAttr)
@@ -938,21 +938,21 @@ class Storage {
             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
-        $header = null;
-        if (!empty($output)) {
-            $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
-            $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
-            if (strcasecmp($method, "xml") === 0
-                    || empty($method)) {
-                if (in_array("json", $this->options))
-                    $output = simplexml_load_string($output);
-            } else if (strcasecmp($method, "html") === 0) {
-                $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
-            } else $header = ["Content-Type" => Storage::CONTENT_TYPE_TEXT];
-            $encoding = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@encoding)");
-            if (!empty($encoding))
-                $header["Content-Type"] .= "; charset=$encoding";
-        }
+        if (empty($output))
+            $this->quit(204, "No Content");
+
+        $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
+        $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
+        if (strcasecmp($method, "xml") === 0
+                || empty($method)) {
+            if (in_array("json", $this->options))
+                $output = simplexml_load_string($output);
+        } else if (strcasecmp($method, "html") === 0) {
+            $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
+        } else $header = ["Content-Type" => Storage::CONTENT_TYPE_TEXT];
+        $encoding = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@encoding)");
+        if (!empty($encoding))
+            $header["Content-Type"] .= "; charset=$encoding";
         $this->quit(200, "Success", $header, $output);
     }
 
@@ -1729,21 +1729,19 @@ class Storage {
 
             if ($data !== null) {
                 if (in_array("json", $this->options)) {
-                    $media = Storage::CONTENT_TYPE_JSON;
+                    $headers["Content-Type"] = Storage::CONTENT_TYPE_JSON;
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement)
                         $data = simplexml_import_dom($data);
                     $data = json_encode($data, JSON_UNESCAPED_SLASHES);
-                } else {
-                    $media = Storage::CONTENT_TYPE_TEXT;
+                } elseif (!array_key_exists("Content-Type", $headers)) {
+                    $headers["Content-Type"] = Storage::CONTENT_TYPE_TEXT;
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement) {
-                        $media = Storage::CONTENT_TYPE_XML;
+                        $headers["Content-Type"] = Storage::CONTENT_TYPE_XML;
                         $data = $data->saveXML();
                     }
                 }
-                if (!array_key_exists("Content-Type", $headers))
-                    $headers["Content-Type"] = $media;
                 $headers["Content-Length"] = strlen($data);
             }
         } else $data = null;
