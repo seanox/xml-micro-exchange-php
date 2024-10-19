@@ -851,6 +851,8 @@ class Storage {
      *     Response codes / behavior:
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
+     *         HTTP/1.0 204 Success
+     * - Request was successfully, but without content and if not XML output
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
@@ -938,11 +940,15 @@ class Storage {
             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
-        if (empty($output))
-            $this->quit(204, "No Content");
+        $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
+        if (empty($output)) {
+            if (strcasecmp($method, "xml") !== 0
+                    && !empty($method))
+                $this->quit(204, "No Content");
+            $output = new DOMDocument();
+        }
 
         $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
-        $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
         if (strcasecmp($method, "xml") === 0
                 || empty($method)) {
             if (in_array("json", $this->options))
@@ -1734,13 +1740,15 @@ class Storage {
                             || $data instanceof SimpleXMLElement)
                         $data = simplexml_import_dom($data);
                     $data = json_encode($data, JSON_UNESCAPED_SLASHES);
-                } elseif (!array_key_exists("Content-Type", $headers)) {
-                    $headers["Content-Type"] = Storage::CONTENT_TYPE_TEXT;
+                } else {
+                    if (!array_key_exists("Content-Type", $headers))
+                        $headers["Content-Type"] = ($data instanceof DOMDocument
+                                || $data instanceof SimpleXMLElement)
+                            ? Storage::CONTENT_TYPE_XML
+                            : Storage::CONTENT_TYPE_TEXT;
                     if ($data instanceof DOMDocument
-                            || $data instanceof SimpleXMLElement) {
-                        $headers["Content-Type"] = Storage::CONTENT_TYPE_XML;
+                            || $data instanceof SimpleXMLElement)
                         $data = $data->saveXML();
-                    }
                 }
                 $headers["Content-Length"] = strlen($data);
             }
