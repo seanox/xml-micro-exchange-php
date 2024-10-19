@@ -10,7 +10,6 @@ CR: Service: Optimization of the configuration via environment variables
     - XMEX_STORAGE_REVISION_TYPE: Basis of the revision number (1)
     - XMEX_DEBUG_MODE: Activates debug mode for unit tests (false)
     TODO: Add description in manual
-    TODO: Test
 CR: Request: Configurable XPath delimiter of the URI
     XPath delimiter for the URI is not automatically the first symbol.
     The uniform standard is the exclamation mark !
@@ -24,13 +23,11 @@ CR: Request: Uniform identifier question mark for Base64 and hex encoded paths
     old: /xmex!0x282f626f6f6b73292f2f6c6173743a3a6265666f7265
     new: /xmex!?282f626f6f6b73292f2f6c6173743a3a6265666f7265
     TODO: Add description in manual + OpenAPI
-    TODO: Test
 CR: Storage: Optimization of the cleanup
-    To reduce the execution time of the requests, the cleanup is only carried
-    out every minute. Parallel cleanup due to parallel requests cannot be
-    excluded, but this should not be a problem.
+    To reduce the execution time of the requests, the cleanup only runs every
+    minute. Parallel cleanups due to parallel requests cannot be excluded, but
+    should not be a problem.
     TODO: Add description in manual
-    TODO: Test
 CR: Storage: Review and optimization
     - The name now allows word characters and minus, if the minus is not at the
       beginning and not at the end.
@@ -41,7 +38,6 @@ CR: Storage: Review and optimization
       system. This means that the different spelling of the root element creates
       different storages.
     TODO: Add description in manual
-    TODO: Test
 CR: Service: Review of revision management
     - Added option XMEX_STORAGE_REVISION_TYPE
       Defines what the revision which is used in the attributes ___rev and
@@ -49,7 +45,6 @@ CR: Service: Review of revision management
       used. The default value is 'timestamp', which uses an alphanumeric
       timestamp.
       TODO: Add description in manual
-      TODO: Test
     - Omission of the response header Connection-Unique
       The client can manage this better for itself. The created ___uid attribute
       of the elements are now based on the storage revision ___rev attribute.
@@ -79,10 +74,9 @@ CR: Service: Review and optimization of DELETE, PATCH, PUT
 CR: Service: Optimization of data storage
     - Unnecessary spaces and indentations are removed.
 CR: Service: Review and optimization of POST
-    - Extension of the element output by the attribute property “encoding” to
-      specify the response header Content-Type.
+    - Extension of the element output by the attribute encoding to specify the
+      response header Content-Type.
       TODO: Add description in manual
-      TODO: Test
 CR: Test: Added option XMEX_DEBUG_MODE
     - Forces the use of the automatic incremental revision type
     - Adds hashed headers for request, response and storage to the response
