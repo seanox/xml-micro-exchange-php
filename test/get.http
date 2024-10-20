@@ -1,9 +1,8 @@
 # Test sequence for GET requests.
 
-# GET queries data about XPath axes and functions.
-# For this, the XPath axis or function is sent with URI.
-# Depending on whether the request is an XPath axis or an XPath function,
-# different Content-Type are used for the response.
+# GET queries data about XPath axes and functions. For this, the XPath axis or
+# function is sent with URI. Depending on whether the request is an XPath axis
+# or an XPath function, different Content-Type are used for the response.
 
 ###
 # Storage is not establish
