@@ -157,7 +157,9 @@
  * of the XMEX (XML-Micro-Exchange) .
  *
  *     CONFIGURATION
- * TODO:
+ * The configuration is carried out entirely via environment variables. This was
+ * introduced specifically for use as a container / Docker image, but is also
+ * convenient for conventional on-premises installations.
  */
 
 // For the environment variables, PHP constants are created so that they can be
@@ -181,7 +183,7 @@ define("XMEX_STORAGE_SPACE", getenv("XMEX_STORAGE_SPACE", true) ?: 256 *1024);
 /** Maximum idle time of the files in seconds */
 define("XMEX_STORAGE_EXPIRATION", getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60);
 
-/** TODO */
+/** Defines the revision type (0 serial, 1 alphanumeric timestamp) */
 define("XMEX_STORAGE_REVISION_TYPE", (XMEX_DEBUG_MODE ? "serial" : strcasecmp(getenv("XMEX_STORAGE_REVISION_TYPE", true), "serial") === 0) ? "serial" : "timestamp");
 
 /** Character or character sequence of the XPath delimiter in the URI */
@@ -207,10 +209,10 @@ class Storage {
     /** Character or character sequence of the XPath delimiter in the URI */
     const DELIMITER = XMEX_URI_XPATH_DELIMITER;
 
-    /** TODO */
+    /** Activates the debug and test mode (supports on, true, 1) */
     const DEBUG_MODE = XMEX_DEBUG_MODE;
 
-    /** TODO */
+    /** Defines the revision type (0 serial, 1 alphanumeric timestamp) */
     const REVISION_TYPE = XMEX_STORAGE_REVISION_TYPE;
 
     /**
@@ -756,7 +758,9 @@ class Storage {
      *
      *     Response codes / behavior:
      *         HTTP/1.0 200 Success
-     * - Request was successfully executed
+     * - Request was successfully executed, target was found in the storage
+     *         HTTP/1.0 200 Success
+     * - Request was successfully executed, no target was found in the storage
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
@@ -852,7 +856,7 @@ class Storage {
      *         HTTP/1.0 200 Success
      * - Request was successfully executed
      *         HTTP/1.0 204 Success
-     * - Request was successfully, but without content and if not XML output
+     * - Request was successfully, but without content
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
@@ -995,9 +999,10 @@ class Storage {
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
      *
-     * In general, PUT requests are responded to with status 204. Changes at the
-     * storage are indicated by the two-part response header Storage-Revision.
-     * Status 404 is used only with relation to the storage.
+     * PUT requests are usually answered with status 204. Changes at the storage
+     * are indicated by the two-part response header Storage-Revision. If the
+     * PUT request has no effect on the storage, it is answered with status 304.
+     * Status 404 is used only with relation to the storage file.
      *
      * Syntactic and semantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1039,11 +1044,11 @@ class Storage {
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully created or set
+     *         HTTP/1.0 304 Not Modified
+     *  - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
-     *         HTTP/1.0 304 Not Modified
-     *  - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
      * - Storage file does not exist
      *         HTTP/1.0 413 Payload Too Large
@@ -1393,9 +1398,10 @@ class Storage {
      * attributes ___rev / ___uid used internally by the storage are read-only
      * and cannot be changed.
      *
-     * In general, PATCH requests are responded to with status 204. Changes at
-     * the storage are indicated by the two-part response header
-     * Storage-Revision. Status 404 is used only with relation to the storage.
+     * PATCH requests are usually answered with status 204. Changes at the
+     * storage are indicated by the two-part response header Storage-Revision.
+     * If the PATCH request has no effect on the storage, it is answered with
+     * status 304. Status 404 is used only with relation to the storage file.
      *
      * Syntactic and semantics errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1437,11 +1443,11 @@ class Storage {
      *     Response codes / behavior:
      *         HTTP/1.0 204 No Content
      * - Element(s) or attribute(s) successfully created or set
+     *         HTTP/1.0 304 Not Modified
+     * - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
      * - XPath is missing or malformed
-     *         HTTP/1.0 304 Not Modified
-     * * - XPath without addressing a target has no effect on the storage
      *         HTTP/1.0 404 Resource Not Found
      * - Storage file does not exist
      *         HTTP/1.0 413 Payload Too Large
@@ -1518,10 +1524,10 @@ class Storage {
      * attributes ___rev / ___uid used internally by the storage are read-only
      * and cannot be deleted.
      *
-     * In general, DELETE requests are responded to with status 204. Changes at
-     * the storage are indicated by the two-part response header
-     * Storage-Revision. Status 404 is used only with relation to the storage
-     * file.
+     * DELETE requests are usually answered with status 204. Changes at the
+     * storage are indicated by the two-part response header Storage-Revision.
+     * If the DELETE request has no effect on the storage, it is answered with
+     * status 304. Status 404 is used only with relation to the storage file.
      *
      * Syntactic and semantic errors in the request and/or XPath can cause error
      * status 400.
