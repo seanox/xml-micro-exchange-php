@@ -13,7 +13,7 @@ CR: Service: Optimization of the configuration via environment variables
 CR: Request: Configurable XPath delimiter of the URI
     XPath delimiter for the URI is not automatically the first symbol.
     The uniform standard is the exclamation mark !
-    TODO: Add description in manual + OpenAPI
+    TODO: Add description in manual
 CR: Request: Omission of XPath via query string
     The XPath includes the query string as part of the path.
 CR: Request: Uniform identifier question mark for Base64 and hex encoded paths
@@ -21,7 +21,7 @@ CR: Request: Uniform identifier question mark for Base64 and hex encoded paths
     new: /xmex!?Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
     old: /xmex!0x282f626f6f6b73292f2f6c6173743a3a6265666f7265
     new: /xmex!?282f626f6f6b73292f2f6c6173743a3a6265666f7265
-    TODO: Add description in manual + OpenAPI
+    TODO: Add description in manual
 CR: Storage: Optimization of the cleanup
     To reduce the execution time of the requests, the cleanup only runs every
     minute. Parallel cleanups due to parallel requests cannot be excluded, but
@@ -59,22 +59,22 @@ CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
     - Added alternative alias method TOUCH, if CONNECT is not allowed.
     - Added alternative PUT without XPath, if CONNECT and TOUCH is not allowed.
-    TODO: Add description in manual + OpenAPI
+    TODO: Add description in manual
 CR: Service: Review and optimization of OPTIONS
     - Omission of the response header Storage-Effects.
     - Omission as an alternative to CONNECT.
       If CONNECT is not allowed use TOUCH.
       If TOUCH is not allowed use PUT without XPath.
-    TODO: Add description in manual + OpenAPI
+    TODO: Add description in manual
 CR: Service: Review and optimization of GET
     - Requests with an XPath that does not address a target are responded to
       with status 204 (No Content). Previously it was status 404, but 404 now
       refers exclusively to the storage.
-    TODO: Add description in manual + OpenAPI
+    TODO: Add description in manual
 CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are answered with status
       304 (Not Modified), as the request does not change the storage.
-    TODO: Add description in manual + OpenAPI
+    TODO: Add description in manual
 CR: Service: Optimization of data storage
     - Unnecessary spaces and indentations are removed.
 CR: Service: Review and optimization of POST
