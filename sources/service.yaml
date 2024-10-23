@@ -286,7 +286,7 @@ paths:
       responses:
         201:
           description: |
-            Storage was newly created.
+            Storage was newly created
         204:
           description: |
             Storage already exists
@@ -461,10 +461,10 @@ paths:
       responses:
         201:
           description: |
-            Storage was newly created.
+            Storage was newly created
         204:
           description: |
-            Storage already exists.
+            Storage already exists
         400:
           description: |
             Storage header is invalid, expects 1 - 64 characters (0-9A-Z_-)
@@ -808,7 +808,7 @@ paths:
             Allowed size of the request(-body) and/or storage is exceeded
         415:
           description: |
-            Attribute request without Content-Type text/plain.
+            Attribute request without Content-Type text/plain
         422:
           description: |
             Data in the request body cannot be processed
@@ -1328,7 +1328,7 @@ paths:
             Storage file does not exist
         415:
           description: |
-            Attribute request without Content-Type text/plain.
+            Attribute request without Content-Type text/plain
         422:
           description: |
             - Data in the request body cannot be processed
@@ -1747,7 +1747,7 @@ paths:
             Storage file does not exist
         415:
           description: |
-            Attribute request without Content-Type text/plain.
+            Attribute request without Content-Type text/plain
         422:
           description: |
             - Data in the request body cannot be processed

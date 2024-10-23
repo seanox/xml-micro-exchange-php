@@ -621,15 +621,17 @@ class Storage {
      *
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
-     * - Response can be status 201 if the storage was newly created
+     * - Storage was newly created
      *         HTTP/1.0 204 No Content
-     * - Response can be status 204 if the storage already exists
+     * - Storage already exists
      *         HTTP/1.0 400 Bad Request
-     * - Storage header is invalid, 1 - 64 characters (0-9A-Z_-) are expected
-     * - XPath is missing or malformed
+     * - Storage header is invalid, expects 1 - 64 characters (0-9A-Z_-)
+     *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
+     * - Response header Error contains an unique error number as a reference to
+     *   the log file with more details
      *         HTTP/1.0 507 Insufficient Storage
-     * - Response can be status 507 if the storage is full
+     * - Storage is full
      */
     function doConnect() {
 
@@ -690,6 +692,8 @@ class Storage {
      * - Storage file does not exist
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
+     * - Response header Error contains an unique error number as a reference to
+     *   the log file with more details
      */
     function doOptions() {
 
@@ -768,6 +772,8 @@ class Storage {
      * - Storage file does not exist
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
+     * - Response header Error contains an unique error number as a reference to
+     *   the log file with more details
      */
     function doGet() {
 
@@ -869,6 +875,8 @@ class Storage {
      * - Data in the request body cannot be processed
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
+     * - Response header Error contains an unique error number as a reference to
+     *   the log file with more details
      */
     function doPost() {
 
@@ -1059,6 +1067,8 @@ class Storage {
      * - Data in the request body cannot be processed
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
+     * - Response header Error contains an unique error number as a reference to
+     *   the log file with more details
      */
     function doPut() {
 
@@ -1458,6 +1468,8 @@ class Storage {
      * - Data in the request body cannot be processed
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
+     * - Response header Error contains an unique error number as a reference to
+     *   the log file with more details
      */
     function doPatch() {
 
@@ -1557,6 +1569,8 @@ class Storage {
      * - Storage file does not exist
      *         HTTP/1.0 500 Internal Server Error
      * - An unexpected error has occurred
+     * - Response header Error contains an unique error number as a reference to
+     *   the log file with more details
      */
     function doDelete() {
 
