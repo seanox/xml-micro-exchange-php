@@ -1,4 +1,5 @@
-[TOC](README.md) | [Installation](installation.md)
+&nbsp;&nbsp;&nbsp;&nbsp; &#8801; [Table of Contents](README.md)
+&nbsp;&nbsp;&nbsp;&nbsp; [Installation](installation.md) &#9655;
 - - -
 
 # Motivation
@@ -16,5 +17,5 @@ __Just exchange data without knowing and managing all clients.__
 
 
 - - -
-
-[TOC](README.md) | [Installation](installation.md)
+&nbsp;&nbsp;&nbsp;&nbsp; &#8801; [Table of Contents](README.md)
+&nbsp;&nbsp;&nbsp;&nbsp; [Installation](installation.md) &#9655;
