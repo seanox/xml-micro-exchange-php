@@ -67,7 +67,8 @@ info:
     For PUT requests it is helpful to specify a relative navigation to an XPath
     axis. For example first, last, before, after. This extension of the notation
     is supported for PUT requests and is added to an XPath axis separated by two
-    colons at the end (e.g. /root/element::end - means put in element as last).
+    colons at the end (e.g. `/root/element::end` - means put in element as
+    last).
   
     ### XPath Function
     The XPath notation also supports functions that can be used in combination
@@ -148,23 +149,23 @@ info:
     
     The request supports the following additional headers:
     
-    ```
-    Storage                    Storage identifier optional with name of the root element
-    ```
+    | Request Header | Description                                               |
+    |----------------|-----------------------------------------------------------|
+    | `Storage`      | Storage identifier optional with name of the root element |
     
     Also the response has additional headers:
     
-    ```
-    Storage                    Storage identifier without the name of the root element
-    Storage-Revision           Current revision of the storage (revision/changes)
-    Storage-Space              Capacity of the storage (total/used in bytes)
-    Storage-Last-Modified      Timestamp (RFC822) of the last access
-    Storage-Expiration         Timestamp (RFC822) when the storage will expire
-    Storage-Expiration-Time    Idle time in milliseconds until storage expires
-    Execution-Time             Duration of request processing in milliseconds
-    Error                      Unique error number from the logging with status 500
-    Message                    Detailed error message with status 400 / 422
-    ```
+    | Response Header           | Description                                             |
+    |---------------------------|---------------------------------------------------------|
+    | `Storage`                 | Storage identifier without the name of the root element |
+    | `Storage-Revision`        | Current revision of the storage (revision/changes)      |
+    | `Storage-Space`           | Capacity of the storage (total/used in bytes)           |
+    | `Storage-Last-Modified`   | Timestamp (RFC822) of the last access                   |
+    | `Storage-Expiration`      | Timestamp (RFC822) when the storage will expire         |
+    | `Storage-Expiration-Time` | Idle time in milliseconds until storage expires         |
+    | `Execution-Time`          | Duration of request processing in milliseconds          |
+    | `Error`                   | Unique error number from the logging with status 500    |
+    | `Message`                 | Detailed error message with status 400 / 422            |
     
     <b>
       Notice about response code 404: This always refers to the storage file,
@@ -484,15 +485,20 @@ paths:
         Gets information about the storage and a target addressed by XPath.
       description: |
         OPTIONS is used to query the allowed HTTP methods for an XPath, which is
-        responded with the Allow-header. This method distinguishes between XPath
-        axis and XPath function and uses different Allow headers. Also the
-        existence of the target on an XPath axis has an influence on the
-        response. The method will not use status 404 in relation to non-existing
-        targets, but will offer the methods `OPTIONS`, `PUT` via header Allow.
-        In the case of XPath functions, the header Allow will not offer
-        modifying methods such as `PUT`, `PATCH` and `DELETE`. In all cases, the
-        XPath and XPath functions are executed and cause the error status 400 if
-        errors occur.
+        responded with the header Allow. This method distinguishes between XPath
+        function and XPath axis and for an XPath axis the target exists or not
+        and uses different Allow headers accordingly.
+      
+        Overview of header Allow
+        - XPath function: CONNECT, OPTIONS, GET, POST
+        - XPath axis without target: CONNECT, OPTIONS, PUT
+        - XPath axis with target: CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE
+      
+        The method always executes a transmitted XPath, but does not return the
+        result directly, but reflects the result via different header Allow. The
+        status 404 is not used in relation to the XPath, but only in relation to
+        the storage file. The XPath processing is strict and does not accept
+        unnecessary spaces. Faulty XPath will cause the status 400.
 
         ## Request
         ```
@@ -617,7 +623,11 @@ paths:
         `<xpath>/@<attribute>` or `<xpath>/attribute::<attribute>`
         
         The attribute values can be static (text) and dynamic (XPath function).
-        Values are send as request-body.
+        Values are send as request-body. Whether they are used as text or XPath
+        function is decided by the Content-Type header of the request:
+      
+        - `text/plain`: static text
+        - `text/xpath`: XPath function        
         
         If the XPath notation does not match the attributes, elements are
         assumed. For elements, the notation for pseudo elements is supported.
@@ -834,7 +844,11 @@ paths:
         `<xpath>/@<attribute>` or `<xpath>/attribute::<attribute>`
         
         The attribute values can be static (text) and dynamic (XPath function).
-        Values are send as request-body.
+        Values are send as request-body. Whether they are used as text or XPath
+        function is decided by the Content-Type header of the request:
+      
+        - `text/plain`: static text
+        - `text/xpath`: XPath function
         
         If the XPath notation does not match the attributes, elements are
         assumed. Unlike the PUT method, no pseudo elements are supported for
@@ -863,7 +877,7 @@ paths:
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         Content-Length: (bytes)
         Content-Type: application/xml
-            Request-Body:
+        
         XML structure
         ```
         ```
@@ -871,7 +885,7 @@ paths:
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         Content-Length: (bytes)
         Content-Type: text/plain
-            Request-Body:
+        
         Value as plain text
         ```
         ```
@@ -879,7 +893,7 @@ paths:
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ (identifier)
         Content-Length: (bytes)
         Content-Type: text/xpath
-            Request-Body:
+        
         Value as XPath function
         ```
 
@@ -1345,9 +1359,8 @@ paths:
         Deletes multi-dimensional elements and attributes in the storage.
       description: |
         DELETE deletes elements and attributes in the storage. The position for
-        deletion is defined via an XPath.
-        
-        XPath uses different notations for elements and attributes.
+        deletion is defined via an XPath. XPath uses different notations for
+        elements and attributes.
         
         The notation for attributes use the following structure at the end.
         

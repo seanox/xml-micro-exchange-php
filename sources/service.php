@@ -32,25 +32,27 @@
  *     TERMS / WORDING
  *
  *         XMEX / XML-Micro-Exchange
- * Name of the project and the corresponding abbreviation
+ * Name of the project and the corresponding abbreviation.
  *
  *         Datasource
- * XML-Micro-Exchange is a data service that manages different data areas. The
- * entirety, so the service itself, is the datasource. Physically this is the
- * data directory.
- *
- *         Storage
- * The data areas managed by the XML-Micro-Exchange as a data service are called
- * storage areas. A storage area corresponds to an XML file in the data
+ * XML-Micro-Exchange is a data service that manages various data storages. The
+ * entirety of all data is the data source. Physically, this is the data
  * directory.
  *
+ *         Storage
+ * The XML-Micro-Exchange service manages the data in XML storage files in the
+ * data directory. The file name is based case-sensitive on the identifier of
+ * the storage and the name of the root element.
+ *
  *         Storage Identifier
- * Each storage has an identifier, the Storage Identifier. The Storage
- * Identifier is used as the filename of the corresponding XML file and must be
- * specified with each request so that the datasource uses the correct storage.
+ * Each storage has an identifier. The Storage Identifier is used as filename of
+ * the corresponding XML file and must be specified with each request so that
+ * the datasource uses the correct storage. Optionally, the storage identifier
+ * can be followed by the name of the root element of the XML file separated by
+ * a space. If the root element is not specified, the default 'data' is used.
  *
  *         Element(s)
- * The content of the XML file of a storage provide the data as object or tree
+ * The content of the XML storage file provide the data as object or tree
  * structure. The data entries are called elements. Elements can enclose other
  * elements.
  *
@@ -80,32 +82,23 @@
  *         Revision
  * Every change in a storage is expressed as a revision. This should make it
  * easier for the client to determine whether data has changed, even for partial
- * requests. Depending on the configuration (XMEX_STORAGE_REVISION_TYPE), the
- * revision is an auto-incremental integer starting with 1 or an alphanumeric
- * timestamp.
+ * requests. Depending on XMEX_STORAGE_REVISION_TYPE, the revision is an
+ * auto-incremental integer starting with 1 or an alphanumeric timestamp.
  *
  * Each element uses a revision in the read-only attribute ___rev, which, as
  * with all parent revision attributes, is automatically update when it changes.
  * A change can affect the element itself or the change to its children. Because
  * the revision is passed up, the root element automatically always uses the
- * current revision.
- *
- * Changes are: PUT, PATCH, DELETE
- *
- * Write accesses to attribute ___rev are accepted but has no effect. If only
- * the attribute is changed, the request is answered with status 304.
+ * current revision. Write accesses to attribute ___rev are accepted but has no
+ * effect.
  *
  *         UID
  * Each element uses a unique identifier in the form of the read-only attribute
  * ___uid. The unique identifier is automatically created when an element is put
- * into storage and never changes. The UID is based on the current revision,
- * which, depending on the configuration (XMEX_STORAGE_REVISION_TYPE), is an
- * alphanumeric timestamp or an automatically incremented integer. The UID is
- * thus also sortable and provides information about the order in which elements
- * are created.
- *
- * Write accesses to attribute ___uid are accepted but has no effect. If only
- * the attribute is changed, the request is answered with status 304.
+ * into storage and never changes. The UID based on the current revision and a
+ * request-related auto-incremental integer. The UID is thus also sortable and
+ * provides information about the order in which elements are created. Write
+ * accesses to attribute ___uid are accepted but has no effect
  *
  *     REQUEST
  * The implementation works RESTfull and uses normal HTTP request. For the
@@ -138,21 +131,21 @@
  * simultaneously. Write accesses creates a lock and avoids dirty reading.
  *
  *     ERROR HANDLING
- * Errors are communicated via the server status 500 and the header 'Error'. The
- * header 'Error' contains only an error number, for security reasons no
- * details. The error number with details can be found in the log file of the
- * service. In the case of status 400 and 422, XML-Micro-Exchange uses the
- * additional header Message in the response, which contains more details about
- * the error. The difference between status 400 and 422 is that status 400
- * always refers to the request and 422 to the request body. With status 400
- * errors are detected in the request itself, and with status 422, errors are
- * detected in the content of the request body.
+ * Service and applications errors are communicated via the server status 500
+ * and the response header Error, which contains only an error number, for
+ * security reasons no details. The error number with details can be found in
+ * the log file of the service. In the case of errors during XML processing,
+ * error status 400 and 422 and the additional response header Message with more
+ * details about the error are used. The difference between status 400 and 422
+ * is that status 400 always refers to the request and 422 to the request body.
+ * With status 400 errors are detected in the request itself, and with status
+ * 422, errors are detected in the content of the request body.
  *
  *     SECURITY
  * This aspect was deliberately considered and implemented here only in a very
  * rudimentary form. Only the storage(-key) with a length of 1 - 64 characters
  * can be regarded as secret. For further security the approach of Basic
- * Authentication, Digest Access Authentication and/or Server/Clien
+ * Authentication, Digest Access Authentication and/or server/client
  * certificates is followed, which is configured at the web server and outside
  * of the XMEX (XML-Micro-Exchange) .
  *
@@ -982,22 +975,28 @@ class Storage {
      * uses different notations for elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
-     *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
+     *
+     *     <xpath>/@<attribute> or <xpath>/attribute::<attribute>
+     *
      * The attribute values can be static (text) and dynamic (XPath function).
      * Values are send as request-body. Whether they are used as text or XPath
-     * function is decided by the Content-Type header of the request.
+     * function is decided by the Content-Type header of the request:
+     *
      *     text/plain: static text
      *     text/xpath: XPath function
      *
      * If the XPath notation does not match the attributes, elements are
-     * assumed. For elements, the notation for pseudo elements is supported:
-     *     <XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
+     * assumed. For elements, the notation for pseudo elements is supported.
+     *
+     *     <xpath>::first, <xpath>::last, <xpath>::before or <xpath>::after
+     *
      * Pseudo elements are a relative position specification to the selected
      * element.
      *
      * The value of elements can be static (text), dynamic (XPath function) or
      * be an XML structure. Also here the value is send with the request-body
      * and the type of processing is determined by the Content-Type:
+     *
      *     text/plain: static text
      *     text/xpath: XPath function
      *     application/xml: XML structure
@@ -1385,10 +1384,13 @@ class Storage {
      * XPath uses different notations for elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
-     *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
+     *
+     *     <xpath>/@<attribute> or <xpath>/attribute::<attribute>
+     *
      * The attribute values can be static (text) and dynamic (XPath function).
      * Values are send as request-body. Whether they are used as text or XPath
-     * function is decided by the Content-Type header of the request.
+     * function is decided by the Content-Type header of the request:
+     *
      *     text/plain: static text
      *     text/xpath: XPath function
      *
@@ -1399,6 +1401,7 @@ class Storage {
      * The value of elements can be static (text), dynamic (XPath function) or
      * be an XML structure. Also here the value is send with the request-body
      * and the type of processing is determined by the Content-Type:
+     *
      *     text/plain: static text
      *     text/xpath: XPath function
      *     application/xml: XML structure
@@ -1523,11 +1526,14 @@ class Storage {
      * elements and attributes.
      *
      * The notation for attributes use the following structure at the end.
-     *     <XPath>/@<attribute> or <XPath>/attribute::<attribute>
+     *
+     *     <xpath>/@<attribute> or <xpath>/attribute::<attribute>
      *
      * If the XPath notation does not match the attributes, elements are
-     * assumed. For elements, the notation for pseudo elements is supported:
-     *     <XPath>::first, <XPath>::last, <XPath>::before or <XPath>::after
+     * assumed. For elements, the notation for pseudo elements is supported.
+     *
+     *     <xpath>::first, <xpath>::last, <xpath>::before or <xpath>::after
+     *
      * Pseudo elements are a relative position specification to the selected
      * element.
      *
