@@ -5,9 +5,9 @@
     <echo>                                                               </echo>
     <echo>  changes    Synchronizes README.md with CHANGES.              </echo>
     <echo>                                                               </echo>
-    <echo>  release    Builds the final the release for the distribution </echo>
+    <echo>  test       Combines the unit tests and starts the CLI        </echo>
     <echo>                                                               </echo>
-    <echo>  clean      Cleanup of temporary data from release and tests  </echo>
+    <echo>  release    Builds the final the release for the distribution </echo>
     <echo>                                                               </echo>
   </target>
   
@@ -131,11 +131,47 @@
         replace="\1${release.version}\2"/>
   </target>
 
-  <target name="clean">
-    <delete dir="${workspace}/sources/data"/>
-    <delete file="${workspace}/sources/trace.log"/>
-    <touch file="${workspace}/sources/trace.log"/>
-    <delete file="${workspace}/sources/trace-docker.log"/>
-    <touch file="${workspace}/sources/trace-docker.log"/>
+  <!--
+      https://www.jetbrains.com/ijhttp/download/#section=zip-archive
+      https://www.jetbrains.com/help/idea/http-client-cli.html
+  -->
+  <path id="classpath.httpclient">
+    <fileset dir="${workspace.test}/cli/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="test">
+    <delete dir="${workspace.sources}/data"/>
+    <get src="https://download.jetbrains.com/resources/intellij/http-client/233.11799.241/intellij-http-client.zip"
+        dest="${workspace.test}/cli.zip" skipexisting="true"/>
+    <delete dir="${workspace.test}/cli"/>
+    <unzip src="${workspace.test}/cli.zip" dest="${workspace.test}"/>
+    <move file="${workspace.test}/ijhttp" tofile="${workspace.test}/cli"/>
+    <java classname="com.intellij.httpClient.cli.HttpClientMain">
+      <classpath refid="classpath.httpclient"/>
+      <arg value="--env-file"/>
+      <arg value="./test/http-client.env.json"/>
+      <arg value="--env"/>
+      <arg value="local"/>
+      <arg value="./test/connect.http"/>
+      <arg value="./test/delete_attribute.http"/>
+      <arg value="./test/delete_element.http"/>
+      <arg value="./test/delete_element_pseudo.http"/>
+      <arg value="./test/get.http"/>
+      <arg value="./test/getting_started.http"/>
+      <arg value="./test/options.http"/>
+      <arg value="./test/patch_attribute.http"/>
+      <arg value="./test/patch_element.http"/>
+      <arg value="./test/patch_text.http"/>
+      <arg value="./test/post.http"/>
+      <arg value="./test/put_attribute.http"/>
+      <arg value="./test/put_connect.http"/>
+      <arg value="./test/put_element.http"/>
+      <arg value="./test/put_element_pseudo.http"/>
+      <arg value="./test/put_text.http"/>
+      <arg value="./test/request.http"/>
+      <arg value="./test/snake.http"/>
+    </java>
   </target>
 </project>
