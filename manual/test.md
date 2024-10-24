@@ -40,7 +40,6 @@ Trace-Request-Body-Hash: a698f9151a9bb0f9f70fa1d1373b131f
 Trace-Response-Header-Hash: 2f6c846f2dc4a84597ffe87041edc711
 Trace-Response-Body-Hash: 88d1c3cc7c5238e314194f699fb51bc5
 Trace-Storage-Hash: 28d5dc7565be4dc0303e88fb371dc8b9
-Trace-XPath-Hash: d41d8cd98f00b204e9800998ecf8427e
 ```
 
 The aim is for all tests to run without errors in all scenarios. There are
