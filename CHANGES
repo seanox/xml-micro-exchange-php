@@ -80,7 +80,6 @@ CR: Service: Optimization of data storage
 CR: Service: Review and optimization of POST
     - Extension of the element output by the attribute encoding to specify the
       response header Content-Type.
-    TODO: Add description in manual + OpenAPI
 CR: Test: Added option XMEX_DEBUG_MODE
     - Forces the use of the automatic incremental revision type
     - Adds hashed headers for request, response and storage to the response
@@ -93,6 +92,7 @@ CR: Test: Review and optimization
       Trace-Request-Hash, Trace-Request-Header-Hash, Trace-Request-Data-Hash
       Trace-Response-Hash, Trace-Response-Header-Hash, Trace-Response-Data-Hash
       Trace-Storage-Hash
+    - Integration of JetBrains HTTP Client CLI
     TODO: Add description in manual
 CR: Docker: Added support as Docker image
     TODO: Add description in manual
