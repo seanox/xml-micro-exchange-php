@@ -5,3 +5,5 @@
 
 /sources/data
 /sources/*.log
+
+/test/cli*
