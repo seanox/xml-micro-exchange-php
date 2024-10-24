@@ -6,13 +6,8 @@
 
 
 ## How to create a release?
-- Delete `./source/data`
-- Emtpty `./sources/trace.log`
-- Execute `./test/cumulate.js`  
-  `cd /test`  
-  `node cumulate.js`
-- Execute `./test/cumulate.http`
-- Compare `./sources/trace.log` with the version in GitHub
+- Run all tests  
+  `ant -f development/build.xml test`
 - Execute `ant release`
 - Add new version (zip) to SCM
 - Commit with comment `Release x.x.x`
@@ -23,3 +18,4 @@
   Content: Short version of CHANGES  
   Attach files...: seanox-xmex-x.x.x.zip  
   Click "Publish release"
+- TODO: Add publish docker images
