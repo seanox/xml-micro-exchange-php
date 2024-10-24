@@ -227,8 +227,8 @@ paths:
         can be used as an alternative.
         
         <b>
-          Before a storage can be used, it must always be opened with an CONNECT
-          TOUCH or PUT without XPath.
+          Before a storage can be used, it must always be opened with an
+          CONNECT, TOUCH or PUT without XPath.
         </b>
 
         ## Request
@@ -246,10 +246,15 @@ paths:
         CONNECT /xmex! HTTP/1.0
         Storage: BookReview
         ```
+        Creates a storage with the identifier `BookReview` if it does not yet
+        exist. For the XML structure the default root named `data` is used.
+        
         ```
         CONNECT /xmex! HTTP/1.0
         Storage: BookReview books
         ```
+        Creates a storage with the identifier `BookReview` if it does not yet
+        exist. For the XML structure the root named `books` is used.
 
         ## Response
         ```
@@ -261,6 +266,9 @@ paths:
         Storage-Expiration: Timestamp (RFC822)
         Storage-Expiration-Time: Timeout (milliseconds)
         ```
+        Response if the storage was newly created. Also recognizable by the
+        initial revision 1 in the Storage-Revision header.
+  
         ```
         HTTP/1.0 204 No Content
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -270,6 +278,9 @@ paths:
         Storage-Expiration: Timestamp (RFC822)
         Storage-Expiration-Time: Timeout (milliseconds)
         ```
+        Response, if the storage already exists. The revision in the header
+        Storage-Revision-Header returns the last existing revision. 
+
       parameters:
       - name: Storage
         in: header
@@ -334,10 +345,15 @@ paths:
         TOUCH /xmex! HTTP/1.0
         Storage: BookReview
         ```
+        Creates a storage with the identifier `BookReview` if it does not yet
+        exist. For the XML structure the default root named `data` is used.
+        
         ```
         TOUCH /xmex! HTTP/1.0
         Storage: BookReview books
         ```
+        Creates a storage with the identifier `BookReview` if it does not yet
+        exist. For the XML structure the root named `books` is used.
 
         ## Response
         ```
@@ -349,6 +365,9 @@ paths:
         Storage-Expiration: Timestamp (RFC822)
         Storage-Expiration-Time: Timeout (milliseconds)
         ```
+        Response if the storage was newly created. Also recognizable by the
+        initial revision 1 in the Storage-Revision header.
+        
         ```
         HTTP/1.0 204 No Content
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -358,6 +377,9 @@ paths:
         Storage-Expiration: Timestamp (RFC822)
         Storage-Expiration-Time: Timeout (milliseconds)
         ```
+        Response, if the storage already exists. The revision in the header
+        Storage-Revision-Header returns the last existing revision.
+
       parameters:
       - name: Storage
         in: header
@@ -421,11 +443,16 @@ paths:
         PUT /xmex! HTTP/1.0
         Storage: BookReview
         ```
+        Creates a storage with the identifier `BookReview` if it does not yet
+        exist. For the XML structure the default root named `data` is used.
+
         ```
         PUT /xmex! HTTP/1.0
         Storage: BookReview books
         ```
-
+        Creates a storage with the identifier `BookReview` if it does not yet
+        exist. For the XML structure the root named `books` is used.
+        
         ## Response
         ```
         HTTP/1.0 201 Created
@@ -436,6 +463,9 @@ paths:
         Storage-Expiration: Timestamp (RFC822)
         Storage-Expiration-Time: Timeout (milliseconds)
         ```
+        Response if the storage was newly created. Also recognizable by the
+        initial revision 1 in the Storage-Revision header.
+        
         ```
         HTTP/1.0 204 No Content
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -445,6 +475,9 @@ paths:
         Storage-Expiration: Timestamp (RFC822)
         Storage-Expiration-Time: Timeout (milliseconds)
         ```
+        Response, if the storage already exists. The revision in the header
+        Storage-Revision-Header returns the last existing revision.
+
       parameters:
       - name: Storage
         in: header
@@ -856,6 +889,12 @@ paths:
         
         The value of elements can be static (text), dynamic (XPath function) or
         be an XML structure. Also here the value is send with the request-body.
+        Also here the value is send with the request-body and the type of
+        processing is determined by the Content-Type:
+  
+        - `text/plain` Static text
+        - `text/xpath` XPath function
+        - `application/xml` XML structure
         
         The PATCH method works resolutely and overwrites existing data. The
         XPath processing is strict and does not accept unnecessary spaces. The
@@ -1242,6 +1281,26 @@ paths:
           </xsl:template>
         </xsl:stylesheet>
         ```
+        The output element defines the output format. In the example, this is
+        `xml`. The formats `html` and `text` are also supported.
+        
+        ```
+        POST /xmex!/ HTTP/1.0
+        Storage: BookReview books
+        Content-Type: application/xslt+xml
+        Content-Length: 212
+        
+        <?xml version="1.0"?>
+        <xsl:stylesheet version="1.0"
+            xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:output method="xml" encoding="iso-8859-1"/>
+          <xsl:template match="/">
+            ...
+          </xsl:template>
+        </xsl:stylesheet>
+        ```
+        In addition, the encoding attribute can be added to the output element.
+        The attribute qualifies the Content-Type in the response header.  
 
         ## Response
         ```
