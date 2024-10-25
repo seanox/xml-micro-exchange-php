@@ -86,7 +86,7 @@ Default: `off`
 Maximum time of inactivity of the storage files in seconds. Without file access
 during this time, the storage files are deleted.
 
-Default: `15 *60`
+Default: `13.500` (15 *60)
 
 ### XMEX_STORAGE_DIRECTORY
 Directory of the data storage, which is configured with the required permissions
@@ -110,7 +110,7 @@ Default: `1`
 Maximum data size of files in data storage in bytes. The value also limits the
 size of the requests(-body).
 
-Default: `256 *1024`
+Default: `262144` (256 *1024)
 
 ### XMEX_URI_XPATH_DELIMITER
 Character or character sequence of the XPath delimiter in the URI. Changing this
