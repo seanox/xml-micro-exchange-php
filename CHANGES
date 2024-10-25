@@ -72,7 +72,7 @@ CR: Service: Review and optimization of GET
       refers exclusively to the storage.
     TODO: Add description in manual
 CR: Service: Review and optimization of DELETE, PATCH, PUT
-    - Requests with XPath that do not address a target are answered with status
+    - Requests with XPath that do not address a target are responded with status
       304 (Not Modified), as the request does not change the storage.
     TODO: Add description in manual
 CR: Service: Optimization of data storage

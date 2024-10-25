@@ -1006,10 +1006,10 @@ class Storage {
      * The attributes ___rev / ___uid used internally by the storage are
      * read-only and cannot be changed.
      *
-     * PUT requests are usually answered with status 204. Changes at the storage
-     * are indicated by the two-part response header Storage-Revision. If the
-     * PUT request has no effect on the storage, it is answered with status 304.
-     * Status 404 is used only with relation to the storage file.
+     * PUT requests are usually responded with status 204. Changes at the
+     * storage are indicated by the two-part response header Storage-Revision.
+     * If the PUT request has no effect on the storage, it is responded with
+     * status 304. Status 404 is used only with relation to the storage file.
      *
      * Syntactic and semantic errors in the request and/or XPath and/or value
      * can cause error status 400 and 415. If errors occur due to the
@@ -1411,9 +1411,9 @@ class Storage {
      * attributes ___rev / ___uid used internally by the storage are read-only
      * and cannot be changed.
      *
-     * PATCH requests are usually answered with status 204. Changes at the
+     * PATCH requests are usually responded with status 204. Changes at the
      * storage are indicated by the two-part response header Storage-Revision.
-     * If the PATCH request has no effect on the storage, it is answered with
+     * If the PATCH request has no effect on the storage, it is responded with
      * status 304. Status 404 is used only with relation to the storage file.
      *
      * Syntactic and semantics errors in the request and/or XPath and/or value
@@ -1477,7 +1477,7 @@ class Storage {
     function doPatch() {
 
         // PATCH is implemented like PUT. There are some additional conditions
-        // and restrictions that will be checked. After that the answer to the
+        // and restrictions that will be checked. After that the response to the
         // request can be passed to PUT.
         // - Pseudo elements are not supported
         // - Target must exist, particularly for attributes
@@ -1542,9 +1542,9 @@ class Storage {
      * attributes ___rev / ___uid used internally by the storage are read-only
      * and cannot be deleted.
      *
-     * DELETE requests are usually answered with status 204. Changes at the
+     * DELETE requests are usually responded with status 204. Changes at the
      * storage are indicated by the two-part response header Storage-Revision.
-     * If the DELETE request has no effect on the storage, it is answered with
+     * If the DELETE request has no effect on the storage, it is responded with
      * status 304. Status 404 is used only with relation to the storage file.
      *
      * Syntactic and semantic errors in the request and/or XPath can cause error

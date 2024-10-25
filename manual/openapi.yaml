@@ -23,9 +23,9 @@ info:
     directory.
     
     ### Storage
-    The XML-Micro-Exchange service manages the data in XML storage files in the
-    data directory. The file name is based case-sensitive on the identifier of
-    the storage and the name of the root element.
+    In the data directory, the data are managed as XML storage files. The file
+    name is based case-sensitive on the identifier of the storage and the name
+    of the root element.
     
     ### Storage Identifier
     Each storage has an identifier. The Storage Identifier is used as filename
@@ -88,7 +88,7 @@ info:
     children. Because the revision is passed up, the root element automatically
     always uses the current revision. Write accesses to attribute `___rev` are
     accepted but has no effect. If only the attribute is changed, the request is
-    answered with status 304.
+    responded with status 304.
     
     ### UID
     Each element uses a unique identifier in the form of the read-only attribute
@@ -97,7 +97,7 @@ info:
     and a request-related auto-incremental integer. The UID is thus also
     sortable and provides information about the order in which elements are
     created. Write accesses to attribute `___uid` are accepted but has no
-    effect. If only the attribute is changed, the request is answered with
+    effect. If only the attribute is changed, the request is responded with
     status 304.
     
     ### Transaction and Simultaneous Access
@@ -678,9 +678,9 @@ paths:
         The attributes `___rev` / `___uid` used internally by the storage are
         read-only and cannot be changed.
         
-        PUT requests are usually answered with status 204. Changes at the
+        PUT requests are usually responded with status 204. Changes at the
         storage are indicated by the two-part response header Storage-Revision.
-        If the PUT request has no effect on the storage, it is answered with
+        If the PUT request has no effect on the storage, it is responded with
         status 304. Status 404 is used only with relation to the storage file.
         
         Syntactic and semantic errors in the request and/or XPath and/or value
@@ -901,9 +901,9 @@ paths:
         attributes `___rev` / `___uid` used internally by the storage are
         read-only and cannot be changed.
         
-        PATCH requests are usually answered with status 204. Changes at the
+        PATCH requests are usually responded with status 204. Changes at the
         storage are indicated by the two-part response header Storage-Revision.
-        If the PATCH request has no effect on the storage, it is answered with
+        If the PATCH request has no effect on the storage, it is responded with
         status 304. Status 404 is used only with relation to the storage file.        
         
         Syntactic and semantic errors in the request and/or XPath and/or value
@@ -1438,9 +1438,9 @@ paths:
         attributes `___rev` / `___uid` used internally by the storage are
         read-only and cannot be changed.
         
-        DELETE requests are usually answered with status 204. Changes at the
+        DELETE requests are usually responded with status 204. Changes at the
         storage are indicated by the two-part response header Storage-Revision.
-        If the DELETE request has no effect on the storage, it is answered with
+        If the DELETE request has no effect on the storage, it is responded with
         status 304. Status 404 is used only with relation to the storage file.           
         
         Syntactic and semantic errors in the request and/or XPath can cause
