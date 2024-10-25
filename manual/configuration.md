@@ -14,10 +14,9 @@ starting with the virtual path are redirected to the PHP script `./service.php`.
 Means that the script itself cannot be called. The paths of all requests are
 passed as path-info and thus as virtual paths.
 
-The following HTTP methods must be allowed:  
-`CONNECT`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`  
-The `CONNECT` method is not an HTTP standard, alternative `TOUCH` or `PUT` can
-be used.
+The following HTTP methods must be allowed: `CONNECT`, `OPTIONS`, `GET`, `PUT`,
+`PATCH`, `POST`, `DELETE` The `CONNECT` method is not an HTTP standard,
+alternative `TOUCH` or `PUT` can be used.
 
 When using PHP as CGI, the HTTP methods may also need to be allowed.
 
