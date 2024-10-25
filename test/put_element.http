@@ -25,7 +25,7 @@ client.test("unittest", function() {
 # Initial request to establish the storage
 # Expectations:
 # - Status code 201 Resource Created
-OPTIONS {{service}} HTTP/1.0
+PUT {{service}} HTTP/1.0
 Storage: {{storage_put_element}}
 
 > {%
@@ -301,7 +301,6 @@ client.test("unittest", function() {
 # - Storage-Revision is increased
 PUT {{service}}/books/book%5B1%5D HTTP/1.0
 Storage: {{storage_put_element}}
-Accept-Effects: ALL
 Content-Type: application/xml
 
 <chapter title="Chapter-X-A">
@@ -331,7 +330,6 @@ client.test("unittest", function() {
 # - URI: //*[@___uid]
 PUT {{service}}2f2f2a5b405f5f5f7569645d HTTP/1.0
 Storage: {{storage_put_element}}
-Accept-Effects: ALL
 Content-Type: application/xml
 
 <test/>
@@ -350,7 +348,6 @@ client.test("unittest", function() {
 # - Storage-Revision is increased
 PUT {{service}}/books HTTP/1.0
 Storage: {{storage_put_element}}
-Accept-Effects: ALL
 Content-Type: application/xml
 
 <chapter title="Chapter-X-A">
@@ -383,7 +380,6 @@ client.test("unittest", function() {
 # - Storage: text title="Text X6" includes only <test/>, comments and text were deleted
 PUT {{service}}/books/chapter%5B2%5D/text%5B3%5D HTTP/1.0
 Storage: {{storage_put_element}}
-Accept-Effects: ALL
 Content-Type: application/xml
 
 <test/>
@@ -393,5 +389,3 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Composite-Hash") === "cf8e1d00a6b36a32f6250d002b4cb1b4");
 });
 %}
-
-###
