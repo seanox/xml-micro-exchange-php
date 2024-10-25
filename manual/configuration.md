@@ -1,21 +1,23 @@
-[Installation](installation.md) | [TOC](README.md) | [Terms](terms.md)
+&#9665; [Installation](installation.md)
+&nbsp;&nbsp;&nbsp;&nbsp; &#8801; [Table of Contents](README.md)
+&nbsp;&nbsp;&nbsp;&nbsp; [Terms](terms.md) &#9655;
 - - -
 
 # Configuration
 
 __This chapter is only relevant if you want to run the Datasource on your own
-server.  
-If you want to use an existing Datasource on the Internet, you can skip
+server. If you want to use an existing Datasource on the Internet, you can skip
 this chapter.__
 
 The REST API is configured as an absolute (hungry) virtual path. So all requests
-starting with the virtual path are redirected to the PHP script `./service.php`.  
-Means that the script itself cannot be called.  
-The paths of all requests are passed as path-info and thus as virtual paths.
+starting with the virtual path are redirected to the PHP script `./service.php`.
+Means that the script itself cannot be called. The paths of all requests are
+passed as path-info and thus as virtual paths.
 
 The following HTTP methods must be allowed:  
 `CONNECT`, `OPTIONS`, `GET`, `PUT`, `PATCH`, `POST`, `DELETE`  
-The `CONNECT` method is not an HTTP standard, alternative `OPTIONS` can be used.
+The `CONNECT` method is not an HTTP standard, alternative `TOUCH` or `PUT` can
+be used.
 
 When using PHP as CGI, the HTTP methods may also need to be allowed.
 
@@ -26,7 +28,7 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
   * [Apache HTTPD](#apache-httpd)
   * [Seanox Devwex](#seanox-devwex)
   * [Others](#others)
-* [Parameters](#parameters)    
+* [Parameters](#parameters)
   * [Storage::DIRECTORY](#storagedirectory)
   * [Storage::QUANTITY](#storagequantity)
   * [Storage::SPACE](#storagespace)
@@ -37,107 +39,88 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
 
 ## Web Server
 
-
 ### Apache HTTPD
 
 ```
 #.htaccess
 RewriteEngine on
-RewriteRule (^xmex!.*) service.php [L]
-RewriteRule service.php - [L]
-RewriteRule (.*) - [R=404,L]
+RewriteRule (^/xmex!.*$) service.php [L]
+RewriteRule (^.*$) content/$1 [L]
 ```
 
 Root can also be used. A context path is not required, but it is recommended to
 use a context path that ends with a non-alphanumeric character to make the
 separation between URL and XPath more visible.  
-
 
 ### Seanox Devwex
 
 ```
 [SERVER:HTTP:CGI]
-  ...
   PHP = CONNECT OPTIONS GET PUT PATCH POST DELETE > ...
   
 [SERVER:HTTP:REF]
-  ...
-  XMEX = /xmex! > /xml-micro-exchange/service.php [A]
+  XMEX = /xmex! > .../xmex/service.php [A]
 ```
 
 Root can also be used. A context path is not required, but it is recommended to
 use a context path that ends with a non-alphanumeric character to make the
 separation between URL and XPath more visible.  
 
+### nginx
 
-### Others
-
-Something like Apache HTTPD or Seanox Devwex.  
-Alternatively, the script can be called directly and passed to XPath as a query
-string.
-
+TODO:
 
 ## Parameters
 
-Overview of the configurable parameters / constants:
+XML-Micro-Exchange is configured via environment variables. With the prepared
+default values, the service can be started.
 
+### XMEX_DEBUG_MODE
+Activates the debug and test mode, which enforces the serial revision type and
+extends the response with additional trace headers. Supported values: `on`,
+`true`, `1`.
 
-### Storage::DIRECTORY
+Default: `off`
 
-Default: `./data`  
-Directory of the data storage, which is configured with the required
-permissions by the script at runtime.
+### XMEX_STORAGE_EXPIRATION
+Maximum time of inactivity of the storage files in seconds. Without file access
+during this time, the storage files are deleted.
 
+Default: `15 *60`
 
-### Storage::QUANTITY
+### XMEX_STORAGE_DIRECTORY
+Directory of the data storage, which is configured with the required permissions
+by the script at runtime.
 
-Default: `65535`  
-Maximum number of files in data storage.  
-Exceeding the limit causes the status 507 - Insufficient Storage.
+Default: `./data`
 
+### XMEX_STORAGE_QUANTITY
+Maximum number of files in data storage. Exceeding the limit causes the status
+507 - Insufficient Storage.
 
-### Storage::SPACE
+Default: `65535`
 
-Default: `256 *1024`  
-Maximum data size of files in data storage in bytes.
-The value also limits the size of the requests(-body).
+### XMEX_STORAGE_REVISION_TYPE
+Defines the revision type. Supported values: `0` (serial, starting with 1),
+`1` (alphanumeric timestamp).
 
+Default: `1`
 
-### Storage::TIMEOUT
+### XMEX_STORAGE_SPACE
+Maximum data size of files in data storage in bytes. The value also limits the
+size of the requests(-body).
 
-Default: `15 *60`  
-Maximum idle time of the files in seconds.  
-If the inactivity exceeds this time for a Storage, it expires.
+Default: `256 *1024`
 
+### XMEX_URI_XPATH_DELIMITER
+Character or character sequence of the XPath delimiter in the URI. Changing this
+value often also requires changes to the web server configuration.
 
-### Storage::CORS
-
-Default: `[`  
-`"Access-Control-Allow-Origin" => "*",`  
-`"Access-Control-Allow-Credentials" => "true",`  
-`"Access-Control-Max-Age" => "86400",`
-`"Access-Control-Expose-Headers" => "*"`  
-`]`  
-
-Optional CORS response headers as associative array.  
-For the preflight OPTIONS the following headers are added automatically:  
-`Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`
-
-
-### Storage::PATTERN_HTTP_REQUEST_URI
-
-Default: `/^(.*?)[!#\$\*:\?@\|~]+(.*)$/i`  
-Pattern for separating URI-Path and XPath.<br/>
-If the pattern is empty, null or false, the request URI without context
-path will be used. This is helpful when the service is used as a domain.
-
-Expected structure:
-* Group 0. Full match  
-* Group 1. URI-Path  
-* Group 2. XPath
+Default: `!`
 
 
 
 - - -
-
-[Installation](installation.md) | [TOC](README.md) | [Terms](terms.md)
+&#9665; [Installation](installation.md)
+&nbsp;&nbsp;&nbsp;&nbsp; &#8801; [Table of Contents](README.md)
+&nbsp;&nbsp;&nbsp;&nbsp; [Terms](terms.md) &#9655;
