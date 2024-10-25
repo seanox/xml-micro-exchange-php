@@ -1,7 +1,7 @@
 # Test sequence for deleting of attributes of storage elements.
 
 # DELETE deletes elements and attributes in the storage. The position for
-# deletion  is defined via an XPath. XPath uses different notations for elements
+# deletion is defined via an XPath. XPath uses different notations for elements
 # and attributes.
 
 ###
