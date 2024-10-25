@@ -29,12 +29,13 @@ When using PHP as CGI, the HTTP methods may also need to be allowed.
   * [Seanox Devwex](#seanox-devwex)
   * [Others](#others)
 * [Parameters](#parameters)
-  * [Storage::DIRECTORY](#storagedirectory)
-  * [Storage::QUANTITY](#storagequantity)
-  * [Storage::SPACE](#storagespace)
-  * [Storage::TIMEOUT](#storagetimeout)
-  * [Storage::CORS](#storagecors)
-  * [Storage::PATTERN_HTTP_REQUEST_URI](#storagepattern_http_request_uri)
+  * [XMEX_DEBUG_MODE](#xmex_debug_mode)
+  * [XMEX_STORAGE_DIRECTORY](#xmex_storage_directory)
+  * [XMEX_STORAGE_EXPIRATION](#xmex_storage_expiration)
+  * [XMEX_STORAGE_QUANTITY](#xmex_storage_quantity)
+  * [XMEX_STORAGE_REVISION_TYPE](#xmex_storage_revision_type)
+  * [XMEX_STORAGE_SPACE](#xmex_storage_space)
+  * [XMEX_URI_XPATH_DELIMITER](#xmex_uri_xpath_delimiter)
 
 
 ## Web Server
@@ -66,9 +67,6 @@ Root can also be used. A context path is not required, but it is recommended to
 use a context path that ends with a non-alphanumeric character to make the
 separation between URL and XPath more visible.  
 
-### nginx
-
-TODO:
 
 ## Parameters
 
