@@ -465,7 +465,6 @@ Storage-Revision header.
 HTTP/1.0 204 No Content
 Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
-Storage-Effects: KHDCPS0014NT:0:D KHDCPS0014NI:2:M KHDCPS0014NU:0:D
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
 Storage-Revision: 14/2
 Storage-Space: 262144/1256 bytes
