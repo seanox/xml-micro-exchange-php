@@ -72,11 +72,26 @@ separation between URL and XPath more visible.
 XML-Micro-Exchange is configured via environment variables. With the prepared
 default values, the service can be started.
 
-### XMEX_DEBUG_MODE
-Activates the debug and test mode, which enforces the serial revision type and
-extends the response with additional trace headers. Supported values: `on`,
-`true`, `1`.
+### XMEX_CONATINER_MODE
+Activates optimizations for use as a container.
 
+- Redirect the log output to /dev/stdout
+
+Supported values: `on`, `true`, `1`.
+
+Default: `off`
+
+### XMEX_DEBUG_MODE
+Activates optimizations for debugging and testing.
+
+- Enforces the serial revision type
+- Extends the response with additional trace headers
+- Uses the file extension xml for the XML storage files
+- Beautifies the XML storage files (indentation and line breaks)
+- Saves each revision in consecutive XML files
+
+Supported values: `on`, `true`, `1`.
+ 
 Default: `off`
 
 ### XMEX_STORAGE_EXPIRATION
