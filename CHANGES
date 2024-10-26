@@ -8,12 +8,11 @@ CR: Service: Optimization of the configuration via environment variables
     - XMEX_STORAGE_SPACE: Maximum data size of files in data storage in bytes (256 *1024)
     - XMEX_STORAGE_EXPIRATION: Maximum idle time of the files in seconds (15 *60)
     - XMEX_STORAGE_REVISION_TYPE: Basis of the revision number (1)
-    - XMEX_DEBUG_MODE: Activates debug mode for unit tests (false)
-    TODO: Add description in manual
+    - XMEX_DEBUG_MODE: Activates debug mode for unit tests (off)
+    - XMEX_CONTAINER_MODE: Activates debug mode for unit tests (off)
 CR: Request: Configurable XPath delimiter of the URI
     XPath delimiter for the URI is not automatically the first symbol.
     The uniform standard is the exclamation mark !
-    TODO: Add description in manual
 CR: Request: Omission of XPath via query string
     The XPath includes the query string as part of the path.
 CR: Request: Uniform identifier question mark for Base64 and hex encoded paths
@@ -21,60 +20,48 @@ CR: Request: Uniform identifier question mark for Base64 and hex encoded paths
     new: /xmex!?Ly9ib29rW2xhc3QoKV0vY2hhcHRlcltsYXN0KCld
     old: /xmex!0x282f626f6f6b73292f2f6c6173743a3a6265666f7265
     new: /xmex!?282f626f6f6b73292f2f6c6173743a3a6265666f7265
-    TODO: Add description in manual
 CR: Storage: Optimization of the cleanup
     To reduce the execution time of the requests, the cleanup only runs every
     minute. Parallel cleanups due to parallel requests cannot be excluded, but
     should not be a problem.
-    TODO: Add description in manual
 CR: Storage: Review and optimization
     - The name now allows word characters and minus, if the minus is not at the
       beginning and not at the end.
-      TODO: Add description in manual
     - The encoding of the file name has been optimized so that case-sensitive
       also works in case-insensitive file systems (like Windows).
     - Added the consideration of the root element. Name of storage and name of
       root element define the case-sensitive name of the storage in the file
       system. This means that the different spelling of the root element creates
       different storages.
-      TODO: Add description in manual
 CR: Service: Review of revision management
     - Added option XMEX_STORAGE_REVISION_TYPE
       Defines what the revision which is used in the attributes ___rev and
       ___uid should be based on. With 'serial', an auto incremental integer is
       used. The default value is 'timestamp', which uses an alphanumeric
       timestamp.
-      TODO: Add description in manual
     - Omission of the response header Connection-Unique
       The client can manage this better for itself. The created ___uid attribute
       of the elements are now based on the storage revision ___rev attribute.
-      TODO: Update description in manual
     - Omission of the response header Storage-Effects
-      TODO: Add description in manual
     - Switch to response header Storage-Revision with the number of changes
       schema: revision/number of changes, e.g. Storage-Revision: 123/45
       without changes Storage-Revision: 123/0
-      TODO: Add description in manual
 CR: Service: Review and optimization of CONNECT
     - Storage must be initialized mandatory with CONNECT before it can be used.
     - Added alternative alias method TOUCH, if CONNECT is not allowed.
     - Added alternative PUT without XPath, if CONNECT and TOUCH is not allowed.
-    TODO: Add description in manual
 CR: Service: Review and optimization of OPTIONS
     - Omission of the response header Storage-Effects.
     - Omission as an alternative to CONNECT.
       If CONNECT is not allowed use TOUCH.
       If TOUCH is not allowed use PUT without XPath.
-    TODO: Add description in manual
 CR: Service: Review and optimization of GET
     - Requests with an XPath that does not address a target are responded to
       with status 204 (No Content). Previously it was status 404, but 404 now
-      refers exclusively to the storage.
-    TODO: Add description in manual
+      refers exclusively to the storage file.
 CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are responded with status
-      304 (Not Modified), as the request does not change the storage.
-    TODO: Add description in manual
+      304 (Not Modified), as the request does not change the storage file.
 CR: Service: Optimization of data storage
     - Unnecessary spaces and indentations are removed.
 CR: Service: Review and optimization of POST
@@ -85,7 +72,6 @@ CR: Test: Added option XMEX_DEBUG_MODE
     - Adds hashed headers for request, response and storage to the response
     - Storage files are also created with the file extension xml and formatted
     - Storage files are saved in versions
-    TODO: Add description in manual
 CR: Test: Review and optimization
     - Switch to the use of XMEX_DEBUG_MODE
     - Switch to new hashes in the response header
@@ -93,7 +79,6 @@ CR: Test: Review and optimization
       Trace-Response-Hash, Trace-Response-Header-Hash, Trace-Response-Data-Hash
       Trace-Storage-Hash
     - Integration of JetBrains HTTP Client CLI
-    TODO: Add description in manual
 CR: Docker: Added support as Docker image
     TODO: Add description in manual
 
