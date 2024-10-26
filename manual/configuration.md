@@ -5,9 +5,10 @@
 
 # Configuration
 
-__This chapter is only relevant if you want to run the Datasource on your own
-server. If you want to use an existing Datasource on the Internet, you can skip
-this chapter.__
+> [!NOTE]
+> This chapter is only relevant if you want to run the Datasource on your own
+> server. If you want to use an existing Datasource on the Internet, you can skip
+> this chapter.
 
 The REST API is configured as an absolute (hungry) virtual path. So all requests
 starting with the virtual path are redirected to the PHP script `./service.php`.
@@ -18,7 +19,8 @@ The following HTTP methods must be allowed: `CONNECT`, `OPTIONS`, `GET`, `PUT`,
 `PATCH`, `POST`, `DELETE` The `CONNECT` method is not an HTTP standard,
 alternative `TOUCH` or `PUT` can be used.
 
-When using PHP as CGI, the HTTP methods may also need to be allowed.
+> [!IMPORTANT]
+> When using PHP as CGI, the HTTP methods may also need to be allowed.
 
 
 ## Contents Overview
