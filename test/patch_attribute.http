@@ -349,7 +349,6 @@ client.test("unittest", function() {
 #   attribute ___rev is ignored, but does not cause errors
 # - Storage-Revision: 8/0
 # - Storage-Space: 262144/128 bytes
-# - Response without Storage-Effects header
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 PATCH {{service}}/books/@___rev HTTP/1.0
@@ -376,7 +375,6 @@ client.test("unittest", function() {
 # - Storage-Revision: 8/0
 # - Storage-Space: 262144/128 bytes
 #   attribute ___uid is ignored, but does not cause errors
-# - Response without Storage-Effects header
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 PATCH {{service}}/books/@___uid HTTP/1.0
@@ -404,7 +402,6 @@ client.test("unittest", function() {
 # - Storage-Revision: 8/0
 # - Storage-Space: 262144/128 bytes
 #   the addressing of the XML document is detected
-# - Response without Storage-Effects header, such a request has no effect
 # - Storage-Revision is not increased
 # - Storage-Expiration is extended
 PUT {{service}}/@attrF HTTP/1.0

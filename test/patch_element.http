@@ -183,7 +183,6 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 # - Storage-Revision: 5/0
 # - Storage-Space: 262144/660 bytes
-# - Without Storage-Effects
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..
@@ -211,7 +210,6 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 # - Storage-Revision: 5/0
 # - Storage-Space: 262144/660 bytes
-# - Without Storage-Effects
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /*/..
@@ -543,7 +541,6 @@ client.test("unittest", function() {
 
 ###
 # Overwriting an element must work
-# The indirectly deleted UIDs must be contained in Storage-Effect
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 8/8
@@ -578,7 +575,6 @@ client.test("unittest", function() {
 
 ###
 # Recursive patching of all elements by a relative and generous XPath.
-# The Storage-Effects must be optimized and obsolete entries must be cleaned up.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 9/1

@@ -322,7 +322,6 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 # - Storage-Revision: 7/0
 # - Storage-Space: 262144/84 bytes
-# - Without Storage-Effects
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /*/..
@@ -350,7 +349,6 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 # - Storage-Revision: 7/0
 # - Storage-Space: 262144/84 bytes
-# - Without Storage-Effects
 # - No changes in the storage
 # - Storage-Revision is not increased
 # - URI: /books/..
@@ -378,7 +376,6 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 # - Storage-Revision: 7/0
 # - Storage-Space: 262144/84 bytes
-# - Without Storage-Effects
 PATCH {{service}}/wrong HTTP/1.0
 Storage: {{storage_patch_text}}
 Content-Type: text/plain
@@ -403,7 +400,6 @@ client.test("unittest", function() {
 # - Status code 304 Not Modified
 # - Storage-Revision: 7/0
 # - Storage-Space: 262144/84 bytes
-# - Without Storage-Effects
 PATCH {{service}}/wrong/wrong HTTP/1.0
 Storage: {{storage_patch_text}}
 Content-Type: text/plain
