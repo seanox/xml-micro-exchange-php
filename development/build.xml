@@ -151,27 +151,27 @@
     <java classname="com.intellij.httpClient.cli.HttpClientMain">
       <classpath refid="classpath.httpclient"/>
       <arg value="--env-file"/>
-      <arg value="./test/http-client.env.json"/>
+      <arg value="${workspace.test}/http-client.env.json"/>
       <arg value="--env"/>
       <arg value="local"/>
-      <arg value="./test/connect.http"/>
-      <arg value="./test/delete_attribute.http"/>
-      <arg value="./test/delete_element.http"/>
-      <arg value="./test/delete_element_pseudo.http"/>
-      <arg value="./test/get.http"/>
-      <arg value="./test/getting_started.http"/>
-      <arg value="./test/options.http"/>
-      <arg value="./test/patch_attribute.http"/>
-      <arg value="./test/patch_element.http"/>
-      <arg value="./test/patch_text.http"/>
-      <arg value="./test/post.http"/>
-      <arg value="./test/put_attribute.http"/>
-      <arg value="./test/put_connect.http"/>
-      <arg value="./test/put_element.http"/>
-      <arg value="./test/put_element_pseudo.http"/>
-      <arg value="./test/put_text.http"/>
-      <arg value="./test/request.http"/>
-      <arg value="./test/snake.http"/>
+      <arg value="${workspace.test}/connect.http"/>
+      <arg value="${workspace.test}/delete_attribute.http"/>
+      <arg value="${workspace.test}/delete_element.http"/>
+      <arg value="${workspace.test}/delete_element_pseudo.http"/>
+      <arg value="${workspace.test}/get.http"/>
+      <arg value="${workspace.test}/getting_started.http"/>
+      <arg value="${workspace.test}/options.http"/>
+      <arg value="${workspace.test}/patch_attribute.http"/>
+      <arg value="${workspace.test}/patch_element.http"/>
+      <arg value="${workspace.test}/patch_text.http"/>
+      <arg value="${workspace.test}/post.http"/>
+      <arg value="${workspace.test}/put_attribute.http"/>
+      <arg value="${workspace.test}/put_connect.http"/>
+      <arg value="${workspace.test}/put_element.http"/>
+      <arg value="${workspace.test}/put_element_pseudo.http"/>
+      <arg value="${workspace.test}/put_text.http"/>
+      <arg value="${workspace.test}/request.http"/>
+      <arg value="${workspace.test}/snake.http"/>
     </java>
   </target>
 </project>
