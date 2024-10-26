@@ -67,10 +67,10 @@ use a context path that ends with a non-alphanumeric character to make the
 separation between URL and XPath more visible.  
 
 
-## Parameters
+## Environment Variables
 
-XML-Micro-Exchange is configured via environment variables. With the prepared
-default values, the service can be started.
+XML-Micro-Exchange is configured via environment variables. The existing default
+values are suitable for productive use.
 
 ### XMEX_CONATINER_MODE
 Activates optimizations for use as a container.
@@ -98,7 +98,7 @@ Default: `off`
 Maximum time of inactivity of the storage files in seconds. Without file access
 during this time, the storage files are deleted.
 
-Default: `13.500` (15 *60)
+Default: `13.500` (15 min / 15 *60)
 
 ### XMEX_STORAGE_DIRECTORY
 Directory of the data storage, which is configured with the required permissions
@@ -122,7 +122,7 @@ Default: `1`
 Maximum data size of files in data storage in bytes. The value also limits the
 size of the requests(-body).
 
-Default: `262144` (256 *1024)
+Default: `262144` (256 kB / 256 *1024)
 
 ### XMEX_URI_XPATH_DELIMITER
 Character or character sequence of the XPath delimiter in the URI. Changing this
