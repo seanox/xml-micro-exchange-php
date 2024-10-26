@@ -141,7 +141,6 @@ client.test("unittest", function() {
 
 ###
 # Deleting an element must work
-# The indirectly deleted UIDs must be contained in Storage-Effects
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 3/1
@@ -165,7 +164,6 @@ client.test("unittest", function() {
 
 ###
 # Deleting an element must work
-# The indirectly deleted UIDs must be contained in Storage-Effects
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 4/1
@@ -189,7 +187,6 @@ client.test("unittest", function() {
 
 ###
 # The Book-B is deleted and cannot be deleted again
-# The indirectly deleted UIDs must be contained in Storage-Effects
 # Expectations:
 # - Status code 304 Not Modified
 # - Storage-Revision: 4/0
@@ -376,7 +373,6 @@ client.test("unittest", function() {
 ###
 # Recursive deletion of all elements by a relative and generous XPath.
 # The root element must be recreated.
-# The Storage-Effects must be optimized and obsolete entries must be cleaned up.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 8/28

@@ -204,8 +204,7 @@ client.test("unittest", function() {
 ###
 # Delete the first element in all chapters.
 # Because of the request body when putting, the first element is always a text
-# element with line break. Therefore there are no Deletes in the
-# Storage-Effects header.
+# element with line break.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 3/12
@@ -228,8 +227,7 @@ client.test("unittest", function() {
 
 ###
 # In the second delete pass, elements are also included and thus
-# The syntax of pseudo elements is case-insentive
-# Storage-Effects header also contains delete entries.
+# The syntax of pseudo elements is case-insentive.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 4/12
@@ -252,8 +250,7 @@ client.test("unittest", function() {
 
 ###
 # In the second delete pass, elements are also included and thus
-# The syntax of pseudo elements is case-insentive
-# Storage-Effects header also contains delete entries.
+# The syntax of pseudo elements is case-insentive.
 # Expectations:
 # - Status code 204 No Content
 # - Storage-Revision: 5/12
