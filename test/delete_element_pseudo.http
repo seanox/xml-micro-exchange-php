@@ -388,8 +388,6 @@ client.test("unittest", function() {
 # - Status code 204 No Content
 # - Storage-Revision: 7/13
 # - Storage-Space: 262144/2026 bytes
-
-# - Storage-Effects: 6x UID-D 1x UID-M
 # - URI: //text[@title='Text EA']::before
 DELETE {{service}}?2f2f746578745b407469746c653d2754657874204541275d3a3a6265666f7265 HTTP/1.0
 Storage: {{storage_delete_element_pseudo}}
