@@ -158,6 +158,9 @@
 // For the environment variables, PHP constants are created so that they can be
 // assigned as static values to the constants in the class!
 
+/** Activates the container mode (supports on, true, 1) */
+define("XMEX_CONTAINER_MODE", in_array(strtolower(getenv("XMEX_CONTAINER_MODE", true)), ["on", "true", "1"]));
+
 /** Activates the debug and test mode (supports on, true, 1) */
 define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), ["on", "true", "1"]));
 
@@ -204,6 +207,9 @@ class Storage {
 
     /** Activates the debug and test mode (supports on, true, 1) */
     const DEBUG_MODE = XMEX_DEBUG_MODE;
+
+    /** Activates the container mode (supports on, true, 1) */
+    const CONTAINER_MODE = XMEX_CONTAINER_MODE;
 
     /** Defines the revision type (0 serial, 1 alphanumeric timestamp) */
     const REVISION_TYPE = XMEX_STORAGE_REVISION_TYPE;
@@ -1869,7 +1875,8 @@ class Storage {
         if (!is_numeric($error))
             $message = "$error: " . $message;
         $time = time();
-        file_put_contents(date("Ymd", $time) . ".log", date("Y-m-d H:i:s", $time) . " $unique $message" . PHP_EOL, FILE_APPEND | LOCK_EX);
+        $output = Storage::CONTAINER_MODE ? "/dev/stdout" : date("Ymd", $time) . ".log";
+        file_put_contents($output, date("Y-m-d H:i:s", $time) . " $unique $message" . PHP_EOL, FILE_APPEND | LOCK_EX);
         (new Storage)->quit(500, "Internal Server Error", ["Error" => $unique]);
     }
 
