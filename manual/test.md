@@ -8,8 +8,9 @@ For testing, the HTTP client of [JetBrains IntelliJ IDEA](
     https://www.jetbrains.com/idea/) is used. You can find out more here:
 https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html.  
 
-__For testing, the environment variable `XMEX_DEBUG_MODE` must be set to `on` or
-`true`!__
+> [IMPORTANT]
+> __For testing, the environment variable `XMEX_DEBUG_MODE` must be set to `on`
+> or `true`!__
 
 The tests are collected in scenarios. The scenarios are based on the supported
 HTTP methods and are subdivided into advanced features where applicable. The
