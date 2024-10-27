@@ -58,6 +58,7 @@ ARG APPLICATION_DIR=/usr/local/xmex
 
 ENV XMEX_SERVER_NAME="localhost"
 ENV XMEX_DEBUG_MODE=""
+ENV XMEX_CONTAINER_MODE="on"
 ENV XMEX_STORAGE_DIRECTORY=""
 ENV XMEX_STORAGE_QUANTITY=""
 ENV XMEX_STORAGE_SPACE=""
@@ -71,6 +72,7 @@ RUN apk update \
     && apk add logrotate \
     && apk add php83 php83-apache2 php83-xsl php83-simplexml
 
+RUN sed -i "s/^\s*CustomLog/#CustomLog/" /etc/apache2/httpd.conf
 RUN echo "IncludeOptional /usr/local/xmex/conf.d/*.conf" >> /etc/apache2/httpd.conf
 RUN mkdir -p $APPLICATION_DIR/data
 COPY --from=build $SETUP_DIR /
