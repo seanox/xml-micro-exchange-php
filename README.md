@@ -100,11 +100,11 @@ specific language governing permissions and limitations under the License.
 
 
 # System Requirement
-- PHP 7.x or higher (+xsl)
+- PHP 8.x or higher (+xsl)
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.3.1](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.3.0/seanox-xmex-1.3.1.zip)  
+[Seanox XML-Micro-Exchange 1.4.0](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.4.0/seanox-xmex-1.4.0.zip)  
 
 
 # Free XML-Micro-Exchange
@@ -158,13 +158,24 @@ https://xmex.seanox.com/snake.html
 
 
 # Changes
-## 1.3.1 20240801  
-BF: Review: Optimization/Corrections  
-BF: Build: Optimization / correction of the release info process  
-CR: Build: Releases are now only available on the release page  
-CR: OpenAPI: Added the missing OpenAPI Specification  
-CR: Project: Moved repository to xml-micro-exchange-php  
-NT: Harmonization of version numbers for the different implementations  
+## 1.4.0 20241027  
+BF: Build: Review and optimization  
+CR: Service: Optimization of the configuration via environment variables  
+CR: Request: Configurable XPath delimiter of the URI  
+CR: Request: Omission of XPath via query string  
+CR: Request: Uniform identifier question mark for Base64 and hex encoded paths  
+CR: Storage: Optimization of the cleanup  
+CR: Storage: Review and optimization  
+CR: Service: Review of revision management  
+CR: Service: Review and optimization of CONNECT  
+CR: Service: Review and optimization of OPTIONS  
+CR: Service: Review and optimization of GET  
+CR: Service: Review and optimization of DELETE, PATCH, PUT  
+CR: Service: Review and optimization of POST  
+CR: Service: Optimization of data storage  
+CR: Test: Added option XMEX_DEBUG_MODE  
+CR: Test: Review and optimization  
+CR: Docker: Added support as Docker image  
 
 [Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange-php/master/CHANGES)
 

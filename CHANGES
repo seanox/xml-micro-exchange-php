@@ -1,4 +1,4 @@
-1.4.0 2024xxxx
+1.4.0 20241027
 BF: Build: Review and optimization
 CR: Service: Optimization of the configuration via environment variables
     Simplifies the provision as a container.
