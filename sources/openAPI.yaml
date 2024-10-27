@@ -170,7 +170,7 @@ info:
     <b>
       Notice about response code 404: This always refers to the storage file,
       but never to an addressed target in the storage. If a target does not
-      exist, requests are responded to with code 204 or 304 304 for modifying
+      exist, requests are responded to with code 204 or 304 for modifying
       requests.
     </b>
     
