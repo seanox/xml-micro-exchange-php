@@ -1,6 +1,6 @@
 &#9665; [Terms](terms.md)
 &nbsp;&nbsp;&nbsp;&nbsp; &#8801; [Table of Contents](README.md)
-&nbsp;&nbsp;&nbsp;&nbsp; [API](openapi) &#9655;
+&nbsp;&nbsp;&nbsp;&nbsp; [API](api.md) &#9655;
 - - -
 
 # Getting Started
@@ -641,4 +641,4 @@ one is deleted and a new one is created.
 - - -
 &#9665; [Terms](terms.md)
 &nbsp;&nbsp;&nbsp;&nbsp; &#8801; [Table of Contents](README.md)
-&nbsp;&nbsp;&nbsp;&nbsp; [API](openapi) &#9655;
+&nbsp;&nbsp;&nbsp;&nbsp; [API](api.md) &#9655;

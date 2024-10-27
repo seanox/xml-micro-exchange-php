@@ -43,7 +43,7 @@ Machine translation with [DeepL](https://deepl.com).
   * [The Sniffer and Data Artist](getting-started.md#the-sniffer-and-data-artist)
   * [A Clean Sendoff](getting-started.md#a-clean-sendoff)
   * [Final End](getting-started.md#final-end)
-* [API](openapi.md)
+* [API](api.md)
 * [Error Handling](error-handling.md)
 * [Development](development.md)
 * [Test](test.md)
