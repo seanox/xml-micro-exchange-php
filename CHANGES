@@ -62,11 +62,11 @@ CR: Service: Review and optimization of GET
 CR: Service: Review and optimization of DELETE, PATCH, PUT
     - Requests with XPath that do not address a target are responded with status
       304 (Not Modified), as the request does not change the storage file.
-CR: Service: Optimization of data storage
-    - Unnecessary spaces and indentations are removed.
 CR: Service: Review and optimization of POST
     - Extension of the element output by the attribute encoding to specify the
       response header Content-Type.
+CR: Service: Optimization of data storage
+    - Unnecessary spaces and indentations are removed.
 CR: Test: Added option XMEX_DEBUG_MODE
     - Forces the use of the automatic incremental revision type
     - Adds hashed headers for request, response and storage to the response
