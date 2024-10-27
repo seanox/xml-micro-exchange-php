@@ -48,6 +48,18 @@ rarely small deviations between the operating system, runtime environments and
 server, which are taken into account and compensated in the tests.
 
 
+## HTTP Client CLI and Docker
+1. Build and start the Docker image
+   ```
+   docker build -t seanox-xmex:latest . ^
+       && docker run --rm -p 80:80 -e XMEX_DEBUG_MODE=on -t seanox-xmex:latest
+   ```
+2. Start the HTTP Client CLI with the tests
+   ```
+   ant -f development/build.xml test
+   ```
+
+
 
 - - -
 &#9665; [Development](development.md)
