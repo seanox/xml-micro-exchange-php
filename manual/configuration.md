@@ -28,7 +28,6 @@ alternative `TOUCH` or `PUT` can be used.
 * [Web Server](#web-server)
   * [Apache HTTPD](#apache-httpd)
   * [Seanox Devwex](#seanox-devwex)
-  * [Others](#others)
 * [Parameters](#parameters)
   * [XMEX_CONATINER_MODE](#xmex_conatiner_mode)
   * [XMEX_DEBUG_MODE](#xmex_debug_mode)
@@ -137,17 +136,24 @@ Default: `!`
 
 ## Docker Image
 
-TODO:
-- /usr/local/apache2
-- /usr/local/xmex
-- /usr/local/xmex/conf.d
-- /usr/local/xmex/content
-- /etc/php83
-- /etc/apache2
-- /etc/apache2/conf.d
-- /etc/apache2/httpd.conf
--
-- /var/logs/apache2
+__Application relevant directories:__
+- `/usr/local/xmex`
+- `/usr/local/xmex/conf.d`
+- `/usr/local/xmex/content`
+- `/usr/local/xmex/data`
+
+__Apache relevant directories:__
+- `/etc/apache2`
+- `/etc/apache2/conf.d`
+- `/usr/lib/apache2`
+- `/usr/local/apache2`
+- `/var/logs/apache2`
+
+__PHP relevant directories:__
+- `/etc/php83`
+- `/usr/lib/php83`
+
+
 
 - - -
 &#9665; [Installation](installation.md)
