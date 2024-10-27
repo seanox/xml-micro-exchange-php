@@ -175,10 +175,10 @@ info:
     </b>
     
     ## Usage
-    1. The storage must be opened by CONNECT. This can be done by any client,
-       even if the storage already exists. If CONNECT cannot be used for
-       whatever reason, TOUCH or PUT without XPath can be used as an
-       alternative.
+    1. The storage must be opened by CONNECT, TOUCH or PUT without XPath. This
+       can be done by any client, even if the storage already exists. Because
+       CONNECT and TOUCH are not an HTTP standard, it is better to use PUT
+       without XPath.
     
     2. The client should always proceed as if it were using storage alone and
        created the schema it needs. The creation of the schema is done with PUT.
@@ -186,12 +186,12 @@ info:
        that no duplicates are created or data is overwritten.
     
        e.g. `PUT /books[not(book[@title='A Modern Utopia'])]::last`
-      
-       This approach made transactions unnecessary.
     
+       This approach made transactions unnecessary.
+
     3. Now the client can use the storage.
     
-    4. Closing or terminating the storage is not possible and required. The
+    4. Closing or terminating the storage is not possible and necessary. The
        storage expires automatically due to inactivity. The duration of use and
        expiration time of the storage is contained in the response in the
        headers `Storage-Last-Modified`, `Storage-Expiration`,
