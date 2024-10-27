@@ -1,4 +1,4 @@
-1.4.0 2025xxxx
+1.4.0 2024xxxx
 BF: Build: Review and optimization
 CR: Service: Optimization of the configuration via environment variables
     Simplifies the provision as a container.
@@ -80,7 +80,6 @@ CR: Test: Review and optimization
       Trace-Storage-Hash
     - Integration of JetBrains HTTP Client CLI
 CR: Docker: Added support as Docker image
-    TODO: Add description in manual
 
 1.3.1 20240801
 BF: Review: Optimization/Corrections
