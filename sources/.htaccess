@@ -1,5 +1,14 @@
 #.htaccess
 RewriteEngine on
-RewriteRule (^xmex!.*) service.php [L]
-RewriteRule service.php - [L]
-RewriteRule (.*) - [R=404,L]
+RewriteRule (^/xmex!.*$) service.php [L]
+RewriteRule (^.*$) content/$1 [L]
+
+# The root directory is protected.
+# All requests are redirected to the /content subdirectory.
+
+<Directory />
+    Options -Indexes
+    AllowOverride None
+    Require all granted
+    DirectoryIndex index.html openAPI.html
+</Directory>
