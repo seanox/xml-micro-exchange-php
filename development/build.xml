@@ -92,28 +92,41 @@
 
     <delete dir="${workspace.build}"/>
     <mkdir dir="${workspace.build}"/>
-    <copy file="${workspace.sources}/.htaccess" todir="${workspace.build}"/>
-    <copy file="${workspace.sources}/service.php" todir="${workspace.build}"/>
-    <compress-php file="${workspace.build}/service.php"/>
     <copy file="${workspace}/LICENSE" todir="${workspace.build}"/>
-    <copy file="${workspace.manual}/README.md" todir="${workspace.build}"/>
-    <touch datetime="${release.date}" pattern="yyyyMMdd">
-      <fileset dir="${workspace.build}">
+    <copy file="${workspace}/CHANGES" todir="${workspace.build}"/>
+    <copy todir="${workspace.build}">
+      <fileset dir="${workspace.sources}">
         <include name=".htaccess"/>
         <include name="service.php"/>
-        <include name="LICENSE"/>
       </fileset>
+    </copy>
+    <compress-php file="${workspace.build}/service.php"/>
+    <mkdir dir="${workspace.build}/content"/>
+    <copy todir="${workspace.build}/content">
+      <fileset dir="${workspace.sources}">
+        <include name="openAPI.html"/>
+        <include name="openAPI.yaml"/>
+      </fileset>
+    </copy>
+    <copy todir="${workspace.build}/manual">
+      <fileset dir="${workspace.manual}" includes="**"/>
+    </copy>
+    <copy todir="${workspace.build}/content">
+      <fileset dir="${workspace.sources}">
+        <include name="openAPI.html"/>
+        <include name="openAPI.yaml"/>
+      </fileset>
+    </copy>
+    <mkdir dir="${workspace.build}/data"/>
+    <touch datetime="${release.date}" pattern="yyyyMMdd">
+      <fileset dir="${workspace.build}"/>
     </touch>
 
     <delete dir="${workspace.release}"/>
     <mkdir dir="${workspace.release}"/>
-    <zip destfile="${workspace.release}/seanox-xmex-${release.version}.zip">
-      <fileset dir="${workspace.build}">
-        <include name=".htaccess"/>
-        <include name="service.php"/>
-        <include name="LICENSE"/>
-      </fileset>
-    </zip>
+    <zip destfile="${workspace.release}/seanox-xmex-${release.version}.zip"
+         compress="true" filesonly="true" defaultexcludes="false"
+         basedir="${workspace.build}"/>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
       <fileset dir="${workspace.release}" includes="seanox-xmex-${release.version}.zip"/>
     </touch>
