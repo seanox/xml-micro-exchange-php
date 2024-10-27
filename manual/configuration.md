@@ -30,6 +30,7 @@ alternative `TOUCH` or `PUT` can be used.
   * [Seanox Devwex](#seanox-devwex)
   * [Others](#others)
 * [Parameters](#parameters)
+  * [XMEX_CONATINER_MODE](#xmex_conatiner_mode)
   * [XMEX_DEBUG_MODE](#xmex_debug_mode)
   * [XMEX_STORAGE_DIRECTORY](#xmex_storage_directory)
   * [XMEX_STORAGE_EXPIRATION](#xmex_storage_expiration)
@@ -37,6 +38,7 @@ alternative `TOUCH` or `PUT` can be used.
   * [XMEX_STORAGE_REVISION_TYPE](#xmex_storage_revision_type)
   * [XMEX_STORAGE_SPACE](#xmex_storage_space)
   * [XMEX_URI_XPATH_DELIMITER](#xmex_uri_xpath_delimiter)
+* [Docker Image](#docker-image) 
 
 
 ## Web Server
@@ -133,6 +135,19 @@ value often also requires changes to the web server configuration.
 Default: `!`
 
 
+## Docker Image
+
+TODO:
+- /usr/local/apache2
+- /usr/local/xmex
+- /usr/local/xmex/conf.d
+- /usr/local/xmex/content
+- /etc/php83
+- /etc/apache2
+- /etc/apache2/conf.d
+- /etc/apache2/httpd.conf
+-
+- /var/logs/apache2
 
 - - -
 &#9665; [Installation](installation.md)
