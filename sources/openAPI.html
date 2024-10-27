@@ -9,16 +9,20 @@
       // https://github.com/nodeca/js-yaml
       // https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
       window.onload = () => {
-          const HOST = window.location.toString().replace(/([a-z]+:\/\/.*?)(?:\/.*|$)/i, "$1");
-          const BASE = window.location.toString().replace(/^((?:[^?]+\/)(?:[^?.]+)?).*$/, "$1");
+          const LOCATION = window.location.toString();
+          const QUERY = LOCATION.replace(/^[^?]+(\?)?/, "").match(/^[a-z]+:\/\/\w+(?:\.\w+)*(?::\d{1,5})?$/i);
+          const HOST = QUERY ? QUERY.toString() : LOCATION.replace(/^([a-z]+:\/\/.*?)(?:\/.*|$)/i, "$1");
+          const BASE = LOCATION.replace(/^((?:[^?]+\/)(?:[^?.]+)?).*$/, "$1");
           const FILE = BASE + (BASE.endsWith("/") ? "openAPI.yaml" : ".yaml");
+          if (QUERY)
+              window.history.pushState(null, null, LOCATION.replace(/\?.*$/, ""));
           const request = new XMLHttpRequest();
           request.open("GET", `${FILE}`, false);
           request.send();
           if (request.status !== 200)
               throw {message: "OpenAPI specification not not available"};
           const specification = jsyaml.load(request.responseText);
-          specification.servers = [{"url":HOST}];
+          specification.servers = [{"url":QUERY ? QUERY : HOST}];
           window.ui = SwaggerUIBundle({
               spec: specification,
               dom_id: '#swagger-ui',
