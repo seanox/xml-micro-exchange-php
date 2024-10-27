@@ -125,8 +125,8 @@
     <delete dir="${workspace.release}"/>
     <mkdir dir="${workspace.release}"/>
     <zip destfile="${workspace.release}/seanox-xmex-${release.version}.zip"
-         compress="true" filesonly="true" defaultexcludes="false"
-         basedir="${workspace.build}"/>
+        compress="true" filesonly="true" defaultexcludes="false"
+        basedir="${workspace.build}"/>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
       <fileset dir="${workspace.release}" includes="seanox-xmex-${release.version}.zip"/>
     </touch>
@@ -137,7 +137,7 @@
         match="(Seanox\s+XML-Micro-Exchange\s+)\d+[\.\d]+" flags="g" byline="false"
         replace="\1${release.version}"/>
     <replaceregexp file="${workspace}/README.md"
-        match="(seanox/${ant.project.name}/releases/download/)\d[\d\.]+"
+        match="(seanox/${ant.project.name}-php/releases/download/)\d[\d\.]+"
         replace="\1${release.version}" flags="g" byline="false"/>
     <replaceregexp file="${workspace}/README.md"
         match="(seanox-xmex-)\d+[\.\d]+(\.zip)" flags="g" byline="false"
