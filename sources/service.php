@@ -143,7 +143,7 @@
  *
  *     SECURITY
  * This aspect was deliberately considered and implemented here only in a very
- * rudimentary form. Only the storage(-key) with a length of 1 - 64 characters
+ * rudimentary form. Only the storage name with a length of 1 - 64 characters
  * can be regarded as secret. For further security the approach of Basic
  * Authentication, Digest Access Authentication and/or server/client
  * certificates is followed, which is configured at the web server and outside

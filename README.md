@@ -48,7 +48,7 @@ __All meet without obligation.__
 - __RESTful__  
   The REST API supports the HTTP methods CONNECT, OPTIONS, GET, POST, PUT,
   PATCH, DELETE. The CONNECT method is not a standard and the function can be
-  used alternatively via OPTIONS.  
+  used alternatively via TOUCH or PUT without XPath.  
 - __XPath__  
   XPath axes and functions are used for access, navigation and addressing of
   targets in the data source and it is an integral part of the URI with dynamic
@@ -72,11 +72,11 @@ __All meet without obligation.__
   All requests can be responded by the service in JSON format.
 - __Security__  
   This aspect was deliberately considered and implemented here only in a very
-  rudimentary form. The storage(-key) with a length of 1 - 64 characters and
-  the individual root element can be regarded as secret.  
-  For further security the approach of Basic Authentication, Digest Access
-  Authentication and/or Server/Client certificates is followed, which is
-  configured outside of the XMEX (XML-Micro-Exchange) at the web server.
+  rudimentary form. The storage name with a length of 1 - 64 characters and the
+  individual root element can be regarded as secret. For further security the
+  approach of Basic Authentication, Digest Access Authentication and/or
+  Server/Client certificates is followed, which is configured outside of the
+  XMEX (XML-Micro-Exchange) at the web server.
 
 
 # Licence Agreement
@@ -140,18 +140,12 @@ https://xmex.seanox.com/snake.html
 * [Motivation](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/motivation.md)
 * [Installation](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/installation.md)
 * [Configuration](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/configuration.md)
-  * [Web Server](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/configuration.md#web-server)
+  * [Web Server](#web-server)
   * [Parameters](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/configuration.md#parameters)
+  * [Docker Image](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/configuration.md#docker-image)
 * [Terms](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/terms.md)
 * [Getting Started](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/getting-started.md)
 * [API](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api.md)
-  * [CONNECT](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-connect.md)
-  * [DELETE](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-delete.md)
-  * [GET](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-get.md)
-  * [OPTIONS](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-options.md)
-  * [PATCH](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-patch.md)
-  * [POST](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-post.md)
-  * [PUT](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/api-put.md)
 * [Error Handling](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/error-handling.md)
 * [Development](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/development.md)
 * [Test](https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/test.md)

@@ -29,7 +29,7 @@ alternative `TOUCH` or `PUT` can be used.
   * [Apache HTTPD](#apache-httpd)
   * [Seanox Devwex](#seanox-devwex)
 * [Parameters](#parameters)
-  * [XMEX_CONATINER_MODE](#xmex_conatiner_mode)
+  * [XMEX_CONTAINER_MODE](#xmex_container_mode)
   * [XMEX_DEBUG_MODE](#xmex_debug_mode)
   * [XMEX_STORAGE_DIRECTORY](#xmex_storage_directory)
   * [XMEX_STORAGE_EXPIRATION](#xmex_storage_expiration)
@@ -75,7 +75,7 @@ separation between URL and XPath more visible.
 XML-Micro-Exchange is configured via environment variables. The existing default
 values are suitable for productive use.
 
-### XMEX_CONATINER_MODE
+### XMEX_CONTAINER_MODE
 Activates optimizations for use as a container.
 
 - Redirect the log output to /dev/stdout
