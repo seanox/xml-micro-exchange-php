@@ -104,7 +104,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.4.0](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.4.0/seanox-xmex-1.4.0.zip)  
+[Seanox XML-Micro-Exchange 1.5.0](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.5.0/seanox-xmex-1.5.0.zip)  
 
 
 # Free XML-Micro-Exchange
@@ -152,7 +152,7 @@ https://xmex.seanox.com/snake.html
 
 
 # Changes
-## 1.4.0 20241027  
+## 1.5.0 20241027  
 BF: Build: Review and optimization  
 CR: Service: Optimization of the configuration via environment variables  
 CR: Request: Configurable XPath delimiter of the URI  
