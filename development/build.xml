@@ -84,8 +84,11 @@
     </tstamp>    
     <replaceregexp file="${workspace}/README.md"
         match="(?si)(?&lt;=\(C\)\s)\d{4}\b" flags="g" byline="true"
-        replace="${now.year}"/>  
-  </target>  
+        replace="${now.year}"/>
+    <replaceregexp file="${workspace.sources}/openAPI.yaml"
+        match="(?si)\b(version: )\d+(\.\d+)*" flags="g" byline="true"
+        replace="\1${release.version}"/>
+  </target>
 
   <target name="release" depends="changes">
     <release-locate/>
