@@ -148,6 +148,31 @@
     <replaceregexp file="${workspace}/README.md"
         match="(seanox-xmex-)\d+[\.\d]+(\.zip)" flags="g" byline="false"
         replace="\1${release.version}\2"/>
+
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c"/>
+      <arg value="docker"/>
+      <arg value="build"/>
+      <arg value="-t"/>
+      <arg value="xmex:${release.version}-php"/>
+      <arg value="-t"/>
+      <arg value="seanox/xmex:${release.version}-php"/>
+      <arg value="-t"/>
+      <arg value="xmex:php"/>
+      <arg value="-t"/>
+      <arg value="xmex:latest"/>
+      <arg value="-t"/>
+      <arg value="seanox/xmex:php"/>
+      <arg value="-t"/>
+      <arg value="seanox/xmex:latest"/>
+      <arg value="."/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker images --filter=reference=seanox/xmex --filter=reference=xmex"/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker system prune -f"/>
+    </exec>
   </target>
 
   <!--
@@ -192,5 +217,61 @@
       <arg value="${workspace.test}/request.http"/>
       <arg value="${workspace.test}/snake.http"/>
     </java>
+  </target>
+
+  <target name="publish" depends="release">
+    <input message="Publish version ${release.version}? (y)es/(n)o:" validargs="y,n" addproperty="release.release.input"/>
+    <fail message="Canceled">
+      <condition>
+        <equals arg1="${release.release.input}" arg2="n"/>
+      </condition>
+    </fail>
+    <property environment="env"/>
+    <property name="docker.registry" value="${env.docker-registry}"/>
+    <property name="docker.id" value="${env.docker-id}"/>
+    <property name="docker.password" value="${env.docker-password}"/>
+    <property name="docker.fail.message" value="Credentials for Docker Hub are incomplete!${line.separator}"/>
+    <fail message="${docker.fail.message}Environmental variable docker-registry is required">
+      <condition>
+        <or>
+          <matches pattern="^\s*\$\{.*$" string="${docker.registry}"/>
+          <not><matches pattern="^.*\S.*$" string="${docker.registry}"/></not>
+          <not><isset property="docker.registry"/></not>
+        </or>
+      </condition>
+    </fail>
+    <fail message="${docker.fail.message}Environmental variable docker-id is required">
+      <condition>
+        <or>
+          <matches pattern="^\s*\$\{.*$" string="${docker.id}"/>
+          <not><matches pattern="^.*\S.*$" string="${docker.id}"/></not>
+          <not><isset property="docker.id"/></not>
+        </or>
+      </condition>
+    </fail>
+    <fail message="${docker.fail.message}Environmental variable docker-password is required">
+      <condition>
+        <or>
+          <matches pattern="^\s*\$\{.*$" string="${docker.password}"/>
+          <not><matches pattern="^.*\S.*$" string="${docker.password}"/></not>
+          <not><isset property="docker.password"/></not>
+        </or>
+      </condition>
+    </fail>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker login -u=${docker.id} -p=${docker.password} ${docker.registry}"/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker push seanox/xmex:${release.version}-php"/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker push seanox/xmex:php"/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker push seanox/xmex:latest"/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker logout"/>
+    </exec>
   </target>
 </project>
