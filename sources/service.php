@@ -159,31 +159,31 @@
 // assigned as static values to the constants in the class!
 
 /** Activates the container mode (supports on, true, 1) */
-define("XMEX_CONTAINER_MODE", in_array(strtolower(getenv("XMEX_CONTAINER_MODE", true)), ["on", "true", "1"]));
+define("XMEX_CONTAINER_MODE", in_array(strtolower(getenv("XMEX_CONTAINER_MODE")), ["on", "true", "1"]));
 
 /** Activates the debug and test mode (supports on, true, 1) */
-define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE", true)), ["on", "true", "1"]));
+define("XMEX_DEBUG_MODE", in_array(strtolower(getenv("XMEX_DEBUG_MODE")), ["on", "true", "1"]));
 
 /** Directory of the data storage */
-define("XMEX_STORAGE_DIRECTORY", getenv("XMEX_STORAGE_DIRECTORY", true) ?: "./data");
+define("XMEX_STORAGE_DIRECTORY", getenv("XMEX_STORAGE_DIRECTORY") ?: "./data");
 
 /** Maximum number of files in data storage */
-define("XMEX_STORAGE_QUANTITY", getenv("XMEX_STORAGE_QUANTITY", true) ?: 65535);
+define("XMEX_STORAGE_QUANTITY", getenv("XMEX_STORAGE_QUANTITY") ?: 65535);
 
 /**
  * Maximum data size of files in data storage in bytes.
  * The value also limits the size of the requests(-body).
  */
-define("XMEX_STORAGE_SPACE", getenv("XMEX_STORAGE_SPACE", true) ?: 256 *1024);
+define("XMEX_STORAGE_SPACE", getenv("XMEX_STORAGE_SPACE") ?: 256 *1024);
 
 /** Maximum idle time of the files in seconds */
-define("XMEX_STORAGE_EXPIRATION", getenv("XMEX_STORAGE_EXPIRATION", true) ?: 15 *60);
+define("XMEX_STORAGE_EXPIRATION", getenv("XMEX_STORAGE_EXPIRATION") ?: 15 *60);
 
 /** Defines the revision type (0 serial, 1 alphanumeric timestamp) */
-define("XMEX_STORAGE_REVISION_TYPE", (XMEX_DEBUG_MODE ? "serial" : strcasecmp(getenv("XMEX_STORAGE_REVISION_TYPE", true), "serial") === 0) ? "serial" : "timestamp");
+define("XMEX_STORAGE_REVISION_TYPE", (XMEX_DEBUG_MODE ? "serial" : strcasecmp(getenv("XMEX_STORAGE_REVISION_TYPE"), "serial") === 0) ? "serial" : "timestamp");
 
 /** Character or character sequence of the XPath delimiter in the URI */
-define("XMEX_URI_XPATH_DELIMITER", getenv("XMEX_URI_XPATH_DELIMITER", true) ?: "!");
+define("XMEX_URI_XPATH_DELIMITER", getenv("XMEX_URI_XPATH_DELIMITER") ?: "!");
 
 class Storage {
 
