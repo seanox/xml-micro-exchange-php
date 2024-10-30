@@ -3,6 +3,15 @@ RewriteEngine on
 RewriteRule (^/xmex!.*$) service.php [L]
 RewriteRule (^.*$) content/$1 [L]
 
+# SetEnv XMEX_CONTAINER_MODE        off
+# SetEnv XMEX_DEBUG_MODE            off
+# SetEnv XMEX_STORAGE_DIRECTORY     ./data
+# SetEnv XMEX_STORAGE_QUANTITY      65535
+# SetEnv XMEX_STORAGE_SPACE         262144
+# SetEnv XMEX_STORAGE_EXPIRATION    900
+# SetEnv XMEX_STORAGE_REVISION_TYPE timestamp
+# SetEnv XMEX_URI_XPATH_DELIMITER   !
+
 # The root directory is protected.
 # All requests are redirected to the /content subdirectory.
 
