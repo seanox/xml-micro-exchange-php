@@ -148,31 +148,6 @@
     <replaceregexp file="${workspace}/README.md"
         match="(seanox-xmex-)\d+[\.\d]+(\.zip)" flags="g" byline="false"
         replace="\1${release.version}\2"/>
-
-    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c"/>
-      <arg value="docker"/>
-      <arg value="build"/>
-      <arg value="-t"/>
-      <arg value="xmex:${release.version}-php"/>
-      <arg value="-t"/>
-      <arg value="seanox/xmex:${release.version}-php"/>
-      <arg value="-t"/>
-      <arg value="xmex:php"/>
-      <arg value="-t"/>
-      <arg value="xmex:latest"/>
-      <arg value="-t"/>
-      <arg value="seanox/xmex:php"/>
-      <arg value="-t"/>
-      <arg value="seanox/xmex:latest"/>
-      <arg value="."/>
-    </exec>
-    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker images --filter=reference=seanox/xmex --filter=reference=xmex"/>
-    </exec>
-    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker system prune -f"/>
-    </exec>
   </target>
 
   <!--
@@ -258,6 +233,32 @@
         </or>
       </condition>
     </fail>
+
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c"/>
+      <arg value="docker"/>
+      <arg value="build"/>
+      <arg value="-t"/>
+      <arg value="xmex:${release.version}-php"/>
+      <arg value="-t"/>
+      <arg value="seanox/xmex:${release.version}-php"/>
+      <arg value="-t"/>
+      <arg value="xmex:php"/>
+      <arg value="-t"/>
+      <arg value="xmex:latest"/>
+      <arg value="-t"/>
+      <arg value="seanox/xmex:php"/>
+      <arg value="-t"/>
+      <arg value="seanox/xmex:latest"/>
+      <arg value="."/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker images --filter=reference=seanox/xmex --filter=reference=xmex"/>
+    </exec>
+    <exec executable="cmd" failonerror="true" failifexecutionfails="true">
+      <arg value="/c docker system prune -f"/>
+    </exec>
+
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
       <arg value="/c docker login -u=${docker.id} -p=${docker.password} ${docker.registry}"/>
     </exec>
