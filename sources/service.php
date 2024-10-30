@@ -211,7 +211,7 @@ class Storage {
     /** Activates the container mode (supports on, true, 1) */
     const CONTAINER_MODE = XMEX_CONTAINER_MODE;
 
-    /** Defines the revision type (0 serial, 1 alphanumeric timestamp) */
+    /** Defines the revision type (serial, timestamp) */
     const REVISION_TYPE = XMEX_STORAGE_REVISION_TYPE;
 
     /**
