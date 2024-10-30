@@ -13,7 +13,7 @@ CR: Service: Optimization of the configuration via environment variables
     - XMEX_STORAGE_QUANTITY: Maximum number of files in data storage (65535)
     - XMEX_STORAGE_SPACE: Maximum data size of files in data storage in bytes (256 *1024)
     - XMEX_STORAGE_EXPIRATION: Maximum idle time of the files in seconds (15 *60)
-    - XMEX_STORAGE_REVISION_TYPE: Basis of the revision number (1)
+    - XMEX_STORAGE_REVISION_TYPE: Basis of the revision number (timestamp)
     - XMEX_DEBUG_MODE: Activates debug mode for unit tests (off)
     - XMEX_CONTAINER_MODE: Activates debug mode for unit tests (off)
 CR: Request: Configurable XPath delimiter of the URI
