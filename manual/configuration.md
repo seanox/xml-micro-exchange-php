@@ -46,6 +46,16 @@ alternative `TOUCH` or `PUT` can be used.
 
 ```
 #.htaccess
+
+SetEnv XMEX_CONTAINER_MODE        off
+SetEnv XMEX_DEBUG_MODE            off
+SetEnv XMEX_STORAGE_DIRECTORY     ./data
+SetEnv XMEX_STORAGE_QUANTITY      65535
+SetEnv XMEX_STORAGE_SPACE         262144
+SetEnv XMEX_STORAGE_EXPIRATION    900
+SetEnv XMEX_STORAGE_REVISION_TYPE timestamp
+SetEnv XMEX_URI_XPATH_DELIMITER   !
+
 RewriteEngine on
 RewriteRule (^/xmex!.*$) service.php [L]
 RewriteRule (^.*$) content/$1 [L]
@@ -101,7 +111,7 @@ Default: `off`
 Maximum time of inactivity of the storage files in seconds. Without file access
 during this time, the storage files are deleted.
 
-Default: `13.500` (15 min, 15 x 60 sec)
+Default: `900` (15 min, 15 x 60 sec)
 
 ### XMEX_STORAGE_DIRECTORY
 Directory of the data storage, which is configured with the required permissions
@@ -116,10 +126,10 @@ Maximum number of files in data storage. Exceeding the limit causes the status
 Default: `65535`
 
 ### XMEX_STORAGE_REVISION_TYPE
-Defines the revision type. Supported values: `0` (serial, starting with 1),
-`1` (alphanumeric timestamp).
+Defines the revision type. Supported values: `serial` (starting with 1),
+`timestamp` (alphanumeric).
 
-Default: `1`
+Default: `timestamp`
 
 ### XMEX_STORAGE_SPACE
 Maximum data size of files in data storage in bytes. The value also limits the
