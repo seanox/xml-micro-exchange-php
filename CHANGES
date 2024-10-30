@@ -3,6 +3,7 @@ BF: Service: Correction of the configuration for on-premises
     The Apache environment variable was not read correctly.
 BF: Build: Correction of the version number distribution
     Dockerfile was forgotten.
+CR: Build: Added build and publish the Docker images
 
 1.5.0 20241027
 BF: Build: Review and optimization
