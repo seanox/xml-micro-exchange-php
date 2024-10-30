@@ -104,7 +104,7 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.5.0](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.5.0/seanox-xmex-1.5.0.zip)  
+[Seanox XML-Micro-Exchange 1.5.1](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.5.1/seanox-xmex-1.5.1.zip)  
 
 
 # Free XML-Micro-Exchange
@@ -152,24 +152,10 @@ https://xmex.seanox.com/snake.html
 
 
 # Changes
-## 1.5.0 20241027  
-BF: Build: Review and optimization  
-CR: Service: Optimization of the configuration via environment variables  
-CR: Request: Configurable XPath delimiter of the URI  
-CR: Request: Omission of XPath via query string  
-CR: Request: Uniform identifier question mark for Base64 and hex encoded paths  
-CR: Storage: Optimization of the cleanup  
-CR: Storage: Review and optimization  
-CR: Service: Review of revision management  
-CR: Service: Review and optimization of CONNECT  
-CR: Service: Review and optimization of OPTIONS  
-CR: Service: Review and optimization of GET  
-CR: Service: Review and optimization of DELETE, PATCH, PUT  
-CR: Service: Review and optimization of POST  
-CR: Service: Optimization of data storage  
-CR: Test: Added option XMEX_DEBUG_MODE  
-CR: Test: Review and optimization  
-CR: Docker: Added support as Docker image  
+## 1.5.1 20241030  
+BF: Service: Correction of the configuration for on-premises  
+BF: Build: Correction of the version number distribution  
+CR: Build: Added build and publish the Docker images  
 
 [Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange-php/master/CHANGES)
 
