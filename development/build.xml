@@ -114,6 +114,11 @@
         <include name="openAPI.yaml"/>
       </fileset>
     </copy>
+    <copy todir="${workspace.build}/content">
+      <fileset dir="${workspace.test}">
+        <include name="snake.html"/>
+      </fileset>
+    </copy>
     <copy todir="${workspace.build}/manual">
       <fileset dir="${workspace.manual}" includes="**"/>
     </copy>

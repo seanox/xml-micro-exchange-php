@@ -4,6 +4,7 @@ BF: Service: Correction of the configuration for on-premises
 BF: Build: Correction of the version number distribution
     Dockerfile was forgotten.
 CR: Build: Added build and publish the Docker images
+CR: Content: Added snake.html as example abd little gimmick
 
 1.5.0 20241027
 BF: Build: Review and optimization
