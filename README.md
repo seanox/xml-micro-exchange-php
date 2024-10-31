@@ -127,9 +127,8 @@ or open [OpenAPI YAML in a GUI](https://editor.swagger.io/?url=https://raw.githu
 It is a small server (1 Core, 1 GB, 10 GB SSD) in a big data center -- but
 apparently enough.  
 __Sponsors are always welcome.__  
-The project needs if possible more power.  
-It costs about 5 Euro per month for 65536 x 1024 kB with double CPU cores and
-double memory.
+It costs about 5 Euro per month for 1,000,000 storages x 64 kB with double CPU
+cores and double memory.
 
 __Example Multiplayer Snake (Online)__  
 https://xmex.seanox.com/snake.html
@@ -156,6 +155,7 @@ https://xmex.seanox.com/snake.html
 BF: Service: Correction of the configuration for on-premises  
 BF: Build: Correction of the version number distribution  
 CR: Build: Added build and publish the Docker images  
+CR: Content: Added snake.html as example abd little gimmick  
 
 [Read more](https://raw.githubusercontent.com/seanox/xml-micro-exchange-php/master/CHANGES)
 
