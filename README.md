@@ -104,7 +104,17 @@ specific language governing permissions and limitations under the License.
 
 
 # Downloads
-[Seanox XML-Micro-Exchange 1.5.1](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.5.1/seanox-xmex-1.5.1.zip)  
+[Seanox XML-Micro-Exchange 1.5.1](https://github.com/seanox/xml-micro-exchange-php/releases/download/1.5.1/seanox-xmex-1.5.1.zip)
+```
+curl -LO https://github.com/seanox/xml-micro-exchange-php/releases/latest/download/seanox-xmex-latest.zip
+```
+
+
+# Docker
+https://hub.docker.com/r/seanox/xmex
+```
+docker run -d -p 80:80/tcp --rm --name xmex seanox/xmex:php
+```
 
 
 # Free XML-Micro-Exchange
@@ -121,10 +131,10 @@ __Service Endpoint URL__
 __Please do not get confused, the API is online.  
 Requests without storage identifier (see [manual](manual/README.md#manual))
 are responded with status 400.__  
-See also [OpenAPI YAML](https://raw.githubusercontent.com/seanox/xml-micro-exchange/master/openapi/service.yaml)
-or open [OpenAPI YAML in a GUI](https://editor.swagger.io/?url=https://raw.githubusercontent.com/seanox/xml-micro-exchange/master/openapi/service.yaml).
+See also [OpenAPI YAML](https://raw.githubusercontent.com/seanox/xml-micro-exchange-php/master/sources/openAPI.yaml)
+or open [OpenAPI YAML in a GUI](https://xmex.seanox.com/openAPI.html).
 
-It is a small server (1 Core, 1 GB, 10 GB SSD) in a big data center -- but
+It is a small server (1 vCore, 1 GB RAM, 10 GB SSD) in a big data center -- but
 apparently enough.  
 __Sponsors are always welcome.__  
 It costs about 5 Euro per month for 1,000,000 storages x 64 kB with double CPU
