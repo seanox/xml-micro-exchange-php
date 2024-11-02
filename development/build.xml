@@ -138,8 +138,10 @@
     <zip destfile="${workspace.release}/seanox-xmex-${release.version}.zip"
         compress="true" filesonly="true" defaultexcludes="false"
         basedir="${workspace.build}"/>
+    <copy file="${workspace.release}/seanox-xmex-${release.version}.zip"
+        tofile="${workspace.release}/seanox-xmex-latest.zip"/>
     <touch datetime="${release.date}" pattern="yyyyMMdd">
-      <fileset dir="${workspace.release}" includes="seanox-xmex-${release.version}.zip"/>
+      <fileset dir="${workspace.release}" includes="*.zip"/>
     </touch>
 
     <delete dir="${workspace.build}"/>
