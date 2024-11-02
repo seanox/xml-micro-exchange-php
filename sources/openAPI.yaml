@@ -204,7 +204,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 externalDocs:
   description: Find out more about Seanox XMEX (incl. Manual and Getting Started)
-  url: https://github.com/seanox/xml-micro-exchange-js/blob/main/manual/README.md
+  url: https://github.com/seanox/xml-micro-exchange-php/blob/master/manual/README.md
 servers:
 - url: https://xmex.seanox.com
 - url: http://localhost
