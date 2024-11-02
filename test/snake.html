@@ -80,12 +80,12 @@
                   if (typeof message === "object"
                             && !!message.message
                             && !!message.request) {
-                    const request = message.request;
-                    message = `${message.message}\nStatus: ${request.status}`;
-                    if (request.getResponseHeader("Message"))
-                        message += `\nMessage: ${request.getResponseHeader("Message")}`;
-                    if (request.getResponseHeader("Error"))
-                        message += `\nError: ${request.getResponseHeader("Error")}`;
+                      const request = message.request;
+                      message = `${message.message}\nStatus: ${request.status}`;
+                      if (request.getResponseHeader("Message"))
+                          message += `\nMessage: ${request.getResponseHeader("Message")}`;
+                      if (request.getResponseHeader("Error"))
+                          message += `\nError: ${request.getResponseHeader("Error")}`;
                   }
                   message = `<p>${message}</p>`;
                   if (append)
