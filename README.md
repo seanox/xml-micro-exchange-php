@@ -110,7 +110,7 @@ curl -LO https://github.com/seanox/xml-micro-exchange-php/releases/latest/downlo
 ```
 
 
-# Docker
+# Docker Image
 https://hub.docker.com/r/seanox/xmex
 ```
 docker run -d -p 80:80/tcp --rm --name xmex seanox/xmex:php
