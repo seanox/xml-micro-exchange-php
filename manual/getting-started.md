@@ -125,13 +125,8 @@ CONNECT https://xmex.seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
 ```
 
-Because CONNECT is not a standard HTTP method, the TOUCH or PUT method can also
-be used.
+Because CONNECT is not a standard HTTP method, the PUT method can also be used.
 
-```
-TOUCH https://xmex.seanox.com/xmex! HTTP/1.0
-Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
-```
 ```
 PUT https://xmex.seanox.com/xmex! HTTP/1.0
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01 table
@@ -265,9 +260,9 @@ Three more guests enter the pub and go to the regulars' table. They are Jane
 Doe, Mike Ross and Dan Star. They are also all familiar with the rituals and
 rules of the regulars' table and the pub and thus do the same as John.
 
-They join the regulars' table with CONNECT, TOUCH or PUT and are informed by the
-server status 204 that the regulars' table already exists. Because they do not
-know the state of the regulars' table, they arrange it in the same way as John.
+They join the regulars' table with CONNECT or PUT and are informed by the server
+status 204 that the regulars' table already exists. Because they do not know the
+state of the regulars' table, they arrange it in the same way as John.
 
 ```
 PUT https://xmex.seanox.com/xmex! HTTP/1.0

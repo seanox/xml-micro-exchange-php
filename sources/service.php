@@ -1935,18 +1935,16 @@ if (Storage::PATTERN_HTTP_REQUEST_URI) {
     $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 }
 if (preg_match(Storage::PATTERN_HEX, $xpath))
-    $xpath = hex2bin(substr($xpath, 1));
+    $xpath = trim(hex2bin(substr($xpath, 1)));
 else if (preg_match(Storage::PATTERN_BASE64, $xpath))
-    $xpath = base64_decode(substr($xpath, 1));
-else $xpath = urldecode($xpath);
+    $xpath = trim(base64_decode(substr($xpath, 1)));
+else $xpath = trim(urldecode($xpath));
 
-// As an alternative to CONNECT, the TOUCH method (as an alias) and PUT can be
-// used without a path. CONNECT is not supported by XMLHttpRequest, for example.
-// TOUCH is not supported as an HTTP method by strict frameworks -- that is why
-// there are three variants. Because PUT without XPath is always valid.
-if (strcasecmp("TOUCH", $method) === 0
-        || (strcasecmp("PUT", $method) === 0
-                && strlen($xpath ?: "") <= 0))
+// As an alternative to CONNECT, PUT without a xpath can be used. CONNECT is not
+// supported by XMLHttpRequest, for example. That is why there are two variants.
+// Because PUT without XPath is always valid.
+if (strcasecmp("PUT", $method) === 0
+        && strlen($xpath ?: "") <= 0)
     $method = "CONNECT";
 
 // With the exception of CONNECT, OPTIONS and POST, all requests expect an XPath
@@ -1954,7 +1952,7 @@ if (strcasecmp("TOUCH", $method) === 0
 // POST uses the XPath for transformation only optionally to delimit the XML
 // data for the transformation and works also without. In the other cases an
 // empty XPath is replaced by the root slash.
-if (empty($xpath)
+if (strcmp($xpath, "") === 0
         && !in_array($method, ["CONNECT", "OPTIONS", "POST"]))
     $xpath = "/";
 $options = Storage::STORAGE_SHARE_NONE;
