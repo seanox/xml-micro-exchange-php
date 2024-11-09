@@ -1,15 +1,17 @@
-1.5.1 20241030
-BF: Service: Correction of the configuration for on-premises
-    The Apache environment variable was not read correctly.
-BF: Build: Correction of the version number distribution
-    Dockerfile was forgotten.
-CR: Build: Added build and publish the Docker images
+1.5.2 2024xxxx
 CR: Content: Added snake.html as example abd little gimmick
 CR: Service: Omission of the HTTP method TOUCH
     Because it is not an official HTTP standard.
 CR: Service: Change from status code to 304 when creating
     If an existing storage is opened with CONNECT or PUT without XPath, server
     status 304 is now returned instead of the previous server status 204.
+
+1.5.1 20241030
+BF: Service: Correction of the configuration for on-premises
+    The Apache environment variable was not read correctly.
+BF: Build: Correction of the version number distribution
+    Dockerfile was forgotten.
+CR: Build: Added build and publish the Docker images
 
 1.5.0 20241027
 BF: Build: Review and optimization
