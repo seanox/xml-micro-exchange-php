@@ -123,7 +123,7 @@ client.test("unittest", function() {
 ###
 # The storage identifier is case-sensitive
 # Expectations:
-# - Status code 204 No Content
+# - Status code 304 Not Modified
 # - Storage-Revision: 1/0
 # - Storage-Space: 262144/71 bytes
 CONNECT {{service}} HTTP/1.0
@@ -137,7 +137,7 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "ccbab89c8b1338c8211f4629fbd1779e");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
     client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f051f311769a4e61d6cbc1e42962c553");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "d595a5d42fc187736630d5890711e383");
@@ -314,7 +314,7 @@ client.test("unittest", function() {
 # Everything is correct, storage and name of the root element are transmitted
 # correctly, the storage can be shared.
 # Expectations:
-# - Status code 204 No Content
+# - Status code 304 Not Modified
 # - Storage-Revision: 1/0
 # - Storage-Space: 262144/72 bytes
 CONNECT {{service}} HTTP/1.0
@@ -328,7 +328,7 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Hash") === "0fac0bf5eb85f32af856f8d88ce7bf0c");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "f17ae5355c039a4d0374480e4d2e630b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
-    client.assert(response.headers.valueOf("Trace-Response-Hash") === "64f43500716633427b914befe29c8f49");
+    client.assert(response.headers.valueOf("Trace-Response-Hash") === "252335a4e294acfa119704fa344ec477");
     client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "a3621036e95b7eabfa989664454311c9");
     client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "90e5f8a2884ecb0f5669c01376905d97");

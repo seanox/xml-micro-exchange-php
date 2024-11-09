@@ -136,7 +136,7 @@ In all three examples, a new storage is created if it does not yet exist. Or the
 current metadata for an existing storage is returned.
 
 ```
-HTTP/1.0 204 No Content / 201 Resource Created
+HTTP/1.0 304 Not Modified / 201 Resource Created
 Date: Wed, 11 Nov 2020 12:00:00 GMT
 Access-Control-Allow-Origin: *
 Storage: US_NY_10003_123_EAST_8TH_STREET_BLUE_BEAR_T_01
@@ -261,7 +261,7 @@ Doe, Mike Ross and Dan Star. They are also all familiar with the rituals and
 rules of the regulars' table and the pub and thus do the same as John.
 
 They join the regulars' table with CONNECT or PUT and are informed by the server
-status 204 that the regulars' table already exists. Because they do not know the
+status 304 that the regulars' table already exists. Because they do not know the
 state of the regulars' table, they arrange it in the same way as John.
 
 ```
