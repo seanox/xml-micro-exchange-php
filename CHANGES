@@ -7,6 +7,9 @@ CR: Build: Added build and publish the Docker images
 CR: Content: Added snake.html as example abd little gimmick
 CR: Service: Omission of the HTTP method TOUCH
     Because it is not an official HTTP standard.
+CR: Service: Change from status code to 304 when creating
+    If an existing storage is opened with CONNECT or PUT without XPath, server
+    status 304 is now returned instead of the previous server status 204.
 
 1.5.0 20241027
 BF: Build: Review and optimization

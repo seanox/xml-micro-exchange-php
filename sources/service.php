@@ -352,7 +352,7 @@ class Storage {
         $options = [];
         if (preg_match(Storage::PATTERN_XPATH_OPTIONS, $xpath ?: "", $matches, PREG_UNMATCHED_AS_NULL)) {
             $xpath = $matches[1];
-            $options = array_merge(array_filter(explode("!", strtolower($matches[2]))));
+            $options = array_filter(explode("!", strtolower($matches[2])));
         }
 
         if (!empty($storage))
@@ -610,7 +610,7 @@ class Storage {
      * Storage-Expiration-Time: Expiration (milliseconds)
      *
      *     Response:
-     * HTTP/1.0 204 No Content
+     * HTTP/1.0 304 Not Modified
      * Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
      * Storage-Revision: Revision (number/changes)
      * Storage-Space: Total/Used (bytes)
@@ -621,7 +621,7 @@ class Storage {
      *     Response codes / behavior:
      *         HTTP/1.0 201 Resource Created
      * - Storage was newly created
-     *         HTTP/1.0 204 No Content
+     *         HTTP/1.0 304 Not Modified
      * - Storage already exists
      *         HTTP/1.0 400 Bad Request
      * - Storage header is invalid, expects 1 - 64 characters (0-9A-Z_-)
@@ -645,7 +645,7 @@ class Storage {
 
         $response = [201, "Created"];
         if ($this->revision != $this->unique)
-            $response = [204, "No Content"];
+            $response = [304, "Not Modified"];
 
         $this->materialize();
         $this->quit($response[0], $response[1], ["Allow" => "CONNECT, OPTIONS, GET, POST, PUT, PATCH, DELETE"]);
@@ -720,7 +720,6 @@ class Storage {
         }
 
         // Without XPath, OPTIONS generally refers to the storage.
-
         $this->quit(204, "No Content", ["Allow" => $allow]);
     }
 

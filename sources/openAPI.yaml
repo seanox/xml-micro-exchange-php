@@ -269,7 +269,7 @@ paths:
         initial revision 1 in the Storage-Revision header.
   
         ```
-        HTTP/1.0 204 No Content
+        HTTP/1.0 304 Not Modified
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         Storage-Revision: Revision/Changes (number/number)
         Storage-Space: Total/Used (bytes)
@@ -298,7 +298,7 @@ paths:
         201:
           description: |
             Storage was newly created
-        204:
+        304:
           description: |
             Storage already exists
         400:
@@ -368,7 +368,7 @@ paths:
         initial revision 1 in the Storage-Revision header.
         
         ```
-        HTTP/1.0 204 No Content
+        HTTP/1.0 304 Not Modified
         Storage: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
         Storage-Revision: Revision/Changes (number/number)
         Storage-Space: Total/Used (bytes)
@@ -397,7 +397,7 @@ paths:
         201:
           description: |
             Storage was newly created
-        204:
+        304:
           description: |
             Storage already exists
         400:
