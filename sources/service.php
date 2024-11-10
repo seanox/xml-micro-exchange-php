@@ -1110,7 +1110,7 @@ class Storage {
 
         // XPath can address elements and attributes. If the XPath ends with
         // /attribute::<attribute> or /@<attribute> an attribute is expected,
-        // in all other cases a element.
+        // in all other cases an element.
 
         if (preg_match(Storage::PATTERN_XPATH_ATTRIBUTE, $this->xpath, $matches, PREG_UNMATCHED_AS_NULL)) {
 
