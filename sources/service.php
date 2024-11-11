@@ -1726,9 +1726,8 @@ class Storage {
             header_remove($header);
         }
 
-        if (!empty(Storage::CORS))
-            foreach (Storage::CORS as $key => $value)
-                header("$key: $value");
+        foreach (Storage::CORS as $key => $value)
+            header("$key: $value");
 
         // Access-Control headers are received during preflight OPTIONS request
         if ($_SERVER["REQUEST_METHOD"] == "OPTIONS") {
