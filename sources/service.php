@@ -180,7 +180,7 @@ define("XMEX_STORAGE_SPACE", getenv("XMEX_STORAGE_SPACE") ?: 256 *1024);
 define("XMEX_STORAGE_EXPIRATION", getenv("XMEX_STORAGE_EXPIRATION") ?: 15 *60);
 
 /** Defines the revision type (0 serial, 1 alphanumeric timestamp) */
-define("XMEX_STORAGE_REVISION_TYPE", (XMEX_DEBUG_MODE ? "serial" : strcasecmp(getenv("XMEX_STORAGE_REVISION_TYPE"), "serial") === 0) ? "serial" : "timestamp");
+define("XMEX_STORAGE_REVISION_TYPE", (XMEX_DEBUG_MODE || strcasecmp(getenv("XMEX_STORAGE_REVISION_TYPE"), "serial") === 0) ? "serial" : "timestamp");
 
 /** Character or character sequence of the XPath delimiter in the URI */
 define("XMEX_URI_XPATH_DELIMITER", getenv("XMEX_URI_XPATH_DELIMITER") ?: "!");
