@@ -9,7 +9,7 @@
 # Header Storage is missing
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid storage identifier
+# - Message: Missing storage identifier
 CONNECT {{service}} HTTP/1.0
 
 > {%
@@ -31,7 +31,8 @@ client.test("unittest", function() {
 # Header Storage is empty
 # Expectations:
 # - Status code 400 Bad Request
-# - Message: Invalid storage identifier
+# - Message: Missing storage identifier
+# PHP ignores HTTP header without values
 CONNECT {{service}} HTTP/1.0
 Storage:
 
