@@ -272,7 +272,7 @@ class Storage {
      *     Group 2. URI
      *     Group 3. Protocol
      */
-    const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+)\s+(HTTP\/\d+(?:\.\d+)*)$/i";
+    const PATTERN_HTTP_REQUEST = "/^([A-Z]+)\s+(.+?)\s*(?:\s+(HTTP\/\d+(?:\.\d+)*))?$/i";
 
     /**
      * Pattern for separating URI-Path and XPath.
@@ -1927,10 +1927,8 @@ if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
 // helpful when the service is used as a domain.
 $xpath = $_SERVER["REQUEST_URI"];
 if (Storage::PATTERN_HTTP_REQUEST_URI) {
-    if (isset($_SERVER["REQUEST"])
-            && preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $xpath, PREG_UNMATCHED_AS_NULL))
-        $xpath = $xpath[2];
-    $xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
+    $pattern = isset($_SERVER["REQUEST"]) ? Storage::PATTERN_HTTP_REQUEST : Storage::PATTERN_HTTP_REQUEST_URI;
+    $xpath = preg_match($pattern, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
 }
 if (preg_match(Storage::PATTERN_HEX, $xpath))
     $xpath = trim(hex2bin(substr($xpath, 1)));

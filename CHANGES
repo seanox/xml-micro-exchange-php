@@ -1,4 +1,5 @@
 1.6.0 2024xxxx
+BF: Service: Correction of REQUEST_URI for requests without protocol
 CR: Content: Added snake.html as example and little gimmick
 CR: Service: Omission of the HTTP method TOUCH
     Because it is not an official HTTP standard.
