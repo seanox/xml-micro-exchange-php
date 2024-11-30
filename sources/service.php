@@ -1925,11 +1925,11 @@ if (!preg_match(Storage::PATTERN_HEADER_STORAGE, $storage))
 // customized with Storage::PATTERN_HTTP_REQUEST_URI. If the pattern is empty,
 // null or false, the request URI without context path will be used. This is
 // helpful when the service is used as a domain.
-$xpath = $_SERVER["REQUEST_URI"];
-if (Storage::PATTERN_HTTP_REQUEST_URI) {
-    $pattern = isset($_SERVER["REQUEST"]) ? Storage::PATTERN_HTTP_REQUEST : Storage::PATTERN_HTTP_REQUEST_URI;
-    $xpath = preg_match($pattern, $xpath, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
-}
+$request = $_SERVER["REQUEST_URI"];
+if (isset($_SERVER["REQUEST"]))
+    $request = preg_match(Storage::PATTERN_HTTP_REQUEST, $_SERVER["REQUEST"], $request, PREG_UNMATCHED_AS_NULL) ? $request[2] : "";
+$xpath = preg_match(Storage::PATTERN_HTTP_REQUEST_URI, $request, $xpath, PREG_UNMATCHED_AS_NULL) ? $xpath[2] : "";
+
 if (preg_match(Storage::PATTERN_HEX, $xpath))
     $xpath = trim(hex2bin(substr($xpath, 1)));
 else if (preg_match(Storage::PATTERN_BASE64, $xpath))
