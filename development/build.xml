@@ -218,6 +218,31 @@
     </java>
   </target>
 
+  <target name="test-report">
+    <load-test-cases/>
+    <load-test-cli/>
+    <delete dir="${workspace.sources}/data"/>
+    <tstamp>
+      <format property="timestamp" pattern="yyyyMMddHHmmss"/>
+    </tstamp>
+    <property name="output" value="${workspace.test}/${timestamp}.txt"/>
+    <java classname="com.intellij.httpClient.cli.HttpClientMain" fork="true" output="${output}">
+      <classpath refid="classpath.httpclient"/>
+      <arg line="--log-level VERBOSE"/>
+      <arg line="--env-file ${workspace.test}/http-client.env.json"/>
+      <arg line="--env local"/>
+      <arg line="${test.cases}"/>
+    </java>
+    <replaceregexp file="${output}" flags="g" byline="false"
+        match="\u001B.*?m" replace=""/>
+    <replaceregexp file="${output}" byline="false"
+        match="(?s)^.*?\R(?=Request)" replace=""/>
+    <replaceregexp file="${output}" flags="g" byline="false"
+        match="(?s)\R(Date|Storage-Last-Modified|Storage-Expiration|Execution-Time):\s.*?(?=\R)" replace=""/>
+    <replaceregexp file="${output}" flags="g" byline="false"
+        match="(?&lt;=;)\s+Time:.*?;" replace=""/>
+  </target>
+
   <target name="publish" depends="release">
     <input message="Publish version ${release.version}? (y)es/(n)o:" validargs="y,n" addproperty="release.release.input"/>
     <fail message="Canceled">
