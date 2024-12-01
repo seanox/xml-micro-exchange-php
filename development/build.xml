@@ -167,37 +167,54 @@
     </fileset>
   </path>
 
+  <macrodef name="load-test-cases">
+    <sequential>
+      <echo file="___temp" force="true">
+        ${workspace.test}/connect.http
+        ${workspace.test}/delete_attribute.http
+        ${workspace.test}/delete_element.http
+        ${workspace.test}/delete_element_pseudo.http
+        ${workspace.test}/get.http
+        ${workspace.test}/getting_started.http
+        ${workspace.test}/options.http
+        ${workspace.test}/patch_attribute.http
+        ${workspace.test}/patch_element.http
+        ${workspace.test}/patch_text.http
+        ${workspace.test}/post.http
+        ${workspace.test}/put_attribute.http
+        ${workspace.test}/put_connect.http
+        ${workspace.test}/put_element.http
+        ${workspace.test}/put_element_pseudo.http
+        ${workspace.test}/put_text.http
+        ${workspace.test}/request.http
+        ${workspace.test}/snake.http
+      </echo>
+      <replaceregexp file="___temp" match="(?s)\s+" flags="g" byline="false" replace=" "/>
+      <replaceregexp file="___temp" match="(^\s+)|(\s$)" flags="g" byline="false" replace=""/>
+      <loadfile property="test.cases" srcFile="___temp"/>
+      <delete file="___temp"/>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="load-test-cli">
+    <sequential>
+      <get src="https://download.jetbrains.com/resources/intellij/http-client/233.11799.241/intellij-http-client.zip"
+          dest="${workspace.test}/cli.zip" skipexisting="true"/>
+      <delete dir="${workspace.test}/cli"/>
+      <unzip src="${workspace.test}/cli.zip" dest="${workspace.test}"/>
+      <move file="${workspace.test}/ijhttp" tofile="${workspace.test}/cli"/>
+    </sequential>
+  </macrodef>
+
   <target name="test">
+    <load-test-cases/>
+    <load-test-cli/>
     <delete dir="${workspace.sources}/data"/>
-    <get src="https://download.jetbrains.com/resources/intellij/http-client/233.11799.241/intellij-http-client.zip"
-        dest="${workspace.test}/cli.zip" skipexisting="true"/>
-    <delete dir="${workspace.test}/cli"/>
-    <unzip src="${workspace.test}/cli.zip" dest="${workspace.test}"/>
-    <move file="${workspace.test}/ijhttp" tofile="${workspace.test}/cli"/>
     <java classname="com.intellij.httpClient.cli.HttpClientMain">
       <classpath refid="classpath.httpclient"/>
-      <arg value="--env-file"/>
-      <arg value="${workspace.test}/http-client.env.json"/>
-      <arg value="--env"/>
-      <arg value="local"/>
-      <arg value="${workspace.test}/connect.http"/>
-      <arg value="${workspace.test}/delete_attribute.http"/>
-      <arg value="${workspace.test}/delete_element.http"/>
-      <arg value="${workspace.test}/delete_element_pseudo.http"/>
-      <arg value="${workspace.test}/get.http"/>
-      <arg value="${workspace.test}/getting_started.http"/>
-      <arg value="${workspace.test}/options.http"/>
-      <arg value="${workspace.test}/patch_attribute.http"/>
-      <arg value="${workspace.test}/patch_element.http"/>
-      <arg value="${workspace.test}/patch_text.http"/>
-      <arg value="${workspace.test}/post.http"/>
-      <arg value="${workspace.test}/put_attribute.http"/>
-      <arg value="${workspace.test}/put_connect.http"/>
-      <arg value="${workspace.test}/put_element.http"/>
-      <arg value="${workspace.test}/put_element_pseudo.http"/>
-      <arg value="${workspace.test}/put_text.http"/>
-      <arg value="${workspace.test}/request.http"/>
-      <arg value="${workspace.test}/snake.http"/>
+      <arg line="--env-file ${workspace.test}/http-client.env.json"/>
+      <arg line="--env local"/>
+      <arg line="${test.cases}"/>
     </java>
   </target>
 
@@ -242,44 +259,36 @@
     </fail>
 
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c"/>
-      <arg value="docker"/>
-      <arg value="build"/>
-      <arg value="-t"/>
-      <arg value="xmex:${release.version}-php"/>
-      <arg value="-t"/>
-      <arg value="seanox/xmex:${release.version}-php"/>
-      <arg value="-t"/>
-      <arg value="xmex:php"/>
-      <arg value="-t"/>
-      <arg value="xmex:latest"/>
-      <arg value="-t"/>
-      <arg value="seanox/xmex:php"/>
-      <arg value="-t"/>
-      <arg value="seanox/xmex:latest"/>
+      <arg line="/c docker build"/>
+      <arg line="-t xmex:${release.version}-php"/>
+      <arg line="-t seanox/xmex:${release.version}-php"/>
+      <arg line="-t xmex:php"/>
+      <arg line="-t xmex:latest"/>
+      <arg line="-t seanox/xmex:php"/>
+      <arg line="-t seanox/xmex:latest"/>
       <arg value="."/>
     </exec>
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker images --filter=reference=seanox/xmex --filter=reference=xmex"/>
+      <arg line="/c docker images --filter=reference=seanox/xmex --filter=reference=xmex"/>
     </exec>
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker system prune -f"/>
+      <arg line="/c docker system prune -f"/>
     </exec>
 
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker login -u=${docker.id} -p=${docker.password} ${docker.registry}"/>
+      <arg line="/c docker login -u=${docker.id} -p=${docker.password} ${docker.registry}"/>
     </exec>
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker push seanox/xmex:${release.version}-php"/>
+      <arg line="/c docker push seanox/xmex:${release.version}-php"/>
     </exec>
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker push seanox/xmex:php"/>
+      <arg line="/c docker push seanox/xmex:php"/>
     </exec>
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker push seanox/xmex:latest"/>
+      <arg line="/c docker push seanox/xmex:latest"/>
     </exec>
     <exec executable="cmd" failonerror="true" failifexecutionfails="true">
-      <arg value="/c docker logout"/>
+      <arg line="/c docker logout"/>
     </exec>
   </target>
 </project>
