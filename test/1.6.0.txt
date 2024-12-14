@@ -3042,19 +3042,170 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 11574
+Content-Length: 13333
 Trace-Request-Hash: bee9dd34525bc35cae05c083a5bc3da2
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 0369f631ce9a33392f7c0e202a83266e
-Trace-Response-Data-Hash: a1f79aaf4e80d5654fbb2c50c7ea2c93
+Trace-Response-Header-Hash: 39240c0eba08cfe4d9c2b02ba87bdd91
+Trace-Response-Data-Hash: 76f542d94988878f8fa8e8389acc1e2b
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<statistic ___rev="2" ___uid="1:1"><cities ___uid="2:1" ___rev="2"><city name="Berlin" empty="" ___uid="2:2" ___rev="2"><districts ___uid="2:3" ___rev="2"><district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2"><quarters ___uid="2:5" ___rev="2"><quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/><quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/><quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/><quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/><quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/><quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/><quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/></quarters></district><district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2"><quarters ___uid="2:14" ___rev="2"><quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/><quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/></quarters></district><district name="Lichtenberg" ___uid="2:17" ___rev="2"><quarters ___uid="2:18" ___rev="2"><quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/><quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/><quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/><quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/><quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/><quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/><quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/><quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/><quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/><quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/></quarters></district><district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2"><quarters ___uid="2:30" ___rev="2"><quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/><quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/><quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/><quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/><quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/></quarters></district><district name="Mitte" ___uid="2:36" ___rev="2"><quarters ___uid="2:37" ___rev="2"><quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/><quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/><quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/><quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/><quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/><quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/></quarters></district><district name="Neuk�lln" ___uid="2:44" ___rev="2"><quarters ___uid="2:45" ___rev="2"><quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/><quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/><quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/><quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/><quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/></quarters></district><district name="Pankow" ___uid="2:51" ___rev="2"><quarters ___uid="2:52" ___rev="2"><quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/><quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/><quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/><quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/><quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/><quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/><quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/><quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/><quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/><quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/><quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/><quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/><quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/></quarters></district><district name="Reinickendorf" ___uid="2:66" ___rev="2"><quarters ___uid="2:67" ___rev="2"><quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/><quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/><quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/><quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/><quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/><quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/><quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/><quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/><quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/><quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/><quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/></quarters></district><district name="Spandau" ___uid="2:79" ___rev="2"><quarters ___uid="2:80" ___rev="2"><quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/><quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/><quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/><quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/><quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/><quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/><quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/><quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/><quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/></quarters></district><district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2"><quarters ___uid="2:91" ___rev="2"><quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/><quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/><quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/><quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/><quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/><quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/><quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/></quarters></district><district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2"><quarters ___uid="2:100" ___rev="2"><quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/><quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/><quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/><quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/><quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/><quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/></quarters></district><district name="Treptow-K�penick" ___uid="2:107" ___rev="2"><quarters ___uid="2:108" ___rev="2"><quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/><quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/><quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/><quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/><quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/><quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/><quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/><quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/><quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/><quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/><quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/><quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/><quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/><quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/><quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/></quarters></district></districts></city></cities></statistic>
+<statistic ___rev="2" ___uid="1:1">
+  <cities ___uid="2:1" ___rev="2">
+    <city name="Berlin" empty="" ___uid="2:2" ___rev="2">
+      <districts ___uid="2:3" ___rev="2">
+        <district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2">
+          <quarters ___uid="2:5" ___rev="2">
+            <quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/>
+            <quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/>
+            <quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/>
+            <quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/>
+            <quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/>
+            <quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/>
+            <quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2">
+          <quarters ___uid="2:14" ___rev="2">
+            <quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/>
+            <quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Lichtenberg" ___uid="2:17" ___rev="2">
+          <quarters ___uid="2:18" ___rev="2">
+            <quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/>
+            <quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/>
+            <quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/>
+            <quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/>
+            <quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/>
+            <quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/>
+            <quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/>
+            <quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/>
+            <quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/>
+            <quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2">
+          <quarters ___uid="2:30" ___rev="2">
+            <quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/>
+            <quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/>
+            <quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/>
+            <quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/>
+            <quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Mitte" ___uid="2:36" ___rev="2">
+          <quarters ___uid="2:37" ___rev="2">
+            <quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/>
+            <quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/>
+            <quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/>
+            <quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/>
+            <quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/>
+            <quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Neuk�lln" ___uid="2:44" ___rev="2">
+          <quarters ___uid="2:45" ___rev="2">
+            <quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/>
+            <quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/>
+            <quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/>
+            <quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/>
+            <quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Pankow" ___uid="2:51" ___rev="2">
+          <quarters ___uid="2:52" ___rev="2">
+            <quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/>
+            <quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/>
+            <quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/>
+            <quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/>
+            <quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/>
+            <quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/>
+            <quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/>
+            <quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/>
+            <quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/>
+            <quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/>
+            <quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/>
+            <quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/>
+            <quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Reinickendorf" ___uid="2:66" ___rev="2">
+          <quarters ___uid="2:67" ___rev="2">
+            <quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/>
+            <quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/>
+            <quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/>
+            <quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/>
+            <quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/>
+            <quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/>
+            <quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/>
+            <quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/>
+            <quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/>
+            <quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/>
+            <quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Spandau" ___uid="2:79" ___rev="2">
+          <quarters ___uid="2:80" ___rev="2">
+            <quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/>
+            <quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/>
+            <quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/>
+            <quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/>
+            <quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/>
+            <quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/>
+            <quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/>
+            <quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/>
+            <quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2">
+          <quarters ___uid="2:91" ___rev="2">
+            <quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/>
+            <quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/>
+            <quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/>
+            <quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/>
+            <quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/>
+            <quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/>
+            <quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2">
+          <quarters ___uid="2:100" ___rev="2">
+            <quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/>
+            <quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/>
+            <quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/>
+            <quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/>
+            <quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/>
+            <quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Treptow-K�penick" ___uid="2:107" ___rev="2">
+          <quarters ___uid="2:108" ___rev="2">
+            <quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/>
+            <quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/>
+            <quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/>
+            <quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/>
+            <quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/>
+            <quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/>
+            <quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/>
+            <quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/>
+            <quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/>
+            <quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/>
+            <quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/>
+            <quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/>
+            <quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/>
+            <quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/>
+            <quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/>
+          </quarters>
+        </district>
+      </districts>
+    </city>
+  </cities>
+</statistic>
  
-Response code: 200 (Success); Content length: 11554 bytes (11,55 kB)
+Response code: 200 (Success); Content length: 13313 bytes (13,31 kB)
  
 Request '#5' GET http://127.0.0.1/xmex!
 = request =>
@@ -3077,19 +3228,170 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 11574
+Content-Length: 13333
 Trace-Request-Hash: bee9dd34525bc35cae05c083a5bc3da2
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 0369f631ce9a33392f7c0e202a83266e
-Trace-Response-Data-Hash: a1f79aaf4e80d5654fbb2c50c7ea2c93
+Trace-Response-Header-Hash: 39240c0eba08cfe4d9c2b02ba87bdd91
+Trace-Response-Data-Hash: 76f542d94988878f8fa8e8389acc1e2b
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<statistic ___rev="2" ___uid="1:1"><cities ___uid="2:1" ___rev="2"><city name="Berlin" empty="" ___uid="2:2" ___rev="2"><districts ___uid="2:3" ___rev="2"><district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2"><quarters ___uid="2:5" ___rev="2"><quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/><quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/><quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/><quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/><quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/><quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/><quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/></quarters></district><district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2"><quarters ___uid="2:14" ___rev="2"><quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/><quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/></quarters></district><district name="Lichtenberg" ___uid="2:17" ___rev="2"><quarters ___uid="2:18" ___rev="2"><quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/><quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/><quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/><quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/><quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/><quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/><quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/><quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/><quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/><quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/></quarters></district><district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2"><quarters ___uid="2:30" ___rev="2"><quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/><quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/><quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/><quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/><quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/></quarters></district><district name="Mitte" ___uid="2:36" ___rev="2"><quarters ___uid="2:37" ___rev="2"><quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/><quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/><quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/><quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/><quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/><quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/></quarters></district><district name="Neuk�lln" ___uid="2:44" ___rev="2"><quarters ___uid="2:45" ___rev="2"><quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/><quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/><quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/><quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/><quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/></quarters></district><district name="Pankow" ___uid="2:51" ___rev="2"><quarters ___uid="2:52" ___rev="2"><quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/><quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/><quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/><quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/><quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/><quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/><quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/><quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/><quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/><quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/><quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/><quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/><quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/></quarters></district><district name="Reinickendorf" ___uid="2:66" ___rev="2"><quarters ___uid="2:67" ___rev="2"><quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/><quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/><quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/><quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/><quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/><quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/><quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/><quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/><quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/><quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/><quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/></quarters></district><district name="Spandau" ___uid="2:79" ___rev="2"><quarters ___uid="2:80" ___rev="2"><quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/><quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/><quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/><quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/><quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/><quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/><quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/><quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/><quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/></quarters></district><district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2"><quarters ___uid="2:91" ___rev="2"><quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/><quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/><quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/><quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/><quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/><quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/><quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/></quarters></district><district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2"><quarters ___uid="2:100" ___rev="2"><quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/><quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/><quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/><quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/><quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/><quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/></quarters></district><district name="Treptow-K�penick" ___uid="2:107" ___rev="2"><quarters ___uid="2:108" ___rev="2"><quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/><quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/><quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/><quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/><quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/><quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/><quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/><quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/><quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/><quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/><quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/><quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/><quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/><quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/><quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/></quarters></district></districts></city></cities></statistic>
+<statistic ___rev="2" ___uid="1:1">
+  <cities ___uid="2:1" ___rev="2">
+    <city name="Berlin" empty="" ___uid="2:2" ___rev="2">
+      <districts ___uid="2:3" ___rev="2">
+        <district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2">
+          <quarters ___uid="2:5" ___rev="2">
+            <quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/>
+            <quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/>
+            <quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/>
+            <quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/>
+            <quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/>
+            <quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/>
+            <quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2">
+          <quarters ___uid="2:14" ___rev="2">
+            <quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/>
+            <quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Lichtenberg" ___uid="2:17" ___rev="2">
+          <quarters ___uid="2:18" ___rev="2">
+            <quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/>
+            <quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/>
+            <quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/>
+            <quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/>
+            <quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/>
+            <quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/>
+            <quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/>
+            <quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/>
+            <quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/>
+            <quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2">
+          <quarters ___uid="2:30" ___rev="2">
+            <quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/>
+            <quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/>
+            <quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/>
+            <quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/>
+            <quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Mitte" ___uid="2:36" ___rev="2">
+          <quarters ___uid="2:37" ___rev="2">
+            <quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/>
+            <quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/>
+            <quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/>
+            <quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/>
+            <quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/>
+            <quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Neuk�lln" ___uid="2:44" ___rev="2">
+          <quarters ___uid="2:45" ___rev="2">
+            <quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/>
+            <quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/>
+            <quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/>
+            <quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/>
+            <quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Pankow" ___uid="2:51" ___rev="2">
+          <quarters ___uid="2:52" ___rev="2">
+            <quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/>
+            <quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/>
+            <quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/>
+            <quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/>
+            <quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/>
+            <quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/>
+            <quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/>
+            <quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/>
+            <quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/>
+            <quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/>
+            <quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/>
+            <quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/>
+            <quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Reinickendorf" ___uid="2:66" ___rev="2">
+          <quarters ___uid="2:67" ___rev="2">
+            <quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/>
+            <quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/>
+            <quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/>
+            <quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/>
+            <quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/>
+            <quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/>
+            <quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/>
+            <quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/>
+            <quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/>
+            <quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/>
+            <quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Spandau" ___uid="2:79" ___rev="2">
+          <quarters ___uid="2:80" ___rev="2">
+            <quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/>
+            <quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/>
+            <quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/>
+            <quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/>
+            <quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/>
+            <quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/>
+            <quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/>
+            <quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/>
+            <quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2">
+          <quarters ___uid="2:91" ___rev="2">
+            <quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/>
+            <quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/>
+            <quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/>
+            <quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/>
+            <quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/>
+            <quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/>
+            <quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2">
+          <quarters ___uid="2:100" ___rev="2">
+            <quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/>
+            <quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/>
+            <quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/>
+            <quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/>
+            <quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/>
+            <quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/>
+          </quarters>
+        </district>
+        <district name="Treptow-K�penick" ___uid="2:107" ___rev="2">
+          <quarters ___uid="2:108" ___rev="2">
+            <quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/>
+            <quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/>
+            <quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/>
+            <quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/>
+            <quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/>
+            <quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/>
+            <quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/>
+            <quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/>
+            <quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/>
+            <quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/>
+            <quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/>
+            <quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/>
+            <quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/>
+            <quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/>
+            <quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/>
+          </quarters>
+        </district>
+      </districts>
+    </city>
+  </cities>
+</statistic>
  
-Response code: 200 (Success); Content length: 11554 bytes (11,55 kB)
+Response code: 200 (Success); Content length: 13313 bytes (13,31 kB)
  
 Request '#6' GET http://127.0.0.1/xmex!?282f7374617469737469632f2f64697374726963747329
 = request =>
@@ -3112,19 +3414,164 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 11426
+Content-Length: 12291
 Trace-Request-Hash: 7f6b7142b83927724b6a8e0522b8df2f
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 3c3d373f9d85475d9e712b9cc4c53d62
-Trace-Response-Data-Hash: 1a68ee4d38169bd1078b5c5f21df16c4
+Trace-Response-Header-Hash: d77920ffbdb0da2def6590e1500037df
+Trace-Response-Data-Hash: c2796318561ed6049a94784865e46d70
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<districts ___uid="2:3" ___rev="2"><district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2"><quarters ___uid="2:5" ___rev="2"><quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/><quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/><quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/><quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/><quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/><quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/><quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/></quarters></district><district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2"><quarters ___uid="2:14" ___rev="2"><quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/><quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/></quarters></district><district name="Lichtenberg" ___uid="2:17" ___rev="2"><quarters ___uid="2:18" ___rev="2"><quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/><quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/><quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/><quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/><quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/><quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/><quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/><quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/><quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/><quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/></quarters></district><district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2"><quarters ___uid="2:30" ___rev="2"><quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/><quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/><quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/><quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/><quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/></quarters></district><district name="Mitte" ___uid="2:36" ___rev="2"><quarters ___uid="2:37" ___rev="2"><quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/><quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/><quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/><quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/><quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/><quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/></quarters></district><district name="Neuk�lln" ___uid="2:44" ___rev="2"><quarters ___uid="2:45" ___rev="2"><quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/><quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/><quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/><quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/><quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/></quarters></district><district name="Pankow" ___uid="2:51" ___rev="2"><quarters ___uid="2:52" ___rev="2"><quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/><quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/><quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/><quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/><quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/><quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/><quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/><quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/><quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/><quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/><quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/><quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/><quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/></quarters></district><district name="Reinickendorf" ___uid="2:66" ___rev="2"><quarters ___uid="2:67" ___rev="2"><quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/><quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/><quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/><quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/><quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/><quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/><quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/><quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/><quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/><quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/><quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/></quarters></district><district name="Spandau" ___uid="2:79" ___rev="2"><quarters ___uid="2:80" ___rev="2"><quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/><quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/><quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/><quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/><quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/><quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/><quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/><quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/><quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/></quarters></district><district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2"><quarters ___uid="2:91" ___rev="2"><quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/><quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/><quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/><quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/><quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/><quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/><quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/></quarters></district><district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2"><quarters ___uid="2:100" ___rev="2"><quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/><quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/><quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/><quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/><quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/><quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/></quarters></district><district name="Treptow-K�penick" ___uid="2:107" ___rev="2"><quarters ___uid="2:108" ___rev="2"><quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/><quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/><quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/><quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/><quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/><quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/><quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/><quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/><quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/><quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/><quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/><quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/><quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/><quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/><quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/></quarters></district></districts>
+<districts ___uid="2:3" ___rev="2">
+  <district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2">
+    <quarters ___uid="2:5" ___rev="2">
+      <quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/>
+      <quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/>
+      <quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/>
+      <quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/>
+      <quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/>
+      <quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/>
+      <quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2">
+    <quarters ___uid="2:14" ___rev="2">
+      <quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/>
+      <quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Lichtenberg" ___uid="2:17" ___rev="2">
+    <quarters ___uid="2:18" ___rev="2">
+      <quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/>
+      <quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/>
+      <quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/>
+      <quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/>
+      <quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/>
+      <quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/>
+      <quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/>
+      <quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/>
+      <quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/>
+      <quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2">
+    <quarters ___uid="2:30" ___rev="2">
+      <quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/>
+      <quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/>
+      <quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/>
+      <quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/>
+      <quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Mitte" ___uid="2:36" ___rev="2">
+    <quarters ___uid="2:37" ___rev="2">
+      <quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/>
+      <quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/>
+      <quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/>
+      <quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/>
+      <quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/>
+      <quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Neuk�lln" ___uid="2:44" ___rev="2">
+    <quarters ___uid="2:45" ___rev="2">
+      <quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/>
+      <quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/>
+      <quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/>
+      <quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/>
+      <quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Pankow" ___uid="2:51" ___rev="2">
+    <quarters ___uid="2:52" ___rev="2">
+      <quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/>
+      <quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/>
+      <quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/>
+      <quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/>
+      <quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/>
+      <quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/>
+      <quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/>
+      <quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/>
+      <quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/>
+      <quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/>
+      <quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/>
+      <quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/>
+      <quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Reinickendorf" ___uid="2:66" ___rev="2">
+    <quarters ___uid="2:67" ___rev="2">
+      <quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/>
+      <quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/>
+      <quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/>
+      <quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/>
+      <quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/>
+      <quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/>
+      <quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/>
+      <quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/>
+      <quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/>
+      <quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/>
+      <quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Spandau" ___uid="2:79" ___rev="2">
+    <quarters ___uid="2:80" ___rev="2">
+      <quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/>
+      <quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/>
+      <quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/>
+      <quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/>
+      <quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/>
+      <quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/>
+      <quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/>
+      <quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/>
+      <quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2">
+    <quarters ___uid="2:91" ___rev="2">
+      <quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/>
+      <quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/>
+      <quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/>
+      <quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/>
+      <quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/>
+      <quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/>
+      <quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2">
+    <quarters ___uid="2:100" ___rev="2">
+      <quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/>
+      <quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/>
+      <quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/>
+      <quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/>
+      <quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/>
+      <quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Treptow-K�penick" ___uid="2:107" ___rev="2">
+    <quarters ___uid="2:108" ___rev="2">
+      <quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/>
+      <quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/>
+      <quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/>
+      <quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/>
+      <quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/>
+      <quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/>
+      <quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/>
+      <quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/>
+      <quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/>
+      <quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/>
+      <quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/>
+      <quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/>
+      <quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/>
+      <quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/>
+      <quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/>
+    </quarters>
+  </district>
+</districts>
  
-Response code: 200 (Success); Content length: 11406 bytes (11,41 kB)
+Response code: 200 (Success); Content length: 12271 bytes (12,27 kB)
  
 Request '#7' GET http://127.0.0.1/xmex!?282f7374617469737469632f2f646973747269637473292f6469737472696374
 = request =>
@@ -3147,19 +3594,164 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 11404
+Content-Length: 12269
 Trace-Request-Hash: 5c52437eeb8ddbd87597bd9c0049332d
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 0c1d8ca4a94d6c212a3fa2d3d89bd417
-Trace-Response-Data-Hash: 9551b47ee3cb9a71fefbefbabf72ded5
+Trace-Response-Header-Hash: 68a7065e6eaaefe45e1b436950868b5e
+Trace-Response-Data-Hash: 97f17546e9a82e8e1b2542536be62c9d
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<collection><district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2"><quarters ___uid="2:5" ___rev="2"><quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/><quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/><quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/><quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/><quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/><quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/><quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/></quarters></district><district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2"><quarters ___uid="2:14" ___rev="2"><quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/><quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/></quarters></district><district name="Lichtenberg" ___uid="2:17" ___rev="2"><quarters ___uid="2:18" ___rev="2"><quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/><quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/><quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/><quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/><quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/><quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/><quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/><quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/><quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/><quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/></quarters></district><district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2"><quarters ___uid="2:30" ___rev="2"><quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/><quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/><quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/><quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/><quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/></quarters></district><district name="Mitte" ___uid="2:36" ___rev="2"><quarters ___uid="2:37" ___rev="2"><quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/><quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/><quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/><quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/><quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/><quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/></quarters></district><district name="Neuk�lln" ___uid="2:44" ___rev="2"><quarters ___uid="2:45" ___rev="2"><quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/><quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/><quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/><quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/><quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/></quarters></district><district name="Pankow" ___uid="2:51" ___rev="2"><quarters ___uid="2:52" ___rev="2"><quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/><quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/><quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/><quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/><quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/><quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/><quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/><quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/><quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/><quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/><quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/><quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/><quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/></quarters></district><district name="Reinickendorf" ___uid="2:66" ___rev="2"><quarters ___uid="2:67" ___rev="2"><quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/><quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/><quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/><quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/><quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/><quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/><quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/><quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/><quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/><quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/><quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/></quarters></district><district name="Spandau" ___uid="2:79" ___rev="2"><quarters ___uid="2:80" ___rev="2"><quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/><quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/><quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/><quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/><quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/><quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/><quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/><quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/><quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/></quarters></district><district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2"><quarters ___uid="2:91" ___rev="2"><quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/><quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/><quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/><quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/><quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/><quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/><quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/></quarters></district><district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2"><quarters ___uid="2:100" ___rev="2"><quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/><quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/><quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/><quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/><quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/><quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/></quarters></district><district name="Treptow-K�penick" ___uid="2:107" ___rev="2"><quarters ___uid="2:108" ___rev="2"><quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/><quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/><quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/><quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/><quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/><quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/><quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/><quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/><quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/><quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/><quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/><quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/><quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/><quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/><quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/></quarters></district></collection>
+<collection>
+  <district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2">
+    <quarters ___uid="2:5" ___rev="2">
+      <quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/>
+      <quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/>
+      <quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/>
+      <quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/>
+      <quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/>
+      <quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/>
+      <quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Friedrichshain-Kreuzberg" ___uid="2:13" ___rev="2">
+    <quarters ___uid="2:14" ___rev="2">
+      <quarter name="Friedrichshain" area="9.78" inhabitants="136035" population="13910" ___uid="2:15" ___rev="2"/>
+      <quarter name="Kreuzberg" area="10.4" inhabitants="154351" population="14841" ___uid="2:16" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Lichtenberg" ___uid="2:17" ___rev="2">
+    <quarters ___uid="2:18" ___rev="2">
+      <quarter name="Alt-Hohensch�nhausen" area="9.33" inhabitants="48979" population="5250" ___uid="2:19" ___rev="2"/>
+      <quarter name="Falkenberg" area="3.06" inhabitants="1870" population="611.1" ___uid="2:20" ___rev="2"/>
+      <quarter name="Fennpfuhl" area="2.12" inhabitants="34074" population="16073" ___uid="2:21" ___rev="2"/>
+      <quarter name="Friedrichsfelde" area="5.55" inhabitants="53813" population="9696" ___uid="2:22" ___rev="2"/>
+      <quarter name="Karlshorst" area="6.6" inhabitants="27956" population="4236" ___uid="2:23" ___rev="2"/>
+      <quarter name="Lichtenberg" area="7.22" inhabitants="41758" population="5784" ___uid="2:24" ___rev="2"/>
+      <quarter name="Malchow" area="1.54" inhabitants="635" population="412.3" ___uid="2:25" ___rev="2"/>
+      <quarter name="Neu-Hohensch�nhausen" area="5.16" inhabitants="56918" population="11031" ___uid="2:26" ___rev="2"/>
+      <quarter name="Rummelsburg" area="4.52" inhabitants="25650" population="5675" ___uid="2:27" ___rev="2"/>
+      <quarter name="Wartenberg" area="6.92" inhabitants="2548" population="368.2" ___uid="2:28" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Marzahn-Hellersdorf" ___uid="2:29" ___rev="2">
+    <quarters ___uid="2:30" ___rev="2">
+      <quarter name="Biesdorf" area="12.4" inhabitants="28069" population="2264" ___uid="2:31" ___rev="2"/>
+      <quarter name="Hellersdorf" area="8.1" inhabitants="82109" population="10137" ___uid="2:32" ___rev="2"/>
+      <quarter name="Kaulsdorf" area="8.81" inhabitants="19408" population="2203" ___uid="2:33" ___rev="2"/>
+      <quarter name="Mahlsdorf" area="12.9" inhabitants="29360" population="2276" ___uid="2:34" ___rev="2"/>
+      <quarter name="Marzahn" area="19.5" inhabitants="111021" population="5693" ___uid="2:35" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Mitte" ___uid="2:36" ___rev="2">
+    <quarters ___uid="2:37" ___rev="2">
+      <quarter name="Gesundbrunnen" area="6.13" inhabitants="95175" population="15526" ___uid="2:38" ___rev="2"/>
+      <quarter name="Hansaviertel" area="0.53" inhabitants="5926" population="11181" ___uid="2:39" ___rev="2"/>
+      <quarter name="Mitte" area="10.7" inhabitants="102465" population="9576" ___uid="2:40" ___rev="2"/>
+      <quarter name="Moabit" area="7.72" inhabitants="80495" population="10427" ___uid="2:41" ___rev="2"/>
+      <quarter name="Tiergarten" area="5.17" inhabitants="14881" population="2878" ___uid="2:42" ___rev="2"/>
+      <quarter name="Wedding" area="9.23" inhabitants="86806" population="9405" ___uid="2:43" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Neuk�lln" ___uid="2:44" ___rev="2">
+    <quarters ___uid="2:45" ___rev="2">
+      <quarter name="Britz" area="12.4" inhabitants="42796" population="3451" ___uid="2:46" ___rev="2"/>
+      <quarter name="Buckow" area="6.35" inhabitants="40703" population="6410" ___uid="2:47" ___rev="2"/>
+      <quarter name="Gropiusstadt" area="2.66" inhabitants="37630" population="14147" ___uid="2:48" ___rev="2"/>
+      <quarter name="Neuk�lln" area="11.7" inhabitants="166157" population="14201" ___uid="2:49" ___rev="2"/>
+      <quarter name="Rudow" area="11.8" inhabitants="42631" population="3613" ___uid="2:50" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Pankow" ___uid="2:51" ___rev="2">
+    <quarters ___uid="2:52" ___rev="2">
+      <quarter name="Blankenburg" area="6.03" inhabitants="6875" population="1140" ___uid="2:53" ___rev="2"/>
+      <quarter name="Blankenfelde" area="13.4" inhabitants="2064" population="154" ___uid="2:54" ___rev="2"/>
+      <quarter name="Buch" area="18.2" inhabitants="16868" population="926.8" ___uid="2:55" ___rev="2"/>
+      <quarter name="Franz�sisch Buchholz" area="12" inhabitants="21281" population="1773" ___uid="2:56" ___rev="2"/>
+      <quarter name="Heinersdorf" area="3.95" inhabitants="7869" population="1992" ___uid="2:57" ___rev="2"/>
+      <quarter name="Karow" area="6.65" inhabitants="19679" population="2959" ___uid="2:58" ___rev="2"/>
+      <quarter name="Niedersch�nhausen" area="6.49" inhabitants="31996" population="4930" ___uid="2:59" ___rev="2"/>
+      <quarter name="Pankow" area="5.66" inhabitants="64945" population="11474" ___uid="2:60" ___rev="2"/>
+      <quarter name="Prenzlauer Berg" area="11" inhabitants="165003" population="15000" ___uid="2:61" ___rev="2"/>
+      <quarter name="Rosenthal" area="4.9" inhabitants="9596" population="1958" ___uid="2:62" ___rev="2"/>
+      <quarter name="Stadtrandsiedlung Malchow" area="5.68" inhabitants="1120" population="197.2" ___uid="2:63" ___rev="2"/>
+      <quarter name="Wei�ensee" area="7.93" inhabitants="54032" population="6814" ___uid="2:64" ___rev="2"/>
+      <quarter name="Wilhelmsruh" area="1.37" inhabitants="8007" population="5845" ___uid="2:65" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Reinickendorf" ___uid="2:66" ___rev="2">
+    <quarters ___uid="2:67" ___rev="2">
+      <quarter name="Borsigwalde" area="2" inhabitants="6777" population="3389" ___uid="2:68" ___rev="2"/>
+      <quarter name="Frohnau" area="7.8" inhabitants="16814" population="2156" ___uid="2:69" ___rev="2"/>
+      <quarter name="Heiligensee" area="10.7" inhabitants="18100" population="1692" ___uid="2:70" ___rev="2"/>
+      <quarter name="Hermsdorf" area="6.1" inhabitants="16607" population="2722" ___uid="2:71" ___rev="2"/>
+      <quarter name="Konradsh�he" area="2.2" inhabitants="6004" population="2729" ___uid="2:72" ___rev="2"/>
+      <quarter name="L�bars" area="5" inhabitants="5203" population="1041" ___uid="2:73" ___rev="2"/>
+      <quarter name="M�rkisches Viertel" area="3.2" inhabitants="40379" population="12618" ___uid="2:74" ___rev="2"/>
+      <quarter name="Reinickendorf" area="10.5" inhabitants="83909" population="7991" ___uid="2:75" ___rev="2"/>
+      <quarter name="Tegel" area="33.7" inhabitants="36986" population="1098" ___uid="2:76" ___rev="2"/>
+      <quarter name="Waidmannslust" area="2.3" inhabitants="10973" population="4771" ___uid="2:77" ___rev="2"/>
+      <quarter name="Wittenau" area="5.9" inhabitants="24656" population="4179" ___uid="2:78" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Spandau" ___uid="2:79" ___rev="2">
+    <quarters ___uid="2:80" ___rev="2">
+      <quarter name="Falkenhagener Feld" area="6.88" inhabitants="38759" population="5634" ___uid="2:81" ___rev="2"/>
+      <quarter name="Gatow" area="10.1" inhabitants="3733" population="369.6" ___uid="2:82" ___rev="2"/>
+      <quarter name="Hakenfelde" area="20.4" inhabitants="31296" population="1534" ___uid="2:83" ___rev="2"/>
+      <quarter name="Haselhorst" area="4.73" inhabitants="15663" population="3311" ___uid="2:84" ___rev="2"/>
+      <quarter name="Kladow" area="14.8" inhabitants="16212" population="1095" ___uid="2:85" ___rev="2"/>
+      <quarter name="Siemensstadt" area="5.66" inhabitants="12831" population="2267" ___uid="2:86" ___rev="2"/>
+      <quarter name="Spandau" area="8.03" inhabitants="39560" population="4927" ___uid="2:87" ___rev="2"/>
+      <quarter name="Staaken" area="10.9" inhabitants="46607" population="4276" ___uid="2:88" ___rev="2"/>
+      <quarter name="Wilhelmstadt" area="10.4" inhabitants="40536" population="3898" ___uid="2:89" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Steglitz-Zehlendorf" ___uid="2:90" ___rev="2">
+    <quarters ___uid="2:91" ___rev="2">
+      <quarter name="Dahlem" area="8.39" inhabitants="16929" population="2018" ___uid="2:92" ___rev="2"/>
+      <quarter name="Lankwitz" area="6.99" inhabitants="43566" population="6233" ___uid="2:93" ___rev="2"/>
+      <quarter name="Lichterfelde" area="18.2" inhabitants="86206" population="4737" ___uid="2:94" ___rev="2"/>
+      <quarter name="Nikolassee" area="19.6" inhabitants="16695" population="851.8" ___uid="2:95" ___rev="2"/>
+      <quarter name="Steglitz" area="6.79" inhabitants="75803" population="11164" ___uid="2:96" ___rev="2"/>
+      <quarter name="Wannsee" area="23.7" inhabitants="10334" population="436" ___uid="2:97" ___rev="2"/>
+      <quarter name="Zehlendorf" area="18.8" inhabitants="60538" population="3220" ___uid="2:98" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Tempelhof-Sch�neberg" ___uid="2:99" ___rev="2">
+    <quarters ___uid="2:100" ___rev="2">
+      <quarter name="Friedenau" area="1.65" inhabitants="28263" population="17129" ___uid="2:101" ___rev="2"/>
+      <quarter name="Lichtenrade" area="10.1" inhabitants="51955" population="5144" ___uid="2:102" ___rev="2"/>
+      <quarter name="Mariendorf" area="9.38" inhabitants="53094" population="5660" ___uid="2:103" ___rev="2"/>
+      <quarter name="Marienfelde" area="9.15" inhabitants="32349" population="3535" ___uid="2:104" ___rev="2"/>
+      <quarter name="Sch�neberg" area="10.6" inhabitants="123075" population="11611" ___uid="2:105" ___rev="2"/>
+      <quarter name="Tempelhof" area="12.2" inhabitants="62248" population="5102" ___uid="2:106" ___rev="2"/>
+    </quarters>
+  </district>
+  <district name="Treptow-K�penick" ___uid="2:107" ___rev="2">
+    <quarters ___uid="2:108" ___rev="2">
+      <quarter name="Adlershof" area="6.11" inhabitants="19934" population="3263" ___uid="2:109" ___rev="2"/>
+      <quarter name="Altglienicke" area="7.89" inhabitants="29357" population="3721" ___uid="2:110" ___rev="2"/>
+      <quarter name="Alt-Treptow" area="2.31" inhabitants="12878" population="5575" ___uid="2:111" ___rev="2"/>
+      <quarter name="Baumschulenweg" area="4.82" inhabitants="18842" population="3909" ___uid="2:112" ___rev="2"/>
+      <quarter name="Bohnsdorf" area="6.52" inhabitants="11671" population="1790" ___uid="2:113" ___rev="2"/>
+      <quarter name="Friedrichshagen" area="14" inhabitants="19145" population="1368" ___uid="2:114" ___rev="2"/>
+      <quarter name="Gr�nau" area="9.13" inhabitants="6784" population="743" ___uid="2:115" ___rev="2"/>
+      <quarter name="Johannisthal" area="6.54" inhabitants="19853" population="3036" ___uid="2:116" ___rev="2"/>
+      <quarter name="K�penick" area="34.9" inhabitants="66765" population="1913" ___uid="2:117" ___rev="2"/>
+      <quarter name="M�ggelheim" area="22.2" inhabitants="6798" population="306.2" ___uid="2:118" ___rev="2"/>
+      <quarter name="Niedersch�neweide" area="3.49" inhabitants="12850" population="3682" ___uid="2:119" ___rev="2"/>
+      <quarter name="Obersch�neweide" area="6.18" inhabitants="23500" population="3803" ___uid="2:120" ___rev="2"/>
+      <quarter name="Pl�nterwald" area="3.01" inhabitants="11365" population="3776" ___uid="2:121" ___rev="2"/>
+      <quarter name="Rahnsdorf" area="21.5" inhabitants="9523" population="442.9" ___uid="2:122" ___rev="2"/>
+      <quarter name="Schm�ckwitz" area="17.1" inhabitants="4424" population="258.7" ___uid="2:123" ___rev="2"/>
+    </quarters>
+  </district>
+</collection>
  
-Response code: 200 (Success); Content length: 11384 bytes (11,38 kB)
+Response code: 200 (Success); Content length: 12249 bytes (12,25 kB)
  
 Request '#8' GET http://127.0.0.1/xmex!?282f77726f6e672f2f6469737472696374732f29
 = request =>
@@ -4043,19 +4635,116 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 2334
+Content-Length: 2623
 Trace-Request-Hash: a026fc7bb2f7b5ec544933ff936b7752
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 7b529cec6c5f1b83a9ae370a7f9da417
-Trace-Response-Data-Hash: 19e207fb762e9dac26eba81a109da5e5
+Trace-Response-Header-Hash: 203018ce76926443e16dc73ff3e3a95c
+Trace-Response-Data-Hash: c9f136d4d53c5091d7e79d8778a8f608
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<collection><name>Charlottenburg</name><name>Charlottenburg-Nord</name><name>Grunewald</name><name>Halensee</name><name>Schmargendorf</name><name>Westend</name><name>Wilmersdorf</name><name>Friedrichshain</name><name>Kreuzberg</name><name>Alt-Hohensch�nhausen</name><name>Falkenberg</name><name>Fennpfuhl</name><name>Friedrichsfelde</name><name>Karlshorst</name><name>Lichtenberg</name><name>Malchow</name><name>Neu-Hohensch�nhausen</name><name>Rummelsburg</name><name>Wartenberg</name><name>Biesdorf</name><name>Hellersdorf</name><name>Kaulsdorf</name><name>Mahlsdorf</name><name>Marzahn</name><name>Gesundbrunnen</name><name>Hansaviertel</name><name>Mitte</name><name>Moabit</name><name>Tiergarten</name><name>Wedding</name><name>Britz</name><name>Buckow</name><name>Gropiusstadt</name><name>Neuk�lln</name><name>Rudow</name><name>Blankenburg</name><name>Blankenfelde</name><name>Buch</name><name>Franz�sisch Buchholz</name><name>Heinersdorf</name><name>Karow</name><name>Niedersch�nhausen</name><name>Pankow</name><name>Prenzlauer Berg</name><name>Rosenthal</name><name>Stadtrandsiedlung Malchow</name><name>Wei�ensee</name><name>Wilhelmsruh</name><name>Borsigwalde</name><name>Frohnau</name><name>Heiligensee</name><name>Hermsdorf</name><name>Konradsh�he</name><name>L�bars</name><name>M�rkisches Viertel</name><name>Reinickendorf</name><name>Tegel</name><name>Waidmannslust</name><name>Wittenau</name><name>Falkenhagener Feld</name><name>Gatow</name><name>Hakenfelde</name><name>Haselhorst</name><name>Kladow</name><name>Siemensstadt</name><name>Spandau</name><name>Staaken</name><name>Wilhelmstadt</name><name>Dahlem</name><name>Lankwitz</name><name>Lichterfelde</name><name>Nikolassee</name><name>Steglitz</name><name>Wannsee</name><name>Zehlendorf</name><name>Friedenau</name><name>Lichtenrade</name><name>Mariendorf</name><name>Marienfelde</name><name>Sch�neberg</name><name>Tempelhof</name><name>Adlershof</name><name>Altglienicke</name><name>Alt-Treptow</name><name>Baumschulenweg</name><name>Bohnsdorf</name><name>Friedrichshagen</name><name>Gr�nau</name><name>Johannisthal</name><name>K�penick</name><name>M�ggelheim</name><name>Niedersch�neweide</name><name>Obersch�neweide</name><name>Pl�nterwald</name><name>Rahnsdorf</name><name>Schm�ckwitz</name></collection>
+<collection>
+  <name>Charlottenburg</name>
+  <name>Charlottenburg-Nord</name>
+  <name>Grunewald</name>
+  <name>Halensee</name>
+  <name>Schmargendorf</name>
+  <name>Westend</name>
+  <name>Wilmersdorf</name>
+  <name>Friedrichshain</name>
+  <name>Kreuzberg</name>
+  <name>Alt-Hohensch�nhausen</name>
+  <name>Falkenberg</name>
+  <name>Fennpfuhl</name>
+  <name>Friedrichsfelde</name>
+  <name>Karlshorst</name>
+  <name>Lichtenberg</name>
+  <name>Malchow</name>
+  <name>Neu-Hohensch�nhausen</name>
+  <name>Rummelsburg</name>
+  <name>Wartenberg</name>
+  <name>Biesdorf</name>
+  <name>Hellersdorf</name>
+  <name>Kaulsdorf</name>
+  <name>Mahlsdorf</name>
+  <name>Marzahn</name>
+  <name>Gesundbrunnen</name>
+  <name>Hansaviertel</name>
+  <name>Mitte</name>
+  <name>Moabit</name>
+  <name>Tiergarten</name>
+  <name>Wedding</name>
+  <name>Britz</name>
+  <name>Buckow</name>
+  <name>Gropiusstadt</name>
+  <name>Neuk�lln</name>
+  <name>Rudow</name>
+  <name>Blankenburg</name>
+  <name>Blankenfelde</name>
+  <name>Buch</name>
+  <name>Franz�sisch Buchholz</name>
+  <name>Heinersdorf</name>
+  <name>Karow</name>
+  <name>Niedersch�nhausen</name>
+  <name>Pankow</name>
+  <name>Prenzlauer Berg</name>
+  <name>Rosenthal</name>
+  <name>Stadtrandsiedlung Malchow</name>
+  <name>Wei�ensee</name>
+  <name>Wilhelmsruh</name>
+  <name>Borsigwalde</name>
+  <name>Frohnau</name>
+  <name>Heiligensee</name>
+  <name>Hermsdorf</name>
+  <name>Konradsh�he</name>
+  <name>L�bars</name>
+  <name>M�rkisches Viertel</name>
+  <name>Reinickendorf</name>
+  <name>Tegel</name>
+  <name>Waidmannslust</name>
+  <name>Wittenau</name>
+  <name>Falkenhagener Feld</name>
+  <name>Gatow</name>
+  <name>Hakenfelde</name>
+  <name>Haselhorst</name>
+  <name>Kladow</name>
+  <name>Siemensstadt</name>
+  <name>Spandau</name>
+  <name>Staaken</name>
+  <name>Wilhelmstadt</name>
+  <name>Dahlem</name>
+  <name>Lankwitz</name>
+  <name>Lichterfelde</name>
+  <name>Nikolassee</name>
+  <name>Steglitz</name>
+  <name>Wannsee</name>
+  <name>Zehlendorf</name>
+  <name>Friedenau</name>
+  <name>Lichtenrade</name>
+  <name>Mariendorf</name>
+  <name>Marienfelde</name>
+  <name>Sch�neberg</name>
+  <name>Tempelhof</name>
+  <name>Adlershof</name>
+  <name>Altglienicke</name>
+  <name>Alt-Treptow</name>
+  <name>Baumschulenweg</name>
+  <name>Bohnsdorf</name>
+  <name>Friedrichshagen</name>
+  <name>Gr�nau</name>
+  <name>Johannisthal</name>
+  <name>K�penick</name>
+  <name>M�ggelheim</name>
+  <name>Niedersch�neweide</name>
+  <name>Obersch�neweide</name>
+  <name>Pl�nterwald</name>
+  <name>Rahnsdorf</name>
+  <name>Schm�ckwitz</name>
+</collection>
  
-Response code: 200 (Success); Content length: 2317 bytes (2,32 kB)
+Response code: 200 (Success); Content length: 2606 bytes (2,61 kB)
  
 Request '#35' GET http://127.0.0.1/xmex!?2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561
 = request =>
@@ -4078,19 +4767,212 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 3944
+Content-Length: 4521
 Trace-Request-Hash: b4f8f57fa4c7045173e8b7a203588f65
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 1e853d3d99f297e6c578d36cbf15d9b2
-Trace-Response-Data-Hash: b2090c7876d42eb810e2d8267b2230a4
+Trace-Response-Header-Hash: 298b147eb3d50988cf62b5925c89a33b
+Trace-Response-Data-Hash: fa896b039d834888011210663de72315
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<collection><name>Charlottenburg</name><area>10.6</area><name>Charlottenburg-Nord</name><area>6.2</area><name>Grunewald</name><area>22.3</area><name>Halensee</name><area>1.27</area><name>Schmargendorf</name><area>3.59</area><name>Westend</name><area>13.5</area><name>Wilmersdorf</name><area>7.16</area><name>Friedrichshain</name><area>9.78</area><name>Kreuzberg</name><area>10.4</area><name>Alt-Hohensch�nhausen</name><area>9.33</area><name>Falkenberg</name><area>3.06</area><name>Fennpfuhl</name><area>2.12</area><name>Friedrichsfelde</name><area>5.55</area><name>Karlshorst</name><area>6.6</area><name>Lichtenberg</name><area>7.22</area><name>Malchow</name><area>1.54</area><name>Neu-Hohensch�nhausen</name><area>5.16</area><name>Rummelsburg</name><area>4.52</area><name>Wartenberg</name><area>6.92</area><name>Biesdorf</name><area>12.4</area><name>Hellersdorf</name><area>8.1</area><name>Kaulsdorf</name><area>8.81</area><name>Mahlsdorf</name><area>12.9</area><name>Marzahn</name><area>19.5</area><name>Gesundbrunnen</name><area>6.13</area><name>Hansaviertel</name><area>0.53</area><name>Mitte</name><area>10.7</area><name>Moabit</name><area>7.72</area><name>Tiergarten</name><area>5.17</area><name>Wedding</name><area>9.23</area><name>Britz</name><area>12.4</area><name>Buckow</name><area>6.35</area><name>Gropiusstadt</name><area>2.66</area><name>Neuk�lln</name><area>11.7</area><name>Rudow</name><area>11.8</area><name>Blankenburg</name><area>6.03</area><name>Blankenfelde</name><area>13.4</area><name>Buch</name><area>18.2</area><name>Franz�sisch Buchholz</name><area>12</area><name>Heinersdorf</name><area>3.95</area><name>Karow</name><area>6.65</area><name>Niedersch�nhausen</name><area>6.49</area><name>Pankow</name><area>5.66</area><name>Prenzlauer Berg</name><area>11</area><name>Rosenthal</name><area>4.9</area><name>Stadtrandsiedlung Malchow</name><area>5.68</area><name>Wei�ensee</name><area>7.93</area><name>Wilhelmsruh</name><area>1.37</area><name>Borsigwalde</name><area>2</area><name>Frohnau</name><area>7.8</area><name>Heiligensee</name><area>10.7</area><name>Hermsdorf</name><area>6.1</area><name>Konradsh�he</name><area>2.2</area><name>L�bars</name><area>5</area><name>M�rkisches Viertel</name><area>3.2</area><name>Reinickendorf</name><area>10.5</area><name>Tegel</name><area>33.7</area><name>Waidmannslust</name><area>2.3</area><name>Wittenau</name><area>5.9</area><name>Falkenhagener Feld</name><area>6.88</area><name>Gatow</name><area>10.1</area><name>Hakenfelde</name><area>20.4</area><name>Haselhorst</name><area>4.73</area><name>Kladow</name><area>14.8</area><name>Siemensstadt</name><area>5.66</area><name>Spandau</name><area>8.03</area><name>Staaken</name><area>10.9</area><name>Wilhelmstadt</name><area>10.4</area><name>Dahlem</name><area>8.39</area><name>Lankwitz</name><area>6.99</area><name>Lichterfelde</name><area>18.2</area><name>Nikolassee</name><area>19.6</area><name>Steglitz</name><area>6.79</area><name>Wannsee</name><area>23.7</area><name>Zehlendorf</name><area>18.8</area><name>Friedenau</name><area>1.65</area><name>Lichtenrade</name><area>10.1</area><name>Mariendorf</name><area>9.38</area><name>Marienfelde</name><area>9.15</area><name>Sch�neberg</name><area>10.6</area><name>Tempelhof</name><area>12.2</area><name>Adlershof</name><area>6.11</area><name>Altglienicke</name><area>7.89</area><name>Alt-Treptow</name><area>2.31</area><name>Baumschulenweg</name><area>4.82</area><name>Bohnsdorf</name><area>6.52</area><name>Friedrichshagen</name><area>14</area><name>Gr�nau</name><area>9.13</area><name>Johannisthal</name><area>6.54</area><name>K�penick</name><area>34.9</area><name>M�ggelheim</name><area>22.2</area><name>Niedersch�neweide</name><area>3.49</area><name>Obersch�neweide</name><area>6.18</area><name>Pl�nterwald</name><area>3.01</area><name>Rahnsdorf</name><area>21.5</area><name>Schm�ckwitz</name><area>17.1</area></collection>
+<collection>
+  <name>Charlottenburg</name>
+  <area>10.6</area>
+  <name>Charlottenburg-Nord</name>
+  <area>6.2</area>
+  <name>Grunewald</name>
+  <area>22.3</area>
+  <name>Halensee</name>
+  <area>1.27</area>
+  <name>Schmargendorf</name>
+  <area>3.59</area>
+  <name>Westend</name>
+  <area>13.5</area>
+  <name>Wilmersdorf</name>
+  <area>7.16</area>
+  <name>Friedrichshain</name>
+  <area>9.78</area>
+  <name>Kreuzberg</name>
+  <area>10.4</area>
+  <name>Alt-Hohensch�nhausen</name>
+  <area>9.33</area>
+  <name>Falkenberg</name>
+  <area>3.06</area>
+  <name>Fennpfuhl</name>
+  <area>2.12</area>
+  <name>Friedrichsfelde</name>
+  <area>5.55</area>
+  <name>Karlshorst</name>
+  <area>6.6</area>
+  <name>Lichtenberg</name>
+  <area>7.22</area>
+  <name>Malchow</name>
+  <area>1.54</area>
+  <name>Neu-Hohensch�nhausen</name>
+  <area>5.16</area>
+  <name>Rummelsburg</name>
+  <area>4.52</area>
+  <name>Wartenberg</name>
+  <area>6.92</area>
+  <name>Biesdorf</name>
+  <area>12.4</area>
+  <name>Hellersdorf</name>
+  <area>8.1</area>
+  <name>Kaulsdorf</name>
+  <area>8.81</area>
+  <name>Mahlsdorf</name>
+  <area>12.9</area>
+  <name>Marzahn</name>
+  <area>19.5</area>
+  <name>Gesundbrunnen</name>
+  <area>6.13</area>
+  <name>Hansaviertel</name>
+  <area>0.53</area>
+  <name>Mitte</name>
+  <area>10.7</area>
+  <name>Moabit</name>
+  <area>7.72</area>
+  <name>Tiergarten</name>
+  <area>5.17</area>
+  <name>Wedding</name>
+  <area>9.23</area>
+  <name>Britz</name>
+  <area>12.4</area>
+  <name>Buckow</name>
+  <area>6.35</area>
+  <name>Gropiusstadt</name>
+  <area>2.66</area>
+  <name>Neuk�lln</name>
+  <area>11.7</area>
+  <name>Rudow</name>
+  <area>11.8</area>
+  <name>Blankenburg</name>
+  <area>6.03</area>
+  <name>Blankenfelde</name>
+  <area>13.4</area>
+  <name>Buch</name>
+  <area>18.2</area>
+  <name>Franz�sisch Buchholz</name>
+  <area>12</area>
+  <name>Heinersdorf</name>
+  <area>3.95</area>
+  <name>Karow</name>
+  <area>6.65</area>
+  <name>Niedersch�nhausen</name>
+  <area>6.49</area>
+  <name>Pankow</name>
+  <area>5.66</area>
+  <name>Prenzlauer Berg</name>
+  <area>11</area>
+  <name>Rosenthal</name>
+  <area>4.9</area>
+  <name>Stadtrandsiedlung Malchow</name>
+  <area>5.68</area>
+  <name>Wei�ensee</name>
+  <area>7.93</area>
+  <name>Wilhelmsruh</name>
+  <area>1.37</area>
+  <name>Borsigwalde</name>
+  <area>2</area>
+  <name>Frohnau</name>
+  <area>7.8</area>
+  <name>Heiligensee</name>
+  <area>10.7</area>
+  <name>Hermsdorf</name>
+  <area>6.1</area>
+  <name>Konradsh�he</name>
+  <area>2.2</area>
+  <name>L�bars</name>
+  <area>5</area>
+  <name>M�rkisches Viertel</name>
+  <area>3.2</area>
+  <name>Reinickendorf</name>
+  <area>10.5</area>
+  <name>Tegel</name>
+  <area>33.7</area>
+  <name>Waidmannslust</name>
+  <area>2.3</area>
+  <name>Wittenau</name>
+  <area>5.9</area>
+  <name>Falkenhagener Feld</name>
+  <area>6.88</area>
+  <name>Gatow</name>
+  <area>10.1</area>
+  <name>Hakenfelde</name>
+  <area>20.4</area>
+  <name>Haselhorst</name>
+  <area>4.73</area>
+  <name>Kladow</name>
+  <area>14.8</area>
+  <name>Siemensstadt</name>
+  <area>5.66</area>
+  <name>Spandau</name>
+  <area>8.03</area>
+  <name>Staaken</name>
+  <area>10.9</area>
+  <name>Wilhelmstadt</name>
+  <area>10.4</area>
+  <name>Dahlem</name>
+  <area>8.39</area>
+  <name>Lankwitz</name>
+  <area>6.99</area>
+  <name>Lichterfelde</name>
+  <area>18.2</area>
+  <name>Nikolassee</name>
+  <area>19.6</area>
+  <name>Steglitz</name>
+  <area>6.79</area>
+  <name>Wannsee</name>
+  <area>23.7</area>
+  <name>Zehlendorf</name>
+  <area>18.8</area>
+  <name>Friedenau</name>
+  <area>1.65</area>
+  <name>Lichtenrade</name>
+  <area>10.1</area>
+  <name>Mariendorf</name>
+  <area>9.38</area>
+  <name>Marienfelde</name>
+  <area>9.15</area>
+  <name>Sch�neberg</name>
+  <area>10.6</area>
+  <name>Tempelhof</name>
+  <area>12.2</area>
+  <name>Adlershof</name>
+  <area>6.11</area>
+  <name>Altglienicke</name>
+  <area>7.89</area>
+  <name>Alt-Treptow</name>
+  <area>2.31</area>
+  <name>Baumschulenweg</name>
+  <area>4.82</area>
+  <name>Bohnsdorf</name>
+  <area>6.52</area>
+  <name>Friedrichshagen</name>
+  <area>14</area>
+  <name>Gr�nau</name>
+  <area>9.13</area>
+  <name>Johannisthal</name>
+  <area>6.54</area>
+  <name>K�penick</name>
+  <area>34.9</area>
+  <name>M�ggelheim</name>
+  <area>22.2</area>
+  <name>Niedersch�neweide</name>
+  <area>3.49</area>
+  <name>Obersch�neweide</name>
+  <area>6.18</area>
+  <name>Pl�nterwald</name>
+  <area>3.01</area>
+  <name>Rahnsdorf</name>
+  <area>21.5</area>
+  <name>Schm�ckwitz</name>
+  <area>17.1</area>
+</collection>
  
-Response code: 200 (Success); Content length: 3927 bytes (3,93 kB)
+Response code: 200 (Success); Content length: 4504 bytes (4,5 kB)
  
 Request '#36' GET http://127.0.0.1/xmex!?2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d65
 = request =>
@@ -4147,19 +5029,22 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 109
+Content-Length: 116
 Trace-Request-Hash: 18c12330002f6daa3707261ca0cfd91e
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 7da424c02977c6f00084810a2b99bfd3
-Trace-Response-Data-Hash: 3b5c904c64318ca2f246e4db1810e25a
+Trace-Response-Header-Hash: db43a6b5ce79ca3d13634f4d8f36398d
+Trace-Response-Data-Hash: 5ae2287c66219aeaa6df8c0a576943cb
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<collection><name>Charlottenburg</name><area>10.6</area></collection>
+<collection>
+  <name>Charlottenburg</name>
+  <area>10.6</area>
+</collection>
  
-Response code: 200 (Success); Content length: 109 bytes (109 B)
+Response code: 200 (Success); Content length: 116 bytes (116 B)
  
 Request '#38' GET http://127.0.0.1/xmex!?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65
 = request =>
@@ -4182,19 +5067,32 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 961
+Content-Length: 1030
 Trace-Request-Hash: 9dbb358d0040573500e27b83c65afe35
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 9831e79225fa5b4f5e3b82771e235c49
-Trace-Response-Data-Hash: d50c0872ffee3c756eb83b65322f217b
+Trace-Response-Header-Hash: ee58108a0e3109bbbf7be0075b2137af
+Trace-Response-Data-Hash: 2bb6e2beed48283fef6294a9db16ecbe
 Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 <?xml version="1.0" encoding="UTF-8"?>
-<collection><district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2"><quarters ___uid="2:5" ___rev="2"><quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/><quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/><quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/><quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/><quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/><quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/><quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/></quarters></district><name>Charlottenburg-Wilmersdorf</name></collection>
+<collection>
+  <district name="Charlottenburg-Wilmersdorf" ___uid="2:4" ___rev="2">
+    <quarters ___uid="2:5" ___rev="2">
+      <quarter name="Charlottenburg" area="10.6" inhabitants="130663" population="12327" ___uid="2:6" ___rev="2"/>
+      <quarter name="Charlottenburg-Nord" area="6.2" inhabitants="19597" population="3161" ___uid="2:7" ___rev="2"/>
+      <quarter name="Grunewald" area="22.3" inhabitants="10999" population="493.2" ___uid="2:8" ___rev="2"/>
+      <quarter name="Halensee" area="1.27" inhabitants="15627" population="12305" ___uid="2:9" ___rev="2"/>
+      <quarter name="Schmargendorf" area="3.59" inhabitants="22205" population="6185" ___uid="2:10" ___rev="2"/>
+      <quarter name="Westend" area="13.5" inhabitants="41882" population="3102" ___uid="2:11" ___rev="2"/>
+      <quarter name="Wilmersdorf" area="7.16" inhabitants="102619" population="14332" ___uid="2:12" ___rev="2"/>
+    </quarters>
+  </district>
+  <name>Charlottenburg-Wilmersdorf</name>
+</collection>
  
-Response code: 200 (Success); Content length: 961 bytes (961 B)
+Response code: 200 (Success); Content length: 1030 bytes (1,03 kB)
  
 Request '#39' GET http://127.0.0.1/xmex!/statistic!JSON
 = request =>
@@ -5105,22 +6003,26 @@ Storage-Revision: 14/0
 Storage-Space: 262144/1256 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 425
+Content-Length: 435
 Trace-Request-Hash: 003b4acddf06527b78d3f8791ea91b5b
 Trace-Request-Header-Hash: d539643c4c5b11f060b6168013873a56
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 5e85bf514608ad876870e165d360e01a
-Trace-Response-Data-Hash: ddffa7e0385d7aa82846b23a573f28c1
+Trace-Response-Header-Hash: 860fd18794610c189b917eb46107aa29
+Trace-Response-Data-Hash: 795e65e080bc66b9b74c10c95b9b767b
 Trace-Storage-Hash: 409a596b94e43409ee82609ed595d84e
  
 <?xml version="1.0" encoding="UTF-8"?>
-<collection><message from="dan.star@example.local" ___uid="11:1" ___rev="11">
-    I work and live in Yonkers as a gardener.</message><message from="dan.star@example.local" ___uid="12:1" ___rev="12">
-    In this beautiful weather I arrived with my scooter.</message><message from="dan.star@example.local" ___uid="13:1" ___rev="13">
-    I like to look at the city.</message></collection>
+<collection>
+  <message from="dan.star@example.local" ___uid="11:1" ___rev="11">
+    I work and live in Yonkers as a gardener.</message>
+  <message from="dan.star@example.local" ___uid="12:1" ___rev="12">
+    In this beautiful weather I arrived with my scooter.</message>
+  <message from="dan.star@example.local" ___uid="13:1" ___rev="13">
+    I like to look at the city.</message>
+</collection>
  
-Response code: 200 (Success); Content length: 425 bytes (425 B)
+Response code: 200 (Success); Content length: 435 bytes (435 B)
  
 Request '#21' GET http://127.0.0.1/xmex!?2f2f2a2f406d61696c7c2f2f2a2f4066726f6d
 = request =>
@@ -5143,19 +6045,29 @@ Storage-Revision: 14/0
 Storage-Space: 262144/1256 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/xml
-Content-Length: 382
+Content-Length: 410
 Trace-Request-Hash: f405af9d22fcc47fcd1fad382865805a
 Trace-Request-Header-Hash: d539643c4c5b11f060b6168013873a56
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
-Trace-Response-Header-Hash: 122e2399ca107458c6306ca4292ade51
-Trace-Response-Data-Hash: d87119f851bee11f87667209e4e6227c
+Trace-Response-Header-Hash: 9360026ec4d6c64441e81a3d86edff60
+Trace-Response-Data-Hash: 1e7114ee41b8f8a5fc307ea2cb9fb35c
 Trace-Storage-Hash: 409a596b94e43409ee82609ed595d84e
  
 <?xml version="1.0" encoding="UTF-8"?>
-<collection><mail>john.doe@example.local</mail><mail>jane.doe@example.local</mail><mail>mike.ross@example.local</mail><mail>dan.star@example.local</mail><from>jane.doe@example.local</from><from>mike.ross@example.local</from><from>dan.star@example.local</from><from>dan.star@example.local</from><from>dan.star@example.local</from></collection>
+<collection>
+  <mail>john.doe@example.local</mail>
+  <mail>jane.doe@example.local</mail>
+  <mail>mike.ross@example.local</mail>
+  <mail>dan.star@example.local</mail>
+  <from>jane.doe@example.local</from>
+  <from>mike.ross@example.local</from>
+  <from>dan.star@example.local</from>
+  <from>dan.star@example.local</from>
+  <from>dan.star@example.local</from>
+</collection>
  
-Response code: 200 (Success); Content length: 382 bytes (382 B)
+Response code: 200 (Success); Content length: 410 bytes (410 B)
  
 Request '#22' POST http://127.0.0.1/xmex!
 = request =>

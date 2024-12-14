@@ -808,11 +808,15 @@ class Storage {
                     $result = $result[0]->value;
                 } else {
                     $xml = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
+                    $xml->preserveWhiteSpace = false;
+                    $xml->formatOutput = Storage::DEBUG_MODE;
                     $xml->appendChild($xml->importNode($result[0], true));
                     $result = $xml;
                 }
             } else if ($result->length > 0) {
                 $xml = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
+                $xml->preserveWhiteSpace = false;
+                $xml->formatOutput = Storage::DEBUG_MODE;
                 $collection = $xml->createElement("collection");
                 $xml->importNode($collection, true);
                 foreach ($result as $entry) {
