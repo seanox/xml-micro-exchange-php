@@ -214,6 +214,10 @@ class Storage {
     /** Defines the revision type (serial, timestamp) */
     const REVISION_TYPE = XMEX_STORAGE_REVISION_TYPE;
 
+    // XML Document Settings
+    const XML_DOCUMENT_VERSION  = "1.0";
+    const XML_DOCUMENT_ENCODING = "UTF-8";
+
     /**
      * Optional CORS response headers as associative array.
      * For the preflight OPTIONS the following headers are added automatically:
@@ -465,8 +469,8 @@ class Storage {
             if (iterator_count($iterator) >= Storage::QUANTITY)
                 $storage->quit(507, "Insufficient Storage");
             fwrite($storage->share,
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" .
-                "<" . $storage->root . " ___rev=\"" . $storage->unique . "\" ___uid=\"" . $storage->getSerial() ."\"/>");
+                "<?xml version=\"" . Storage::XML_DOCUMENT_VERSION . "\" encoding=\"" . Storage::XML_DOCUMENT_ENCODING . "\"?>"
+                . "<{$storage->root} ___rev=\"{$storage->unique}\" ___uid=\"{$storage->getSerial()}\"/>");
             rewind($storage->share);
             if (strcasecmp(Storage::REVISION_TYPE, "serial") === 0)
                 $storage->unique = 0;
@@ -475,7 +479,7 @@ class Storage {
         fseek($storage->share, 0, SEEK_END);
         $size = ftell($storage->share);
         rewind($storage->share);
-        $storage->xml = new DOMDocument();
+        $storage->xml = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
         $storage->xml->preserveWhiteSpace = false;
         $storage->xml->formatOutput = Storage::DEBUG_MODE;
         $storage->xml->loadXML(fread($storage->share, $size));
@@ -803,12 +807,12 @@ class Storage {
                 if ($result[0] instanceof DOMAttr) {
                     $result = $result[0]->value;
                 } else {
-                    $xml = new DOMDocument();
+                    $xml = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
                     $xml->appendChild($xml->importNode($result[0], true));
                     $result = $xml;
                 }
             } else if ($result->length > 0) {
-                $xml = new DOMDocument();
+                $xml = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
                 $collection = $xml->createElement("collection");
                 $xml->importNode($collection, true);
                 foreach ($result as $entry) {
@@ -892,7 +896,7 @@ class Storage {
         libxml_clear_errors();
 
         // POST always expects an valid XSLT template for transformation.
-        $style = new DOMDocument();
+        $style = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
         $style->preserveWhiteSpace = false;
         $style->formatOutput = Storage::DEBUG_MODE;
         $input = file_get_contents("php://input");
@@ -915,7 +919,7 @@ class Storage {
         $xml = $this->xml;
         if ($this->xpath !== null
                 && strlen($this->xpath) > 0) {
-            $xml = new DOMDocument();
+            $xml = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
             $targets = (new DOMXpath($this->xml))->query($this->xpath);
             if (Storage::fetchLastXmlErrorMessage()) {
                 $message = "Invalid XPath axis (" . Storage::fetchLastXmlErrorMessage() . ")";
@@ -955,7 +959,7 @@ class Storage {
             if (strcasecmp($method, "xml") !== 0
                     && !empty($method))
                 $this->quit(204, "No Content");
-            $output = new DOMDocument();
+            $output = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
         }
 
         $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
@@ -1284,7 +1288,7 @@ class Storage {
         // The XML is loaded, but what happens if an error occurs during
         // parsing? Status 400 or 422 - The decision for 422, because 400 means
         // faulty request. But this is a (semantic) error in the request body.
-        $xml = new DOMDocument();
+        $xml = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
         $xml->preserveWhiteSpace = false;
         $xml->formatOutput = Storage::DEBUG_MODE;
         if (!$xml->loadXML($input)

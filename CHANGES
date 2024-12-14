@@ -1,5 +1,8 @@
 1.6.0 2024xxxx
 BF: Service: Correction of REQUEST_URI for requests without protocol
+BF: Service: Review and optimization
+    - XML Version and encoding in the XML response
+    - Replacement of HTML entities in the XML response with UTF-8
 CR: Content: Added snake.html as example and little gimmick
 CR: Service: Omission of the HTTP method TOUCH
     Because it is not an official HTTP standard.

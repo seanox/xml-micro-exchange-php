@@ -222,7 +222,7 @@ client.test("unittest", function() {
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
-# - Content-Length: 11637
+# - Content-Length: 11574
 # - Complete storage
 GET {{service}}/ HTTP/1.0
 Storage: {{storage_get}}
@@ -233,8 +233,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1c0a313f14b1dd26ff3000db7f20444e");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1ed53f90c896ba8da67f7f0781114725");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0369f631ce9a33392f7c0e202a83266e");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "a1f79aaf4e80d5654fbb2c50c7ea2c93");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -246,7 +246,7 @@ client.test("unittest", function() {
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
-# - Content-Length: 11637
+# - Content-Length: 11574
 # - Complete storage
 GET {{service}} HTTP/1.0
 Storage: {{storage_get}}
@@ -257,8 +257,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1c0a313f14b1dd26ff3000db7f20444e");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1ed53f90c896ba8da67f7f0781114725");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0369f631ce9a33392f7c0e202a83266e");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "a1f79aaf4e80d5654fbb2c50c7ea2c93");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -270,7 +270,7 @@ client.test("unittest", function() {
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
-# - Content-Length: 11489
+# - Content-Length: 11426
 # - Only an extract of districts
 # - URI: (/statistic//districts)
 GET {{service}}?282f7374617469737469632f2f64697374726963747329 HTTP/1.0
@@ -282,8 +282,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "d2d5ecc7031007e2240684922236d62a");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "387f2779d75c69ce47bb253ceff73fde");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "3c3d373f9d85475d9e712b9cc4c53d62");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "1a68ee4d38169bd1078b5c5f21df16c4");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -295,7 +295,7 @@ client.test("unittest", function() {
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
-# - Content-Length: 11467
+# - Content-Length: 11404
 # - Only an extract of all district entries as collection
 # - URI: (/statistic//districts)/district
 GET {{service}}?282f7374617469737469632f2f646973747269637473292f6469737472696374 HTTP/1.0
@@ -307,8 +307,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "597731d6b960ce78521a4e636ec41cc5");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "ea5f8b28211dac1b3c1bc079c0fc94b5");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "0c1d8ca4a94d6c212a3fa2d3d89bd417");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "9551b47ee3cb9a71fefbefbabf72ded5");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -928,7 +928,7 @@ client.test("unittest", function() {
 # - Status code 200 Success
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
-# - Content-Length: 2385
+# - Content-Length: 2334
 # - Content-Type: application/xml
 # - URI: //quarter/@name
 GET {{service}}?2f2f717561727465722f406e616d65 HTTP/1.0
@@ -940,8 +940,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "4cc93daf93091d1e4e67084e8aa4e772");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "69f4a7dda563195a2dcff81a6bd6b040");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7b529cec6c5f1b83a9ae370a7f9da417");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "19e207fb762e9dac26eba81a109da5e5");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -954,7 +954,7 @@ client.test("unittest", function() {
 # - Status code 200 Success
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
-# - Content-Length: 3995
+# - Content-Length: 3944
 # - Content-Type: application/xml
 # - URI: //quarter/@name|//quarter/@area
 GET {{service}}?2f2f717561727465722f406e616d657c2f2f717561727465722f4061726561 HTTP/1.0
@@ -966,8 +966,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "f4f0a5154816d616be2f99d673b0333b");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "abaa5b8678626a69426c19d7050dfa9f");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "1e853d3d99f297e6c578d36cbf15d9b2");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "b2090c7876d42eb810e2d8267b2230a4");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -1003,7 +1003,7 @@ client.test("unittest", function() {
 # - Status code 200 Success
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
-# - Content-Length: 92
+# - Content-Length: 109
 # - Content-Type: application/xml
 # - URI: //district[1]//quarter[1]/@name|//district[1]//quarter[1]/@area
 GET {{service}}?2f2f64697374726963745b315d2f2f717561727465725b315d2f406e616d657c2f2f64697374726963745b315d2f2f717561727465725b315d2f4061726561 HTTP/1.0
@@ -1015,8 +1015,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "d356417bc54ec0835946802bdaa0ef2a");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "7cd454faf238152844af3ac93d35345d");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "7da424c02977c6f00084810a2b99bfd3");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "3b5c904c64318ca2f246e4db1810e25a");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -1027,7 +1027,7 @@ client.test("unittest", function() {
 # - Status code 200 Success
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
-# - Content-Length: 944
+# - Content-Length: 961
 # - Content-Type: application/xml
 # - URI: //district[1]|//district[1]/@name
 GET {{service}}?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65 HTTP/1.0
@@ -1039,8 +1039,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "c9db8d441c3b8fd274885ec64414fd12");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "f9da4da771d8c833f8df84f48e26b8a8");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "9831e79225fa5b4f5e3b82771e235c49");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "d50c0872ffee3c756eb83b65322f217b");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
@@ -1152,7 +1152,7 @@ client.test("unittest", function() {
 # - Storage-Revision: 2/0
 # - Storage-Space: 262144/13333 bytes
 # - Content-Type: application/xml
-# - Content-Length: 126
+# - Content-Length: 143
 # - URI: //quarter[@name='Rahnsdorf']
 GET {{service}}?2f2f717561727465725b406e616d653d275261686e73646f7266275d HTTP/1.0
 Storage: {{storage_get}}
@@ -1163,8 +1163,8 @@ client.test("unittest", function() {
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "6b076e3bc35ccf56dc94e523bc08e07b");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "d41d8cd98f00b204e9800998ecf8427e");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
-    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "ec79d3c3aeec0f26fb6b1123945ae023");
-    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "4e32e891173ebfdbf9a6fd003d739dd0");
+    client.assert(response.headers.valueOf("Trace-Response-Header-Hash") === "8450b8bf1bd49052edf05d31cfa7b5b9");
+    client.assert(response.headers.valueOf("Trace-Response-Data-Hash") === "294a9edfd2b5c2d9f8ba26bd353399e8");
     client.assert(response.headers.valueOf("Trace-Storage-Hash") === "76f542d94988878f8fa8e8389acc1e2b");
 });
 %}
