@@ -3,12 +3,15 @@
   <target name="usage">
     <echo>Following targets are available:                               </echo>
     <echo>                                                               </echo>
-    <echo>  changes    Synchronizes README.md with CHANGES.              </echo>
+    <echo>  changes      Synchronizes README.md with CHANGES.            </echo>
     <echo>                                                               </echo>
-    <echo>  test       Combines the unit tests and starts the CLI        </echo>
+    <echo>  test         Combines the unit tests and starts the CLI      </echo>
     <echo>                                                               </echo>
-    <echo>  release    Builds the final the release for the distribution </echo>
+    <echo>  test-report  Combines the unit tests and starts the CLI      </echo>
+    <echo>               and output a report file                        </echo>
     <echo>                                                               </echo>
+    <echo>  release      Builds the final the release for the            </echo>
+    <echo>               distribution                                    </echo>
   </target>
   
   <property name="workspace" value="${basedir}"/>
