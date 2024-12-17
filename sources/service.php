@@ -1210,7 +1210,8 @@ class Storage {
         // - text/plain for static values (text)
         // - text/xpath for dynamic values, based on XPath functions
 
-        if (in_array(strtolower($_SERVER["CONTENT_TYPE"]), [Storage::CONTENT_TYPE_TEXT, Storage::CONTENT_TYPE_XPATH])) {
+        $media = strtolower($_SERVER["CONTENT_TYPE"]);
+        if (in_array($media, [Storage::CONTENT_TYPE_TEXT, Storage::CONTENT_TYPE_XPATH])) {
 
             // The combination with a pseudo element is not possible for a text
             // value. Response with status 415 (Unsupported Media Type).
@@ -1225,7 +1226,7 @@ class Storage {
             // the storage and the result is put like the Content-Type
             // text/plain. Even if the target is mutable, the XPath function is
             // executed only once and the result is put on all targets.
-            if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
+            if (strcasecmp($media, Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
                     $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
@@ -1281,7 +1282,7 @@ class Storage {
 
         // Only an XML structure can be inserted, nothing else is supported. So
         // only the Content-Type application/xml can be used.
-        if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XML) !== 0)
+        if (strcasecmp($media, Storage::CONTENT_TYPE_XML) !== 0)
             $this->quit(415, "Unsupported Media Type");
 
         // The request body must also be a valid XML structure, otherwise the
