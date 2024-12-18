@@ -913,10 +913,11 @@ client.test("unittest", function() {
 # - Content-Length: 476
 # - Content-Type: application/json
 # - Only an extract of the data selected by XPath.
-# - URI: //district[@name='Lichtenberg']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Lichtenberg']
+POST {{service}}?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -937,7 +938,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "105c38d124a64a94644169ad790075c7");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "d61909221ab45262defd02fadf03455b");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "87509d6d74f122316a8d84a0056326f1");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "185fb70eebc4966ef9cc3015f78c5d9f");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
@@ -957,10 +958,11 @@ client.test("unittest", function() {
 # - Content-Length: 358
 # - Content-Type: application/json
 # - Only an extract of the data selected by XPath.
-# - URI: //district[@name='Lichtenberg']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Lichtenberg']
+POST {{service}}?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -979,7 +981,7 @@ Quarters of district: <xsl:value-of select="/district/@name"/>
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "105c38d124a64a94644169ad790075c7");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "d61909221ab45262defd02fadf03455b");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "fe443519adfb9c872002b03c91c8c3f0");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "4823e7df7fe6380db209c644dce24726");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
@@ -1318,10 +1320,11 @@ client.test("unittest", function() {
 # - Content-Length: 5
 # - Content-Type: application/json
 # - Content: false
-# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -1333,7 +1336,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "9c78fcdcf6c8ac1b8a3e03c013680d0d");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eca8bfbf748f18e0a882ab8147d03638");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "72b1f71ef22476ca51cf615c9ef9d296");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "2780e33a3f97328e03bd91e97c3df1df");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
@@ -1356,10 +1359,11 @@ client.test("unittest", function() {
 # - Content-Length: 5
 # - Content-Type: application/json
 # - Content: false
-# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -1372,7 +1376,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "9c78fcdcf6c8ac1b8a3e03c013680d0d");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eca8bfbf748f18e0a882ab8147d03638");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "4b27d0315a0e0cc806cc2a57edd9fc01");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "4ff04d32632df660f3e1bbbca945b4de");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
@@ -1393,10 +1397,11 @@ client.test("unittest", function() {
 # - Content-Length: 8
 # - Content-Type: application/json
 # - Content: "2x\n  "
-# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -1409,7 +1414,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "9c78fcdcf6c8ac1b8a3e03c013680d0d");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eca8bfbf748f18e0a882ab8147d03638");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "fed7548b65f471fc13027e0b90a82ed6");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "4efbee31a42ceca306e264b49ce7163a");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
@@ -1430,10 +1435,11 @@ client.test("unittest", function() {
 # - Content-Length: 24
 # - Content-type: application/json
 # - Content: "<img src=\"\">2x\n  \n"
-# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -1447,7 +1453,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "9c78fcdcf6c8ac1b8a3e03c013680d0d");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eca8bfbf748f18e0a882ab8147d03638");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "2e55777ae86d8614e600d69f4863fafb");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "47daec4f92aa598147db4fae170fbe83");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "6ea793edc825cd6b0da28cb2d1217a47");
@@ -1463,10 +1469,11 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 422 Bad Request
 # - Message: Invalid XSLT stylesheet (invalid value for method: xhtml)
-# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -1479,7 +1486,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "9c78fcdcf6c8ac1b8a3e03c013680d0d");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eca8bfbf748f18e0a882ab8147d03638");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "a23984b5d7e74064b7915c4d8107475f");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "75f663b8ed83119f89d2fe590af6e05a");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "917ef711b7514d05e99aed61242ab05c");
@@ -1495,10 +1502,11 @@ client.test("unittest", function() {
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (invalid value for method: unknown)
-# - URI: //district[@name='Mitte']|//district[@name='Spandau']!json
-POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e HTTP/1.0
+# - URI: //district[@name='Mitte']|//district[@name='Spandau']
+POST {{service}}?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
+Accept: application/json
 
 <?xml version="1.0"?>
 <xsl:stylesheet version="1.0"
@@ -1511,7 +1519,7 @@ Content-Type: application/xslt+xml
 
 > {%
 client.test("unittest", function() {
-    client.assert(response.headers.valueOf("Trace-Request-Hash") === "9c78fcdcf6c8ac1b8a3e03c013680d0d");
+    client.assert(response.headers.valueOf("Trace-Request-Hash") === "eca8bfbf748f18e0a882ab8147d03638");
     client.assert(response.headers.valueOf("Trace-Request-Header-Hash") === "8a82d224f2bbee9071f89e95505c4c5c");
     client.assert(response.headers.valueOf("Trace-Request-Data-Hash") === "ccfc092fbecc3553200528f7f8c98893");
     client.assert(response.headers.valueOf("Trace-Response-Hash") === "917ef711b7514d05e99aed61242ab05c");

@@ -5094,10 +5094,11 @@ Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 Response code: 200 (Success); Content length: 1030 bytes (1,03 kB)
  
-Request '#39' GET http://127.0.0.1/xmex!/statistic!JSON
+Request '#39' GET http://127.0.0.1/xmex!/statistic
 = request =>
-GET http://127.0.0.1/xmex!/statistic!JSON
+GET http://127.0.0.1/xmex!/statistic
 Storage: UnitTest_Storage_G0 statistic
+Accept: ApplicatioN/JSON
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -5116,7 +5117,7 @@ Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 13914
-Trace-Request-Hash: 6defe649bfc5bec917fba3c128fe0b31
+Trace-Request-Hash: 186545091827400bbcadd3e3fab83a13
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -5128,10 +5129,11 @@ Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 Response code: 200 (Success); Content length: 13814 bytes (13,81 kB)
  
-Request '#40' GET http://127.0.0.1/xmex!?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e
+Request '#40' GET http://127.0.0.1/xmex!?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65
 = request =>
-GET http://127.0.0.1/xmex!?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65214a536f6e=
+GET http://127.0.0.1/xmex!?2f2f64697374726963745b315d7c2f2f64697374726963745b315d2f406e616d65=
 Storage: UnitTest_Storage_G0 statistic
+Accept: ApplicatioN/Json
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -5150,7 +5152,7 @@ Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 1072
-Trace-Request-Hash: 6d1ae002a10a50227e8722b1ff68d043
+Trace-Request-Hash: 9dbb358d0040573500e27b83c65afe35
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -5162,10 +5164,11 @@ Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 Response code: 200 (Success); Content length: 1072 bytes (1,07 kB)
  
-Request '#41' GET http://127.0.0.1/xmex!1-3!jsON
+Request '#41' GET http://127.0.0.1/xmex!1-3
 = request =>
-GET http://127.0.0.1/xmex!1-3!jsON
+GET http://127.0.0.1/xmex!1-3
 Storage: UnitTest_Storage_G0 statistic
+Accept: Application/JsOn
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -5184,7 +5187,7 @@ Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 2
-Trace-Request-Hash: 84cdbba59f19ebcb6afe5c21956e459e
+Trace-Request-Hash: 42a4a317f8f8a19cc1bea23a739e756f
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -5196,10 +5199,11 @@ Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 Response code: 200 (Success); Content length: 2 bytes (2 B)
  
-Request '#42' GET http://127.0.0.1/xmex!?2f2f636974795b315d2f406e616d65216a534f6e
+Request '#42' GET http://127.0.0.1/xmex!?2f2f636974795b315d2f406e616d65
 = request =>
-GET http://127.0.0.1/xmex!?2f2f636974795b315d2f406e616d65216a534f6e=
+GET http://127.0.0.1/xmex!?2f2f636974795b315d2f406e616d65=
 Storage: UnitTest_Storage_G0 statistic
+Accept: application/jSOn
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -5218,7 +5222,7 @@ Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 8
-Trace-Request-Hash: f517db7dd8a0a1a2a5e2eef64fe7fb8e
+Trace-Request-Hash: 551e594a265a281a91b96c979c451bc0
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -5265,10 +5269,11 @@ Trace-Storage-Hash: 76f542d94988878f8fa8e8389acc1e2b
  
 Response code: 200 (Success); Content length: 143 bytes (143 B)
  
-Request '#44' GET http://127.0.0.1/xmex!?2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e
+Request '#44' GET http://127.0.0.1/xmex!?2f2f717561727465725b406e616d653d275261686e73646f7266275d
 = request =>
-GET http://127.0.0.1/xmex!?2f2f717561727465725b406e616d653d275261686e73646f7266275d216a736f6e=
+GET http://127.0.0.1/xmex!?2f2f717561727465725b406e616d653d275261686e73646f7266275d=
 Storage: UnitTest_Storage_G0 statistic
+Accept: application/json
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -5287,7 +5292,7 @@ Storage-Space: 262144/13333 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 122
-Trace-Request-Hash: 8ae67341de51502452e67017c0c8e42e
+Trace-Request-Hash: d407d13c0b8bd87f61454a3cede45a74
 Trace-Request-Header-Hash: 6b076e3bc35ccf56dc94e523bc08e07b
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -10324,11 +10329,12 @@ Trace-Storage-Hash: 18dfe4bbecd955284cbd629fe6b7d9d6
  
 Response code: 200 (Success); Content length: 56 bytes (56 B)
  
-Request '#23' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e
+Request '#23' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 478
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -10365,7 +10371,7 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13324 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Length: 476
-Trace-Request-Hash: 105c38d124a64a94644169ad790075c7
+Trace-Request-Hash: d61909221ab45262defd02fadf03455b
 Trace-Request-Header-Hash: 87509d6d74f122316a8d84a0056326f1
 Trace-Request-Data-Hash: 185fb70eebc4966ef9cc3015f78c5d9f
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -10377,11 +10383,12 @@ Trace-Storage-Hash: 18dfe4bbecd955284cbd629fe6b7d9d6
  
 Response code: 200 (Success); Content length: 466 bytes (466 B)
  
-Request '#24' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e
+Request '#24' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274c69636874656e62657267275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 472
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -10416,7 +10423,7 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13324 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Length: 358
-Trace-Request-Hash: 105c38d124a64a94644169ad790075c7
+Trace-Request-Hash: d61909221ab45262defd02fadf03455b
 Trace-Request-Header-Hash: fe443519adfb9c872002b03c91c8c3f0
 Trace-Request-Data-Hash: 4823e7df7fe6380db209c644dce24726
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -10863,11 +10870,12 @@ Trace-Storage-Hash: 18dfe4bbecd955284cbd629fe6b7d9d6
  
 Response code: 422 (Unprocessable Entity); Content length: 0 bytes (0 B)
  
-Request '#34' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e
+Request '#34' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 223
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -10895,7 +10903,7 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13324 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Length: 5
-Trace-Request-Hash: 9c78fcdcf6c8ac1b8a3e03c013680d0d
+Trace-Request-Hash: eca8bfbf748f18e0a882ab8147d03638
 Trace-Request-Header-Hash: 72b1f71ef22476ca51cf615c9ef9d296
 Trace-Request-Data-Hash: 2780e33a3f97328e03bd91e97c3df1df
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -10907,11 +10915,12 @@ false
  
 Response code: 200 (Success); Content length: 5 bytes (5 B)
  
-Request '#35' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e
+Request '#35' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 252
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -10940,7 +10949,7 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13324 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Length: 5
-Trace-Request-Hash: 9c78fcdcf6c8ac1b8a3e03c013680d0d
+Trace-Request-Hash: eca8bfbf748f18e0a882ab8147d03638
 Trace-Request-Header-Hash: 4b27d0315a0e0cc806cc2a57edd9fc01
 Trace-Request-Data-Hash: 4ff04d32632df660f3e1bbbca945b4de
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -10952,11 +10961,12 @@ false
  
 Response code: 200 (Success); Content length: 5 bytes (5 B)
  
-Request '#36' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e
+Request '#36' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 246
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -10985,7 +10995,7 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13324 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Length: 8
-Trace-Request-Hash: 9c78fcdcf6c8ac1b8a3e03c013680d0d
+Trace-Request-Hash: eca8bfbf748f18e0a882ab8147d03638
 Trace-Request-Header-Hash: fed7548b65f471fc13027e0b90a82ed6
 Trace-Request-Data-Hash: 4efbee31a42ceca306e264b49ce7163a
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -10997,11 +11007,12 @@ Trace-Storage-Hash: 18dfe4bbecd955284cbd629fe6b7d9d6
  
 Response code: 200 (Success); Content length: 8 bytes (8 B)
  
-Request '#37' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e
+Request '#37' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 264
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -11031,7 +11042,7 @@ Storage-Revision: 2/0
 Storage-Space: 262144/13324 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Length: 24
-Trace-Request-Hash: 9c78fcdcf6c8ac1b8a3e03c013680d0d
+Trace-Request-Hash: eca8bfbf748f18e0a882ab8147d03638
 Trace-Request-Header-Hash: 2e55777ae86d8614e600d69f4863fafb
 Trace-Request-Data-Hash: 47daec4f92aa598147db4fae170fbe83
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -11043,11 +11054,12 @@ Trace-Storage-Hash: 18dfe4bbecd955284cbd629fe6b7d9d6
  
 Response code: 200 (Success); Content length: 24 bytes (24 B)
  
-Request '#38' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e
+Request '#38' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 247
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -11071,7 +11083,7 @@ Access-Control-Allow-Credentials: true
 Access-Control-Max-Age: 86400
 Access-Control-Expose-Headers: *
 Message: Invalid XSLT stylesheet (invalid value for method: xhtml)
-Trace-Request-Hash: 9c78fcdcf6c8ac1b8a3e03c013680d0d
+Trace-Request-Hash: eca8bfbf748f18e0a882ab8147d03638
 Trace-Request-Header-Hash: a23984b5d7e74064b7915c4d8107475f
 Trace-Request-Data-Hash: 75f663b8ed83119f89d2fe590af6e05a
 Trace-Response-Hash: 917ef711b7514d05e99aed61242ab05c
@@ -11083,11 +11095,12 @@ Trace-Storage-Hash: 18dfe4bbecd955284cbd629fe6b7d9d6
  
 Response code: 422 (Unprocessable Entity); Content length: 0 bytes (0 B)
  
-Request '#39' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e
+Request '#39' POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d
 = request =>
-POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d216a736f6e=
+POST http://127.0.0.1/xmex!?2f2f64697374726963745b406e616d653d274d69747465275d7c2f2f64697374726963745b406e616d653d275370616e646175275d=
 Storage: UnitTest_Storage_P0 statistic
 Content-Type: application/xslt+xml
+Accept: application/json
 Content-Length: 249
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
@@ -11111,7 +11124,7 @@ Access-Control-Allow-Credentials: true
 Access-Control-Max-Age: 86400
 Access-Control-Expose-Headers: *
 Message: Invalid XSLT stylesheet (invalid value for method: unknown)
-Trace-Request-Hash: 9c78fcdcf6c8ac1b8a3e03c013680d0d
+Trace-Request-Hash: eca8bfbf748f18e0a882ab8147d03638
 Trace-Request-Header-Hash: 8a82d224f2bbee9071f89e95505c4c5c
 Trace-Request-Data-Hash: ccfc092fbecc3553200528f7f8c98893
 Trace-Response-Hash: 917ef711b7514d05e99aed61242ab05c
@@ -15320,10 +15333,11 @@ Trace-Storage-Hash: fb7a5ddef06d3258451cf645ffa7c8c4
  
 Response code: 304 (Not Modified); Content length: 0 bytes (0 B)
  
-Request '#5' GET http://127.0.0.1/xmex!/snake/players!json
+Request '#5' GET http://127.0.0.1/xmex!/snake/players
 = request =>
-GET http://127.0.0.1/xmex!/snake/players!json
+GET http://127.0.0.1/xmex!/snake/players
 Storage: Example_of_Snake snake
+Accept: application/json
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -15342,7 +15356,7 @@ Storage-Space: 262144/664 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 694
-Trace-Request-Hash: db0c9ce5719010f8fc60b3de84efafd2
+Trace-Request-Hash: 663298bfa11a915561199c638778af4e
 Trace-Request-Header-Hash: f55648bc0f0428ea6e2e0d63c6c58483
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -15354,10 +15368,11 @@ Trace-Storage-Hash: fb7a5ddef06d3258451cf645ffa7c8c4
  
 Response code: 200 (Success); Content length: 694 bytes (694 B)
  
-Request '#6' GET http://127.0.0.1/xmex!/snake/board!json
+Request '#6' GET http://127.0.0.1/xmex!/snake/board
 = request =>
-GET http://127.0.0.1/xmex!/snake/board!json
+GET http://127.0.0.1/xmex!/snake/board
 Storage: Example_of_Snake snake
+Accept: application/json
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -15376,7 +15391,7 @@ Storage-Space: 262144/664 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 70
-Trace-Request-Hash: c6e96cd274483434204d2c61b748ee84
+Trace-Request-Hash: a47d46a692736874844ce59ea7a634d2
 Trace-Request-Header-Hash: f55648bc0f0428ea6e2e0d63c6c58483
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47
@@ -15640,10 +15655,11 @@ Trace-Storage-Hash: ef9f0ac776c89b0156a2fc6f3fb051f6
  
 Response code: 204 (No Content); Content length: 0 bytes (0 B)
  
-Request '#14' GET http://127.0.0.1/xmex!?2f2f706c61796572732f2f6669656c64216a736f6e
+Request '#14' GET http://127.0.0.1/xmex!?2f2f706c61796572732f2f6669656c64
 = request =>
-GET http://127.0.0.1/xmex!?2f2f706c61796572732f2f6669656c64216a736f6e=
+GET http://127.0.0.1/xmex!?2f2f706c61796572732f2f6669656c64=
 Storage: Example_of_Snake snake
+Accept: application/json
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.14 (Java/21.0.4)
 Accept-Encoding: br,deflate,gzip,x-gzip
@@ -15662,7 +15678,7 @@ Storage-Space: 262144/1040 bytes
 Storage-Expiration-Time: 900000 ms
 Content-Type: application/json
 Content-Length: 425
-Trace-Request-Hash: b14dc2a7675b3f1da0e638569bd3c57d
+Trace-Request-Hash: 594a45bdcc99a443fce179473c9e4a60
 Trace-Request-Header-Hash: f55648bc0f0428ea6e2e0d63c6c58483
 Trace-Request-Data-Hash: d41d8cd98f00b204e9800998ecf8427e
 Trace-Response-Hash: 6ea793edc825cd6b0da28cb2d1217a47

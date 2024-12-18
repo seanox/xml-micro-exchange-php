@@ -297,14 +297,6 @@ class Storage {
     const PATTERN_HEADER_STORAGE = "/^(\w(?:[-\w]{0,62}\w)?)(?:\s+(\w{1,64}))?$/";
 
     /**
-     * Pattern to determine options (optional directives) at the end of XPath
-     *     Group 0. Full match
-     *     Group 1. XPath
-     *     Group 2. options (optional)
-     */
-    const PATTERN_XPATH_OPTIONS = "/^(.*?)((?:!+\w+){0,})$/";
-
-    /**
      * Pattern to determine the structure of XPath axis expressions for attributes
      *     Group 0. Full match
      *     Group 1. XPath axis
@@ -353,12 +345,6 @@ class Storage {
         // The storage identifier is case-sensitive.
         // To ensure that this also works with Windows, Base64 encoding is used.
 
-        $options = [];
-        if (preg_match(Storage::PATTERN_XPATH_OPTIONS, $xpath ?: "", $matches, PREG_UNMATCHED_AS_NULL)) {
-            $xpath = $matches[1];
-            $options = array_filter(explode("!", strtolower($matches[2])));
-        }
-
         if (!empty($storage))
             $root = $root ?: "data";
         else $root = null;
@@ -384,7 +370,6 @@ class Storage {
         $this->root     = $root;
         $this->store    = $store;
         $this->xpath    = $xpath;
-        $this->options  = $options;
         $this->serial   = 0;
         $this->unique   = null;
         $this->revision = null;
@@ -581,6 +566,14 @@ class Storage {
             $node->setAttribute("___rev", $revision);
             $node = $node->parentNode;
         }
+    }
+
+    private static function isAccepted($media, $strict = false) {
+        if (!isset($_SERVER["HTTP_ACCEPT"]))
+            return !$strict;
+        $accept = strtolower($_SERVER["HTTP_ACCEPT"]);
+        $accept = array_map('trim', explode(',', $accept));
+        return in_array(strtolower($media), $accept, true);
     }
 
     /**
@@ -886,7 +879,7 @@ class Storage {
      */
     function doPost() {
 
-        // POST always expects an valid XSLT template for transformation.
+        // POST always expects a valid XSLT template for transformation.
         if (!isset($_SERVER["CONTENT_TYPE"])
                 || strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XSLT) !== 0)
             $this->quit(415, "Unsupported Media Type");
@@ -969,7 +962,7 @@ class Storage {
         $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
         if (strcasecmp($method, "xml") === 0
                 || empty($method)) {
-            if (in_array("json", $this->options))
+            if (Storage::isAccepted(Storage::CONTENT_TYPE_JSON, true))
                 $output = simplexml_load_string($output);
         } else if (strcasecmp($method, "html") === 0) {
             $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
@@ -1773,7 +1766,7 @@ class Storage {
                 $data = null;
 
             if ($data !== null) {
-                if (in_array("json", $this->options)) {
+                if (Storage::isAccepted(Storage::CONTENT_TYPE_JSON, true)) {
                     $headers["Content-Type"] = Storage::CONTENT_TYPE_JSON;
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement)

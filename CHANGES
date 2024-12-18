@@ -1,4 +1,4 @@
-1.6.0 2024xxxx
+1.6.0 2025xxxx
 BF: Service: Correction of REQUEST_URI for requests without protocol
 BF: Service: Review and optimization
     - XML Version and encoding in the XML response
@@ -9,6 +9,8 @@ CR: Service: Omission of the HTTP method TOUCH
 CR: Service: Change from status code to 304 when creating
     If an existing storage is opened with CONNECT or PUT without XPath, server
     status 304 is now returned instead of the previous server status 204.
+CR: Service: JSON transformation uses the Accept header
+    Option !json in the URI is omitted!
 
 1.5.1 20241030
 BF: Service: Correction of the configuration for on-premises
