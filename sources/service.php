@@ -568,7 +568,7 @@ class Storage {
         }
     }
 
-    private static function isAccepted($media, $strict = false) {
+    private static function isMediaTypeAccepted($media, $strict = false) {
         if (!isset($_SERVER["HTTP_ACCEPT"]))
             return !$strict;
         $accept = strtolower($_SERVER["HTTP_ACCEPT"]);
@@ -962,7 +962,7 @@ class Storage {
         $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
         if (strcasecmp($method, "xml") === 0
                 || empty($method)) {
-            if (Storage::isAccepted(Storage::CONTENT_TYPE_JSON, true))
+            if (Storage::isMediaTypeAccepted(Storage::CONTENT_TYPE_JSON, true))
                 $output = simplexml_load_string($output);
         } else if (strcasecmp($method, "html") === 0) {
             $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
@@ -1766,7 +1766,7 @@ class Storage {
                 $data = null;
 
             if ($data !== null) {
-                if (Storage::isAccepted(Storage::CONTENT_TYPE_JSON, true)) {
+                if (Storage::isMediaTypeAccepted(Storage::CONTENT_TYPE_JSON, true)) {
                     $headers["Content-Type"] = Storage::CONTENT_TYPE_JSON;
                     if ($data instanceof DOMDocument
                             || $data instanceof SimpleXMLElement)
