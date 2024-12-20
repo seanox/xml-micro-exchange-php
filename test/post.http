@@ -237,7 +237,7 @@ client.test("unittest", function() {
 # - Storage-Space: 262144/13324 bytes
 # - Content-Length: 640
 # - Content-Type: application/xml
-# - Content: UTF-8 + HTMl entity encoded
+# - Content: UTF-8 + HTML entity encoded
 POST {{service}} HTTP/1.0
 Storage: {{storage_post}}
 Content-Type: application/xslt+xml
@@ -907,7 +907,7 @@ client.test("unittest", function() {
 
 ###
 # Valid XSLT without XPath and with output
-# Text/JSON output, the JSON directive in the URI has an effect.
+# Text/JSON output, the JSON directive in the request has an effect.
 # Expectations:
 # - Status code 200 Success
 # - Content-Length: 476
@@ -950,7 +950,7 @@ client.test("unittest", function() {
 
 ###
 # Valid XSLT without XPath and with output
-# Text/JSON output, the JSON directive in the URI has an effect.
+# Text/JSON output, the JSON directive in the request has an effect.
 # Expectations:
 # - Status code 200 Success
 # - Storage-Revision: 2/0
@@ -1309,7 +1309,7 @@ client.test("unittest", function() {
 
 ###
 # Template without output method used the default xml
-# Text/JSON output, the JSON directive in the URI has an effect.
+# Text/JSON output, the JSON directive in the request has an effect.
 # The result is not a valid XML-file
 # The intermediate transformation to XML, as a precursor to the transformation
 # to JSON, will create an empty document, and JSON will also create false
@@ -1348,7 +1348,7 @@ client.test("unittest", function() {
 
 ###
 # Template with xml output method
-# Text/JSON output, the JSON directive in the URI has an effect.
+# Text/JSON output, the JSON directive in the request has an effect.
 # The result is not a valid XML-file
 # The intermediate transformation to XML, as a precursor to the transformation
 # to JSON, will create an empty document, and JSON will also create false
@@ -1388,7 +1388,7 @@ client.test("unittest", function() {
 
 ###
 # Template with text output method
-# Text/JSON output, the JSON directive in the URI has an effect.
+# Text/JSON output, the JSON directive in the request has an effect.
 # The output of the transformation is a text enclosed in a JSON structure
 # Expectations:
 # - Status code 200 Success
@@ -1426,7 +1426,7 @@ client.test("unittest", function() {
 
 ###
 # Template with html output method
-# Text/HTML output, the JSON directive in the URI has no effect.
+# Text/HTML output, the JSON directive in the request has no effect.
 # The explicit output of HTML cannot be transformed into JSON.
 # Expectations:
 # - Status code 200 Success
@@ -1465,7 +1465,7 @@ client.test("unittest", function() {
 
 ###
 # Template with invalid output method
-# the JSON directive in the URI has no effect.
+# the JSON directive in the request has no effect.
 # Expectations:
 # - Status code 422 Bad Request
 # - Message: Invalid XSLT stylesheet (invalid value for method: xhtml)
@@ -1498,7 +1498,7 @@ client.test("unittest", function() {
 
 ###
 # Template with invalid output method
-# the JSON directive in the URI has no effect.
+# the JSON directive in the request has no effect.
 # Expectations:
 # - Status code 422 Unprocessable Entity
 # - Message: Invalid XSLT stylesheet (invalid value for method: unknown)
