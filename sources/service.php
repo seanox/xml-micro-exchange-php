@@ -951,7 +951,9 @@ class Storage {
             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
         }
 
-        $method = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)");
+        $method = trim(strtolower((new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)") ?? ""));
+        if (!in_array($method, ["", "xml", "html", "text"]))
+            $this->quit(415, "Unsupported Media Type");
         if (empty($output)) {
             if (strcasecmp($method, "xml") !== 0
                     && !empty($method))
@@ -960,17 +962,15 @@ class Storage {
         }
 
         $header = ["Content-Type" => Storage::CONTENT_TYPE_XML];
-        if (strcasecmp($method, "xml") === 0
-                || empty($method)) {
-            if (Storage::isMediaTypeAccepted(Storage::CONTENT_TYPE_JSON, true))
-                $output = simplexml_load_string($output);
-        } else if (strcasecmp($method, "html") === 0) {
+        if (strcmp($method, "text") === 0)
+            $header = ["Content-Type" => Storage::CONTENT_TYPE_TEXT];
+        else if (strcmp($method, "html") === 0)
             $header = ["Content-Type" => Storage::CONTENT_TYPE_HTML];
-        } else $header = ["Content-Type" => Storage::CONTENT_TYPE_TEXT];
+        else if (Storage::isMediaTypeAccepted(Storage::CONTENT_TYPE_JSON, true))
+            $output = simplexml_load_string($output);
+
         $encoding = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@encoding)");
-        if (!empty($encoding))
-            $header["Content-Type"] .= "; charset=$encoding";
-        $this->quit(200, "Success", $header, $output);
+        $this->quit(200, "Success", $header, $output, $encoding);
     }
 
     /**
@@ -1707,8 +1707,9 @@ class Storage {
      * @param string $message
      * @param array  $headers
      * @param string $data
+     * @param string $encoding
      */
-    function quit($status, $message, $headers = null, $data = null) {
+    function quit($status, $message, $headers = null, $data = null, $encoding = null) {
 
         if (headers_sent()) {
             // The response are already complete.
@@ -1783,6 +1784,8 @@ class Storage {
                         $data = $data->saveXML();
                 }
                 $headers["Content-Length"] = strlen($data);
+                if (trim($encoding ?? "") !== "")
+                    $headers["Content-Type"] .= "; charset=$encoding";
             }
         } else $data = null;
 
