@@ -969,7 +969,8 @@ class Storage {
         else if (Storage::isMediaTypeAccepted(Storage::CONTENT_TYPE_JSON, true))
             $output = simplexml_load_string($output);
 
-        $encoding = (new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@encoding)");
+        $encoding = trim((new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@encoding)") ?? "");
+
         $this->quit(200, "Success", $header, $output, $encoding);
     }
 
