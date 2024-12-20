@@ -955,8 +955,7 @@ class Storage {
         if (!in_array($method, ["", "xml", "html", "text"]))
             $this->quit(415, "Unsupported Media Type");
         if (empty($output)) {
-            if (strcasecmp($method, "xml") !== 0
-                    && !empty($method))
+            if (!in_array($method, ["", "xml"]))
                 $this->quit(204, "No Content");
             $output = new DOMDocument(Storage::XML_DOCUMENT_VERSION, Storage::XML_DOCUMENT_ENCODING);
         }
