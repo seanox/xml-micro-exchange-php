@@ -433,7 +433,7 @@ class Storage {
 
         $initial = ($options & Storage::STORAGE_SHARE_INITIAL) == Storage::STORAGE_SHARE_INITIAL;
         if (!$initial && !$storage->exists())
-            $storage->quit(404, "Resource Not Found");
+            $storage->quit(404, "Not Found");
         $initial = $initial && (!file_exists($storage->store) || filesize($storage->store) <= 0);
 
         $storage->share = fopen($storage->store, "c+");
@@ -507,7 +507,7 @@ class Storage {
 
         $output = $this->xml->saveXML();
         if (strlen($output) > Storage::SPACE)
-            $this->quit(413, "Payload Too Large");
+            $this->quit(413, "Content Too Large");
         ftruncate($this->share, 0);
         rewind($this->share);
         fwrite($this->share, $output);
@@ -903,14 +903,14 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+            $this->quit(422, "Unprocessable Content", ["Message" => $message]);
         }
 
         $processor = new XSLTProcessor();
         $processor->importStyleSheet($style);
         if (Storage::fetchLastXmlErrorMessage()) {
              $message = "Invalid XSLT stylesheet (" . Storage::fetchLastXmlErrorMessage() . ")";
-             $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+             $this->quit(422, "Unprocessable Content", ["Message" => $message]);
         }
 
         $xml = $this->xml;
@@ -948,7 +948,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+            $this->quit(422, "Unprocessable Content", ["Message" => $message]);
         }
 
         $method = trim(strtolower((new DOMXpath($style))->evaluate("normalize-space(//*[local-name()='output']/@method)") ?? ""));
@@ -1085,7 +1085,7 @@ class Storage {
         // Storage::SPACE also limits the maximum size of writing request(-body).
         // If the limit is exceeded, the request is quit with status 413.
         if (strlen(file_get_contents("php://input")) > Storage::SPACE)
-            $this->quit(413, "Payload Too Large");
+            $this->quit(413, "Content Too Large");
 
         // For all PUT requests the Content-Type is needed, because for putting
         // in XML structures and text is distinguished.
@@ -1135,7 +1135,7 @@ class Storage {
             if (strcasecmp($_SERVER["CONTENT_TYPE"], Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
-                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+                    $this->quit(422, "Unprocessable Content", ["Message" => $message]);
                 }
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false
@@ -1143,7 +1143,7 @@ class Storage {
                     $message = "Invalid XPath function";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+                    $this->quit(422, "Unprocessable Content", ["Message" => $message]);
                 }
             }
 
@@ -1222,7 +1222,7 @@ class Storage {
             if (strcasecmp($media, Storage::CONTENT_TYPE_XPATH) === 0) {
                 if (!preg_match(Storage::PATTERN_XPATH_FUNCTION, $input)) {
                     $message = "Invalid XPath (Axes are not supported)";
-                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+                    $this->quit(422, "Unprocessable Content", ["Message" => $message]);
                 }
                 $input = (new DOMXpath($this->xml))->evaluate($input);
                 if ($input === false
@@ -1230,7 +1230,7 @@ class Storage {
                     $message = "Invalid XPath function";
                     if (Storage::fetchLastXmlErrorMessage())
                         $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-                    $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+                    $this->quit(422, "Unprocessable Content", ["Message" => $message]);
                 }
             }
 
@@ -1294,7 +1294,7 @@ class Storage {
             $message = "Invalid XML document";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            $this->quit(422, "Unprocessable Entity", ["Message" => $message]);
+            $this->quit(422, "Unprocessable Content", ["Message" => $message]);
         }
 
         // The attributes ___rev and ___uid are essential for the internal
@@ -1498,7 +1498,7 @@ class Storage {
         // request(-body). If the limit is exceeded, the request is quit with
         // status 413.
         if (strlen(file_get_contents("php://input")) > Storage::SPACE)
-            $this->quit(413, "Payload Too Large");
+            $this->quit(413, "Content Too Large");
 
         // For all PUT requests the Content-Type is needed, because for putting
         // in XML structures and text is distinguished.
@@ -1868,7 +1868,7 @@ class Storage {
             $message = "Invalid XSLT stylesheet";
             if (Storage::fetchLastXmlErrorMessage())
                 $message .= " (" . Storage::fetchLastXmlErrorMessage() . ")";
-            (new Storage)->quit(422, "Unprocessable Entity", ["Message" => $message]);
+            (new Storage)->quit(422, "Unprocessable Content", ["Message" => $message]);
         }
 
         $unique = round(microtime(true) *1000);
@@ -1905,7 +1905,7 @@ $script = basename(__FILE__);
 if (isset($_SERVER["PHP_SELF"])
         && preg_match("/\/" . str_replace(".", "\\.", $script) . "([\/\?].*)?$/", $_SERVER["PHP_SELF"])
         && (empty($_SERVER["REDIRECT_URL"])))
-    (new Storage)->quit(404, "Resource Not Found");
+    (new Storage)->quit(404, "Not Found");
 
 // Request method is determined
 $method = strtoupper($_SERVER["REQUEST_METHOD"]);
